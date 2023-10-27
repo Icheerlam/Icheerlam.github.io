@@ -1,2 +1,2 @@
 # Icheerlam.github.io
- <a href="Spike's portfolio.html" class="right"></a>
+ <a href="Spike's protfolio.html" >my portfolio</a>
