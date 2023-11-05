@@ -9,7 +9,49 @@
      <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	
 <style>
+@keyframes scaleAndColor {
+  0% {
+    transform: scale(1);
+    background-color: red;
+  }
+  50% {
+    transform: scale(1.5);
+    background-color: blue;
+  }
+  100% {
+    transform: scale(1);
+    background-color: green;
+  }
+  
+}
 
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: rotate(0deg) scale(1);
+    opacity: 1;
+    filter: brightness(100%);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.5);
+    opacity: 0.5;
+    filter: brightness(200%);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+    opacity: 1;
+    filter: brightness(100%);
+  }
+  
+}
 body {
     font-family: Arial;
     margin: 0;
@@ -24,13 +66,17 @@ body {
     flex-direction: column;
     padding: 80px;
     text-align: center;
+	 animation: scaleAndColor 3s ease-in-out infinite;
     background: #1abc9c;
     color: white;
+   <--! background: #1abc9c; -->
+    <--! color: white;    -->
 }
 
 
 .header h1 {
     font-size: 40px;
+	animation: rotate 2s linear infinite;
 }
 
 .navbar {
@@ -88,6 +134,8 @@ body {
     padding: 20px;
     text-align: center;
     background: #ddd;
+	animation: shimmer 3s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 @media screen and (max-width: 700px) {
