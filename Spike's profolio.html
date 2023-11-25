@@ -2,322 +2,319 @@
 <html>
 <head>
     <title>My portfolio</title>
-	 <meta charset="utf-8">
-	 <meta name="viewport" content="width=device-width, intial-scale=1">
-     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
-<style>
-@keyframes scaleAndColor {
-  0% {
-    <--transform: scale(1);
-    background-color: red;
-  }
-  50% {
-   <--transform: scale(1.5);
-    background-color: blue;
-  }
-  100% {
-    <--transform: scale(1);
-    background-color: green;
-  }
-  
-}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, intial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-@keyframes rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
+    <style>
+      
 
-@keyframes shimmer {
-  0% {
-    transform: rotate(0deg) scale(1);
-    opacity: 1;
-    filter: brightness(100%);
-  }
-  50% {
-    transform: rotate(180deg) scale(1.5);
-    opacity: 0.5;
-    filter: brightness(200%);
-  }
-  100% {
-    transform: rotate(360deg) scale(1);
-    opacity: 1;
-    filter: brightness(100%);
-  }
-  
-}
-body {
-    font-family: Arial;
-    margin: 0;
-    display:flex;
-    align-content:flex-start;
-    flex-direction: column;
-    flex-wrap: wrap;
-}
+        body {
+            font-family: Arial;
+            margin: 0;
+            display: flex;
+            align-content: flex-start;
+            flex-direction: column;
+            flex-wrap: wrap;
+        }
 
-.header {
-    display:flex;
-    flex-direction: column;
-    padding: 80px;
-    text-align: center;
-	 animation: scaleAndColor 3s ease-in-out infinite;
-    background: #1abc9c;
-    color: white;
-   <--! background: #1abc9c; -->
-    <--! color: white;    -->
-}
+        .header {
+            display: flex;
+            flex-direction: column;
+            padding: 60px;
+            text-align: center;
+            animation: scaleAndColor 3s ease-in-out infinite;
+            background: #1abc9c;
+            color: white;
+            <-- ! background: #1abc9c; -->
+            <-- ! color: white; -->
+        }
 
 
-.header h1 {
-    font-size: 40px;
-	animation: rotate 2s linear infinite;
-}
+            .header h1 {
+                font-size: 40px;
+                animation: rotate 2s linear infinite;
+            }
 
-.navbar {
-    overflow: hidden;
-    background-color: #333;
-}
-
-
-.navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-}
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+            margin-bottom:0px;
+        }
 
 
-.navbar a.right {
-    float: right;
-}
-
-.navbar a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-.row {  
-    display: flex;
-    -ms-flex-wrap: wrap; 
-    flex-wrap: wrap;
-}
-
-.side {
-    -ms-flex: 30%; 
-    flex: 30%;
-    background-color: #f1f1f1;
-    padding: 20px;
-}
+            .navbar a {
+                float: left;
+                display: block;
+                color: white;
+                text-align: center;
+                padding: 0px 20px;
+                text-decoration: none;
+            }
 
 
-    .main {
-        -ms-flex: 70%;
-        flex: 70%;
-        text-align: center;
-        background-color: white;
-        padding: 20px;
-    }
-.fakeimg {
-    background-color: #aaa;
-    width: 100%;
-    padding: 20px;
-}
-.footer {
-    padding: 20px;
-    text-align: center;
-    background: #ddd;
-	<--! animation: shimmer 3s ease-in-out infinite;  --!>
- <--! box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);  --!>
-}
+                .navbar a.right {
+                    float: right;
+                }
 
-@media screen and (max-width: 700px) {
-    .row {   
-        flex-direction: column;
-    }
-}
+                .navbar a:hover {
+                    background-color: #ddd;
+                    color: black;
+                }
 
-@media screen and (max-width: 400px) {
-    .navbar a {
-        float: none;
-        width: 100%;
-    }
-}
- 
-</style>
+        .row {
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+        }
+
+        .side {
+            -ms-flex: 30%;
+            flex: 30%;
+            background-color: #f1f1f1;
+            padding: 40px;
+        }
+
+
+        .main {
+            -ms-flex: 70%;
+            flex: 70%;
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+        }
+
+        .fakeimg {
+            background-color: #aaa;
+            width: 100%;
+            padding: 25px;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background: #ddd;
+            <-- ! animation: shimmer 3s ease-in-out infinite;
+            -- !> <--! box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            -- !>
+        }
+        h4 {
+            line-height: 40px;
+        }
+        .ppp {
+            margin-top: 17px;
+        }
+
+    
+        @media screen and (max-width: 700px) {
+            .row {
+                flex-direction: column;
+            }
+        }
+
+        @media screen and (max-width: 400px) {
+            .navbar a {
+                float: none;
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="header">
+    <div class="header">
 
-  <b><h1>我的主页</h1></b>
-  <i><p>It is my blog</p></i>
-	 <i><p>It is my blog</p></i>
-  <i><p>plese press control/command +/- to suit the wed page.</p></i>
-	 <i><p>点击我的头像刷新/跳转到我的主页</p></i>
-	 <i><p>Github建站图片刷新速度较慢，连vpn刷新比较快</p></i>
-	<br>
-
-	<i><p>页面排版有时间继续完善</p></i>
-	<br>
-	 <i><p>我的照片 删改中 点进去404 。。。</p></i>
-	
-</div>
-
-
-<div class="navbar">
-  <a href="Spike's profolio.html"><img src="logo.jpeg" width="60" height="55"></a>
-  <a href="my photos.html">我的照片</a>
-  <a href="my draws.html">我的画</a>
-  <a href="my vedio.html">我的视频</a>
-  <a href="my graphic design.html">平面设计</a>
-  <a href="3d model.html">3D建模</a>
-  <a href="form.html" class="right">Login -></a>
-</div>
-
-
-<div class="row">
-  <div class="side">
-  <center>
-      <h2>关于我</h2>
-      <img src="me.jpg" style="height:450px; width:712px;" alt="me.jpg">
-      
-      <br>
-     
-     <table border="10" bordercolor="orange" border-style="ridge" cellspcing ="2" cellpadding="4"width ="600">
-     <caption> <h2Indian Curry House></h2>more information about me..</caption>
-     
-     <br>
-     
-     <tr>        <th>About me</th>                     <th>Informations</th></tr>
-     <tr><td align="center"> 我的生日     </td> <td align="center"> 2002.8.20        </td><tr/>
-     <tr><td align="center"> 名字       </td>  <td align="center">叶承霖（Ye Cheng Ling)    </td><tr/>
-     <tr><td align="center"> 家乡     </td> <td align="center"> Guangzhou        </td><tr/>
-     <tr><td align="center">血型    </td> <td align="center"> Rh(D)+        </td><tr/>
-     <tr><td align="center"> 电话     </td> <td align="center"> +86 13719113230   </td><tr/>
-     <tr><td align="center"> 邮箱    </td> <td align="center"> 1849304853@qq.com        </td><tr/>
-     </table>
-     </center>
-     
-     <center>
-     
-     <br>
-      <h3>更多</h3>
-      
-      <br>
-      </center>
-      
-      <from>
-      <a href="mail to:1849304853@qq.com "></a>
-     
-     <center>
-                          <td><a href="mailto:1849304853@qq.com "><button type="button" class="btn btn-primary btn-lg">
-                             <span class="glyphicon glyphicon-envelope"><p>邮箱联系</p></span>
-                             
-                          </button></a ></td>
-                         
-                         &nbsp   &nbsp &nbsp  &nbsp
-                         
-                          
-                          <td><a href="" target="_blank"><button type="button" class="btn btn-primary btn-lg">
-                            <span class=" glyphicon glyphicon-user"><p>刷新页面<p></span>
-                          </button></a ></td>
-                          
-                          &nbsp   &nbsp &nbsp  &nbsp
-                          
-                          <td> <a href="tel:+86 13719113230"><button type="button" class="btn btn-primary btn-lg">
-                            <span class=" glyphicon glyphicon-earphone"><p>给我打电话<p></span>
-                           
-                          </button></a ></td>
-                        </tr>
-             <br>
-             <br>
-                          
-	  
-	  
-	  </form>
-      
-    
-  </div>
-
-  <div class="main">
-
-  <div class="thumbnail">
-      <center><h2>城市</h2>
-      <h5></h5>
-        
-    <img class="img" src="gz.jpg" style="width:1200px;height:500px;"> 
-    
-    <br>
-
-      <h2>越是长大，越爱这座城。</h2>
-     <h4 style="width:1200px;">广州，简称穗，是中华人民共和国广东省省会，位于珠江三角洲北部，是中国南方的重要港口城市之一。广州拥有悠久的历史和丰富的文化遗产，被誉为“羊城”或“花城”。
-广州是中国最大的对外贸易港口之一，也是中国南方的经济、科技、教育和文化中心。这座城市拥有现代化的高楼大厦和繁忙的商业区，同时也保留了许多古老的建筑和历史遗迹。著名的景点包括广州塔、珠江夜游、陈家祠等。
-广州的美食文化也非常丰富多样，以粤菜闻名于世。广州人热爱美食，无论是传统的早茶、烧腊、点心，还是各种创新的美食，都能满足不同口味的需求。此外，广州还有许多购物区和夜市，为游客提供了丰富的购物和娱乐选择。
-广州的交通便利，有地铁、公交和出租车等多种交通方式。此外，广州还有两个国际机场，连接着世界各地的航线。
-总之，广州是一座充满活力和魅力的城市，拥有独特的历史文化和现代化的发展。无论是商务旅行还是休闲度假，广州都是一个值得一游的地方。</h4>  </center>
-      
-     </div>
-
-      <br>
-   
-      
-    
-      <div class="thumbnail">
-     <center> <h2>五中</h2></center>
- 
-    <img src="5z.jpg" style="width:1200px;height:500px;"></center>
-    
-     <br>
-    
-        <center><h2>快乐和奋斗的日子</h2>    </center>
+        <b><h1>我的主页</h1></b>
         <br>
-    <center><h4 style="width:1200px;">广州市第五中学是一所公办完全中学，创办于1951年，由朱光副市长亲自审批、广州市人民政府创办。学校本部占地面积67963平方米，金碧校区占地面积26557平方米。
-该校在1978年被确定为首批区重点中学，1994年被评为首批省一级学校，2008年被确定为全市24所创建国家级示范性普通高级中学的学校之一。</h4>
-
-
-    <h4>我在高中有许多难忘的记忆，我永远不会忘记。</h4>
-            <h4>The happy and struggle days.</h4></center>
-   
-      </div>
-
-<br>
-
-<hr>
-<div class="thumbnail">
-    <h2>广东工业大学</h2>
-
-    <center><img src="GDUT.jpeg" style="width:1200px;height:500px;"></center>
-    <br>
-    <center>
-
-        <h4 style="width:1200px;">
-            广东工业大学，简称广工，是广东省人民政府重点建设的省属重点大学、广东省“211工程”和广东省高水平大学。这所大学以工为主，工理经管文法艺结合，实现了多科性的协调发展。它于1995年由原广东工学院、广东机械学院等合并而成。
-            广东工业大学位于广州大学城外环西路100号（51006）。学校拥有一流的师资队伍和教学设施，在校园内的各个工学楼、创客空间以及实验室中，充满了科技的气息。此外，广东工业大学还非常注重国际交流与合作。
-            作为一所优秀的高等教育机构，广东工业大学致力于培养具有创新精神和实践能力的高素质人才。无论是在学术研究还是在实践活动中，广东工业大学都展现出了其卓越的教育质量和学术实力。
-        </h4>
-    </center>
-
-</div>
-
-</div>
+        <i><p>plese press control/command +/- to suit the wed page.</p></i>
+        <i><p>点击我的头像刷新/跳转到我的主页</p></i>
+        <i><p>Github建站图片刷新速度较慢，连vpn刷新比较快</p></i>
+        <br>
+        <br>
+        <i><p>我的照片 删改中 点进去404 。。。</p></i>
 
     </div>
 
-<br>
+
+    <div class="navbar">
+        <a href="Spike's profolio.html">
+
+            <img src="logo.jpeg" width="60" height="55">
+        </a>
+
+        <div class="ppp">
+        <a href="my photos.html">我的照片</a>
+        <a href="my draws.html">我的画</a>
+        <a href="my vedio.html">我的视频</a>
+        <a href="my graphic design.html">平面设计</a>
+        <a href="3d model.html">3D建模</a>
+        <a href="form.html" class="right">Login -></a>
+
+         </div>
+
+    </div>
 
 
-<div class="footer">
-  <h2>footers</h2>
-  <h2>Copyright &copy Clarence 2023</h2>
-</div>
+    <div class="row">
+        <div class="side">
+            <center>
+                <h2>关于我</h2>
+                <br>
+                <img src="me.jpg" style="height:450px; width:712px;" alt="me.jpg">
+
+                <br>
+
+                <table border="5" bordercolor="#1abc9c" border-style="ridge" cellspcing="10" cellpadding="10" width="600">
+                    <caption> <center>more information about me..</caption>
+            </center>
+
+            <br>
+
+            <tr> <center>     <strong><td align=" center">ABOUT ME</td>               <td align="center">INFORMATIONS</th></tr>    </strong>   </center>
+            <tr><td align="center"> 我的生日     </td> <td align="center"> 2002.8.20        </td>
+            <tr />
+            <tr><td align="center"> 名字       </td>  <td align="center">叶承霖（Ye Cheng Ling)    </td>
+            <tr />
+            <tr><td align="center"> 家乡     </td> <td align="center"> Guangzhou        </td>
+            <tr />
+            <tr><td align="center">血型    </td> <td align="center"> Rh(D)+        </td>
+            <tr />
+            <tr><td align="center"> 电话     </td> <td align="center"> +86 13719113230   </td>
+            <tr />
+            <tr><td align="center"> 邮箱    </td> <td align="center"> 1849304853@QQ.com        </td>
+            <tr />
+            </table>
+            </center>
+
+            <center>
+
+                <br>
+                <h3>更多</h3>
+
+                <br>
+            </center>
+
+            <from>
+                <a href="mail to:1849304853@qq.com "></a>
+
+                <center>
+                <td>
+                    <a href="mailto:1849304853@qq.com ">
+                        <button type="button" class="btn btn-primary btn-lg">
+                            <span class="glyphicon glyphicon-envelope"><p>邮箱联系</p></span>
+
+                        </button>
+                    </a>
+                </td>
+
+                &nbsp   &nbsp &nbsp  &nbsp
+
+                <td>
+                    <a href="tel:+86 13719113230">
+                        <button type="button" class="btn btn-primary btn-lg">
+                            <span class=" glyphicon glyphicon-earphone"><p>给我打电话<p></span>
+
+                        </button>
+                    </a>
+                </td>
+
+
+                &nbsp   &nbsp &nbsp  &nbsp
+
+                <td>
+                    <a href="" target="_blank">
+                        <button type="button" class="btn btn-primary btn-lg">
+                            <span class=" glyphicon glyphicon-user"><p>刷新页面<p></span>
+                        </button>
+                    </a>
+                </td>
+                </tr>
+                <br>
+                <br>
+
+
+
+                </form>
+
+
+        </div>
+
+        <div class="main">
+
+
+            <center>
+                <h2>城市</h2>
+                <br>
+                <h5></h5>
+
+                <img class="img" src="gz.jpg" style="width:1200px;height:500px;">
+
+                <br>
+                <br>
+                <h2>越是长大，越爱这座城</h2>
+                <br>
+                <h4 style="width:1200px; text-align:left">
+                    广州，简称穗，是中华人民共和国广东省省会，位于珠江三角洲北部，是中国南方的重要港口城市之一。广州拥有悠久的历史和丰富的文化遗产，被誉为“羊城”或“花城”。
+                    广州是中国最大的对外贸易港口之一，也是中国南方的经济、科技、教育和文化中心。这座城市拥有现代化的高楼大厦和繁忙的商业区，同时也保留了许多古老的建筑和历史遗迹。著名的景点包括广州塔、珠江夜游、陈家祠等。
+                    广州的美食文化也非常丰富多样，以粤菜闻名于世。&nbsp 广州人热爱美食，无论是传统的早茶、烧腊、点心，还是各种创新的美食，都能满足不同口味的需求。此外，广州还有许多购物区和夜市，为游客提供了丰富的购物和娱乐选择。
+                    广州的交通便利，有地铁、公交和出租车等多种交通方式。此外，广州还有两个国际机场，连接着世界各地的航线。
+                    总之，广州是一座充满活力和魅力的城市，拥有独特的历史文化和现代化的发展。无论是商务旅行还是休闲度假，广州都是一个值得一游的地方。
+
+                </h4>
+                <br>
+            </center>
+
+
+            <center> <h2>五中</h2>
+
+            <img src="5z.jpg" style="width:1200px;height:500px;"></center>
+
+            <br>
+
+            <center><h2>快乐和奋斗的日子</h2>    </center>
+            <br>
+            <center>
+                <h4 style="width: 1200px; text-align: left">
+                    广州市第五中学是一所公办完全中学，创办于1951年，由朱光副市长亲自审批、广州市人民政府创办。学校本部占地面积67963平方米，金碧校区占地面积26557平方米。
+                    该校在1978年被确定为首批区重点中学，1994年被评为首批省一级学校，2008年被确定为全市24所创建国家级示范性普通高级中学的学校之一。我在高中有许多难忘的记忆，我永远不会忘记。
+                </h4>
+
+            </center>
+
+      
+
+        <br>
+
+
+        <center>
+            <h2>广东工业大学</h2>
+
+            <br>
+          <img src="GDUT.jpeg" style="width:1200px;height:500px;">
+            <br>
+
+
+            <h4 style="width: 1200px; text-align: left">
+
+                <br>
+                广东工业大学，简称广工，是广东省人民政府重点建设的省属重点大学、广东省“211工程”和广东省高水平大学。这所大学以工为主，工理经管文法艺 &nbsp 结合，实现了多科性的协调发展。它于1995年由原广东工学院、
+                广东机械学院等合并而成。
+                广东工业大学位于广州大学城外环西路100号（51006）。&nbsp 学校拥有一流的师资队伍和教学设施，在校园内的各个工学楼、创客空间以及实验室中，充满了科技的气息。此外，广东工业大学还非常注重国际交流与合作。
+                作为一所优秀的高等教育机构，广东工业大学致力于培养具有创新精神和实践能力的高素质人才。无论是在学术研究还是在实践活动中，广东工业大学都展现出了其卓越的教育质量和学术实力。
+            </h4>
+        </center>
+
+  
+    
+
+    <br>
+
+
+    <div class="footer">
+        <h2>Copyright &copy Clarence 2023</h2>
+    </div>
 
 </body>
 </html>
