@@ -9,7 +9,7 @@
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
     <style>
-      
+
 
         body {
             font-family: Arial;
@@ -21,27 +21,21 @@
         }
 
         .header {
-            display: flex;
-            flex-direction: column;
-            padding: 60px;
+            padding: 80px;
             text-align: center;
-            animation: scaleAndColor 3s ease-in-out infinite;
             background: #1abc9c;
             color: white;
-            <-- ! background: #1abc9c; -->
-            <-- ! color: white; -->
         }
 
 
             .header h1 {
                 font-size: 40px;
-                animation: rotate 2s linear infinite;
             }
 
         .navbar {
             overflow: hidden;
             background-color: #333;
-            margin-bottom:0px;
+            margin-bottom:0 ;
         }
 
 
@@ -50,7 +44,7 @@
                 display: block;
                 color: white;
                 text-align: center;
-                padding: 0px 20px;
+                padding: 14px 20px;
                 text-decoration: none;
             }
 
@@ -74,14 +68,12 @@
             -ms-flex: 30%;
             flex: 30%;
             background-color: #f1f1f1;
-            padding: 40px;
+            padding: 20px;
         }
-
 
         .main {
             -ms-flex: 70%;
             flex: 70%;
-            text-align: center;
             background-color: white;
             padding: 20px;
         }
@@ -89,28 +81,23 @@
         .fakeimg {
             background-color: #aaa;
             width: 100%;
-            padding: 25px;
+            padding: 20px;
         }
 
         .footer {
             padding: 20px;
             text-align: center;
             background: #ddd;
-            <-- ! animation: shimmer 3s ease-in-out infinite;
-            -- !> <--! box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-            -- !>
-        }
-        h4 {
-            line-height: 40px;
-        }
-        .ppp {
-            margin-top: 17px;
         }
 
-    
+        .thumbnail {
+            text: center;
+        }
+
         @media screen and (max-width: 700px) {
             .row {
                 flex-direction: column;
+                text-align: center;
             }
         }
 
@@ -120,6 +107,14 @@
                 width: 100%;
             }
         }
+        h4 {
+            line-height: 40px;
+        }
+        .ppp {
+            margin-top: 10px;
+        }
+
+    
     </style>
 </head>
 <body>
