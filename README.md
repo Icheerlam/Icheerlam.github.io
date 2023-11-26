@@ -6,9 +6,9 @@
 <br>
 
 
-<h1><a href="Spike's profolio.html" >My portfolio</a></h1>
+<h1><a href="Spike's profolio.html" >My portfolio <-- </a></h1>
 <br>
-</center>
+</center> 
  
 
 
