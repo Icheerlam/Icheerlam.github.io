@@ -1,21 +1,45 @@
 <!doctype html>
 <html>
 <head>
-    <title>我的主页</title>
-	 <meta charset="utf-8">
-	 <meta name="viewport" content="width=device-width, intial-scale=1">
-     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
-<style>
+    <title>my vedio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, intial-scale=1">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+        /*add a grey background color and some padding to the footer */
 
-body {
-    font-family: Arial;
-    margin: 0;
+        .carousel-inner img {
+            width: 100%; /* set width to 100% */
+            min-heigth: 200px;
+        }
+
+        /*hide the carousel text when the screen is less than 600 pixels wide */
+        @media (max-width: 600px) {
+            .carousel-caption {
+                display: none;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        li {
+            display: inline;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background: #ddd;
+        }
+        .navbar-inverse {
+    background-color: #222;
+    border-color: #080808;
 }
-
-.header {
+        .header {
     padding: 40px;
     text-align: center;
     background: #1abc9c;
@@ -27,285 +51,73 @@ body {
     font-size: 40px;
 }
 
-.navbar {
-    overflow: hidden;
-    background-color: #333;
-    margin-bottom:0;
-}
-
-
-.navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-}
-
-
-.navbar a.right {
-    float: right;
-}
-
-.navbar a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-.row {  
-    display: flex;
-    -ms-flex-wrap: wrap; 
-    flex-wrap: wrap;
-    flex-direction: column;
-}
-.side {
-    -ms-flex: 30%; 
-    flex: 30%;
-    background-color: #f1f1f1;
-    padding: 20px;
-}
-
-.fakeimg {
-    background-color: #aaa;
-    width: 100%;
-    padding: 20px;
-}
-.footer {
-    padding: 20px;
-    text-align: center;
-    background: #ddd;
-}
-.thumbnail{
-text:center;
-}
-
-@media screen and (max-width: 700px) {
-    .row {   
-        flex-direction: column;
-        text-align:center;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .navbar a {
-        float: none;
-        width: 100%;
-    }
-}
-	
-  h4 {
-            line-height: 25px;
-        }
-        
-</style>
+    </style>
 </head>
 <body>
-
     <div class="header">
 
-        <b><font size="6000">我的主页</font></b>
-	    <br>
+  <b><font size="6000">我的视频</font></b>
+   <br>
 	    <br>
         <i><p>网页上传到Github，是免费的
 		<br>
 		刷新速度较慢，连接VPN较快</p></i>
 	    <i><p>pc/手机端均可浏览</p></i>
-    </div>
+</div>
+    <div id="some animation works"</div>
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
 
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-    <div class="navbar">
-        <!--   <a href="Spike's profolio.html"><img src="logo.jpeg" width="60" height="55"></a>  !-->
-     
- 
-        <a href="my vedio.html">我的视频</a>
-        <a href="my graphic design.html">平面设计</a>
-	    <a href="3d model.html">3D建模</a>   
-	    <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449">我的照片</a>
-        <a href="my draws.html">我的画</a>
+                <a class="navbar-brand" href="Spike's profolio.html"><img src="logo.jpeg" width="60" height="55"></a>
+            </div>
 
-      <!--  <a href="form.html" class="right">Login -></a> !-->
-    </div>
-    <div class="main">
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active">
+                        <a href="Spike's profolio.html"><-主页</a>
+                    </li>
+                    <li> <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449">我的照片</a></li>
+                    <li><a href="my draws.html">我的画</a></li>
+                    <li> <a href="my graphic design.html">平面设计</a></li>
+                    <li> <a href="3d model.html">3D建模</a></li>
+                </ul>
 
-    </div>
+                <!-- <ul class="nav navbar-nav navbar-right">
+                 <li><a href="form.html"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                 </ul> !-->
 
+            </div>
+        </div>
+    </nav>
 
-   
-
-        <center>
-
-
-
-
-
-            <!--  <center>
-        <h2>关于我</h2>
-        <br>
-        <img src="me.jpg" width="90%">
-
-        <br>
-
-
-    </center>
-      !-->
-        <!-- <table border="5" bordercolor="#1abc9c" border-style="ridge" cellspcing="10" cellpadding="10" width="95%">
-                <center>
-                <caption>more information about me..</caption>
-            <tr>      <strong><td align=" center">ABOUT ME</td>               <td align="center">INFORMATIONS</th></tr>    </strong>
-    </center>
-    <tr><td align="center"> 我的生日     </td> <td align="center"> 2002.8.20        </td>
-    <tr />
-    <tr><td align="center"> 名字       </td>  <td align="center">叶承霖（Ye Cheng Ling)    </td>
-    <tr />
-    <tr><td align="center"> 家乡     </td> <td align="center"> Guangzhou        </td>
-    <tr />
-    <tr><td align="center">血型    </td> <td align="center"> Rh(D)+        </td>
-    <tr />
-    <tr><td align="center"> 电话     </td> <td align="center"> +86 13719113230   </td>
-    <tr />
-    <tr><td align="center"> 邮箱    </td> <td align="center"> 1849304853@QQ.com        </td>
-    <tr />
-    </table>
-    </center>
-
-            -->
-
-        
-      <br>
+   <center>
+  <br>
 
         <img class="img" src="个人简历.jpg" width="90%">
 
-    <!--    <center>
-
-          
-            <br>
-            
-        </center>
-
-       
-            <a href="mail to:1849304853@qq.com "></a>
-
-            <center>
-
-
-            <td>
-                <a href="tel:+86 13719113230">
-                    <button type="button" class="btn btn-primary btn-md">
-                        <span class=" glyphicon glyphicon-earphone"><p>给我打电话<p></span>
-
-                    </button>
-                </a>
-            </td>
-            <br>
-            <br>
-
-
-            <td>
-                <a href="mailto:1849304853@qq.com ">
-                    <button type="button" class="btn btn-primary btn-md">
-                        <span class="glyphicon glyphicon-envelope"><p>邮箱联系</p></span>
-
-                    </button>
-                </a>
-            </td>
-
-
-            &nbsp   &nbsp &nbsp  &nbsp
-
-            <td>
-                <a href="" target="_blank">
-                    <button type="button" class="btn btn-primary btn-md">
-                        <span class=" glyphicon glyphicon-user"><p>刷新页面<p></span>
-                    </button>
-                </a>
-            </td>
-            </tr>
-            <br>
-            <br>
-
-
-
-           
-
-
-   !-->
-
-   
-<!--    <br>
-
-        <center>
-            <h2>广州</h2>
-            <br>
-         
-
-            <img class="img" src="gz.jpg" width="90%">
-
-    
-        <br>
-            <br>
-            <h4 style= " text-align:left; width:90%">
-                广州，简称穗，是中华人民共和国广东省省会，位于珠江三角洲北部，是中国南方的重要港口城市之一。广州拥有悠久的历史和丰富的文化遗产，被誉为“羊城”或“花城”。
-                广州是中国最大的对外贸易港口之一，也是中国南方的经济、科技、教育和文化中心。这座城市拥有现代化的高楼大厦和繁忙的商业区，同时也保留了许多古老的建筑和历史遗迹。著名的景点包括广州塔、珠江夜游、陈家祠等。
-                广州的美食文化也非常丰富多样，以粤菜闻名于世。&nbsp 广州人热爱美食，无论是传统的早茶、烧腊、点心，还是各种创新的美食，都能满足不同口味的需求。此外，广州还有许多购物区和夜市，为游客提供了丰富的购物和娱乐选择。
-                广州的交通便利，有地铁、公交和出租车等多种交通方式。此外，广州还有两个国际机场，连接着世界各地的航线。
-                总之，广州是一座充满活力和魅力的城市，拥有独特的历史文化和现代化的发展。无论是商务旅行还是休闲度假，广州都是一个值得一游的地方。
-
-            </h4>
-            <br>
-        </center>
-
-
-        <center>
-            <h2>广州第五中学</h2>
-            <br>
-            <img src="5z.jpg" width="90%">
-        </center>
-        <br>
-        <center>
-            <h4 style=" text-align:left; width:90%" >
-                广州市第五中学是一所公办完全中学，创办于1951年，由朱光副市长亲自审批、广州市人民政府创办。学校本部占地面积67963平方米，金碧校区占地面积26557平方米。
-                该校在1978年被确定为首批区重点中学，1994年被评为首批省一级学校，2008年被确定为全市24所创建国家级示范性普通高级中学的学校之一。我在高中有许多难忘的记忆，我永远不会忘记。
-            </h4>
-
-        </center>
-
-
-
-        <br>
-
-
-        <center>
-            <h2>广东工业大学</h2>
-
-            <br>
-            <img src="GDUT.jpeg" style="width:90%;">
-            <br>
-
-
-
-            <h4 style=" text-align:left; width:90%">
-                <br>
-                广东工业大学，简称广工，是广东省人民政府重点建设的省属重点大学、广东省“211工程”和广东省高水平大学。这所大学以工为主，工理经管文法艺 &nbsp 结合，实现了多科性的协调发展。它于1995年由原广东工学院、
-                广东机械学院等合并而成。
-                广东工业大学位于广州大学城外环西路100号（51006）。&nbsp 学校拥有一流的师资队伍和教学设施，在校园内的各个工学楼、创客空间以及实验室中，充满了科技的气息。此外，广东工业大学还非常注重国际交流与合作。
-                作为一所优秀的高等教育机构，广东工业大学致力于培养具有创新精神和实践能力的高素质人才。无论是在学术研究还是在实践活动中，广东工业大学都展现出了其卓越的教育质量和学术实力。
-            </h4>
-        </center>
-!-->
-
-
-<br>
-    <br>
-		<br>
-		<br>
+ </center>
 
 
 
     <div class="footer">
-       
-        <h3>Copyright &copy Clarence 2023</h3>
+
+        <h4>Copyright &copy Clarence 2023</h4>
     </div>
+    </footer>
+    <!-- <form class="form-inline">More inspiration:
+     <input type="eamil" class="form-control" size="50"placeholder="Email Address">
+
+     <a href="mailto:1849304853@qq.com "> <button type="button" class="btn btn-danger">Sign Up</button></a>
+     </form>!-->
+
 
 </body>
 </html>
+
