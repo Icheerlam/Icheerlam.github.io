@@ -1,135 +1,109 @@
 <!doctype html>
-<html>
+<html lang="zh-CN">
 <head>
     <title>叶承霖的个人主页</title>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, intial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-        /*add a grey background color and some padding to the footer */
-
-        .carousel-inner img {
-            width: 100%; /* set width to 100% */
-            min-heigth: 200px;
+        * {
+            box-sizing: border-box;
         }
 
-        /*hide the carousel text when the screen is less than 600 pixels wide */
+        .header {
+            padding: 30px;
+            text-align: center;
+            background: #1abc9c;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .navbar-inverse {
+            background-color: #222;
+            border-color: #080808;
+            margin-bottom: 0; /* 移除导航栏底部的默认间距 */
+        }
+
+        .carousel-inner img {
+            width: 100%;
+            min-height: 200px;
+        }
+
         @media (max-width: 600px) {
             .carousel-caption {
                 display: none;
             }
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        li {
-            display: inline;
+        /* 替换掉原来的 <center> 标签，使用 CSS 进行居中 */
+        .main-content {
+            text-align: center;
+            padding: 40px 15px;
         }
 
         .footer {
             padding: 20px;
             text-align: center;
             background: #ddd;
+            margin-top: 20px;
         }
-        .navbar-inverse {
-    background-color: #222;
-    border-color: #080808;
-}
-        .header {
-    padding: 30px;
-    text-align: center;
-    background: #1abc9c;
-    color: white;
-}
-
-
-.header h1 {
-    font-size: 40px;
-}
-
     </style>
 </head>
 <body>
-    <div class="header">
 
-  <b><font size="6000">我的主页</font></b>
-   <br>
-	    <br>
-        <i><p>网页上传到 &nbsp Github，是免费的
-		<br>
-		刷新速度较慢，连接VPN较快</p></i>
-	    <i><p>pc/手机端均可浏览</p></i>
-	    <i><p>手机端均请点击右边导航栏</p></i>
-</div>
-    <div id="some animation works"</div>
+    <header class="header">
+        <h1>我的主页</h1>
+        <p>网页上传到 GitHub，是免费的<br>刷新速度较慢，连接 VPN 较快</p>
+        <p>PC / 手机端均可浏览</p>
+        <p>手机端请点击右边导航栏</p>
+    </header>
+
+    <div id="some-animation-works"></div>
+
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
             <div class="navbar-header">
-
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-
-                <a class="navbar-brand" href="Spike's profolio.html"><img src="logo.jpeg" width="60" height="55"></a>
+                <a class="navbar-brand" href="Spike's profolio.html">
+                    <img src="logo.jpeg" alt="Logo" width="60" height="55" style="margin-top: -15px;">
+                </a>
             </div>
 
             <div class="collapse navbar-collapse" id="myNavbar">
-           <ul class="nav navbar-nav">
-	 <li class="active">
-         <a href="Spike's profolio.html">主页</a></li>
-      
-                    <li> <a href="my vedio.html">视频动效</a></li>
-                    <li> <a href="my graphic design.html">平面设计</a></li>
-                    <li> <a href="3d model.html">3D建模</a></li>
-		    <li> <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449">摄影合集</a></li>
-                 <!--   <li><a href="my draws.html">手绘能力</a></li>
-                </ul>  !-->
-
-                <!-- <ul class="nav navbar-nav navbar-right">
-                 <li><a href="form.html"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
-                 </ul> !-->
-
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="Spike's profolio.html">主页</a></li>
+                    <li><a href="my vedio.html">视频动效</a></li>
+                    <li><a href="my graphic design.html">平面设计</a></li>
+                    <li><a href="3d model.html">3D建模</a></li>
+                    <li><a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">摄影合集</a></li>
+                </ul>
             </div>
         </div>
     </nav>
 
-   <center>
-  <br>
+    <main class="main-content">
+        <img class="img-responsive center-block" src="2026_3.jpg" alt="展示图片" style="width: 90%; max-width: 800px; border-radius: 8px;">
+    </main>
 
-        <img class="img" src="2026_3.jpg" width="90%">
-	   
-	   <br>
-	   
-<br>
- </center>
-
-
-
-    <div class="footer">
-
-        <h4>Copyright &copy Clarence 2023</h4>
-    </div>
+    <footer class="footer">
+        <h4>Copyright &copy; Clarence 2023</h4>
     </footer>
-    <!-- <form class="form-inline">More inspiration:
-     <input type="eamil" class="form-control" size="50"placeholder="Email Address">
-
-     <a href="mailto:1849304853@qq.com "> <button type="button" class="btn btn-danger">Sign Up</button></a>
-     </form>!-->
-
 
 </body>
 </html>
-
-
-
-
-
-
-
-
