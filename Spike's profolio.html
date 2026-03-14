@@ -1,252 +1,119 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-    <title>叶承霖的科研终端主页</title>
+    <title>叶承霖的个人主页</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-        /* ================= 基础重置与网格背景 ================= */
-        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
-        body { 
-            margin: 0; 
-            background-color: #f4f5f7; 
-            background-image: 
-                linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
-            background-size: 30px 30px;
-            color: #333333;
-            font-family: 'Courier New', Courier, monospace; 
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        * {
+            box-sizing: border-box;
         }
 
-        /* ================= 导航栏 (玻璃科研风) ================= */
-        .mech-nav { 
-            padding: 15px 40px; 
-            display: flex; 
-            align-items: center; 
-            flex-wrap: wrap;
-            gap: 20px; 
-            border-bottom: 1px solid #dcdde1; 
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(8px);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        .mech-avatar { 
-            width: 50px; 
-            height: 50px; 
-            object-fit: cover; 
-            background: #e0e0e0; 
-            clip-path: polygon(20% 0%, 100% 0, 100% 80%, 80% 100%, 0 100%, 0% 20%);
-            border: none;
-            filter: grayscale(100%); 
-            cursor: pointer;
-        }
-        .mech-avatar:hover { filter: grayscale(0%); transform: scale(1.05); }
-
-        .mech-nav a { 
-            color: #7f8fa6; 
-            text-decoration: none; 
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            padding: 8px 12px;
-        }
-        .mech-nav a:hover, .mech-nav a.active { 
-            color: #2f3640;
-            background: rgba(0, 0, 0, 0.03); 
-            box-shadow: inset 3px 0 0 #2f3640; 
-        }
-
-        /* ================= 头部打字机区域 ================= */
-        .mech-header { 
-            text-align: center; 
-            padding: 60px 20px 20px; 
-        }
-        .mech-header h1 { 
-            font-size: 42px; 
-            color: #2f3640;
-            margin: 0 0 10px 0; 
-            letter-spacing: 4px;
-            font-weight: 900;
-        }
-        .mech-header h1::before { content: "SYS_USER: "; color: #7f8fa6; font-size: 20px; font-weight: normal; }
-        
-        /* 打字机光标闪烁 */
-        .cursor { display: inline-block; width: 10px; height: 20px; background-color: #2f3640; animation: blink 1s infinite; vertical-align: middle; margin-left: 5px; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        
-        .terminal-text {
-            color: #7f8fa6;
-            font-size: 15px;
-            font-weight: bold;
-            min-height: 80px; /* 防止打字时页面抖动 */
-            line-height: 1.6;
-        }
-
-        /* ================= 主视觉装甲卡片 ================= */
-        .mech-main { 
-            flex: 1;
-            display: flex; 
-            justify-content: center; 
-            padding: 20px 20px 80px; 
-        }
-
-        .mech-card { 
-            width: 100%; 
-            max-width: 900px; 
-            background: #ffffff; 
-            border: 1px solid #dcdde1;
-            box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.05);
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%);
-            padding: 25px;
-            position: relative;
-            cursor: crosshair; /* 鼠标变成科研准星 */
-        }
-
-        .mech-card::before {
-            content: ""; position: absolute; top: 0; left: 0; width: 80px; height: 3px;
-            background: #dcdde1; transition: width 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .mech-card:hover { 
-            border-color: #2f3640;
-            box-shadow: 8px 8px 0 rgba(47, 54, 64, 0.1);
-            transform: translate(-4px, -4px); /* 磁性悬浮感 */
-        }
-        .mech-card:hover::before { background: #2f3640; width: 100%; }
-
-        /* 核心图与扫描线特效 */
-        .image-container {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            background: #fdfdfd;
-            border: 1px dashed #c8d6e5;
-        }
-        .image-container img {
-            width: 100%;
-            display: block;
-            filter: grayscale(20%); /* 默认带一点点褪色感 */
-        }
-        .mech-card:hover .image-container img {
-            filter: grayscale(0%); /* 悬停恢复全彩 */
-        }
-
-        /* 扫描线图层 */
-        .scanline {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 4px;
-            background: rgba(47, 54, 64, 0.6);
-            box-shadow: 0 0 15px rgba(47, 54, 64, 0.8);
-            opacity: 0;
-            pointer-events: none;
-        }
-        .mech-card:hover .scanline {
-            opacity: 1;
-            animation: scanning 2s linear infinite;
-        }
-        @keyframes scanning {
-            0% { top: -5%; }
-            100% { top: 105%; }
-        }
-
-        .mech-card::after {
-            content: "DATA_SET: INDEX_IMG // STATUS: RENDERED";
-            position: absolute; bottom: 12px; right: 50px;
-            color: #a4b0be; font-size: 12px; font-weight: bold;
-        }
-
-        /* ================= 底部区域 ================= */
-        .footer {
+        .header {
+            padding: 30px;
             text-align: center;
-            padding: 20px;
-            border-top: 1px dashed #dcdde1;
-            color: #a4b0be;
-            font-size: 12px;
-            font-weight: bold;
-            background: rgba(255,255,255,0.5);
+            background: #1abc9c;
+            color: white;
         }
 
-        /* 手机端适配 */
+        .header h1 {
+            font-size: 40px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .header p {
+            font-style: italic;
+            margin-bottom: 5px;
+        }
+
+        .navbar-inverse {
+            background-color: #222;
+            border-color: #080808;
+            margin-bottom: 0; 
+        }
+
+        /* ---------------- 头像圆角特效 ---------------- */
+        .navbar-brand img {
+            width: 50px;         /* 统一宽度 */
+            height: 50px;        /* 统一高度，形成正方形 */
+            border-radius: 50%;  /* 变成完美圆形 */
+            object-fit: cover;   /* 保证图片内容不变形 */
+            margin-top: -15px;   /* 向上微调位置，使其居中对齐 */
+            border: 2px solid #555; /* （可选）加个浅灰色的边框，显得更精致 */
+        }
+        /* ---------------------------------------------- */
+
+        .carousel-inner img {
+            width: 100%;
+            min-height: 200px;
+        }
+
         @media (max-width: 600px) {
-            .mech-nav { flex-direction: column; padding: 15px; }
-            .mech-nav a { width: 100%; text-align: center; }
-            .mech-header h1 { font-size: 30px; }
-            .mech-card { padding: 15px; }
+            .carousel-caption {
+                display: none;
+            }
+        }
+
+        .main-content {
+            text-align: center;
+            padding: 40px 15px;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background: #ddd;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
-    <nav class="mech-nav">
-        <a href="Spike's profolio.html" style="padding:0; background:none; box-shadow:none;">
-            <img src="logo.jpeg" alt="Logo" class="mech-avatar">
-        </a>
-        <a href="Spike's profolio.html" class="active">[ 主页 ]</a>
-        <a href="my vedio.html">[ 视频动效 ]</a>
-        <a href="my graphic design.html">[ 平面设计 ]</a>
-        <a href="3d model.html">[ 3D建模 ]</a>
-        <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">[ 摄影合集 ]</a>
-    </nav>
-
-    <header class="mech-header">
-        <h1>叶承霖</h1>
-        <div class="terminal-text" id="typewriter"></div>
+    <header class="header">
+        <h1>我的主页</h1>
+        <p>网页上传到 GitHub，是免费的<br>刷新速度较慢，连接 VPN 较快</p>
+        <p>PC / 手机端均可浏览</p>
+        <p>手机端请点击右边导航栏</p>
     </header>
 
-    <main class="mech-main">
-        <div class="mech-card">
-            <div class="image-container">
-                <img src="2026_3.jpg" alt="主页展示图片">
-                <div class="scanline"></div>
+    <div id="some-animation-works"></div>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="Spike's profolio.html">
+                    <img src="logo.jpeg" alt="个人Logo">
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="Spike's profolio.html">主页</a></li>
+                    <li><a href="my vedio.html">视频动效</a></li>
+                    <li><a href="my graphic design.html">平面设计</a></li>
+                    <li><a href="3d model.html">3D建模</a></li>
+                    <li><a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">摄影合集</a></li>
+                </ul>
             </div>
         </div>
+    </nav>
+
+    <main class="main-content">
+        <img class="img-responsive center-block" src="2026_3.jpg" alt="展示图片" style="width: 90%; max-width: 800px; border-radius: 8px;">
     </main>
 
     <footer class="footer">
-        SYSTEM_COPYRIGHT &copy; CLARENCE 2023 // ALL_RIGHTS_RESERVED
+        <h4>Copyright &copy; Clarence 2023</h4>
     </footer>
-
-    <script>
-        const textArray = [
-            "> UPLOADING_TO_GITHUB... [FREE_TIER_ACTIVE]",
-            "> CONNECTION_SPEED: MODERATE // VPN_RECOMMENDED",
-            "> CROSS_PLATFORM_SUPPORT: PC & MOBILE [OK]",
-            "> WELCOME_TO_MY_PORTFOLIO_SYSTEM."
-        ];
-        
-        let lineIndex = 0;
-        let charIndex = 0;
-        const typeSpeed = 40; // 打字速度(毫秒)
-        const element = document.getElementById("typewriter");
-
-        function typeWriter() {
-            if (lineIndex < textArray.length) {
-                if (charIndex < textArray[lineIndex].length) {
-                    element.innerHTML += textArray[lineIndex].charAt(charIndex);
-                    charIndex++;
-                    setTimeout(typeWriter, typeSpeed);
-                } else {
-                    element.innerHTML += "<br>"; // 换行
-                    lineIndex++;
-                    charIndex = 0;
-                    setTimeout(typeWriter, typeSpeed * 5); // 换行时稍微停顿一下
-                }
-            } else {
-                element.innerHTML += '<span class="cursor"></span>'; // 结束后保留闪烁光标
-            }
-        }
-
-        // 页面加载完成后启动打字机
-        window.onload = function() {
-            setTimeout(typeWriter, 500);
-        };
-    </script>
 
 </body>
 </html>
