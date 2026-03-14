@@ -1,211 +1,266 @@
 <!doctype html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>3d 建模</title>
-	 <meta charset="utf-8">
-	 <meta name="viewport" content="width=device-width, intial-scale=1">
-     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
-<style>
+    <title>3D 建模 - 叶承霖</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f6f8; /* 稍深的浅灰底色，更好地衬托白色卡片 */
+        }
 
-body {
-    font-family: Arial;
-    margin: 0;
-}
+        .header {
+            padding: 40px 20px;
+            text-align: center;
+            background: #1abc9c;
+            color: white;
+        }
 
-.header {
-    padding: 30px;
-    text-align: center;
-    background: #1abc9c;
-    color: white;
-}
+        .header h1 {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
 
+        .header p {
+            font-style: italic;
+            margin: 5px 0;
+            font-size: 14px;
+        }
 
-.header h1 {
-    font-size: 40px;
-}
+        /* 导航栏 */
+        .custom-navbar {
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-.navbar {
-    overflow: hidden;
-    background-color: #333;
-}
+        .custom-navbar a {
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
 
+        .custom-navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        
+        .custom-navbar img {
+            margin-top: -5px;
+            margin-bottom: -5px;
+        }
 
-.navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-}
+        /* 卡片式画廊布局 */
+        .portfolio-gallery {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 15px;
+        }
 
+        /* 独立的卡片样式 */
+        .portfolio-card {
+            background-color: white;
+            width: 100%;
+            max-width: 800px; /* 限制最大宽度 */
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08); /* 卡片阴影 */
+            margin-bottom: 40px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease; /* 鼠标悬停时的动画准备 */
+        }
 
-.navbar a.right {
-    float: right;
-}
+        .portfolio-card:hover {
+            transform: translateY(-5px); /* 鼠标放上去卡片会微微上浮 */
+        }
 
-.navbar a:hover {
-    background-color: #ddd;
-    color: black;
-}
+        .portfolio-card img, 
+        .portfolio-card video {
+            width: 100%;
+            border-radius: 8px;
+            background-color: #eee; /* 防止加载慢时白屏 */
+        }
 
-.row {  
-    display: flex;
-    -ms-flex-wrap: wrap; 
-    flex-wrap: wrap;
-    flex-direction: column;
-}
-.side {
-    -ms-flex: 30%; 
-    flex: 30%;
-    background-color: #f1f1f1;
-    padding: 20px;
-}
+        .portfolio-card h4 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: #333;
+            font-weight: 600;
+            font-size: 18px;
+        }
 
-.main {   
-    -ms-flex: 70%; 
-    flex: 70%;
-    background-color: white;
-    padding: 20px;
-}
-.fakeimg {
-    background-color: #aaa;
-    width: 100%;
-    padding: 20px;
-}
-.footer {
-    padding: 20px;
-    text-align: center;
-    background: #ddd;
-}
-.thumbnail{
-text:center;
-}
+        .footer {
+            padding: 30px;
+            text-align: center;
+            background: #ddd;
+            color: #555;
+        }
 
-@media screen and (max-width: 700px) {
-    .row {   
-        flex-direction: column;
-        text-align:center;
-    }
-}
+        .btn-back {
+            background-color: #1abc9c;
+            color: white;
+            padding: 10px 30px;
+            font-size: 16px;
+            border-radius: 25px;
+            border: none;
+            margin-bottom: 30px;
+            transition: background 0.3s;
+        }
 
-@media screen and (max-width: 400px) {
-    .navbar a {
-        float: none;
-        width: 100%;
-    }
-}
- 
-</style>
+        .btn-back:hover {
+            background-color: #16a085;
+            color: white;
+        }
+
+        @media screen and (max-width: 600px) {
+            .custom-navbar {
+                flex-direction: column;
+                width: 100%;
+            }
+            .custom-navbar a {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .portfolio-card {
+                padding: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="header">
+    <header class="header">
+        <h1>3D 建模</h1>
+        <p>网页上传到 GitHub，是免费的</p>
+        <p>PC / 手机端均可完美浏览</p>
+    </header>
 
-  <b><font size="6000">3D 建模</font></b>
-  <br>
-	    <br>
-        <i><p>网页上传到 &nbsp Github，是免费的
-		<br>
-		刷新速度较慢，连接VPN较快</p></i>
-	    <i><p>pc/手机端均可浏览</p></i>
-</div>
+    <nav class="custom-navbar">
+        <a href="Spike's profolio.html" style="padding: 10px 20px;">
+            <img src="logo.jpeg" alt="Logo" width="60" height="55">
+        </a>
+        <a href="Spike's profolio.html">主页</a>
+        <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">摄影合集</a>
+        <a href="my vedio.html">视频动效</a>
+        <a href="my graphic design.html">平面设计</a>
+    </nav>
 
+    <main class="portfolio-gallery">
+        
+        <div class="portfolio-card">
+            <img src="3d model/gun 1.png" alt="手枪模型" loading="lazy">
+            <h4>手枪</h4>
+        </div>
 
-<div class="navbar">
-  <a href="Spike's profolio.html"><img src="logo.jpeg" width="60" height="55"></a>
-	  <a href="Spike's profolio.html">主页</a></li>
-  <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449">摄影合集</a>
- <!-- <a href="my draws.html">手绘能力</a> !-->
-  <a href="my vedio.html">视频动效</a>
-  <a href="my graphic design.html">平面设计</a>
-  
- <!-- <a href="form.html" class="right">Login -></a>  !-->
-</div>
+        <div class="portfolio-card">
+            <img src="3d model/gun 2.jpg" alt="手枪贴图" loading="lazy">
+            <h4>手枪贴图</h4>
+        </div>
 
-       <center>
+        <div class="portfolio-card">
+            <img src="3d model/grenade.jpg" alt="金克丝手雷" loading="lazy">
+            <h4>body painter 金克丝手雷手绘低模上色</h4>
+        </div>
 
+        <div class="portfolio-card">
+            <img src="3d model/radio.jpg" alt="收音机" loading="lazy">
+            <h4>高模收音机</h4>
+        </div>
 
-       <img class="img" src="3d model/gun 1.png" width="80%">
-       <h4>手枪</h4>
-       <img class="img" src="3d model/gun 2.jpg" width="80%">
-       <h4>手枪贴图</h4>
-       <img class="img" src="3d model/grenade.jpg" width="80%">
-       <h4>body painter金克丝手雷手绘低模上色</h4>
-       <img class="img" src="3d model/radio.jpg" width="80%">
-       <h4>高模收音机</h4>
-	       
-     <!--  <img class="img" src="3d model/牛头人 1.jpg" width="100%">
-       <h4>原创角色设计</h4>
-       <img class="img" src="3d model/牛头人 2.png" width="100%">
-       <h4>原创角色设计</h4>!-->
-	       
-       <img class="img" src="3d model/头骨 1.png" width="80%">
-       <h4>头骨雕刻</h4>
-       <img class="img" src="3d model/头骨 2.jpg" width="80%">
-       <h4>头骨雕刻</h4>
-	       
-	        <img class="img" src="3d model/nomad1.png" width="80%">
-       <h4>nomad 1</h4>
+        <div class="portfolio-card">
+            <img src="3d model/头骨 1.png" alt="头骨雕刻" loading="lazy">
+            <h4>头骨雕刻</h4>
+        </div>
 
-	        <img class="img" src="3d model/nomad2.png" width="80%">
-       <h4>nomad 2</h4>
-	       <img class="img" src="3d model/小鹿.jpg" width="80%">
-       <h4>nomad 3</h4>
+        <div class="portfolio-card">
+            <img src="3d model/头骨 2.jpg" alt="头骨雕刻侧面" loading="lazy">
+            <h4>头骨雕刻</h4>
+        </div>
 
+        <div class="portfolio-card">
+            <img src="3d model/nomad1.png" alt="nomad 1" loading="lazy">
+            <h4>nomad 1</h4>
+        </div>
 
-	       
-       <img class="img" src="3d model/ed 1.png" width="80%">
-       <h4>人物1</h4>
-       <img class="img" src="3d model/ed 2.jpg" width="80%">
-       <h4>人物1</h4>
-       <img class="img" src="3d model/rt 1.png" width="80%">
-       <h4>高达</h4>
-       <img class="img" src="3d model/rt 2.jpg" width="80%">
-       <h4>高达</h4>
-       <img class="img" src="3d model/axe.jpg" width="80%">
-       <h4>斧子</h4>
-       <img class="img" src="3d model/fe 1.png" width="80%">
-       <h4>人物2</h4>
-       <img class="img" src="3d model/fe 2.jpg" width="80%">
-       <h4>人物2白模渲染</h4>
-      <!-- <img class="img" src="3d model/fe 3.pic.jpg" width="100%">
-       <h4>人物2贴图渲染</h4> !-->
+        <div class="portfolio-card">
+            <img src="3d model/nomad2.png" alt="nomad 2" loading="lazy">
+            <h4>nomad 2</h4>
+        </div>
 
-	       
-       <img class="img" src="3d model/house 1.jpg" width="80%">
-       <h4>房子低模</h4>
-       <img class="img" src="3d model/house2.jpg" width="80%"> 
-       <h4>房子烘焙后贴图</h4> 
-       
-        <br>
-      <hr/>
-      <br>
-      
-       <center>
-      <div id="house"><video controls="controls" loop="loop" autoplay="autoplay" width="80%" muted="muted">
-      <source src="house.mp4"></div>
-      </video>
-	        <br>
-      <a href="#some animation works"> <button type="button" class="btn btn-home">Back</button></a>
-      </center>
-      
-      <br>
-      <hr/>
-      <br>
-       </center>
- 
-      <br>
-    
-      
-     
-<div class="footer">
+        <div class="portfolio-card">
+            <img src="3d model/小鹿.jpg" alt="nomad 3" loading="lazy">
+            <h4>nomad 3</h4>
+        </div>
 
-  <h3>Copyright &copy Clarence 2023</h3>
-</div>
+        <div class="portfolio-card">
+            <img src="3d model/ed 1.png" alt="人物1" loading="lazy">
+            <h4>人物1</h4>
+        </div>
+
+        <div class="portfolio-card">
+            <img src="3d model/ed 2.jpg" alt="人物1" loading="lazy">
+            <h4>人物1</h4>
+        </div>
+
+        <div class="portfolio-card">
+            <img src="3d model/rt 1.png" alt="高达" loading="lazy">
+            <h4>高达</h4>
+        </div>
+
+        <div class="portfolio-card">
+            <img src="3d model/rt 2.jpg" alt="高达渲染" loading="lazy">
+            <h4>高达</h4>
+        </div>
+
+        <div class="portfolio-card">
+            <img src="3d model/axe.jpg" alt="斧子" loading="lazy">
+            <h4>斧子</h4>
+        </div>
+
+        <div class="portfolio-card">
+            <img src="3d model/fe 1.png" alt="人物2" loading="lazy">
+            <h4>人物2</h4>
+        </div>
+
+        <div class="portfolio-card">
+            <img src="3d model/fe 2.jpg" alt="人物2白模渲染" loading="lazy">
+            <h4>人物2白模渲染</h4>
+        </div>
+
+        <div class="portfolio-card">
+            <img src="3d model/house 1.jpg" alt="房子低模" loading="lazy">
+            <h4>房子低模</h4>
+        </div>
+
+        <div class="portfolio-card">
+            <img src="3d model/house2.jpg" alt="房子烘焙后贴图" loading="lazy">
+            <h4>房子烘焙后贴图</h4>
+        </div>
+
+        <div class="portfolio-card" id="house">
+            <video controls loop autoplay muted>
+                <source src="house.mp4" type="video/mp4">
+                您的浏览器不支持视频播放。
+            </video>
+            <h4>房子模型动态展示</h4>
+        </div>
+
+        <a href="Spike's profolio.html" class="btn btn-back">返回主页</a>
+        
+    </main>
+
+    <footer class="footer">
+        <h3>Copyright &copy; Clarence 2023</h3>
+    </footer>
 
 </body>
 </html>
