@@ -33,8 +33,19 @@
         .navbar-inverse {
             background-color: #222;
             border-color: #080808;
-            margin-bottom: 0; /* 移除导航栏底部的默认间距 */
+            margin-bottom: 0; 
         }
+
+        /* ---------------- 头像圆角特效 ---------------- */
+        .navbar-brand img {
+            width: 50px;         /* 统一宽度 */
+            height: 50px;        /* 统一高度，形成正方形 */
+            border-radius: 50%;  /* 变成完美圆形 */
+            object-fit: cover;   /* 保证图片内容不变形 */
+            margin-top: -15px;   /* 向上微调位置，使其居中对齐 */
+            border: 2px solid #555; /* （可选）加个浅灰色的边框，显得更精致 */
+        }
+        /* ---------------------------------------------- */
 
         .carousel-inner img {
             width: 100%;
@@ -47,7 +58,6 @@
             }
         }
 
-        /* 替换掉原来的 <center> 标签，使用 CSS 进行居中 */
         .main-content {
             text-align: center;
             padding: 40px 15px;
@@ -65,8 +75,9 @@
 
     <header class="header">
         <h1>我的主页</h1>
-        <p>刷新速度较慢，请连 VPN </p>
-        <p>手机端请点击右边导航栏 </p>
+        <p>网页上传到 GitHub，是免费的<br>刷新速度较慢，连接 VPN 较快</p>
+        <p>PC / 手机端均可浏览</p>
+        <p>手机端请点击右边导航栏</p>
     </header>
 
     <div id="some-animation-works"></div>
@@ -80,7 +91,7 @@
                     <span class="icon-bar"></span>
                 </button>
                 <a class="navbar-brand" href="Spike's profolio.html">
-                    <img src="logo.jpeg" alt="Logo" width="60" height="55" style="margin-top: -15px;">
+                    <img src="logo.jpeg" alt="个人Logo">
                 </a>
             </div>
 
