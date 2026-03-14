@@ -72,4 +72,102 @@
             transition: color 0.3s;
         }
         
-        .navbar-
+        .navbar-inverse .navbar-nav > li > a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 10px;
+            left: 50%;
+            background-color: #1abc9c; /* 主题绿下划线 */
+            transition: all 0.3s ease-out;
+            transform: translateX(-50%); /* 确保从中间向两边展开 */
+        }
+
+        .navbar-inverse .navbar-nav > li > a:hover::after,
+        .navbar-inverse .navbar-nav > .active > a::after {
+            width: 70%; /* 鼠标放上去时，线条展开 */
+        }
+
+        .navbar-inverse .navbar-nav > li > a:hover {
+            color: #fff; /* 悬停文字变纯白 */
+        }
+
+        /* ---------------- 主体图片展示区 ---------------- */
+        .main-content {
+            text-align: center;
+            padding: 50px 15px;
+            background-color: #f9f9f9; /* 给大背景加一点极浅的灰，突出图片 */
+        }
+
+        /* 动效 3：主图磁性悬浮 */
+        .main-content img {
+            width: 90%;
+            max-width: 800px;
+            border-radius: 8px;
+            opacity: 0; /* 配合入场动画 */
+            animation: fadeInUp 1s ease-out 0.4s forwards; /* 延迟0.4秒出场 */
+            transition: all 0.4s ease; /* 悬停动画的过渡时间 */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* 默认微弱阴影 */
+        }
+
+        .main-content img:hover {
+            transform: translateY(-10px) scale(1.02); /* 悬停时上浮并微微放大 */
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15); /* 悬停时阴影加深扩散 */
+        }
+
+        /* ---------------- 底部 ---------------- */
+        .footer {
+            padding: 20px;
+            text-align: center;
+            background: #ddd;
+            margin-top: 0; /* 移除上边距，因为 main-content 已经有 padding 了 */
+        }
+    </style>
+</head>
+<body>
+
+    <header class="header">
+        <h1>我的主页</h1>
+        <p>网页上传到 GitHub，是免费的<br>刷新速度较慢，连接 VPN 较快</p>
+        <p>PC / 手机端均可浏览</p>
+        <p>手机端请点击右边导航栏</p>
+    </header>
+
+    <div id="some-animation-works"></div>
+
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="Spike's profolio.html">
+                    <img src="logo.jpeg" alt="个人Logo">
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="Spike's profolio.html">主页</a></li>
+                    <li><a href="my vedio.html">视频动效</a></li>
+                    <li><a href="my graphic design.html">平面设计</a></li>
+                    <li><a href="3d model.html">3D建模</a></li>
+                    <li><a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">摄影合集</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <img class="img-responsive center-block" src="2026_3.jpg" alt="展示图片">
+    </main>
+
+    <footer class="footer">
+        <h4>Copyright &copy; Clarence 2023</h4>
+    </footer>
+
+</body>
+</html>
