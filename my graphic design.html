@@ -1,250 +1,164 @@
 <!doctype html>
-<html>
+<html lang="zh-CN">
 <head>
-    <title>平面设计</title>
-	 <meta charset="utf-8">
-	 <meta name="viewport" content="width=device-width, intial-scale=1">
-     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	
-<style>
+    <title>平面设计 - 叶承霖</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: #f9f9f9; /* 整个页面加一点极浅的灰底，突出白底的图片 */
+        }
 
-body {
-    font-family: Arial;
-    margin: 0;
-}
+        /* 头部样式 */
+        .header {
+            padding: 40px 20px;
+            text-align: center;
+            background: #1abc9c;
+            color: white;
+        }
 
-.header {
-    padding: 30px;
-    text-align: center;
-    background: #1abc9c;
-    color: white;
-}
+        .header h1 {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
 
+        .header p {
+            font-style: italic;
+            margin: 5px 0;
+            font-size: 14px;
+        }
 
-.header h1 {
-    font-size: 40px;
-}
+        /* 导航栏样式优化 */
+        .custom-navbar {
+            background-color: #333;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
 
-.navbar {
-    overflow: hidden;
-    background-color: #333;
-}
+        .custom-navbar a {
+            color: white;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
 
+        .custom-navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        
+        .custom-navbar img {
+            margin-top: -5px;
+            margin-bottom: -5px;
+        }
 
-.navbar a {
-    float: left;
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 20px;
-    text-decoration: none;
-}
+        /* 画廊展示区样式 (替代原来的 <br> 和 <center>) */
+        .portfolio-gallery {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 居中所有图片 */
+            gap: 40px; /* 图片之间的间距，只需改这里就能统一调整 */
+            padding: 40px 15px;
+        }
 
+        .portfolio-gallery img {
+            width: 100%;
+            max-width: 900px; /* 电脑端最大宽度，防止图片过大 */
+            border-radius: 8px; /* 微微的圆角 */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08); /* 添加一点高级的阴影 */
+            background-color: white; /* 给透明图片一个白色底 */
+        }
 
-.navbar a.right {
-    float: right;
-}
+        .footer {
+            padding: 30px;
+            text-align: center;
+            background: #ddd;
+            color: #555;
+            margin-top: 20px;
+        }
 
-.navbar a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-.row {  
-    display: flex;
-    -ms-flex-wrap: wrap; 
-    flex-wrap: wrap;
-    flex-direction: column;
-}
-.side {
-    -ms-flex: 30%; 
-    flex: 30%;
-    background-color: #f1f1f1;
-    padding: 20px;
-}
-
-.main {   
-    -ms-flex: 70%; 
-    flex: 70%;
-    background-color: white;
-    padding: 20px;
-}
-.fakeimg {
-    background-color: #aaa;
-    width: 100%;
-    padding: 20px;
-}
-.footer {
-    padding: 20px;
-    text-align: center;
-    background: #ddd;
-}
-.thumbnail{
-text:center;
-}
-
-@media screen and (max-width: 700px) {
-    .row {   
-        flex-direction: column;
-        text-align:center;
-    }
-}
-
-@media screen and (max-width: 400px) {
-    .navbar a {
-        float: none;
-        width: 100%;
-    }
-}
- 
-</style>
+        /* 手机端适配 */
+        @media screen and (max-width: 600px) {
+            .custom-navbar {
+                flex-direction: column;
+                width: 100%;
+            }
+            .custom-navbar a {
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .portfolio-gallery {
+                gap: 20px; /* 手机端图片间距缩小一点 */
+                padding: 20px 10px;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<div class="header">
+    <header class="header">
+        <h1>平面设计</h1>
+        <p>网页上传到 GitHub，是免费的</p>
+        <p>（已开启图片懒加载，大幅提升浏览速度）</p>
+        <p>PC / 手机端均可完美浏览</p>
+    </header>
 
-  <b><font size="6000">平面设计</font></b>
- <br>
-	    <br>
-        <i><p>网页上传到 &nbsp Github，是免费的
-		<br>
-		刷新速度较慢，连接VPN较快</p></i>
-	    <i><p>pc/手机端均可浏览</p></i>
-</div>
+    <nav class="custom-navbar">
+        <a href="Spike's profolio.html" style="padding: 10px 20px;">
+            <img src="logo.jpeg" alt="Logo" width="60" height="55">
+        </a>
+        <a href="Spike's profolio.html">主页</a>
+        <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">摄影合集</a>
+        <a href="my vedio.html">视频动效</a>
+        <a href="3d model.html">3D建模</a>
+    </nav>
 
+    <main class="portfolio-gallery">
+        <img src="平面设计导出jpg的副本/11.jpg" alt="平面设计作品 1" loading="lazy">
+        <img src="平面设计导出jpg的副本/21.jpg" alt="平面设计作品 2" loading="lazy">
+        <img src="平面设计导出jpg的副本/31.jpg" alt="平面设计作品 3" loading="lazy">
+        <img src="平面设计导出jpg的副本/41.jpg" alt="平面设计作品 4" loading="lazy">
+        <img src="平面设计导出jpg的副本/51.jpg" alt="平面设计作品 5" loading="lazy">
+        <img src="平面设计导出jpg的副本/61.jpg" alt="平面设计作品 6" loading="lazy">
+        <img src="平面设计导出jpg的副本/71.jpg" alt="平面设计作品 7" loading="lazy">
+        <img src="平面设计导出jpg的副本/81.jpg" alt="平面设计作品 8" loading="lazy">
+        <img src="平面设计导出jpg的副本/91.jpg" alt="平面设计作品 9" loading="lazy">
+        <img src="平面设计导出jpg的副本/101.jpg" alt="平面设计作品 10" loading="lazy">
+        <img src="平面设计导出jpg的副本/111.jpg" alt="平面设计作品 11" loading="lazy">
+        <img src="平面设计导出jpg的副本/121.jpg" alt="平面设计作品 12" loading="lazy">
+        <img src="平面设计导出jpg的副本/131.jpg" alt="平面设计作品 13" loading="lazy">
+        <img src="平面设计导出jpg的副本/141.jpg" alt="平面设计作品 14" loading="lazy">
+        <img src="平面设计导出jpg的副本/151.jpg" alt="平面设计作品 15" loading="lazy">
+        <img src="平面设计导出jpg的副本/161.jpg" alt="平面设计作品 16" loading="lazy">
+        <img src="平面设计导出jpg的副本/171.jpg" alt="平面设计作品 17" loading="lazy">
+        <img src="平面设计导出jpg的副本/181.jpg" alt="平面设计作品 18" loading="lazy">
+        <img src="平面设计导出jpg的副本/191.jpg" alt="平面设计作品 19" loading="lazy">
+        <img src="平面设计导出jpg的副本/201.jpg" alt="平面设计作品 20" loading="lazy">
+        <img src="平面设计导出jpg的副本/211.jpg" alt="平面设计作品 21" loading="lazy">
+        <img src="平面设计导出jpg的副本/221.jpg" alt="平面设计作品 22" loading="lazy">
+        <img src="平面设计导出jpg的副本/231.jpg" alt="平面设计作品 23" loading="lazy">
+        <img src="平面设计导出jpg的副本/241.jpg" alt="平面设计作品 24" loading="lazy">
+        <img src="平面设计导出jpg的副本/251.jpg" alt="平面设计作品 25" loading="lazy">
+        <img src="平面设计导出jpg的副本/261.jpg" alt="平面设计作品 26" loading="lazy">
+        <img src="平面设计导出jpg的副本/271.jpg" alt="平面设计作品 27" loading="lazy">
+        <img src="平面设计导出jpg的副本/281.jpg" alt="平面设计作品 28" loading="lazy">
+        <img src="平面设计导出jpg的副本/291.jpg" alt="平面设计作品 29" loading="lazy">
+        <img src="平面设计导出jpg的副本/301.jpg" alt="平面设计作品 30" loading="lazy">
+        <img src="平面设计导出jpg的副本/311.jpg" alt="平面设计作品 31" loading="lazy">
+        <img src="平面设计导出jpg的副本/321.jpg" alt="平面设计作品 32" loading="lazy">
+        <img src="平面设计导出jpg的副本/331.jpg" alt="平面设计作品 33" loading="lazy">
+    </main>
 
-<div class="navbar">
-  <a href="Spike's profolio.html"><img src="logo.jpeg" width="60" height="55"></a>
-	  <a href="Spike's profolio.html">主页</a></li>
- <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449">摄影合集</a>
- <!-- <a href="my draws.html">手绘能力</a> !-->
-  <a href="my vedio.html">视频动效</a>
-  <a href="3d model.html">3D建模</a>
- <!-- <a href="form.html" class="right">Login -></a>  !-->
-</div>
-        
-      <!--   <center>
-      <iframe src="新作品集_.pdf" width="100%"></iframe> !-->
-
-
-      <img class="img" src="平面设计导出jpg的副本/11.jpg" width="100%">
-	      
-   <br>       
-   <br>
-       <img class="img" src="平面设计导出jpg的副本/21.jpg" width="100%"> 
-	             
-   <br>
-     <br>
-       <img class="img" src="平面设计导出jpg的副本/31.jpg" width="100%">      
-   <br>
-   <br>
-       <img class="img" src="平面设计导出jpg的副本/41.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/51.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/61.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/71.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/81.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/91.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/101.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/111.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/121.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/131.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/141.jpg" width="100%">      
-   <br>
-   <br>
-       <img class="img" src="平面设计导出jpg的副本/151.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/161.jpg" width="100%">      
-   <br>
-         <br>
-       <img class="img" src="平面设计导出jpg的副本/171.jpg" width="100%">      
-   <br>
-         <br>
-	         <img class="img" src="平面设计导出jpg的副本/181.jpg" width="100%">      
-   <br>
-         <br>
-       <img class="img" src="平面设计导出jpg的副本/191.jpg" width="100%">      
-   <br>
-        <br>
-       <img class="img" src="平面设计导出jpg的副本/201.jpg" width="100%">      
-   <br>
-         <br>
-       <img class="img" src="平面设计导出jpg的副本/211.jpg" width="100%">      
-   <br>
-    <br>
-       <img class="img" src="平面设计导出jpg的副本/221.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/231.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/241.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/251.jpg" width="100%">      
-   <br>
-        <br>
-       <img class="img" src="平面设计导出jpg的副本/261.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/271.jpg" width="100%">      
-   <br>
-      <br>
-       <img class="img" src="平面设计导出jpg的副本/281.jpg" width="100%">      
-   <br>
-  <br>
-       <img class="img" src="平面设计导出jpg的副本/291.jpg" width="100%">      
-   <br>
-       <br>
-       <img class="img" src="平面设计导出jpg的副本/301.jpg" width="100%">  
-	<br>
-       <br>
-       <img class="img" src="平面设计导出jpg的副本/311.jpg" width="100%">
-	<br>
-       <br>
-       <img class="img" src="平面设计导出jpg的副本/321.jpg" width="100%">  
-	<br>
-       <br>
-       <img class="img" src="平面设计导出jpg的副本/331.jpg" width="100%">  
-	
-	
-	
-
-
-       
-       
-       </center>
-     </div>
-      <br>
-    
-      
-     
-<div class="footer">
-
-  <h3>Copyright &copy Clarence 2023</h3>
-</div>
+    <footer class="footer">
+        <h3>Copyright &copy; Clarence 2023</h3>
+    </footer>
 
 </body>
 </html>
