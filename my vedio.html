@@ -4,40 +4,64 @@
     <title>视频动效 - 叶承霖</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        /* ---------------- 全局入场动画定义 ---------------- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             margin: 0;
             background-color: #f4f6f8;
         }
 
+        /* ---------------- 头部区域 ---------------- */
         .header {
             padding: 40px 20px;
             text-align: center;
             background: #1abc9c;
             color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         .header h1 {
             font-size: 40px;
             font-weight: bold;
             margin-bottom: 15px;
+            opacity: 0; 
+            animation: fadeInUp 0.8s ease-out forwards; 
         }
 
         .header p {
             font-style: italic;
             margin: 5px 0;
             font-size: 14px;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
         }
+        /* 给头部的三行字设置不同的延迟出场时间 */
+        .header p:nth-child(2) { animation-delay: 0.1s; }
+        .header p:nth-child(3) { animation-delay: 0.2s; }
+        .header p:nth-child(4) { animation-delay: 0.3s; }
 
-        /* 导航栏 */
+        /* ---------------- 导航栏 ---------------- */
         .custom-navbar {
-            background-color: #333;
+            background-color: #222;
             display: flex;
             align-items: center;
             flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            position: sticky; /* 让导航栏在滚动时吸顶 */
+            top: 0;
+            z-index: 100;
         }
 
         .custom-navbar a {
@@ -45,22 +69,46 @@
             text-align: center;
             padding: 14px 20px;
             text-decoration: none;
-            transition: background-color 0.3s;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        /* 导航栏下划线追随特效 */
+        .custom-navbar a:not(:first-child)::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 10px;
+            left: 50%;
+            background-color: #1abc9c;
+            transition: all 0.3s ease-out;
+            transform: translateX(-50%);
+        }
+
+        .custom-navbar a:not(:first-child):hover::after {
+            width: 60%;
         }
 
         .custom-navbar a:hover {
-            background-color: #ddd;
-            color: black;
+            color: #1abc9c;
         }
         
+        /* Logo 弹性旋转特效 */
         .custom-navbar img {
             margin-top: -5px;
             margin-bottom: -5px;
-            border-radius: 80%;
-}
+            border-radius: 50%; /* 修复了这里的语法错误，去掉了多余的 } */
+            border: 2px solid transparent;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), border-color 0.3s;
         }
 
-        /* 卡片式画廊布局 */
+        .custom-navbar a:first-child:hover img {
+            transform: rotate(360deg) scale(1.1);
+            border-color: #1abc9c;
+        }
+
+        /* ---------------- 卡片式画廊布局 ---------------- */
         .video-gallery {
             display: flex;
             flex-direction: column;
@@ -68,7 +116,7 @@
             padding: 40px 15px;
         }
 
-        /* 独立的视频卡片样式 */
+        /* 视频卡片磁性悬浮特效 */
         .video-card {
             background-color: white;
             width: 100%;
@@ -78,18 +126,26 @@
             margin-bottom: 40px;
             padding: 20px;
             text-align: center;
-            transition: transform 0.3s ease;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+            transition: all 0.4s ease;
         }
 
+        /* 为两个视频卡片设置不同的出场延迟 */
+        .video-card:nth-child(2) { animation-delay: 0.4s; }
+        .video-card:nth-child(3) { animation-delay: 0.6s; }
+
         .video-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
         .video-card video {
             width: 100%;
             border-radius: 8px;
-            background-color: #000; /* 视频未加载时显示黑底更自然 */
+            background-color: #000;
             outline: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .video-card h3 {
@@ -100,6 +156,7 @@
             font-size: 22px;
         }
 
+        /* ---------------- 底部与按钮 ---------------- */
         .footer {
             padding: 30px;
             text-align: center;
@@ -115,21 +172,26 @@
             border-radius: 25px;
             border: none;
             margin-bottom: 30px;
-            transition: background 0.3s;
+            transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out 0.8s forwards;
         }
 
         .btn-back:hover {
             background-color: #16a085;
             color: white;
             text-decoration: none;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(26,188,156,0.4);
         }
 
         @media screen and (max-width: 600px) {
             .custom-navbar {
                 flex-direction: column;
                 width: 100%;
+                position: static; /* 手机端取消吸顶，节省空间 */
             }
             .custom-navbar a {
                 width: 100%;
@@ -161,7 +223,6 @@
     </nav>
 
     <main class="video-gallery">
-
         <br>
         
         <div class="video-card">
@@ -171,39 +232,6 @@
             </video>
             <h3>2024 Showreel</h3>
         </div>
-
- <!--       <div class="video-card">
-            <video controls preload="none" poster="logo.jpeg"> <source src="饮料广告动画.mp4" type="video/mp4">
-                您的浏览器不支持视频播放。
-            </video>
-            <h3>饮料广告动画</h3>
-        </div>
-
-        <div class="video-card">
-            <video controls preload="none">
-                <source src="率土踩点.mp4" type="video/mp4">
-                您的浏览器不支持视频播放。
-            </video>
-            <h3>买量卡点剪辑</h3>
-        </div>
-
-        <div class="video-card">
-            <video controls preload="none">
-                <source src="率土翻卡混剪.mp4" type="video/mp4">
-                您的浏览器不支持视频播放。
-            </video>
-            <h3>买量翻卡混剪</h3>
-        </div>
-
-        <div class="video-card">
-            <video controls preload="none">
-                <source src="阿谢拉特.mp4" type="video/mp4">
-                您的浏览器不支持视频播放。
-            </video>
-            <h3>阿谢拉特混剪</h3>
-        </div>
-        
-        -->
 
         <div class="video-card">
             <video controls preload="none">
@@ -218,7 +246,7 @@
     </main>
 
     <footer class="footer">
-        <h4>Copyright &copy; Clarence 2023</h4>
+        <h4>Copyright &copy; Clarence 2026</h4>
     </footer>
 
 </body>
