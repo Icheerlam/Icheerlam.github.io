@@ -4,70 +4,114 @@
     <title>叶承霖的个人主页</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
-        * {
-            box-sizing: border-box;
+        * { box-sizing: border-box; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .header {
-            padding: 30px;
-            text-align: center;
-            background: #1abc9c;
-            color: white;
-        }
+        body { background-color: #f9f9f9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 
-        .header h1 {
-            font-size: 40px;
-            margin-bottom: 20px;
-            font-weight: bold;
-        }
+        /* ---------------- 头部与导航 ---------------- */
+        .header { padding: 40px 20px; text-align: center; background: #1abc9c; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 40px; margin-bottom: 20px; font-weight: bold; opacity: 0; animation: fadeInUp 0.8s ease-out forwards; }
+        .header p { font-style: italic; margin-bottom: 5px; opacity: 0; animation: fadeInUp 0.8s ease-out 0.2s forwards; }
 
-        .header p {
-            font-style: italic;
-            margin-bottom: 5px;
-        }
-
-        .navbar-inverse {
-            background-color: #222;
-            border-color: #080808;
-            margin-bottom: 0; 
-        }
-
-        /* ---------------- 头像圆角特效 ---------------- */
+        .navbar-inverse { background-color: #222; border-color: #080808; margin-bottom: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
         .navbar-brand img {
-            width: 50px;         /* 统一宽度 */
-            height: 50px;        /* 统一高度，形成正方形 */
-            border-radius: 50%;  /* 变成完美圆形 */
-            object-fit: cover;   /* 保证图片内容不变形 */
-            margin-top: -15px;   /* 向上微调位置，使其居中对齐 */
-            border: 2px solid #555; /* （可选）加个浅灰色的边框，显得更精致 */
+            width: 50px; height: 50px; border-radius: 50%; object-fit: cover;
+            margin-top: -15px; border: 2px solid #555;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
-        /* ---------------------------------------------- */
+        .navbar-brand:hover img { transform: rotate(360deg) scale(1.1); border-color: #1abc9c; }
+        
+        .navbar-inverse .navbar-nav > li > a { position: relative; transition: color 0.3s; }
+        .navbar-inverse .navbar-nav > li > a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 10px; left: 50%;
+            background-color: #1abc9c; transition: all 0.3s ease-out; transform: translateX(-50%);
+        }
+        .navbar-inverse .navbar-nav > li > a:hover::after, .navbar-inverse .navbar-nav > .active > a::after { width: 70%; }
+        .navbar-inverse .navbar-nav > li > a:hover { color: #fff; }
 
-        .carousel-inner img {
-            width: 100%;
-            min-height: 200px;
+        /* ---------------- 简历卡片样式 ---------------- */
+        .resume-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #fff;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            opacity: 0;
+            animation: fadeInUp 1s ease-out 0.4s forwards;
         }
 
-        @media (max-width: 600px) {
-            .carousel-caption {
-                display: none;
-            }
+        .resume-section { margin-bottom: 40px; }
+        .section-title {
+            font-size: 22px;
+            color: #222;
+            font-weight: bold;
+            border-bottom: 2px solid #1abc9c;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: inline-block;
         }
 
-        .main-content {
-            text-align: center;
-            padding: 40px 15px;
+        .info-list { list-style: none; padding: 0; margin: 0; line-height: 2; color: #555; }
+        .info-list li strong { color: #222; width: 80px; display: inline-block; }
+
+        /* --- ✨ 新增：个人照片特效 --- */
+        .resume-avatar-wrapper {
+            text-align: right; /* 让照片靠右对齐 */
+        }
+        .resume-photo {
+            width: 140px;
+            height: 180px; /* 证件照比例 */
+            object-fit: cover;
+            border-radius: 8px; 
+            border: 6px solid #fff; /* 模拟拍立得白边 */
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transform: rotate(4deg); /* 微微倾斜的设计感 */
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .resume-photo:hover {
+            transform: rotate(0deg) scale(1.08) translateY(-5px); /* 悬停时摆正并放大 */
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
         }
 
-        .footer {
-            padding: 20px;
-            text-align: center;
-            background: #ddd;
-            margin-top: 20px;
+        /* ---------------- 时间轴与经历 ---------------- */
+        .timeline-item {
+            border-left: 3px solid #eee; padding-left: 20px; margin-bottom: 30px; position: relative;
+        }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -9px; top: 5px;
+            width: 15px; height: 15px; border-radius: 50%; background-color: #1abc9c; border: 3px solid #fff;
+        }
+        .timeline-header { display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 10px; align-items: baseline; }
+        .timeline-company { font-size: 18px; font-weight: bold; color: #222; }
+        .timeline-role { color: #1abc9c; font-weight: bold; margin-left: 10px; }
+        .timeline-date { color: #888; font-size: 14px; }
+        .timeline-content { color: #555; line-height: 1.8; font-size: 14px; }
+        .timeline-content ul { padding-left: 20px; margin-top: 10px; }
+        
+        .skills-content { color: #555; line-height: 1.8; }
+        .skills-content strong { color: #1abc9c; }
+
+        .footer { padding: 20px; text-align: center; background: #ddd; margin-top: 0; }
+
+        /* 手机端适配 */
+        @media (max-width: 768px) {
+            .resume-container { padding: 20px; margin: 20px 15px; }
+            .timeline-header { flex-direction: column; }
+            .timeline-role { margin-left: 0; margin-top: 5px; }
+            .info-list li strong { width: 70px; }
+            /* 手机端照片居中并摆正 */
+            .resume-avatar-wrapper { text-align: center; margin-bottom: 30px; }
+            .resume-photo { transform: rotate(0deg); } 
         }
     </style>
 </head>
@@ -75,11 +119,9 @@
 
     <header class="header">
         <h1>我的主页</h1>
-        <p>刷新速度较慢，请连 VPN</p>
-        <p>手机端请点击右边导航栏</p>
+        <p>网页上传到 GitHub，是免费的</p>
+        <p>PC / 手机端均可浏览</p>
     </header>
-
-    <div id="some-animation-works"></div>
 
     <nav class="navbar navbar-inverse">
         <div class="container-fluid">
@@ -106,12 +148,115 @@
         </div>
     </nav>
 
-    <main class="main-content">
-        <img class="img-responsive center-block" src="2026_3.jpg" alt="展示图片" style="width: 90%; max-width: 800px; border-radius: 8px;">
+    <main class="resume-container">
+        
+        <div class="row">
+            <div class="col-md-8 col-xs-12 resume-section">
+                <h2 class="section-title">个人信息</h2>
+                <ul class="info-list">
+                    <li><strong>姓名：</strong>叶承霖</li>
+                    <li><strong>出生日期：</strong>2002.8.20</li>
+                    <li><strong>居住地：</strong>广州市海珠区</li>
+                    <li><strong>电话：</strong>13719113230</li>
+                    <li><strong>邮箱：</strong>Clarenceye1@gmail.com</li>
+                    <li><strong>语言：</strong>国语，粤语（母语）；英语（CET4）</li>
+                    <li><strong>爱好：</strong>投资，羽毛球，徒步</li>
+                </ul>
+            </div>
+            
+            <div class="col-md-4 col-xs-12 resume-avatar-wrapper">
+                <img src="logo.jpeg" alt="叶承霖的照片" class="resume-photo">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-5 resume-section">
+                <h2 class="section-title" style="margin-top: 10px;">教育背景</h2>
+                <ul class="info-list">
+                    <li><strong>时间：</strong>2020.9 - 2024.7</li>
+                    <li><strong>本科：</strong>广东工业大学</li>
+                    <li><strong>专业：</strong>动画 (GPA: 3.4 / 4)</li>
+                </ul>
+            </div>
+
+            <div class="col-md-7 resume-section">
+                <h2 class="section-title" style="margin-top: 10px;">专业相关能力</h2>
+                <div class="skills-content">
+                    <p><strong>核心工具：</strong>PS, Illustrator, 剪映, PR, AE</p>
+                    <p>熟练使用 PS 和 Illustrator 制作海报，图形设计，排版，包装设计，字体设计，图片处理。会使用 AE 中 E3D, <strong>Form</strong>, Particular 等各种插件。</p>
+                    <p><strong>AI 应用：</strong>会 ComfyUI 工作流结合 API 制作人物对口型，声音替换等效果，或直接使用 Sora, 即梦, 可灵等平台。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 resume-section" style="margin-top: 20px;">
+                <h2 class="section-title">工作与实习经历</h2>
+
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <div class="timeline-company">广州家画信息技术有限公司 (甲方) <span class="timeline-role">广告视频制作</span></div>
+                        <div class="timeline-date">2024 年 7 月 - 至今</div>
+                    </div>
+                    <div class="timeline-content">
+                        <p>用 AE, PS, 剪映, 根据需求自己设计脚本和寻找素材进行视频制作：</p>
+                        <ul>
+                            <li>对公司自研 App, 小程序, 网页进行视频内录, 结合不同功能和创意制作广告视频。</li>
+                            <li>对国内达人和海外达人视频素材进行剪辑创作, 产出广告视频。</li>
+                            <li>制作公司自研 App 内动态和静态模板, Banner 等。</li>
+                            <li>根据后台数据, 结合网络热点分析并改进视频以达到更多的消耗和转化。</li>
+                        </ul>
+                        <p><em>涉及产品：</em>加画框、童绘相框、美画匠、Frameit。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <div class="timeline-company">自由接单 (乙方) <span class="timeline-role">视频包装与动效</span></div>
+                        <div class="timeline-date">2025 年 5 月 - 至今</div>
+                    </div>
+                    <div class="timeline-content">
+                        <p>在闲鱼和小红书上接单，制作活动快剪，香港艺人谈话多机位剪辑，游戏 UI 动效动图输出及各种可以制作的视频效果。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <div class="timeline-company">广州天游网络科技有限公司 (甲方) <span class="timeline-role">游戏买量视频制作</span></div>
+                        <div class="timeline-date">2024 年 3 月 - 2024 年 6 月</div>
+                    </div>
+                    <div class="timeline-content">
+                        <p>用 AE, PR, 剪映, 在脚本和已有素材的基础上寻找素材, 游戏内录, 制作《轮回双生》《三国云梦录》《时之约》等海外游戏的买量广告视频。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <div class="timeline-company">广州博冠信息科技有限公司 (乙方) <span class="timeline-role">游戏买量视频制作</span></div>
+                        <div class="timeline-date">2023 年 12 月 - 2024 年 3 月</div>
+                    </div>
+                    <div class="timeline-content">
+                        <p>用 AE, PR, 剪映, 制作网易游戏《率土之滨》《大话西游》《射雕》等国内游戏的买量广告视频, 进行视频剪辑和后期包装。</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-header">
+                        <div class="timeline-company">Mobvista (甲方) <span class="timeline-role">品牌设计 (实习)</span></div>
+                        <div class="timeline-date">2023 年 9 月 - 2023 年 12 月</div>
+                    </div>
+                    <div class="timeline-content">
+                        <p>用 Illustrator, AE 根据风格和要求制作海报，KV，PPT，印刷品。对文字和图片内容进行调整排版，视频修改，品牌 GIF 图片动效的制作。</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
     </main>
 
     <footer class="footer">
-        <h4>Copyright &copy; Clarence 2023</h4>
+        <h4>Copyright &copy; Clarence 2026</h4>
     </footer>
 
 </body>
