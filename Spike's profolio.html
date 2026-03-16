@@ -1,263 +1,315 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <title>叶承霖的个人主页</title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Clarence Ye | Visual Designer</title>
     <style>
-        * { box-sizing: border-box; }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* ================= 核心变量 (默认：午夜暗黑模式) ================= */
+        :root {
+            --bg: #09090b; 
+            --card-bg: rgba(255, 255, 255, 0.03); 
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #1abc9c; 
+            --accent-glow: rgba(26, 188, 156, 0.4);
+            --nav-bg: rgba(9, 9, 11, 0.7);
         }
 
-        body { background-color: #f9f9f9; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; }
-
-        /* ---------------- 头部与导航 ---------------- */
-        .header { padding: 40px 20px; text-align: center; background: #1abc9c; color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .header h1 { font-size: 40px; margin-bottom: 20px; font-weight: bold; opacity: 0; animation: fadeInUp 0.8s ease-out forwards; }
-        .header p { font-style: italic; margin-bottom: 5px; opacity: 0; animation: fadeInUp 0.8s ease-out 0.2s forwards; }
-
-        .navbar-inverse { background-color: #222; border-color: #080808; margin-bottom: 0; box-shadow: 0 2px 10px rgba(0,0,0,0.3); }
-        .navbar-brand img {
-            width: 50px; height: 50px; border-radius: 50%; object-fit: cover;
-            margin-top: -15px; border: 2px solid #555;
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        /* ================= 浅色主题变量 ================= */
+        body.light-mode {
+            --bg: #f4f5f7; 
+            --card-bg: #ffffff; 
+            --card-border: #e2e8f0; 
+            --text-main: #0f172a; 
+            --text-muted: #64748b; 
+            --accent: #059669; 
+            --accent-glow: rgba(5, 150, 105, 0.2);
+            --nav-bg: rgba(255, 255, 255, 0.8);
         }
-        .navbar-brand:hover img { transform: rotate(360deg) scale(1.1); border-color: #1abc9c; }
+
+        /* 基础重置 */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        .navbar-inverse .navbar-nav > li > a { position: relative; transition: color 0.3s; }
-        .navbar-inverse .navbar-nav > li > a::after {
-            content: ''; position: absolute; width: 0; height: 2px; bottom: 10px; left: 50%;
-            background-color: #1abc9c; transition: all 0.3s ease-out; transform: translateX(-50%);
-        }
-        .navbar-inverse .navbar-nav > li > a:hover::after, .navbar-inverse .navbar-nav > .active > a::after { width: 70%; }
-        .navbar-inverse .navbar-nav > li > a:hover { color: #fff; }
-
-        /* ---------------- 简历卡片样式 ---------------- */
-        .resume-container {
-            max-width: 1000px;
-            margin: 40px auto;
-            background: #fff;
-            padding: 50px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-            opacity: 0;
-            animation: fadeInUp 1s ease-out 0.4s forwards;
+        body { 
+            background: var(--bg); 
+            color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            line-height: 1.6; 
+            overflow-x: hidden; 
+            transition: background-color 0.5s ease, color 0.5s ease; 
         }
 
-        .resume-section { margin-bottom: 40px; }
-        .section-title {
-            font-size: 22px;
-            color: #222;
-            font-weight: bold;
-            border-bottom: 2px solid #1abc9c;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
-            display: inline-block;
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
-        .info-list { list-style: none; padding: 0; margin: 0; line-height: 2; color: #555; }
-        .info-list li strong { color: #222; width: 80px; display: inline-block; }
+        /* ---------------- 顶部导航栏 ---------------- */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 20px 5vw; 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: var(--nav-bg); backdrop-filter: blur(16px); 
+            z-index: 1000; border-bottom: 1px solid var(--card-border); 
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+        }
+        .nav-logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500;}
+        .nav-links a:hover { color: var(--accent); }
 
-        /* --- ✨ 新增：个人照片特效 --- */
-        .resume-avatar-wrapper {
-            text-align: right; /* 让照片靠右对齐 */
-        }
-        .resume-photo {
-            width: 140px;
-            height: 180px; /* 证件照比例 */
-            object-fit: cover;
-            border-radius: 8px; 
-            border: 6px solid #fff; /* 模拟拍立得白边 */
-            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-            transform: rotate(4deg); /* 微微倾斜的设计感 */
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-        .resume-photo:hover {
-            transform: rotate(0deg) scale(1.08) translateY(-5px); /* 悬停时摆正并放大 */
-            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-        }
+        /* ---------------- Bento 网格系统 ---------------- */
+        .container { max-width: 1200px; margin: 120px auto 40px; padding: 0 5vw; }
+        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; auto-rows: minmax(min-content, max-content); }
 
-        /* ---------------- 时间轴与经历 ---------------- */
-        .timeline-item {
-            border-left: 3px solid #eee; padding-left: 20px; margin-bottom: 30px; position: relative;
+        .bento-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--card-border); 
+            border-radius: 32px; 
+            padding: 40px; 
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            opacity: 0; 
+            animation: fadeUp 0.8s ease forwards; 
+            position: relative; 
+            overflow: hidden;
         }
-        .timeline-item::before {
-            content: ''; position: absolute; left: -9px; top: 5px;
-            width: 15px; height: 15px; border-radius: 50%; background-color: #1abc9c; border: 3px solid #fff;
-        }
-        .timeline-header { display: flex; justify-content: space-between; flex-wrap: wrap; margin-bottom: 10px; align-items: baseline; }
-        .timeline-company { font-size: 18px; font-weight: bold; color: #222; }
-        .timeline-role { color: #1abc9c; font-weight: bold; margin-left: 10px; }
-        .timeline-date { color: #888; font-size: 14px; }
-        .timeline-content { color: #555; line-height: 1.8; font-size: 14px; }
-        .timeline-content ul { padding-left: 20px; margin-top: 10px; }
         
-        .skills-content { color: #555; line-height: 1.8; }
-        .skills-content strong { color: #1abc9c; }
+        body.light-mode .bento-card { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); }
 
-        .footer { padding: 20px; text-align: center; background: #ddd; margin-top: 0; }
+        .bento-card:hover { 
+            border-color: var(--accent); 
+            transform: translateY(-5px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
+        }
 
-        /* 手机端适配 */
-        @media (max-width: 768px) {
-            .resume-container { padding: 20px; margin: 20px 15px; }
-            .timeline-header { flex-direction: column; }
-            .timeline-role { margin-left: 0; margin-top: 5px; }
-            .info-list li strong { width: 70px; }
-            /* 手机端照片居中并摆正 */
-            .resume-avatar-wrapper { text-align: center; margin-bottom: 30px; }
-            .resume-photo { transform: rotate(0deg); } 
+        .bento-card:nth-child(1) { animation-delay: 0.1s; }
+        .bento-card:nth-child(2) { animation-delay: 0.2s; }
+        .bento-card:nth-child(3) { animation-delay: 0.3s; }
+        .bento-card:nth-child(4) { animation-delay: 0.4s; }
+        .bento-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px; transition: color 0.5s; }
+        .card-title::before { content: ''; display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); transition: background 0.5s; }
+
+        /* 卡片内容细节 */
+        .card-hero { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: space-between; }
+        .hero-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-border); margin-bottom: 24px; transition: transform 0.5s, border-color 0.5s; }
+        .hero-avatar:hover { transform: scale(1.05) rotate(5deg); }
+        .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s;}
+        .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s;}
+
+        .card-info { grid-column: span 2; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .info-item { color: var(--text-muted); font-size: 0.95rem; transition: color 0.5s;}
+        .info-item strong { color: var(--text-main); display: block; margin-bottom: 4px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.5s;}
+
+        .card-skills { grid-column: span 2; }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 12px; }
+        .tag { padding: 8px 16px; background: rgba(128,128,128,0.05); border-radius: 30px; font-size: 0.85rem; color: var(--text-muted); border: 1px solid var(--card-border); transition: all 0.3s; cursor: default; }
+        .tag:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: scale(1.05); }
+
+        /* --- ✨ 修复：升级为 4 列网格以容纳摄影合集 --- */
+        .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        .link-card { 
+            background: var(--card-bg);
+            border-radius: 24px; padding: 32px 24px; text-decoration: none; color: inherit; 
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid var(--card-border); transition: all 0.3s;
+        }
+        .link-card:hover { border-color: var(--accent); background: rgba(26, 188, 156, 0.05); transform: translateY(-3px); }
+        .link-card h3 { font-size: 1.3rem; margin-bottom: 8px; transition: transform 0.3s, color 0.5s; color: var(--text-main); }
+        .link-card:hover h3 { transform: translateX(8px); color: var(--accent); }
+        .link-card p { color: var(--text-muted); font-size: 0.85rem; transition: color 0.5s;}
+        .link-card .arrow { font-size: 1.5rem; opacity: 0.5; transition: all 0.3s; color: var(--text-main);}
+        .link-card:hover .arrow { opacity: 1; transform: translateX(5px); color: var(--accent); }
+        .link-card:hover .arrow-external { transform: translate(3px, -3px); } /* 外链专属动画 */
+
+        .card-timeline { grid-column: span 4; }
+        .timeline-item { border-left: 2px solid var(--card-border); padding-left: 32px; margin-bottom: 40px; position: relative; transition: border-color 0.5s;}
+        .timeline-item:last-child { margin-bottom: 0; border-left-color: transparent; }
+        .timeline-item::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); box-shadow: 0 0 10px var(--accent-glow); transition: background 0.5s;}
+        .tl-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 12px; }
+        .tl-title { font-size: 1.2rem; font-weight: 600; color: var(--text-main); transition: color 0.5s;}
+        .tl-role { color: var(--accent); margin-left: 10px; font-size: 1rem; transition: color 0.5s;}
+        .tl-date { color: var(--text-muted); font-size: 0.9rem; font-family: monospace; transition: color 0.5s;}
+        .tl-body { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; transition: color 0.5s;}
+
+        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--card-border); margin-top: 80px; transition: color 0.5s, border-color 0.5s;}
+
+        /* ---------------- 主题切换悬浮按钮 ---------------- */
+        .theme-toggle-btn {
+            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
+            border-radius: 50%; background: var(--nav-bg); border: 1px solid var(--card-border);
+            color: var(--text-main); font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); backdrop-filter: blur(10px);
+            z-index: 9999; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent); color: var(--accent); }
+
+        /* ================= 手机端响应式 ================= */
+        @media (max-width: 1100px) {
+            /* 屏幕较窄时，作品链接变为 2x2 网格 */
+            .portfolio-links { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: 1fr; } 
+            .card-hero, .card-info, .card-skills, .portfolio-links, .card-timeline { grid-column: span 1; } 
+            .portfolio-links { grid-template-columns: 1fr; } 
+            .nav-links { display: none; } 
+            .info-grid { grid-template-columns: 1fr; }
+            .bento-card { padding: 30px 20px; border-radius: 24px; }
+            .theme-toggle-btn { bottom: 20px; right: 20px; } 
         }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <h1>我的主页</h1>
-        <p>网页上传到 GitHub</p>
-        <p>PC / 手机端均可浏览</p>
-    </header>
-
-    <nav class="navbar navbar-inverse">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="Spike's profolio.html">
-                    <img src="logo.jpeg" alt="个人Logo">
-                </a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="myNavbar">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="Spike's profolio.html">主页</a></li>
-                    <li><a href="my vedio.html">视频动效</a></li>
-                    <li><a href="my graphic design.html">平面设计</a></li>
-                    <li><a href="3d model.html">3D建模</a></li>
-                    <li><a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">摄影合集</a></li>
-                </ul>
-            </div>
+    <nav>
+        <a href="Spike's profolio.html" class="nav-logo">CLARENCE.YE</a>
+        <div class="nav-links">
+            <a href="my graphic design.html">Graphic</a>
+            <a href="3d model.html">3D Art</a>
+            <a href="my vedio.html">Motion</a>
+            <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
         </div>
     </nav>
 
-    <main class="resume-container">
-        
-        <div class="row">
-            <div class="col-md-8 col-xs-12 resume-section">
-                <h2 class="section-title">个人信息</h2>
-                <ul class="info-list">
-                    <li><strong>姓名：</strong>叶承霖</li>
-                    <li><strong>出生日期：</strong>2002.8.20</li>
-                    <li><strong>居住地：</strong>广州市海珠区</li>
-                    <li><strong>电话：</strong>13719113230</li>
-                    <li><strong>邮箱：</strong>Clarenceye1@gmail.com</li>
-                    <li><strong>语言：</strong>国语，粤语（母语）；英语（CET4）</li>
-                    <li><strong>爱好：</strong>投资，羽毛球，徒步</li>
-                </ul>
-            </div>
+    <div class="container">
+        <main class="bento-grid">
             
-            <div class="col-md-4 col-xs-12 resume-avatar-wrapper">
-                <img src="我的头像.jpg" alt="叶承霖的照片" class="resume-photo">
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-5 resume-section">
-                <h2 class="section-title" style="margin-top: 10px;">教育背景</h2>
-                <ul class="info-list">
-                    <li><strong>时间：</strong>2020.9 - 2024.7</li>
-                    <li><strong>本科：</strong>广东工业大学</li>
-                    <li><strong>专业：</strong>动画 (GPA: 3.4 / 4)</li>
-                </ul>
-            </div>
-
-            <div class="col-md-7 resume-section">
-                <h2 class="section-title" style="margin-top: 10px;">专业相关能力</h2>
-                <div class="skills-content">
-                    <p><strong>核心工具：</strong>PS, Illustrator, 剪映, PR, AE</p>
-                    <p>熟练使用 PS 和 Illustrator 制作海报，图形设计，排版，包装设计，字体设计，图片处理。会使用 AE 中 E3D, <strong>Form</strong>, Particular 等各种插件。</p>
-                    <p><strong>AI 应用：</strong>会 ComfyUI 工作流结合 API 制作人物对口型，声音替换等效果，或直接使用 Sora, 即梦, 可灵等平台。</p>
+            <div class="bento-card card-hero">
+                <img src="avatar.jpg" alt="Clarence" class="hero-avatar">
+                <div>
+                    <h1 class="hero-title">Hello, 我是叶承霖 👋</h1>
+                    <p class="hero-subtitle">
+                        我是一名专注于 <strong>平面设计</strong>、<strong>3D建模</strong> 与 <strong>视频动效</strong> 的视觉设计师。热衷于将天马行空的创意转化为极具视觉冲击力的数字作品。
+                    </p>
                 </div>
             </div>
-        </div>
 
-        <div class="row">
-            <div class="col-md-12 resume-section" style="margin-top: 20px;">
-                <h2 class="section-title">工作与实习经历</h2>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div class="timeline-company">广州家画信息技术有限公司 (甲方) <span class="timeline-role">广告视频制作</span></div>
-                        <div class="timeline-date">2024 年 7 月 - 至今</div>
-                    </div>
-                    <div class="timeline-content">
-                        <p>用 AE, PS, 剪映, 根据需求自己设计脚本和寻找素材进行视频制作：</p>
-                        <ul>
-                            <li>对公司自研 App, 小程序, 网页进行视频内录, 结合不同功能和创意制作广告视频。</li>
-                            <li>对国内达人和海外达人视频素材进行剪辑创作, 产出广告视频。</li>
-                            <li>制作公司自研 App 内动态和静态模板, Banner 等。</li>
-                            <li>根据后台数据, 结合网络热点分析并改进视频以达到更多的消耗和转化。</li>
-                        </ul>
-                        <p><em>涉及产品：</em>加画框、童绘相框、美画匠、Frameit。</p>
-                    </div>
+            <div class="bento-card card-info">
+                <h2 class="card-title">Profile</h2>
+                <div class="info-grid">
+                    <div class="info-item"><strong>Location</strong>广州市海珠区</div>
+                    <div class="info-item"><strong>Education</strong>广东工业大学 · 动画系</div>
+                    <div class="info-item"><strong>Email</strong>Clarenceye1@gmail.com</div>
+                    <div class="info-item"><strong>Phone</strong>+86 13719113230</div>
                 </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div class="timeline-company">自由接单 (乙方) <span class="timeline-role">视频包装与动效</span></div>
-                        <div class="timeline-date">2025 年 5 月 - 至今</div>
-                    </div>
-                    <div class="timeline-content">
-                        <p>在闲鱼和小红书上接单，制作活动快剪，香港艺人谈话多机位剪辑，游戏 UI 动效动图输出及各种可以制作的视频效果。</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div class="timeline-company">广州天游网络科技有限公司 (甲方) <span class="timeline-role">游戏买量视频制作</span></div>
-                        <div class="timeline-date">2024 年 3 月 - 2024 年 6 月</div>
-                    </div>
-                    <div class="timeline-content">
-                        <p>用 AE, PR, 剪映, 在脚本和已有素材的基础上寻找素材, 游戏内录, 制作《轮回双生》《三国云梦录》《时之约》等海外游戏的买量广告视频。</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div class="timeline-company">广州博冠信息科技有限公司 (乙方) <span class="timeline-role">游戏买量视频制作</span></div>
-                        <div class="timeline-date">2023 年 12 月 - 2024 年 3 月</div>
-                    </div>
-                    <div class="timeline-content">
-                        <p>用 AE, PR, 剪映, 制作网易游戏《率土之滨》《大话西游》《射雕》等国内游戏的买量广告视频, 进行视频剪辑和后期包装。</p>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="timeline-header">
-                        <div class="timeline-company">Mobvista (甲方) <span class="timeline-role">品牌设计 (实习)</span></div>
-                        <div class="timeline-date">2023 年 9 月 - 2023 年 12 月</div>
-                    </div>
-                    <div class="timeline-content">
-                        <p>用 Illustrator, AE 根据风格和要求制作海报，KV，PPT，印刷品。对文字和图片内容进行调整排版，视频修改，品牌 GIF 图片动效的制作。</p>
-                    </div>
-                </div>
-
             </div>
-        </div>
 
-    </main>
+            <div class="bento-card card-skills">
+                <h2 class="card-title">Tech Stack</h2>
+                <div class="tag-cloud">
+                    <span class="tag">Photoshop</span>
+                    <span class="tag">Illustrator</span>
+                    <span class="tag">After Effects</span>
+                    <span class="tag">Premiere Pro</span>
+                    <span class="tag">Cinema 4D / 3D Modeling</span>
+                    <span class="tag">ComfyUI / AI Video</span>
+                    <span class="tag">Trapcode Form</span>
+                </div>
+            </div>
 
-    <footer class="footer">
-        <h4>Copyright &copy; Clarence 2026</h4>
+            <div class="portfolio-links">
+                <a href="my graphic design.html" class="link-card">
+                    <div>
+                        <h3>平面设计</h3>
+                        <p>Graphic Design</p>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="3d model.html" class="link-card">
+                    <div>
+                        <h3>3D 建模</h3>
+                        <p>Models & Art</p>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="my vedio.html" class="link-card">
+                    <div>
+                        <h3>视频动效</h3>
+                        <p>Motion Graphics</p>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" class="link-card">
+                    <div>
+                        <h3>摄影合集</h3>
+                        <p>Photography (500px)</p>
+                    </div>
+                    <span class="arrow arrow-external">↗</span>
+                </a>
+            </div>
+
+            <div class="bento-card card-timeline">
+                <h2 class="card-title">Experience</h2>
+                
+                <div class="timeline-item">
+                    <div class="tl-header">
+                        <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">广告视频制作</span></div>
+                        <div class="tl-date">2024.07 - Present</div>
+                    </div>
+                    <div class="tl-body">
+                        对公司自研 App（加画框、美画匠、Frameit等）进行视频内录，结合创意制作买量广告。对国内外达人素材进行剪辑创作，并基于后台数据优化视频转化率。
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="tl-header">
+                        <div class="tl-title">自由设计师 <span class="tl-role">视频包装与动效</span></div>
+                        <div class="tl-date">2025.05 - Present</div>
+                    </div>
+                    <div class="tl-body">
+                        承接活动快剪、多机位谈话剪辑、游戏 UI 动效及动图输出等定制化视觉内容。
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="tl-header">
+                        <div class="tl-title">广州天游网络 / 广州博冠信息 <span class="tl-role">游戏买量视频制作</span></div>
+                        <div class="tl-date">2023.12 - 2024.06</div>
+                    </div>
+                    <div class="tl-body">
+                        制作网易游戏《率土之滨》《大话西游》及海外发行游戏《三国云梦录》等的买量广告视频与后期包装。
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="tl-header">
+                        <div class="tl-title">Mobvista <span class="tl-role">品牌设计实习生</span></div>
+                        <div class="tl-date">2023.09 - 2023.12</div>
+                    </div>
+                    <div class="tl-body">
+                        负责品牌海报、KV、印刷品排版设计，以及品牌 GIF 动效图片制作。
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Clarence Ye. All rights reserved.</p>
     </footer>
+
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">
+        ☀️
+    </button>
+
+    <script>
+        const themeBtn = document.getElementById('themeBtn');
+        const body = document.body;
+
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeBtn.innerHTML = '🌙'; 
+            } else {
+                themeBtn.innerHTML = '☀️'; 
+            }
+        });
+    </script>
 
 </body>
 </html>
