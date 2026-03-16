@@ -1,253 +1,221 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <title>视频动效 - 叶承霖</title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    
+    <title>Motion Video | Clarence Ye</title>
     <style>
-        * {
-            box-sizing: border-box;
+        /* ================= 核心变量 (继承主页系统) ================= */
+        :root {
+            --bg: #09090b; 
+            --card-bg: rgba(255, 255, 255, 0.03); 
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #1abc9c; 
+            --accent-glow: rgba(26, 188, 156, 0.4);
+            --nav-bg: rgba(9, 9, 11, 0.7);
         }
 
-        /* ---------------- 全局入场动画定义 ---------------- */
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+        body.light-mode {
+            --bg: #f4f5f7; 
+            --card-bg: #ffffff; 
+            --card-border: #e2e8f0; 
+            --text-main: #0f172a; 
+            --text-muted: #64748b; 
+            --accent: #059669; 
+            --accent-glow: rgba(5, 150, 105, 0.2);
+            --nav-bg: rgba(255, 255, 255, 0.8);
         }
 
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            margin: 0;
-            background-color: #f4f6f8;
-        }
-
-        /* ---------------- 头部区域 ---------------- */
-        .header {
-            padding: 40px 20px;
-            text-align: center;
-            background: #1abc9c;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        .header h1 {
-            font-size: 40px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            opacity: 0; 
-            animation: fadeInUp 0.8s ease-out forwards; 
-        }
-
-        .header p {
-            font-style: italic;
-            margin: 5px 0;
-            font-size: 14px;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-        /* 给头部的三行字设置不同的延迟出场时间 */
-        .header p:nth-child(2) { animation-delay: 0.1s; }
-        .header p:nth-child(3) { animation-delay: 0.2s; }
-        .header p:nth-child(4) { animation-delay: 0.3s; }
-
-        /* ---------------- 导航栏 ---------------- */
-        .custom-navbar {
-            background-color: #222;
-            display: flex;
-            align-items: center;
-            flex-wrap: wrap;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            position: sticky; /* 让导航栏在滚动时吸顶 */
-            top: 0;
-            z-index: 100;
-        }
-
-        .custom-navbar a {
-            color: white;
-            text-align: center;
-            padding: 14px 20px;
-            text-decoration: none;
-            position: relative;
-            transition: color 0.3s;
-        }
-
-        /* 导航栏下划线追随特效 */
-        .custom-navbar a:not(:first-child)::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: 10px;
-            left: 50%;
-            background-color: #1abc9c;
-            transition: all 0.3s ease-out;
-            transform: translateX(-50%);
-        }
-
-        .custom-navbar a:not(:first-child):hover::after {
-            width: 60%;
-        }
-
-        .custom-navbar a:hover {
-            color: #1abc9c;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* Logo 弹性旋转特效 */
-        .custom-navbar img {
-            margin-top: -5px;
-            margin-bottom: -5px;
-            border-radius: 50%; /* 修复了这里的语法错误，去掉了多余的 } */
-            border: 2px solid transparent;
-            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), border-color 0.3s;
+        body { 
+            background: var(--bg); color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            line-height: 1.6; overflow-x: hidden; 
+            transition: background-color 0.5s ease, color 0.5s ease; 
         }
 
-        .custom-navbar a:first-child:hover img {
-            transform: rotate(360deg) scale(1.1);
-            border-color: #1abc9c;
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
-        /* ---------------- 卡片式画廊布局 ---------------- */
-        .video-gallery {
+        /* ---------------- 顶部导航栏 ---------------- */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 20px 5vw; 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: var(--nav-bg); backdrop-filter: blur(16px); 
+            z-index: 1000; border-bottom: 1px solid var(--card-border); 
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+        }
+        .nav-logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500;}
+        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+
+        /* ---------------- 页面头部 ---------------- */
+        .page-header {
+            text-align: center; margin: 120px auto 40px; padding: 0 20px;
+            animation: fadeUp 0.8s ease forwards;
+        }
+        .page-header h1 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; transition: color 0.5s;}
+        .page-header p { color: var(--text-muted); font-size: 1.1rem; transition: color 0.5s;}
+
+        /* ---------------- 视频展示区 ---------------- */
+        .video-container {
+            max-width: 1000px; /* 限制最大宽度，保证大屏观感 */
+            margin: 0 auto; 
+            padding: 0 5vw 80px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 40px 15px;
+            gap: 50px; /* 视频之间的间距 */
         }
 
-        /* 视频卡片磁性悬浮特效 */
         .video-card {
-            background-color: white;
-            width: 100%;
-            max-width: 900px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-            margin-bottom: 40px;
-            padding: 20px;
-            text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 32px;
+            padding: 24px;
             opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-            transition: all 0.4s ease;
+            animation: fadeUp 0.8s ease forwards;
+            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-
-        /* 为两个视频卡片设置不同的出场延迟 */
-        .video-card:nth-child(2) { animation-delay: 0.4s; }
-        .video-card:nth-child(3) { animation-delay: 0.6s; }
+        
+        body.light-mode .video-card { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05); }
 
         .video-card:hover {
-            transform: translateY(-10px) scale(1.01);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.25);
         }
 
-        .video-card video {
+        .video-card:nth-child(1) { animation-delay: 0.1s; }
+        .video-card:nth-child(2) { animation-delay: 0.3s; }
+
+        /* 视频包装器：为了完美的圆角和阴影 */
+        .video-wrapper {
             width: 100%;
-            border-radius: 8px;
-            background-color: #000;
+            border-radius: 16px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        video {
+            width: 100%;
+            display: block;
             outline: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .video-card h3 {
-            margin-top: 20px;
-            margin-bottom: 10px;
-            color: #333;
-            font-weight: 600;
-            font-size: 22px;
-        }
-
-        /* ---------------- 底部与按钮 ---------------- */
-        .footer {
-            padding: 30px;
+            margin-top: 24px;
             text-align: center;
-            background: #ddd;
-            color: #555;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            transition: color 0.5s;
+            letter-spacing: 1px;
         }
 
+        /* 底部返回按钮 */
+        .back-nav { text-align: center; margin-bottom: 80px; }
         .btn-back {
-            background-color: #1abc9c;
-            color: white;
-            padding: 10px 30px;
-            font-size: 16px;
-            border-radius: 25px;
-            border: none;
-            margin-bottom: 30px;
+            display: inline-block; padding: 14px 40px; border-radius: 30px;
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            color: var(--text-main); text-decoration: none; font-weight: 600;
             transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out 0.8s forwards;
         }
+        .btn-back:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
 
-        .btn-back:hover {
-            background-color: #16a085;
-            color: white;
-            text-decoration: none;
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(26,188,156,0.4);
+        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--card-border); transition: color 0.5s, border-color 0.5s;}
+
+        /* 主题切换按钮 */
+        .theme-toggle-btn {
+            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
+            border-radius: 50%; background: var(--nav-bg); border: 1px solid var(--card-border);
+            color: var(--text-main); font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); backdrop-filter: blur(10px);
+            z-index: 9999; transition: all 0.3s;
         }
+        .theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent); color: var(--accent); }
 
-        @media screen and (max-width: 600px) {
-            .custom-navbar {
-                flex-direction: column;
-                width: 100%;
-                position: static; /* 手机端取消吸顶，节省空间 */
-            }
-            .custom-navbar a {
-                width: 100%;
-                box-sizing: border-box;
-            }
-            .video-card {
-                padding: 10px;
-            }
+        /* 手机端适配 */
+        @media (max-width: 900px) {
+            .nav-links { display: none; } 
+            .page-header h1 { font-size: 2.2rem; }
+            .video-card { padding: 16px; border-radius: 24px; }
+            .theme-toggle-btn { bottom: 20px; right: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <header class="header">
-        <h1>视频动效</h1>
-        <p>网页上传到 GitHub，是免费的</p>
-        <p>（已优化视频加载，点击后播放）</p>
-        <p>PC / 手机端均可完美浏览</p>
-    </header>
-
-    <nav class="custom-navbar">
-        <a href="Spike's profolio.html" style="padding: 10px 20px;">
-            <img src="logo.jpeg" alt="Logo" width="60" height="55">
-        </a>
-        <a href="Spike's profolio.html">主页</a>
-        <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">摄影合集</a>
-        <a href="my graphic design.html">平面设计</a>
-        <a href="3d model.html">3D建模</a>
+    <nav>
+        <a href="Spike's profolio.html" class="nav-logo">CLARENCE.YE</a>
+        <div class="nav-links">
+            <a href="my graphic design.html">Graphic</a>
+            <a href="3d model.html">3D Art</a>
+            <a href="my vedio.html" class="active">Motion</a>
+            <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
+        </div>
     </nav>
 
-    <main class="video-gallery">
-        <br>
+    <header class="page-header">
+        <h1>Motion Graphics</h1>
+        <p>游戏买量广告与高燃混剪视觉体验</p>
+    </header>
+
+    <main class="video-container">
         
         <div class="video-card">
-            <video controls loop autoplay muted preload="auto">
-                <source src="24showreel.mp4" type="video/mp4">
-                您的浏览器不支持视频播放。
-            </video>
+            <div class="video-wrapper">
+                <video controls loop autoplay muted preload="auto">
+                    <source src="24showreel.mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+            </div>
             <h3>2024 Showreel</h3>
         </div>
 
         <div class="video-card">
-            <video controls preload="none">
-                <source src="25showreel .mp4" type="video/mp4">
-                您的浏览器不支持视频播放。
-            </video>
+            <div class="video-wrapper">
+                <video controls preload="none">
+                    <source src="25showreel .mp4" type="video/mp4">
+                    您的浏览器不支持视频播放。
+                </video>
+            </div>
             <h3>2025 Showreel</h3>
         </div>
 
-        <a href="Spike's profolio.html" class="btn-back">返回主页</a>
-
     </main>
 
-    <footer class="footer">
-        <h4>Copyright &copy; Clarence 2026</h4>
+    <div class="back-nav">
+        <a href="Spike's profolio.html" class="btn-back">← 返回主页</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Clarence Ye. All rights reserved.</p>
     </footer>
+
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">
+        ☀️
+    </button>
+
+    <script>
+        const themeBtn = document.getElementById('themeBtn');
+        const body = document.body;
+
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            if (body.classList.contains('light-mode')) {
+                themeBtn.innerHTML = '🌙'; 
+            } else {
+                themeBtn.innerHTML = '☀️'; 
+            }
+        });
+    </script>
 
 </body>
 </html>
