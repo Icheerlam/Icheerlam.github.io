@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Motion Video | Clarence Ye</title>
     <style>
-        /* ================= 核心变量 (继承主页系统) ================= */
+        /* ================= 核心变量 ================= */
         :root {
             --bg: #09090b; 
             --card-bg: rgba(255, 255, 255, 0.03); 
@@ -65,12 +65,12 @@
 
         /* ---------------- 视频展示区 ---------------- */
         .video-container {
-            max-width: 1000px; /* 限制最大宽度，保证大屏观感 */
+            max-width: 1000px; 
             margin: 0 auto; 
             padding: 0 5vw 80px;
             display: flex;
             flex-direction: column;
-            gap: 50px; /* 视频之间的间距 */
+            gap: 50px; 
         }
 
         .video-card {
@@ -94,7 +94,6 @@
         .video-card:nth-child(1) { animation-delay: 0.1s; }
         .video-card:nth-child(2) { animation-delay: 0.3s; }
 
-        /* 视频包装器：为了完美的圆角和阴影 */
         .video-wrapper {
             width: 100%;
             border-radius: 16px;
@@ -103,23 +102,13 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        video {
-            width: 100%;
-            display: block;
-            outline: none;
-        }
+        video { width: 100%; display: block; outline: none; }
 
         .video-card h3 {
-            margin-top: 24px;
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-main);
-            transition: color 0.5s;
-            letter-spacing: 1px;
+            margin-top: 24px; text-align: center; font-size: 1.5rem;
+            font-weight: 700; color: var(--text-main); transition: color 0.5s; letter-spacing: 1px;
         }
 
-        /* 底部返回按钮 */
         .back-nav { text-align: center; margin-bottom: 80px; }
         .btn-back {
             display: inline-block; padding: 14px 40px; border-radius: 30px;
@@ -131,7 +120,6 @@
 
         footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--card-border); transition: color 0.5s, border-color 0.5s;}
 
-        /* 主题切换按钮 */
         .theme-toggle-btn {
             position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
             border-radius: 50%; background: var(--nav-bg); border: 1px solid var(--card-border);
@@ -141,7 +129,6 @@
         }
         .theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent); color: var(--accent); }
 
-        /* 手机端适配 */
         @media (max-width: 900px) {
             .nav-links { display: none; } 
             .page-header h1 { font-size: 2.2rem; }
@@ -153,7 +140,16 @@
 <body>
 
     <nav>
-        <a href="Spike's profolio.html" class="nav-logo">CLARENCE.YE</a>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <a href="index.html" title="返回主页" style="color: var(--text-main); display: flex; align-items: center; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </a>
+            <a href="index.html" class="nav-logo">CLARENCE.YE</a>
+        </div>
+        
         <div class="nav-links">
             <a href="my graphic design.html">Graphic</a>
             <a href="3d model.html">3D Art</a>
@@ -182,7 +178,7 @@
         <div class="video-card">
             <div class="video-wrapper">
                 <video controls preload="none">
-                    <source src="25showreel .mp4" type="video/mp4">
+                    <source src="25showreel.mp4" type="video/mp4">
                     您的浏览器不支持视频播放。
                 </video>
             </div>
@@ -192,7 +188,7 @@
     </main>
 
     <div class="back-nav">
-        <a href="Spike's profolio.html" class="btn-back">← 返回主页</a>
+        <a href="index.html" class="btn-back">← 返回主页</a>
     </div>
 
     <footer>
