@@ -5,167 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Graphic Design | Clarence Ye</title>
     <style>
-        /* ================= 核心变量 ================= */
-        :root {
-            --bg: #09090b; 
-            --card-bg: rgba(255, 255, 255, 0.03); 
-            --card-border: rgba(255, 255, 255, 0.08);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #1abc9c; 
-            --accent-glow: rgba(26, 188, 156, 0.4);
-            --nav-bg: rgba(9, 9, 11, 0.7);
-        }
-
-        body.light-mode {
-            --bg: #f4f5f7; 
-            --card-bg: #ffffff; 
-            --card-border: #e2e8f0; 
-            --text-main: #0f172a; 
-            --text-muted: #64748b; 
-            --accent: #059669; 
-            --accent-glow: rgba(5, 150, 105, 0.2);
-            --nav-bg: rgba(255, 255, 255, 0.8);
-        }
-
+        :root { --bg: #09090b; --card-bg: rgba(255, 255, 255, 0.03); --card-border: rgba(255, 255, 255, 0.08); --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #1abc9c; --accent-glow: rgba(26, 188, 156, 0.4); --nav-bg: rgba(9, 9, 11, 0.7); }
+        body.light-mode { --bg: #f4f5f7; --card-bg: #ffffff; --card-border: #e2e8f0; --text-main: #0f172a; --text-muted: #64748b; --accent: #059669; --accent-glow: rgba(5, 150, 105, 0.2); --nav-bg: rgba(255, 255, 255, 0.8); }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body { 
-            background: var(--bg); color: var(--text-main); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            line-height: 1.6; overflow-x: hidden; 
-            transition: background-color 0.5s ease, color 0.5s ease; 
-        }
+        body { background: var(--bg); color: var(--text-main); font-family: -apple-system, sans-serif; line-height: 1.6; overflow-x: hidden; transition: all 0.5s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); filter: blur(5px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); filter: blur(5px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-
-        /* ---------------- 顶部导航栏 ---------------- */
-        nav { 
-            position: fixed; top: 0; width: 100%; padding: 20px 5vw; 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: var(--nav-bg); backdrop-filter: blur(16px); 
-            z-index: 1000; border-bottom: 1px solid var(--card-border); 
-            transition: background-color 0.5s ease, border-color 0.5s ease;
-        }
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 5vw; display: flex; justify-content: space-between; align-items: center; background: var(--nav-bg); backdrop-filter: blur(16px); z-index: 1000; border-bottom: 1px solid var(--card-border); transition: all 0.5s ease; }
         .nav-logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
+        
+        /* ✨ 新增：导航栏右侧布局与返回按钮 */
+        .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500;}
         .nav-links a:hover, .nav-links a.active { color: var(--accent); }
+        .nav-home-btn { padding: 8px 18px; background: rgba(26, 188, 156, 0.1); color: var(--accent); border: 1px solid var(--accent); border-radius: 30px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; }
+        .nav-home-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 15px var(--accent-glow); }
 
-        /* ---------------- 页面头部 ---------------- */
-        .page-header {
-            text-align: center; margin: 120px auto 40px; padding: 0 20px;
-            animation: fadeUp 0.8s ease forwards;
-        }
+        .page-header { text-align: center; margin: 120px auto 40px; padding: 0 20px; animation: fadeUp 0.8s ease forwards; }
         .page-header h1 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; transition: color 0.5s;}
         .page-header p { color: var(--text-muted); font-size: 1.1rem; transition: color 0.5s;}
 
-        /* ---------------- 瀑布流画廊 ---------------- */
-        .masonry-gallery {
-            max-width: 1600px; margin: 0 auto; padding: 0 5vw 80px;
-            column-count: 4; column-gap: 24px;
-        }
-
-        .masonry-item {
-            break-inside: avoid; margin-bottom: 24px;
-            background: var(--card-bg); border: 1px solid var(--card-border);
-            border-radius: 16px; overflow: hidden; opacity: 0;
-            animation: fadeUp 0.8s ease forwards;
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            position: relative;
-        }
-
-        .masonry-item:nth-child(1) { animation-delay: 0.1s; }
-        .masonry-item:nth-child(2) { animation-delay: 0.2s; }
-        .masonry-item:nth-child(3) { animation-delay: 0.3s; }
-        .masonry-item:nth-child(4) { animation-delay: 0.4s; }
-
+        .masonry-gallery { max-width: 1600px; margin: 0 auto; padding: 0 5vw 80px; column-count: 4; column-gap: 24px; }
+        .masonry-item { break-inside: avoid; margin-bottom: 24px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; overflow: hidden; opacity: 0; animation: fadeUp 0.8s ease forwards; transition: all 0.4s ease; position: relative; }
         body.light-mode .masonry-item { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); }
-
         .masonry-item:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
-
-        .masonry-item img {
-            width: 100%; display: block;
-            transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: zoom-in; 
-        }
-
+        .masonry-item img { width: 100%; display: block; transition: transform 0.6s ease; cursor: zoom-in; }
         .masonry-item:hover img { transform: scale(1.03); }
 
-        /* ---------------- 灯箱效果 ---------------- */
-        .lightbox {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); 
-            z-index: 10000; display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
-        }
+        /* 灯箱效果 */
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .lightbox.active { opacity: 1; pointer-events: auto; }
-        .lightbox img {
-            max-width: 90vw; max-height: 90vh; border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.95);
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: zoom-out; object-fit: contain;
-        }
+        .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.95); transition: transform 0.4s ease; cursor: zoom-out; object-fit: contain; }
         .lightbox.active img { transform: scale(1); }
-        .lightbox-close {
-            position: absolute; top: 30px; right: 40px; color: rgba(255,255,255,0.6);
-            font-size: 40px; cursor: pointer; transition: color 0.3s; font-weight: 300;
-        }
+        .lightbox-close { position: absolute; top: 30px; right: 40px; color: rgba(255,255,255,0.6); font-size: 40px; cursor: pointer; font-weight: 300; }
         .lightbox-close:hover { color: #fff; }
 
-        /* 底部返回按钮 */
         .back-nav { text-align: center; margin-bottom: 80px; }
-        .btn-back {
-            display: inline-block; padding: 14px 40px; border-radius: 30px;
-            background: var(--card-bg); border: 1px solid var(--card-border);
-            color: var(--text-main); text-decoration: none; font-weight: 600;
-            transition: all 0.3s;
-        }
-        .btn-back:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
-
-        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--card-border); transition: color 0.5s, border-color 0.5s;}
-
-        .theme-toggle-btn {
-            position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
-            border-radius: 50%; background: var(--nav-bg); border: 1px solid var(--card-border);
-            color: var(--text-main); font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); backdrop-filter: blur(10px);
-            z-index: 9999; transition: all 0.3s;
-        }
+        .btn-back { display: inline-block; padding: 14px 40px; border-radius: 30px; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); text-decoration: none; font-weight: 600; transition: all 0.3s; }
+        .btn-back:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
+        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--card-border); }
+        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--nav-bg); border: 1px solid var(--card-border); color: var(--text-main); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); backdrop-filter: blur(10px); z-index: 9999; transition: all 0.3s; }
         .theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent); color: var(--accent); }
 
         @media (max-width: 1200px) { .masonry-gallery { column-count: 3; } }
-        @media (max-width: 900px) { 
-            .masonry-gallery { column-count: 2; } 
-            .nav-links { display: none; } 
-            .page-header h1 { font-size: 2.2rem; }
-            .theme-toggle-btn { bottom: 20px; right: 20px; }
-            .lightbox-close { top: 15px; right: 20px; }
-        }
-        @media (max-width: 600px) { .masonry-gallery { column-count: 1; } } 
+        @media (max-width: 900px) { .masonry-gallery { column-count: 2; } .nav-links { display: none; } .page-header h1 { font-size: 2.2rem; } .theme-toggle-btn { bottom: 20px; right: 20px; } .lightbox-close { top: 15px; right: 20px; } }
+        @media (max-width: 600px) { .masonry-gallery { column-count: 1; } }
     </style>
 </head>
 <body>
-
     <nav>
-        <div style="display: flex; align-items: center; gap: 12px;">
-            <a href="index.html" title="返回主页" style="color: var(--text-main); display: flex; align-items: center; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-            </a>
-            <a href="index.html" class="nav-logo">CLARENCE.YE</a>
-        </div>
-        
-        <div class="nav-links">
-            <a href="my graphic design.html" class="active">Graphic</a>
-            <a href="3d model.html">3D Art</a>
-            <a href="my vedio.html">Motion</a>
-            <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
+        <a href="Spike's profolio.html" class="nav-logo">CLARENCE.YE</a>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="my graphic design.html" class="active">Graphic</a>
+                <a href="3d model.html">3D Art</a>
+                <a href="my vedio.html">Motion</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
+            </div>
+            <a href="Spike's profolio.html" class="nav-home-btn">🏠 返回主页</a>
         </div>
     </nav>
 
@@ -210,46 +108,22 @@
         <div class="masonry-item"><img src="平面设计导出jpg的副本/331.jpg" alt="平面设计作品 33" loading="lazy"></div>
     </main>
 
-    <div class="back-nav">
-        <a href="index.html" class="btn-back">← 返回主页</a>
-    </div>
+    <div class="back-nav"><a href="Spike's profolio.html" class="btn-back">← 返回主页</a></div>
+    <footer><p>&copy; 2026 Clarence Ye. All rights reserved.</p></footer>
 
-    <footer>
-        <p>&copy; 2026 Clarence Ye. All rights reserved.</p>
-    </footer>
-
-    <div class="lightbox" id="lightbox">
-        <span class="lightbox-close">&times;</span>
-        <img src="" alt="Enlarged Image" id="lightbox-img">
-    </div>
-
-    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">☀️</button>
+    <div class="lightbox" id="lightbox"><span class="lightbox-close">&times;</span><img src="" alt="Enlarged Image" id="lightbox-img"></div>
+    <button class="theme-toggle-btn" id="themeBtn">☀️</button>
 
     <script>
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
-
-        themeBtn.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-            themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️';
-        });
+        themeBtn.addEventListener('click', () => { body.classList.toggle('light-mode'); themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️'; });
 
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const galleryImages = document.querySelectorAll('.masonry-item img');
-
-        galleryImages.forEach(img => {
-            img.addEventListener('click', () => {
-                lightboxImg.src = img.src; 
-                lightbox.classList.add('active'); 
-                document.body.style.overflow = 'hidden'; 
-            });
-        });
-
-        lightbox.addEventListener('click', () => {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; 
-        });
+        galleryImages.forEach(img => { img.addEventListener('click', () => { lightboxImg.src = img.src; lightbox.classList.add('active'); document.body.style.overflow = 'hidden'; }); });
+        lightbox.addEventListener('click', () => { lightbox.classList.remove('active'); document.body.style.overflow = 'auto'; });
     </script>
 </body>
 </html>
