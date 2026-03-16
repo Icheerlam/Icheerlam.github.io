@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clarence Ye | Visual Designer</title>
     <style>
-        /* ================= 核心变量 (默认：午夜暗黑模式) ================= */
+        /* ================= 核心变量 ================= */
         :root {
             --bg: #09090b; 
             --card-bg: rgba(255, 255, 255, 0.03); 
@@ -17,7 +17,6 @@
             --nav-bg: rgba(9, 9, 11, 0.7);
         }
 
-        /* ================= 浅色主题变量 ================= */
         body.light-mode {
             --bg: #f4f5f7; 
             --card-bg: #ffffff; 
@@ -29,15 +28,12 @@
             --nav-bg: rgba(255, 255, 255, 0.8);
         }
 
-        /* 基础重置 */
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body { 
-            background: var(--bg); 
-            color: var(--text-main); 
+            background: var(--bg); color: var(--text-main); 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            line-height: 1.6; 
-            overflow-x: hidden; 
+            line-height: 1.6; overflow-x: hidden; 
             transition: background-color 0.5s ease, color 0.5s ease; 
         }
 
@@ -99,17 +95,41 @@
         .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s;}
         .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s;}
 
-        .card-info { grid-column: span 2; }
+        .card-info { grid-column: span 2; display: flex; flex-direction: column; justify-content: space-between;}
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .info-item { color: var(--text-muted); font-size: 0.95rem; transition: color 0.5s;}
         .info-item strong { color: var(--text-main); display: block; margin-bottom: 4px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.5s;}
+
+        /* --- ✨ 新增：查看简历图片按钮 --- */
+        .resume-btn {
+            margin-top: 24px;
+            width: 100%;
+            padding: 14px;
+            background: rgba(26, 188, 156, 0.1);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .resume-btn:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px var(--accent-glow);
+        }
 
         .card-skills { grid-column: span 2; }
         .tag-cloud { display: flex; flex-wrap: wrap; gap: 12px; }
         .tag { padding: 8px 16px; background: rgba(128,128,128,0.05); border-radius: 30px; font-size: 0.85rem; color: var(--text-muted); border: 1px solid var(--card-border); transition: all 0.3s; cursor: default; }
         .tag:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: scale(1.05); }
 
-        /* --- ✨ 修复：升级为 4 列网格以容纳摄影合集 --- */
         .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
         .link-card { 
             background: var(--card-bg);
@@ -123,7 +143,7 @@
         .link-card p { color: var(--text-muted); font-size: 0.85rem; transition: color 0.5s;}
         .link-card .arrow { font-size: 1.5rem; opacity: 0.5; transition: all 0.3s; color: var(--text-main);}
         .link-card:hover .arrow { opacity: 1; transform: translateX(5px); color: var(--accent); }
-        .link-card:hover .arrow-external { transform: translate(3px, -3px); } /* 外链专属动画 */
+        .link-card:hover .arrow-external { transform: translate(3px, -3px); } 
 
         .card-timeline { grid-column: span 4; }
         .timeline-item { border-left: 2px solid var(--card-border); padding-left: 32px; margin-bottom: 40px; position: relative; transition: border-color 0.5s;}
@@ -137,6 +157,58 @@
 
         footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--card-border); margin-top: 80px; transition: color 0.5s, border-color 0.5s;}
 
+        /* --- ✨ 新增：简历图片灯箱样式 --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85); 
+            backdrop-filter: blur(10px); 
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none; 
+            transition: opacity 0.4s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto; 
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            object-fit: contain;
+        }
+
+        .lightbox.active img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: rgba(255,255,255,0.6);
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.3s;
+            font-weight: 300;
+        }
+
+        .lightbox-close:hover {
+            color: #fff;
+        }
+
         /* ---------------- 主题切换悬浮按钮 ---------------- */
         .theme-toggle-btn {
             position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
@@ -149,7 +221,6 @@
 
         /* ================= 手机端响应式 ================= */
         @media (max-width: 1100px) {
-            /* 屏幕较窄时，作品链接变为 2x2 网格 */
             .portfolio-links { grid-template-columns: repeat(2, 1fr); }
         }
         @media (max-width: 900px) {
@@ -160,13 +231,14 @@
             .info-grid { grid-template-columns: 1fr; }
             .bento-card { padding: 30px 20px; border-radius: 24px; }
             .theme-toggle-btn { bottom: 20px; right: 20px; } 
+            .lightbox-close { top: 15px; right: 20px; }
         }
     </style>
 </head>
 <body>
 
     <nav>
-        <a href="Spike's profolio.html" class="nav-logo">CLARENCE.YE</a>
+        <a href="index.html" class="nav-logo">CLARENCE.YE</a>
         <div class="nav-links">
             <a href="my graphic design.html">Graphic</a>
             <a href="3d model.html">3D Art</a>
@@ -179,7 +251,7 @@
         <main class="bento-grid">
             
             <div class="bento-card card-hero">
-                <img src="我的头像.jpg" alt="Clarence" class="hero-avatar">
+                <img src="avatar.jpg" alt="Clarence" class="hero-avatar">
                 <div>
                     <h1 class="hero-title">Hello, 我是叶承霖 👋</h1>
                     <p class="hero-subtitle">
@@ -189,13 +261,18 @@
             </div>
 
             <div class="bento-card card-info">
-                <h2 class="card-title">Profile</h2>
-                <div class="info-grid">
-                    <div class="info-item"><strong>Location</strong>广州市海珠区</div>
-                    <div class="info-item"><strong>Education</strong>广东工业大学 · 动画系</div>
-                    <div class="info-item"><strong>Email</strong>Clarenceye1@gmail.com</div>
-                    <div class="info-item"><strong>Phone</strong>+86 13719113230</div>
+                <div>
+                    <h2 class="card-title">Profile</h2>
+                    <div class="info-grid">
+                        <div class="info-item"><strong>Location</strong>广州市海珠区</div>
+                        <div class="info-item"><strong>Education</strong>广东工业大学 · 动画系</div>
+                        <div class="info-item"><strong>Email</strong>Clarenceye1@gmail.com</div>
+                        <div class="info-item"><strong>Phone</strong>+86 13719113230</div>
+                    </div>
                 </div>
+                <button class="resume-btn" id="viewResumeBtn">
+                    📄 查看完整简历图片
+                </button>
             </div>
 
             <div class="bento-card card-skills">
@@ -293,11 +370,17 @@
         <p>&copy; 2026 Clarence Ye. All rights reserved.</p>
     </footer>
 
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img src="2026_3.jpg" alt="详细简历图" id="lightbox-img">
+    </div>
+
     <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">
         ☀️
     </button>
 
     <script>
+        // --- 主题切换逻辑 ---
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
 
@@ -307,6 +390,26 @@
                 themeBtn.innerHTML = '🌙'; 
             } else {
                 themeBtn.innerHTML = '☀️'; 
+            }
+        });
+
+        // --- ✨ 新增：点击按钮弹出简历大图逻辑 ---
+        const viewResumeBtn = document.getElementById('viewResumeBtn');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        // 点击按钮打开灯箱
+        viewResumeBtn.addEventListener('click', () => {
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // 阻止底层网页滚动
+        });
+
+        // 点击背景区域或者关闭按钮时，关闭灯箱
+        lightbox.addEventListener('click', (e) => {
+            // 确保只有点击到图片外面的黑色背景（或关闭按钮）时才关闭
+            if (e.target !== lightboxImg) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto'; // 恢复滚动
             }
         });
     </script>
