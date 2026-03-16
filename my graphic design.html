@@ -102,9 +102,62 @@
             width: 100%;
             display: block;
             transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+            cursor: zoom-in; /* ✨ 鼠标放上去变成放大镜 */
         }
 
         .masonry-item:hover img { transform: scale(1.03); }
+
+        /* --- ✨ 新增：图片点击放大 (Lightbox) 样式 --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85); /* 黑色半透明底 */
+            backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none; /* 隐藏时不阻挡点击 */
+            transition: opacity 0.4s ease;
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: auto; /* 显示时恢复点击 */
+        }
+
+        .lightbox img {
+            max-width: 90vw;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.95);
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+            cursor: zoom-out; /* 放大后鼠标变成缩小图标 */
+        }
+
+        .lightbox.active img {
+            transform: scale(1);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+            color: rgba(255,255,255,0.6);
+            font-size: 40px;
+            cursor: pointer;
+            transition: color 0.3s;
+            font-weight: 300;
+        }
+
+        .lightbox-close:hover {
+            color: #fff;
+        }
 
         /* 底部返回按钮 */
         .back-nav { text-align: center; margin-bottom: 80px; }
@@ -135,6 +188,7 @@
             .nav-links { display: none; } 
             .page-header h1 { font-size: 2.2rem; }
             .theme-toggle-btn { bottom: 20px; right: 20px; }
+            .lightbox-close { top: 15px; right: 20px; } /* 手机端关闭按钮位置微调 */
         }
         @media (max-width: 600px) { .masonry-gallery { column-count: 1; } } 
     </style>
@@ -142,7 +196,7 @@
 <body>
 
     <nav>
-        <a href="Spike's profolio.html" class="nav-logo">CLARENCE.YE</a>
+        <a href="index.html" class="nav-logo">CLARENCE.YE</a>
         <div class="nav-links">
             <a href="my graphic design.html" class="active">Graphic</a>
             <a href="3d model.html">3D Art</a>
@@ -193,18 +247,24 @@
     </main>
 
     <div class="back-nav">
-        <a href="Spike's profolio.html" class="btn-back">← 返回主页</a>
+        <a href="index.html" class="btn-back">← 返回主页</a>
     </div>
 
     <footer>
         <p>&copy; 2026 Clarence Ye. All rights reserved.</p>
     </footer>
 
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Enlarged Image" id="lightbox-img">
+    </div>
+
     <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">
         ☀️
     </button>
 
     <script>
+        // --- 主题切换逻辑 ---
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
 
@@ -215,6 +275,26 @@
             } else {
                 themeBtn.innerHTML = '☀️'; 
             }
+        });
+
+        // --- ✨ 新增：图片点击放大逻辑 ---
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const galleryImages = document.querySelectorAll('.masonry-item img');
+
+        // 给每一张图片绑定点击事件
+        galleryImages.forEach(img => {
+            img.addEventListener('click', () => {
+                lightboxImg.src = img.src; // 把点中图片的链接传给灯箱
+                lightbox.classList.add('active'); // 显示灯箱
+                document.body.style.overflow = 'hidden'; // 阻止底层网页滚动
+            });
+        });
+
+        // 点击灯箱空白处或关闭按钮时，关闭灯箱
+        lightbox.addEventListener('click', () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; // 恢复底层网页滚动
         });
     </script>
 
