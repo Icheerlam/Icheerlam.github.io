@@ -65,21 +65,14 @@
 
         /* ---------------- 瀑布流画廊 ---------------- */
         .masonry-gallery {
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 0 5vw 80px;
-            column-count: 4;
-            column-gap: 24px;
+            max-width: 1600px; margin: 0 auto; padding: 0 5vw 80px;
+            column-count: 4; column-gap: 24px;
         }
 
         .masonry-item {
-            break-inside: avoid; 
-            margin-bottom: 24px;
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 16px;
-            overflow: hidden;
-            opacity: 0;
+            break-inside: avoid; margin-bottom: 24px;
+            background: var(--card-bg); border: 1px solid var(--card-border);
+            border-radius: 16px; overflow: hidden; opacity: 0;
             animation: fadeUp 0.8s ease forwards;
             transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
             position: relative;
@@ -92,72 +85,36 @@
 
         body.light-mode .masonry-item { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); }
 
-        .masonry-item:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-        }
+        .masonry-item:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
 
         .masonry-item img {
-            width: 100%;
-            display: block;
+            width: 100%; display: block;
             transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: zoom-in; /* ✨ 鼠标放上去变成放大镜 */
+            cursor: zoom-in; 
         }
 
         .masonry-item:hover img { transform: scale(1.03); }
 
-        /* --- ✨ 新增：图片点击放大 (Lightbox) 样式 --- */
+        /* ---------------- 灯箱效果 ---------------- */
         .lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85); /* 黑色半透明底 */
-            backdrop-filter: blur(10px); /* 磨砂玻璃效果 */
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none; /* 隐藏时不阻挡点击 */
-            transition: opacity 0.4s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); 
+            z-index: 10000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
         }
-
-        .lightbox.active {
-            opacity: 1;
-            pointer-events: auto; /* 显示时恢复点击 */
-        }
-
+        .lightbox.active { opacity: 1; pointer-events: auto; }
         .lightbox img {
-            max-width: 90vw;
-            max-height: 90vh;
-            border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            transform: scale(0.95);
+            max-width: 90vw; max-height: 90vh; border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.95);
             transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-            cursor: zoom-out; /* 放大后鼠标变成缩小图标 */
+            cursor: zoom-out; object-fit: contain;
         }
-
-        .lightbox.active img {
-            transform: scale(1);
-        }
-
+        .lightbox.active img { transform: scale(1); }
         .lightbox-close {
-            position: absolute;
-            top: 30px;
-            right: 40px;
-            color: rgba(255,255,255,0.6);
-            font-size: 40px;
-            cursor: pointer;
-            transition: color 0.3s;
-            font-weight: 300;
+            position: absolute; top: 30px; right: 40px; color: rgba(255,255,255,0.6);
+            font-size: 40px; cursor: pointer; transition: color 0.3s; font-weight: 300;
         }
-
-        .lightbox-close:hover {
-            color: #fff;
-        }
+        .lightbox-close:hover { color: #fff; }
 
         /* 底部返回按钮 */
         .back-nav { text-align: center; margin-bottom: 80px; }
@@ -171,7 +128,6 @@
 
         footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--card-border); transition: color 0.5s, border-color 0.5s;}
 
-        /* 主题切换按钮 */
         .theme-toggle-btn {
             position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px;
             border-radius: 50%; background: var(--nav-bg); border: 1px solid var(--card-border);
@@ -181,21 +137,20 @@
         }
         .theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent); color: var(--accent); }
 
-        /* 手机与平板响应式 */
         @media (max-width: 1200px) { .masonry-gallery { column-count: 3; } }
         @media (max-width: 900px) { 
             .masonry-gallery { column-count: 2; } 
             .nav-links { display: none; } 
             .page-header h1 { font-size: 2.2rem; }
             .theme-toggle-btn { bottom: 20px; right: 20px; }
-            .lightbox-close { top: 15px; right: 20px; } /* 手机端关闭按钮位置微调 */
+            .lightbox-close { top: 15px; right: 20px; }
         }
         @media (max-width: 600px) { .masonry-gallery { column-count: 1; } } 
     </style>
 </head>
 <body>
 
- <nav>
+    <nav>
         <div style="display: flex; align-items: center; gap: 12px;">
             <a href="index.html" title="返回主页" style="color: var(--text-main); display: flex; align-items: center; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -268,44 +223,33 @@
         <img src="" alt="Enlarged Image" id="lightbox-img">
     </div>
 
-    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">
-        ☀️
-    </button>
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">☀️</button>
 
     <script>
-        // --- 主题切换逻辑 ---
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
 
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('light-mode');
-            if (body.classList.contains('light-mode')) {
-                themeBtn.innerHTML = '🌙'; 
-            } else {
-                themeBtn.innerHTML = '☀️'; 
-            }
+            themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️';
         });
 
-        // --- ✨ 新增：图片点击放大逻辑 ---
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const galleryImages = document.querySelectorAll('.masonry-item img');
 
-        // 给每一张图片绑定点击事件
         galleryImages.forEach(img => {
             img.addEventListener('click', () => {
-                lightboxImg.src = img.src; // 把点中图片的链接传给灯箱
-                lightbox.classList.add('active'); // 显示灯箱
-                document.body.style.overflow = 'hidden'; // 阻止底层网页滚动
+                lightboxImg.src = img.src; 
+                lightbox.classList.add('active'); 
+                document.body.style.overflow = 'hidden'; 
             });
         });
 
-        // 点击灯箱空白处或关闭按钮时，关闭灯箱
         lightbox.addEventListener('click', () => {
             lightbox.classList.remove('active');
-            document.body.style.overflow = 'auto'; // 恢复底层网页滚动
+            document.body.style.overflow = 'auto'; 
         });
     </script>
-
 </body>
 </html>
