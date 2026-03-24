@@ -60,13 +60,12 @@
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500;}
         .nav-links a:hover { color: var(--accent); }
         
-        /* 私密入口：移出隐藏区，保证手机端可见 */
         .nav-secret { 
             display: flex; align-items: center; gap: 5px; cursor: pointer; 
-            color: var(--text-muted); font-size: 0.9rem; font-weight: 500;
-            margin-left: auto; padding-left: 20px; transition: color 0.3s;
+            color: var(--text-muted); font-size: 1.2rem; font-weight: 500;
+            transition: transform 0.3s;
         }
-        .nav-secret:hover { color: var(--accent); }
+        .nav-secret:hover { transform: scale(1.1); }
 
         /* ---------------- Bento 网格系统 ---------------- */
         .container { max-width: 1200px; margin: 120px auto 40px; padding: 0 5vw; }
@@ -150,11 +149,11 @@
         .btn-cancel { background: var(--bg); color: var(--text-main); border: 1px solid var(--card-border); }
         .btn-confirm { background: var(--accent); color: #fff; }
 
-        /* ================= ✨ 私密账本 UI 样式 (内嵌) ================= */
+        /* ================= ✨ 私密账本 UI 样式 ================= */
         #privateSection { display: none; animation: fadeUp 0.8s ease forwards; }
         .secret-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
         .secret-header h2 { font-size: 1.5rem; color: var(--accent); }
-        .data-actions { display: flex; gap: 10px; }
+        .data-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-data { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
         .btn-data:hover { border-color: var(--accent); color: var(--accent); }
         .btn-close-sec { background: rgba(239, 68, 68, 0.1); color: var(--withdraw); border-color: transparent; }
@@ -169,7 +168,7 @@
         .stat-withdraw .amount { color: var(--withdraw); }
         .stat-balance .amount { color: var(--accent); }
 
-        .input-section { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--card-border); margin-bottom: 30px; }
+        .input-section { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--card-border); margin-bottom: 30px; position: relative; }
         .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; align-items: flex-end; margin-bottom: 15px; }
         .form-group { display: flex; flex-direction: column; }
         .form-group label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
@@ -194,6 +193,31 @@
         .btn-delete { background: rgba(239, 68, 68, 0.1); color: var(--withdraw); border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
         .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
 
+        /* ================= ✨ 计算器专属样式 ================= */
+        .calculator-widget {
+            display: none; /* 默认隐藏 */
+            background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px;
+            padding: 20px; margin-bottom: 20px; width: 100%; max-width: 350px; 
+            margin-left: auto; margin-right: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: fadeUp 0.3s ease forwards;
+        }
+        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem; }
+        .calc-screen {
+            background: var(--bg); border: 1px solid var(--card-border); border-radius: 8px;
+            padding: 15px; font-size: 1.8rem; text-align: right; margin-bottom: 15px;
+            color: var(--text-main); font-family: monospace; overflow-x: auto; white-space: nowrap;
+        }
+        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .calc-btn {
+            background: var(--bg); color: var(--text-main); border: 1px solid var(--card-border);
+            padding: 15px 0; border-radius: 8px; font-size: 1.2rem; cursor: pointer; transition: 0.2s;
+        }
+        .calc-btn:hover { background: rgba(128,128,128,0.1); }
+        .calc-btn:active { transform: scale(0.95); }
+        .calc-btn.operator { color: var(--accent); font-weight: bold; font-size: 1.4rem; }
+        .calc-btn.equal { background: var(--accent); color: white; grid-column: span 2; }
+        .calc-btn.clear { color: var(--withdraw); font-weight: bold; }
+
         @media (max-width: 1100px) { .portfolio-links { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; } 
@@ -206,15 +230,14 @@
             .lightbox-close { top: 15px; right: 20px; }
             .dashboard { grid-template-columns: 1fr; }
             .secret-header { flex-direction: column; align-items: flex-start; }
-            .data-actions { width: 100%; justify-content: space-between; }
+            .data-actions { width: 100%; justify-content: flex-start; }
         }
     </style>
 </head>
 <body>
 
-   <nav>
+    <nav>
         <a href="index.html" class="nav-logo">CLARENCE.YE</a>
-        
         <div style="display: flex; align-items: center; gap: 30px;">
             <div class="nav-links">
                 <a href="my graphic design.html">Graphic</a>
@@ -222,14 +245,12 @@
                 <a href="my vedio.html">Motion</a>
                 <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
             </div>
-            
             <a class="nav-secret" onclick="openPasswordModal()" title="Secret Area" style="font-size: 1.2rem;">🔒</a>
         </div>
     </nav>
 
     <div class="container">
         <main class="bento-grid" id="mainContent">
-            
             <div class="bento-card card-hero">
                 <img src="我的头像.jpg" alt="Clarence" class="hero-avatar">
                 <div>
@@ -292,10 +313,11 @@
             <div class="secret-header">
                 <h2>📈 资金充提记录本</h2>
                 <div class="data-actions">
+                    <button class="btn-data" onclick="toggleCalculator()">🧮 计算器</button>
                     <button class="btn-data" onclick="exportData()">💾 导出备份</button>
                     <button class="btn-data" onclick="document.getElementById('importFile').click()">📂 导入恢复</button>
                     <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
-                    <button class="btn-data btn-close-sec" onclick="closePrivateSection()">✖ 关闭账本</button>
+                    <button class="btn-data btn-close-sec" onclick="closePrivateSection()">✖ 关闭</button>
                 </div>
             </div>
 
@@ -303,6 +325,39 @@
                 <div class="stat-card stat-recharge"><h3>总充值 (入)</h3><div class="amount" id="totalRecharge">0.00</div></div>
                 <div class="stat-card stat-withdraw"><h3>总提现 (出)</h3><div class="amount" id="totalWithdraw">0.00</div></div>
                 <div class="stat-card stat-balance"><h3>总净流水 (入-出)</h3><div class="amount" id="netBalance">0.00</div></div>
+            </div>
+
+            <div class="calculator-widget" id="calculatorWidget">
+                <div class="calc-header">
+                    <span>快捷计算器</span>
+                    <span style="cursor:pointer; font-size:1.2rem;" onclick="toggleCalculator()" title="关闭">✖</span>
+                </div>
+                <div class="calc-screen" id="calcScreen">0</div>
+                <div class="calc-keys">
+                    <button class="calc-btn clear" onclick="calcClear()">C</button>
+                    <button class="calc-btn operator" onclick="calcBackspace()">←</button>
+                    <button class="calc-btn operator" onclick="calcInput('%')">%</button>
+                    <button class="calc-btn operator" onclick="calcInput('/')">÷</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('7')">7</button>
+                    <button class="calc-btn" onclick="calcInput('8')">8</button>
+                    <button class="calc-btn" onclick="calcInput('9')">9</button>
+                    <button class="calc-btn operator" onclick="calcInput('*')">×</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('4')">4</button>
+                    <button class="calc-btn" onclick="calcInput('5')">5</button>
+                    <button class="calc-btn" onclick="calcInput('6')">6</button>
+                    <button class="calc-btn operator" onclick="calcInput('-')">-</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('1')">1</button>
+                    <button class="calc-btn" onclick="calcInput('2')">2</button>
+                    <button class="calc-btn" onclick="calcInput('3')">3</button>
+                    <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('0')" style="grid-column: span 2;">0</button>
+                    <button class="calc-btn" onclick="calcInput('.')">.</button>
+                    <button class="calc-btn equal" onclick="calcResult()">=</button>
+                </div>
             </div>
 
             <div class="input-section">
@@ -400,11 +455,9 @@
         function checkPassword() {
             if (document.getElementById('pwdInput').value === SECRET_PASSWORD) {
                 closePasswordModal();
-                // 隐藏主页，显示账本
                 document.getElementById('mainContent').style.display = 'none';
                 document.getElementById('privateSection').style.display = 'block';
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-                // 初始化账本时间
                 setDefaultDateTime();
             } else {
                 document.getElementById('errorMsg').style.display = 'block';
@@ -416,13 +469,64 @@
         function handleEnter(event) { if (event.key === 'Enter') checkPassword(); }
 
         function closePrivateSection() {
-            // 隐藏账本，恢复主页
             document.getElementById('privateSection').style.display = 'none';
             document.getElementById('mainContent').style.display = 'grid';
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('calculatorWidget').style.display = 'none'; // 退出时顺便关掉计算器
         }
 
-        // ================= ✨ 账本核心逻辑 (预填21条数据) =================
+        // ================= ✨ 计算器核心逻辑 =================
+        let calcExpression = "";
+        
+        function toggleCalculator() {
+            const calc = document.getElementById('calculatorWidget');
+            if (calc.style.display === 'none' || calc.style.display === '') {
+                calc.style.display = 'block';
+            } else {
+                calc.style.display = 'none';
+            }
+        }
+
+        function calcInput(val) {
+            if (calcExpression === "0" || calcExpression === "Error") calcExpression = "";
+            calcExpression += val;
+            updateCalcScreen();
+        }
+
+        function calcClear() {
+            calcExpression = "";
+            document.getElementById('calcScreen').innerText = "0";
+        }
+
+        function calcBackspace() {
+            calcExpression = calcExpression.slice(0, -1);
+            updateCalcScreen();
+            if (calcExpression === "") document.getElementById('calcScreen').innerText = "0";
+        }
+
+        function calcResult() {
+            try {
+                // 将百分号替换为数学运算
+                let expr = calcExpression.replace(/%/g, '/100');
+                // 使用 Function 安全求值
+                let result = Function("return " + expr)();
+                // 解决 JS 浮点数精度问题 (例如 0.1 + 0.2)
+                result = Math.round(result * 1000000) / 1000000;
+                calcExpression = result.toString();
+                updateCalcScreen();
+            } catch(e) {
+                document.getElementById('calcScreen').innerText = "Error";
+                calcExpression = "";
+            }
+        }
+
+        function updateCalcScreen() {
+            // 在屏幕上把 * 和 / 替换成更好看的 × 和 ÷
+            let displayStr = calcExpression.replace(/\*/g, '×').replace(/\//g, '÷');
+            document.getElementById('calcScreen').innerText = displayStr || "0";
+        }
+
+        // ================= ✨ 账本核心逻辑 =================
         const initialLedgerData = [
             { id: 101, timestamp: new Date("2026-03-23T08:46").getTime(), date: "2026-03-23", time: "08:46", type: "withdraw", amount: 34.68, availBal: 0, walletBal: 0 },
             { id: 102, timestamp: new Date("2026-03-18T03:23").getTime(), date: "2026-03-18", time: "03:23", type: "recharge", amount: 83.84, availBal: 0, walletBal: 0 },
