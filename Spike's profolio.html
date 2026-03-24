@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Clarence Ye | Visual Designer</title>
     <style>
         /* ================= 核心变量 ================= */
@@ -15,6 +15,11 @@
             --accent: #1abc9c; 
             --accent-glow: rgba(26, 188, 156, 0.4);
             --nav-bg: rgba(9, 9, 11, 0.7);
+            
+            /* 账本专属变量 */
+            --recharge: #10b981; 
+            --withdraw: #ef4444; 
+            --warning: #f59e0b;
         }
 
         body.light-mode {
@@ -55,43 +60,33 @@
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500;}
         .nav-links a:hover { color: var(--accent); }
         
-        /* 导航栏特殊按钮（私密数据） */
-        .nav-secret { display: flex; align-items: center; gap: 5px; cursor: pointer; }
+        /* 私密入口：移出隐藏区，保证手机端可见 */
+        .nav-secret { 
+            display: flex; align-items: center; gap: 5px; cursor: pointer; 
+            color: var(--text-muted); font-size: 0.9rem; font-weight: 500;
+            margin-left: auto; padding-left: 20px; transition: color 0.3s;
+        }
+        .nav-secret:hover { color: var(--accent); }
 
         /* ---------------- Bento 网格系统 ---------------- */
         .container { max-width: 1200px; margin: 120px auto 40px; padding: 0 5vw; }
-        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; auto-rows: minmax(min-content, max-content); }
+        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; auto-rows: minmax(min-content, max-content); transition: opacity 0.3s; }
 
         .bento-card { 
-            background: var(--card-bg); 
-            border: 1px solid var(--card-border); 
-            border-radius: 32px; 
-            padding: 40px; 
-            transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
-            opacity: 0; 
-            animation: fadeUp 0.8s ease forwards; 
-            position: relative; 
-            overflow: hidden;
+            background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 32px; 
+            padding: 40px; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            opacity: 0; animation: fadeUp 0.8s ease forwards; position: relative; overflow: hidden;
         }
-        
         body.light-mode .bento-card { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03); }
+        .bento-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
 
-        .bento-card:hover { 
-            border-color: var(--accent); 
-            transform: translateY(-5px); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1); 
-        }
-
-        .bento-card:nth-child(1) { animation-delay: 0.1s; }
-        .bento-card:nth-child(2) { animation-delay: 0.2s; }
-        .bento-card:nth-child(3) { animation-delay: 0.3s; }
-        .bento-card:nth-child(4) { animation-delay: 0.4s; }
+        .bento-card:nth-child(1) { animation-delay: 0.1s; } .bento-card:nth-child(2) { animation-delay: 0.2s; }
+        .bento-card:nth-child(3) { animation-delay: 0.3s; } .bento-card:nth-child(4) { animation-delay: 0.4s; }
         .bento-card:nth-child(5) { animation-delay: 0.5s; }
 
         .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px; transition: color 0.5s; }
         .card-title::before { content: ''; display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); transition: background 0.5s; }
 
-        /* 卡片内容细节 */
         .card-hero { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: space-between; }
         .hero-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-border); margin-bottom: 24px; transition: transform 0.5s, border-color 0.5s; }
         .hero-avatar:hover { transform: scale(1.05) rotate(5deg); }
@@ -103,14 +98,7 @@
         .info-item { color: var(--text-muted); font-size: 0.95rem; transition: color 0.5s;}
         .info-item strong { color: var(--text-main); display: block; margin-bottom: 4px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.5s;}
 
-        .resume-btn {
-            margin-top: 24px; width: 100%; padding: 14px;
-            background: rgba(26, 188, 156, 0.1); color: var(--accent);
-            border: 1px solid var(--accent); border-radius: 16px;
-            font-size: 0.95rem; font-weight: 600; cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
+        .resume-btn { margin-top: 24px; width: 100%; padding: 14px; background: rgba(26, 188, 156, 0.1); color: var(--accent); border: 1px solid var(--accent); border-radius: 16px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; gap: 8px; }
         .resume-btn:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
 
         .card-skills { grid-column: span 2; }
@@ -119,17 +107,13 @@
         .tag:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: scale(1.05); }
 
         .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-        .link-card { 
-            background: var(--card-bg); border-radius: 24px; padding: 32px 24px; text-decoration: none; color: inherit; 
-            display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--card-border); transition: all 0.3s;
-        }
+        .link-card { background: var(--card-bg); border-radius: 24px; padding: 32px 24px; text-decoration: none; color: inherit; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--card-border); transition: all 0.3s; }
         .link-card:hover { border-color: var(--accent); background: rgba(26, 188, 156, 0.05); transform: translateY(-3px); }
         .link-card h3 { font-size: 1.3rem; margin-bottom: 8px; transition: transform 0.3s, color 0.5s; color: var(--text-main); }
         .link-card:hover h3 { transform: translateX(8px); color: var(--accent); }
         .link-card p { color: var(--text-muted); font-size: 0.85rem; transition: color 0.5s;}
         .link-card .arrow { font-size: 1.5rem; opacity: 0.5; transition: all 0.3s; color: var(--text-main);}
         .link-card:hover .arrow { opacity: 1; transform: translateX(5px); color: var(--accent); }
-        .link-card:hover .arrow-external { transform: translate(3px, -3px); } 
 
         .card-timeline { grid-column: span 4; }
         .timeline-item { border-left: 2px solid var(--card-border); padding-left: 32px; margin-bottom: 40px; position: relative; transition: border-color 0.5s;}
@@ -164,28 +148,65 @@
         .modal-actions { margin-top: 25px; display: flex; gap: 15px; }
         .modal-actions button { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: 0.2s; }
         .btn-cancel { background: var(--bg); color: var(--text-main); border: 1px solid var(--card-border); }
-        .btn-cancel:hover { background: rgba(255,255,255,0.05); }
         .btn-confirm { background: var(--accent); color: #fff; }
-        .btn-confirm:hover { filter: brightness(1.1); }
 
-        /* ================= ✨ 私密区块（账本容器） ================= */
-        #privateSection { display: none; margin-top: 40px; animation: fadeUp 0.8s ease forwards; }
-        .secret-container { padding: 0; overflow: hidden; height: 85vh; min-height: 600px; display: flex; flex-direction: column; border-color: var(--accent); }
-        .secret-header { background: rgba(26, 188, 156, 0.1); border-bottom: 1px solid var(--card-border); padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; color: var(--accent); font-weight: bold; }
-        .secret-close { cursor: pointer; font-size: 1.2rem; transition: transform 0.3s; }
-        .secret-close:hover { transform: rotate(90deg); }
-        .secret-iframe { flex: 1; width: 100%; border: none; background: transparent; }
+        /* ================= ✨ 私密账本 UI 样式 (内嵌) ================= */
+        #privateSection { display: none; animation: fadeUp 0.8s ease forwards; }
+        .secret-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
+        .secret-header h2 { font-size: 1.5rem; color: var(--accent); }
+        .data-actions { display: flex; gap: 10px; }
+        .btn-data { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--card-border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+        .btn-data:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-close-sec { background: rgba(239, 68, 68, 0.1); color: var(--withdraw); border-color: transparent; }
+        .btn-close-sec:hover { background: var(--withdraw); color: white; }
+
+        .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--card-border); text-align: center; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .stat-card h3 { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
+        .stat-card .amount { font-size: 1.6rem; font-weight: bold; }
+        .stat-recharge .amount { color: var(--recharge); }
+        .stat-withdraw .amount { color: var(--withdraw); }
+        .stat-balance .amount { color: var(--accent); }
+
+        .input-section { background: var(--card-bg); padding: 20px; border-radius: 16px; border: 1px solid var(--card-border); margin-bottom: 30px; }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; align-items: flex-end; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group input, .form-group select { padding: 10px; border-radius: 8px; border: 1px solid var(--card-border); background: var(--bg); color: var(--text-main); font-size: 1rem; outline: none; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
+        .btn-add { background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; width: 100%; }
+
+        .history-section { background: var(--card-bg); border-radius: 16px; border: 1px solid var(--card-border); overflow: hidden; overflow-x: auto; }
+        .history-header { padding: 15px 20px; background: rgba(0,0,0,0.1); border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center; }
+        .btn-clear { background: transparent; color: var(--text-muted); border: 1px solid var(--card-border); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-clear:hover { border-color: var(--withdraw); color: var(--withdraw); }
+
+        .ledger-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        .ledger-table th, .ledger-table td { padding: 12px 15px; border-bottom: 1px solid var(--card-border); }
+        .ledger-table th { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        .ledger-table td { white-space: nowrap; font-size: 0.95rem; }
+        .ledger-table tr:hover { background: rgba(128,128,128,0.05); }
+
+        .type-recharge { color: var(--recharge); font-weight: bold; }
+        .type-withdraw { color: var(--withdraw); font-weight: bold; }
+        .bal-text { color: var(--warning); font-family: monospace; font-size: 1.05rem; }
+        .btn-delete { background: rgba(239, 68, 68, 0.1); color: var(--withdraw); border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
 
         @media (max-width: 1100px) { .portfolio-links { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; } 
             .card-hero, .card-info, .card-skills, .portfolio-links, .card-timeline { grid-column: span 1; } 
             .portfolio-links { grid-template-columns: 1fr; } 
-            .nav-links { display: none; } /* 移动端可以考虑做个汉堡菜单，这里保持你原有的隐藏逻辑 */
+            .nav-links { display: none; } 
             .info-grid { grid-template-columns: 1fr; }
             .bento-card { padding: 30px 20px; border-radius: 24px; }
             .theme-toggle-btn { bottom: 20px; right: 20px; } 
             .lightbox-close { top: 15px; right: 20px; }
+            .dashboard { grid-template-columns: 1fr; }
+            .secret-header { flex-direction: column; align-items: flex-start; }
+            .data-actions { width: 100%; justify-content: space-between; }
         }
     </style>
 </head>
@@ -198,12 +219,12 @@
             <a href="3d model.html">3D Art</a>
             <a href="my vedio.html">Motion</a>
             <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
-            <a class="nav-secret" onclick="openPasswordModal()">🔒 Data</a>
         </div>
+       <a class="nav-secret" onclick="openPasswordModal()" title="Secret Area" style="font-size: 1.2rem;">🔒</a>
     </nav>
 
     <div class="container">
-        <main class="bento-grid">
+        <main class="bento-grid" id="mainContent">
             
             <div class="bento-card card-hero">
                 <img src="我的头像.jpg" alt="Clarence" class="hero-avatar">
@@ -225,108 +246,86 @@
                         <div class="info-item"><strong>Phone</strong>+86 13719113230</div>
                     </div>
                 </div>
-                <button class="resume-btn" id="viewResumeBtn">
-                    📄 查看完整简历图片
-                </button>
+                <button class="resume-btn" id="viewResumeBtn">📄 查看完整简历图片</button>
             </div>
 
             <div class="bento-card card-skills">
                 <h2 class="card-title">Tech Stack</h2>
                 <div class="tag-cloud">
-                    <span class="tag">Photoshop</span>
-                    <span class="tag">Illustrator</span>
-                    <span class="tag">After Effects</span>
-                    <span class="tag">Premiere Pro</span>
-                    <span class="tag">Cinema 4D / 3D Modeling</span>
-                    <span class="tag">ComfyUI / AI Video</span>
-                    <span class="tag">Trapcode Form</span>
+                    <span class="tag">Photoshop</span> <span class="tag">Illustrator</span> <span class="tag">After Effects</span>
+                    <span class="tag">Premiere Pro</span> <span class="tag">Cinema 4D / 3D Modeling</span>
+                    <span class="tag">ComfyUI / AI Video</span> <span class="tag">Trapcode Form</span>
                 </div>
             </div>
 
             <div class="portfolio-links">
-                <a href="my graphic design.html" class="link-card">
-                    <div>
-                        <h3>平面设计</h3>
-                        <p>Graphic Design</p>
-                    </div>
-                    <span class="arrow">→</span>
-                </a>
-                <a href="3d model.html" class="link-card">
-                    <div>
-                        <h3>3D 建模</h3>
-                        <p>Models & Art</p>
-                    </div>
-                    <span class="arrow">→</span>
-                </a>
-                <a href="my vedio.html" class="link-card">
-                    <div>
-                        <h3>视频动效</h3>
-                        <p>Motion Graphics</p>
-                    </div>
-                    <span class="arrow">→</span>
-                </a>
+                <a href="my graphic design.html" class="link-card"><div><h3>平面设计</h3><p>Graphic Design</p></div><span class="arrow">→</span></a>
+                <a href="3d model.html" class="link-card"><div><h3>3D 建模</h3><p>Models & Art</p></div><span class="arrow">→</span></a>
+                <a href="my vedio.html" class="link-card"><div><h3>视频动效</h3><p>Motion Graphics</p></div><span class="arrow">→</span></a>
                 <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" class="link-card">
-                    <div>
-                        <h3>摄影合集</h3>
-                        <p>Photography (500px)</p>
-                    </div>
-                    <span class="arrow arrow-external">↗</span>
+                    <div><h3>摄影合集</h3><p>Photography (500px)</p></div><span class="arrow arrow-external">↗</span>
                 </a>
             </div>
 
             <div class="bento-card card-timeline">
                 <h2 class="card-title">Experience</h2>
-                
                 <div class="timeline-item">
-                    <div class="tl-header">
-                        <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">广告视频制作</span></div>
-                        <div class="tl-date">2024.07 - Present</div>
-                    </div>
-                    <div class="tl-body">
-                        对公司自研 App（加画框、美画匠、Frameit等）进行视频内录，结合创意制作买量广告。对国内外达人素材进行剪辑创作，并基于后台数据优化视频转化率。
-                    </div>
+                    <div class="tl-header"><div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">广告视频制作</span></div><div class="tl-date">2024.07 - Present</div></div>
+                    <div class="tl-body">对公司自研 App 进行视频内录，结合创意制作买量广告。对国内外达人素材进行剪辑创作，并基于后台数据优化视频转化率。</div>
                 </div>
-
                 <div class="timeline-item">
-                    <div class="tl-header">
-                        <div class="tl-title">自由设计师 <span class="tl-role">视频包装与动效</span></div>
-                        <div class="tl-date">2025.05 - Present</div>
-                    </div>
-                    <div class="tl-body">
-                        承接活动快剪、多机位谈话剪辑、游戏 UI 动效及动图输出等定制化视觉内容。
-                    </div>
+                    <div class="tl-header"><div class="tl-title">自由设计师 <span class="tl-role">视频包装与动效</span></div><div class="tl-date">2025.05 - Present</div></div>
+                    <div class="tl-body">承接活动快剪、多机位谈话剪辑、游戏 UI 动效及动图输出等定制化视觉内容。</div>
                 </div>
-
                 <div class="timeline-item">
-                    <div class="tl-header">
-                        <div class="tl-title">广州天游网络 / 广州博冠信息 <span class="tl-role">游戏买量视频制作</span></div>
-                        <div class="tl-date">2023.12 - 2024.06</div>
-                    </div>
-                    <div class="tl-body">
-                        制作网易游戏《率土之滨》《大话西游》及海外发行游戏《三国云梦录》等的买量广告视频与后期包装。
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="tl-header">
-                        <div class="tl-title">Mobvista <span class="tl-role">品牌设计实习生</span></div>
-                        <div class="tl-date">2023.09 - 2023.12</div>
-                    </div>
-                    <div class="tl-body">
-                        负责品牌海报、KV、印刷品排版设计，以及品牌 GIF 动效图片制作。
-                    </div>
+                    <div class="tl-header"><div class="tl-title">广州天游网络 / 广州博冠信息 <span class="tl-role">游戏买量视频制作</span></div><div class="tl-date">2023.12 - 2024.06</div></div>
+                    <div class="tl-body">制作网易游戏《率土之滨》《大话西游》及海外发行游戏《三国云梦录》等的买量广告视频与后期包装。</div>
                 </div>
             </div>
-
         </main>
 
         <section id="privateSection">
-            <div class="bento-card secret-container">
-                <div class="secret-header">
-                    <span>🤫 秘密基地 - 个人资金充提记录本</span>
-                    <span class="secret-close" onclick="closePrivateSection()" title="关闭隐藏区">&times;</span>
+            <div class="secret-header">
+                <h2>📈 资金充提记录本</h2>
+                <div class="data-actions">
+                    <button class="btn-data" onclick="exportData()">💾 导出备份</button>
+                    <button class="btn-data" onclick="document.getElementById('importFile').click()">📂 导入恢复</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                    <button class="btn-data btn-close-sec" onclick="closePrivateSection()">✖ 关闭账本</button>
                 </div>
-                <iframe src="ledger.html" class="secret-iframe"></iframe>
+            </div>
+
+            <div class="dashboard">
+                <div class="stat-card stat-recharge"><h3>总充值 (入)</h3><div class="amount" id="totalRecharge">0.00</div></div>
+                <div class="stat-card stat-withdraw"><h3>总提现 (出)</h3><div class="amount" id="totalWithdraw">0.00</div></div>
+                <div class="stat-card stat-balance"><h3>总净流水 (入-出)</h3><div class="amount" id="netBalance">0.00</div></div>
+            </div>
+
+            <div class="input-section">
+                <div class="input-grid">
+                    <div class="form-group"><label>日期</label><input type="date" id="dateInput"></div>
+                    <div class="form-group"><label>时间</label><input type="time" id="timeInput"></div>
+                    <div class="form-group"><label>类型</label>
+                        <select id="typeInput"><option value="recharge">充值 🟢</option><option value="withdraw">提现 🔴</option></select>
+                    </div>
+                    <div class="form-group"><label>操作金额</label><input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01"></div>
+                    <div class="form-group"><label>可用余额</label><input type="number" id="availBalInput" placeholder="0.00" min="0" step="0.01"></div>
+                    <div class="form-group"><label>钱包余额</label><input type="number" id="walletBalInput" placeholder="0.00" min="0" step="0.01"></div>
+                </div>
+                <button class="btn-add" onclick="addRecord()">➕ 添加记录</button>
+            </div>
+
+            <div class="history-section">
+                <div class="history-header">
+                    <h3 style="font-size:1.1rem; color:var(--text-main);">📜 历史明细</h3>
+                    <button class="btn-clear" onclick="clearAll()">清空全部</button>
+                </div>
+                <table class="ledger-table">
+                    <thead>
+                        <tr><th>日期 / 时间</th><th>类型</th><th>操作金额</th><th>可用余额</th><th>钱包余额</th><th>操作</th></tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
             </div>
         </section>
     </div>
@@ -353,25 +352,18 @@
         </div>
     </div>
 
-    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">
-        ☀️
-    </button>
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">☀️</button>
 
     <script>
-        // --- 主题切换逻辑 ---
+        // ================= 基础交互逻辑 =================
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
 
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('light-mode');
-            if (body.classList.contains('light-mode')) {
-                themeBtn.innerHTML = '🌙'; 
-            } else {
-                themeBtn.innerHTML = '☀️'; 
-            }
+            themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️';
         });
 
-        // --- 简历图片灯箱逻辑 ---
         const viewResumeBtn = document.getElementById('viewResumeBtn');
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
@@ -380,7 +372,6 @@
             lightbox.classList.add('active');
             document.body.style.overflow = 'hidden'; 
         });
-
         lightbox.addEventListener('click', (e) => {
             if (e.target !== lightboxImg) {
                 lightbox.classList.remove('active');
@@ -388,8 +379,8 @@
             }
         });
 
-        // ================= ✨ 私密空间密码锁逻辑 =================
-        const SECRET_PASSWORD = "spike"; // 你的专属密码
+        // ================= ✨ 密码锁逻辑 =================
+        const SECRET_PASSWORD = "spike"; 
 
         function openPasswordModal() {
             document.getElementById('passwordModal').style.display = 'flex';
@@ -403,34 +394,160 @@
         }
 
         function checkPassword() {
-            const inputPwd = document.getElementById('pwdInput').value;
-            if (inputPwd === SECRET_PASSWORD) {
-                // 密码正确
+            if (document.getElementById('pwdInput').value === SECRET_PASSWORD) {
                 closePasswordModal();
-                const privateSec = document.getElementById('privateSection');
-                privateSec.style.display = 'block';
-                // 平滑滚动到私密区块
-                setTimeout(() => {
-                    privateSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }, 100);
+                // 隐藏主页，显示账本
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('privateSection').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                // 初始化账本时间
+                setDefaultDateTime();
             } else {
-                // 密码错误
                 document.getElementById('errorMsg').style.display = 'block';
                 document.getElementById('pwdInput').value = '';
                 document.getElementById('pwdInput').focus();
             }
         }
 
-        function handleEnter(event) {
-            if (event.key === 'Enter') {
-                checkPassword();
-            }
-        }
+        function handleEnter(event) { if (event.key === 'Enter') checkPassword(); }
 
         function closePrivateSection() {
+            // 隐藏账本，恢复主页
             document.getElementById('privateSection').style.display = 'none';
-            window.scrollTo({ top: 0, behavior: 'smooth' }); // 关闭后滚回顶部
+            document.getElementById('mainContent').style.display = 'grid';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
+
+        // ================= ✨ 账本核心逻辑 (预填21条数据) =================
+        const initialLedgerData = [
+            { id: 101, timestamp: new Date("2026-03-23T08:46").getTime(), date: "2026-03-23", time: "08:46", type: "withdraw", amount: 34.68, availBal: 0, walletBal: 0 },
+            { id: 102, timestamp: new Date("2026-03-18T03:23").getTime(), date: "2026-03-18", time: "03:23", type: "recharge", amount: 83.84, availBal: 0, walletBal: 0 },
+            { id: 103, timestamp: new Date("2026-03-17T16:00").getTime(), date: "2026-03-17", time: "16:00", type: "withdraw", amount: 100.00, availBal: 0, walletBal: 0 },
+            { id: 104, timestamp: new Date("2026-03-11T09:09").getTime(), date: "2026-03-11", time: "09:09", type: "recharge", amount: 49.98, availBal: 0, walletBal: 0 },
+            { id: 105, timestamp: new Date("2026-03-09T08:46").getTime(), date: "2026-03-09", time: "08:46", type: "withdraw", amount: 35.00, availBal: 0, walletBal: 0 },
+            { id: 106, timestamp: new Date("2026-03-06T12:52").getTime(), date: "2026-03-06", time: "12:52", type: "recharge", amount: 41.84, availBal: 0, walletBal: 0 },
+            { id: 107, timestamp: new Date("2026-03-02T06:30").getTime(), date: "2026-03-02", time: "06:30", type: "recharge", amount: 255.10, availBal: 0, walletBal: 0 },
+            { id: 108, timestamp: new Date("2026-03-02T06:10").getTime(), date: "2026-03-02", time: "06:10", type: "recharge", amount: 168.80, availBal: 0, walletBal: 0 },
+            { id: 109, timestamp: new Date("2026-02-25T19:25").getTime(), date: "2026-02-25", time: "19:25", type: "recharge", amount: 304.06, availBal: 0, walletBal: 0 },
+            { id: 110, timestamp: new Date("2026-02-24T01:41").getTime(), date: "2026-02-24", time: "01:41", type: "recharge", amount: 713.70, availBal: 0, walletBal: 0 },
+            { id: 111, timestamp: new Date("2026-02-24T01:05").getTime(), date: "2026-02-24", time: "01:05", type: "withdraw", amount: 1003.05, availBal: 0, walletBal: 0 },
+            { id: 112, timestamp: new Date("2026-02-24T01:02").getTime(), date: "2026-02-24", time: "01:02", type: "withdraw", amount: 10.00, availBal: 0, walletBal: 0 },
+            { id: 113, timestamp: new Date("2026-02-20T17:33").getTime(), date: "2026-02-20", time: "17:33", type: "recharge", amount: 71.53, availBal: 0, walletBal: 0 },
+            { id: 114, timestamp: new Date("2026-02-18T10:28").getTime(), date: "2026-02-18", time: "10:28", type: "recharge", amount: 71.84, availBal: 0, walletBal: 0 },
+            { id: 115, timestamp: new Date("2026-02-18T00:26").getTime(), date: "2026-02-18", time: "00:26", type: "recharge", amount: 141.94, availBal: 0, walletBal: 0 },
+            { id: 116, timestamp: new Date("2026-02-17T08:41").getTime(), date: "2026-02-17", time: "08:41", type: "recharge", amount: 72.15, availBal: 0, walletBal: 0 },
+            { id: 117, timestamp: new Date("2026-02-14T09:06").getTime(), date: "2026-02-14", time: "09:06", type: "recharge", amount: 82.70, availBal: 0, walletBal: 0 },
+            { id: 118, timestamp: new Date("2026-02-12T11:33").getTime(), date: "2026-02-12", time: "11:33", type: "recharge", amount: 71.02, availBal: 0, walletBal: 0 },
+            { id: 119, timestamp: new Date("2026-02-11T01:59").getTime(), date: "2026-02-11", time: "01:59", type: "recharge", amount: 71.84, availBal: 0, walletBal: 0 },
+            { id: 120, timestamp: new Date("2026-02-10T09:08").getTime(), date: "2026-02-10", time: "09:08", type: "recharge", amount: 71.53, availBal: 0, walletBal: 0 },
+            { id: 121, timestamp: new Date("2026-02-08T19:41").getTime(), date: "2026-02-08", time: "19:41", type: "recharge", amount: 357.03, availBal: 0, walletBal: 0 }
+        ];
+
+        let records = JSON.parse(localStorage.getItem('ledgerData_v5'));
+        if (!records || records.length === 0) {
+            records = initialLedgerData;
+            localStorage.setItem('ledgerData_v5', JSON.stringify(records));
+        }
+
+        function setDefaultDateTime() {
+            const now = new Date();
+            document.getElementById('dateInput').value = now.toISOString().split('T')[0];
+            document.getElementById('timeInput').value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        }
+
+        function updateUI() {
+            let totalRecharge = 0, totalWithdraw = 0;
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (records.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-state">暂无记录，请在上方添加</td></tr>`;
+            } else {
+                const sortedRecords = [...records].sort((a, b) => b.timestamp - a.timestamp);
+                sortedRecords.forEach(record => {
+                    if (record.type === 'recharge') totalRecharge += record.amount;
+                    else totalWithdraw += record.amount;
+
+                    const tr = document.createElement('tr');
+                    const typeText = record.type === 'recharge' ? '充值' : '提现';
+                    const typeClass = record.type === 'recharge' ? 'type-recharge' : 'type-withdraw';
+                    const sign = record.type === 'recharge' ? '+' : '-';
+
+                    tr.innerHTML = `
+                        <td>${record.date} ${record.time}</td>
+                        <td class="${typeClass}">${typeText}</td>
+                        <td class="${typeClass}">${sign} ${record.amount.toFixed(2)}</td>
+                        <td class="bal-text">${record.availBal > 0 ? record.availBal.toFixed(2) : '-'}</td>
+                        <td class="bal-text">${record.walletBal > 0 ? record.walletBal.toFixed(2) : '-'}</td>
+                        <td><button class="btn-delete" onclick="deleteRecord(${record.id})">删除</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('totalRecharge').innerText = totalRecharge.toFixed(2);
+            document.getElementById('totalWithdraw').innerText = totalWithdraw.toFixed(2);
+            document.getElementById('netBalance').innerText = (totalRecharge - totalWithdraw).toFixed(2);
+            localStorage.setItem('ledgerData_v5', JSON.stringify(records));
+        }
+
+        function addRecord() {
+            const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
+            const type = document.getElementById('typeInput').value;
+            const amountVal = document.getElementById('amountInput').value;
+            const availBalVal = document.getElementById('availBalInput').value;
+            const walletBalVal = document.getElementById('walletBalInput').value;
+
+            if (!date || !time || !amountVal || amountVal <= 0) return alert('请填写完整信息！');
+
+            records.push({
+                id: Date.now(), timestamp: new Date(`${date}T${time}`).getTime(), date, time, type,
+                amount: parseFloat(amountVal), availBal: parseFloat(availBalVal || 0), walletBal: parseFloat(walletBalVal || 0)
+            });
+            
+            document.getElementById('amountInput').value = ''; 
+            document.getElementById('availBalInput').value = ''; 
+            document.getElementById('walletBalInput').value = ''; 
+            updateUI();
+        }
+
+        function deleteRecord(id) {
+            if (confirm('确定删除吗？')) { records = records.filter(r => r.id !== id); updateUI(); }
+        }
+
+        function clearAll() {
+            if (confirm('确定清空所有数据吗？此操作不可逆！')) { records = []; updateUI(); }
+        }
+
+        function exportData() {
+            if (records.length === 0) return alert("没有可以导出的数据！");
+            const dataStr = JSON.stringify(records, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ledger_backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedRecords = JSON.parse(e.target.result);
+                    if (Array.isArray(importedRecords) && confirm('导入会覆盖当前手机上的数据，确认导入吗？')) {
+                        records = importedRecords; updateUI(); alert('数据导入成功！');
+                    }
+                } catch (err) { alert('解析文件失败！'); }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        window.onload = () => { updateUI(); };
     </script>
 
 </body>
