@@ -86,9 +86,38 @@
         .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px; transition: color 0.5s; }
         .card-title::before { content: ''; display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); transition: background 0.5s; }
 
-        .card-hero { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: space-between; }
-        .hero-avatar { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 2px solid var(--card-border); margin-bottom: 24px; transition: transform 0.5s, border-color 0.5s; }
-        .hero-avatar:hover { transform: scale(1.05) rotate(5deg); }
+       /* 修改：使用绝对居中对齐，并留出内部呼吸感 */
+.card-hero { 
+    grid-column: span 2; 
+    grid-row: span 2; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; /* 垂直居中 */
+    align-items: center;     /* 水平居中 */
+    text-align: center;      /* 文字居中 */
+    padding: 50px 30px;      /* 增加内边距，让内容不要太靠边 */
+}
+
+/* 修改：确保图片作为块级元素居中，并固定宽高 */
+.hero-avatar { 
+    display: block;
+    margin: 0 auto 24px auto; /* 上0，左右自动（居中），下24px */
+    width: 140px;            /* 稍微放大一点头像，看起来更大气 */
+    height: 140px; 
+    border-radius: 50%; 
+    object-fit: cover; 
+    border: 3px solid var(--card-border); /* 边框稍微加粗一点点 */
+    transition: transform 0.5s, border-color 0.5s; 
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* 加一点立体阴影 */
+}
+.hero-avatar:hover { 
+    transform: scale(1.05) rotate(5deg); 
+    border-color: var(--accent); /* 鼠标悬停时边框变色 */
+}
+
+/* 确保标题和副标题没有多余的边距影响居中 */
+.hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s; width: 100%;}
+.hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s; width: 100%;}
         .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s;}
         .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s;}
 
