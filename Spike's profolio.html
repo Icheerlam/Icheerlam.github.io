@@ -86,40 +86,33 @@
         .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px; transition: color 0.5s; }
         .card-title::before { content: ''; display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); transition: background 0.5s; }
 
-       /* 修改：使用绝对居中对齐，并留出内部呼吸感 */
-.card-hero { 
-    grid-column: span 2; 
-    grid-row: span 2; 
-    display: flex; 
-    flex-direction: column; 
-    justify-content: center; /* 垂直居中 */
-    align-items: center;     /* 水平居中 */
-    text-align: center;      /* 文字居中 */
-    padding: 50px 30px;      /* 增加内边距，让内容不要太靠边 */
-}
-
-/* 修改：确保图片作为块级元素居中，并固定宽高 */
-.hero-avatar { 
-    display: block;
-    margin: 0 auto 24px auto; /* 上0，左右自动（居中），下24px */
-    width: 140px;            /* 稍微放大一点头像，看起来更大气 */
-    height: 140px; 
-    border-radius: 50%; 
-    object-fit: cover; 
-    border: 3px solid var(--card-border); /* 边框稍微加粗一点点 */
-    transition: transform 0.5s, border-color 0.5s; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2); /* 加一点立体阴影 */
-}
-.hero-avatar:hover { 
-    transform: scale(1.05) rotate(5deg); 
-    border-color: var(--accent); /* 鼠标悬停时边框变色 */
-}
-
-/* 确保标题和副标题没有多余的边距影响居中 */
-.hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s; width: 100%;}
-.hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s; width: 100%;}
-        .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s;}
-        .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s;}
+        .card-hero { 
+            grid-column: span 2; 
+            grid-row: span 2; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center;     
+            text-align: center;      
+            padding: 50px 30px;      
+        }
+        .hero-avatar { 
+            display: block;
+            margin: 0 auto 24px auto; 
+            width: 140px;            
+            height: 140px; 
+            border-radius: 50%; 
+            object-fit: cover; 
+            border: 3px solid var(--card-border); 
+            transition: transform 0.5s, border-color 0.5s; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+        }
+        .hero-avatar:hover { 
+            transform: scale(1.05) rotate(5deg); 
+            border-color: var(--accent); 
+        }
+        .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s; width: 100%;}
+        .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s; width: 100%;}
 
         .card-info { grid-column: span 2; display: flex; flex-direction: column; justify-content: space-between;}
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -134,13 +127,14 @@
         .tag { padding: 8px 16px; background: rgba(128,128,128,0.05); border-radius: 30px; font-size: 0.85rem; color: var(--text-muted); border: 1px solid var(--card-border); transition: all 0.3s; cursor: default; }
         .tag:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: scale(1.05); }
 
-        .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
-        .link-card { background: var(--card-bg); border-radius: 24px; padding: 32px 24px; text-decoration: none; color: inherit; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--card-border); transition: all 0.3s; }
+        /* 修改：让作品集卡片自动适配 5 列布局 */
+        .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+        .link-card { background: var(--card-bg); border-radius: 24px; padding: 28px 20px; text-decoration: none; color: inherit; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--card-border); transition: all 0.3s; }
         .link-card:hover { border-color: var(--accent); background: rgba(26, 188, 156, 0.05); transform: translateY(-3px); }
-        .link-card h3 { font-size: 1.3rem; margin-bottom: 8px; transition: transform 0.3s, color 0.5s; color: var(--text-main); }
+        .link-card h3 { font-size: 1.15rem; margin-bottom: 6px; transition: transform 0.3s, color 0.5s; color: var(--text-main); white-space: nowrap;}
         .link-card:hover h3 { transform: translateX(8px); color: var(--accent); }
-        .link-card p { color: var(--text-muted); font-size: 0.85rem; transition: color 0.5s;}
-        .link-card .arrow { font-size: 1.5rem; opacity: 0.5; transition: all 0.3s; color: var(--text-main);}
+        .link-card p { color: var(--text-muted); font-size: 0.8rem; transition: color 0.5s; white-space: nowrap;}
+        .link-card .arrow { font-size: 1.3rem; opacity: 0.5; transition: all 0.3s; color: var(--text-main);}
         .link-card:hover .arrow { opacity: 1; transform: translateX(5px); color: var(--accent); }
 
         .card-timeline { grid-column: span 4; }
@@ -247,7 +241,7 @@
         .calc-btn.equal { background: var(--accent); color: white; grid-column: span 2; }
         .calc-btn.clear { color: var(--withdraw); font-weight: bold; }
 
-        @media (max-width: 1100px) { .portfolio-links { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 1200px) { .portfolio-links { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; } 
             .card-hero, .card-info, .card-skills, .portfolio-links, .card-timeline { grid-column: span 1; } 
@@ -269,6 +263,7 @@
         <a href="index.html" class="nav-logo">CLARENCE.YE</a>
         <div style="display: flex; align-items: center; gap: 30px;">
             <div class="nav-links">
+                <a href="data analysis.html">Data Analysis</a>
                 <a href="my graphic design.html">Graphic</a>
                 <a href="3d model.html">3D Art</a>
                 <a href="my vedio.html">Motion</a>
@@ -313,6 +308,13 @@
             </div>
 
             <div class="portfolio-links">
+                <a href="data analysis.html" class="link-card">
+                    <div>
+                        <h3>数据分析</h3>
+                        <p>Data Analysis</p>
+                    </div>
+                    <span class="arrow">→</span>
+                </a>
                 <a href="my graphic design.html" class="link-card"><div><h3>平面设计</h3><p>Graphic Design</p></div><span class="arrow">→</span></a>
                 <a href="3d model.html" class="link-card"><div><h3>3D 建模</h3><p>Models & Art</p></div><span class="arrow">→</span></a>
                 <a href="my vedio.html" class="link-card"><div><h3>视频动效</h3><p>Motion Graphics</p></div><span class="arrow">→</span></a>
@@ -501,7 +503,7 @@
             document.getElementById('privateSection').style.display = 'none';
             document.getElementById('mainContent').style.display = 'grid';
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            document.getElementById('calculatorWidget').style.display = 'none'; // 退出时顺便关掉计算器
+            document.getElementById('calculatorWidget').style.display = 'none';
         }
 
         // ================= ✨ 计算器核心逻辑 =================
@@ -535,11 +537,8 @@
 
         function calcResult() {
             try {
-                // 将百分号替换为数学运算
                 let expr = calcExpression.replace(/%/g, '/100');
-                // 使用 Function 安全求值
                 let result = Function("return " + expr)();
-                // 解决 JS 浮点数精度问题 (例如 0.1 + 0.2)
                 result = Math.round(result * 1000000) / 1000000;
                 calcExpression = result.toString();
                 updateCalcScreen();
@@ -550,7 +549,6 @@
         }
 
         function updateCalcScreen() {
-            // 在屏幕上把 * 和 / 替换成更好看的 × 和 ÷
             let displayStr = calcExpression.replace(/\*/g, '×').replace(/\//g, '÷');
             document.getElementById('calcScreen').innerText = displayStr || "0";
         }
@@ -662,30 +660,4 @@
             const dataStr = JSON.stringify(records, null, 2);
             const blob = new Blob([dataStr], { type: "application/json" });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `ledger_backup_${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-        }
-
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedRecords = JSON.parse(e.target.result);
-                    if (Array.isArray(importedRecords) && confirm('导入会覆盖当前手机上的数据，确认导入吗？')) {
-                        records = importedRecords; updateUI(); alert('数据导入成功！');
-                    }
-                } catch (err) { alert('解析文件失败！'); }
-            };
-            reader.readAsText(file);
-            event.target.value = '';
-        }
-
-        window.onload = () => { updateUI(); };
-    </script>
-
-</body>
-</html>
+            const a = document
