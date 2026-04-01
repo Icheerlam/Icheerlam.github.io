@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vedio design | Clarence Ye</title>
+    <title>Video Design | Clarence Ye</title>
     <style>
         :root {
             --bg: #09090b; --card-bg: rgba(255, 255, 255, 0.03); --card-border: rgba(255, 255, 255, 0.08);
@@ -23,7 +23,6 @@
         nav { position: fixed; top: 0; width: 100%; padding: 15px 5vw; display: flex; justify-content: space-between; align-items: center; background: var(--nav-bg); backdrop-filter: blur(16px); z-index: 1000; border-bottom: 1px solid var(--card-border); transition: all 0.5s ease; }
         .nav-logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
         
-        /* ✨ 新增：导航栏右侧布局与返回按钮 */
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 30px; }
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500;}
@@ -44,9 +43,14 @@
         .video-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 32px; padding: 24px; opacity: 0; animation: fadeUp 0.8s ease forwards; transition: all 0.4s ease; }
         body.light-mode .video-card { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05); }
         .video-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.25); }
-        .video-wrapper { width: 100%; border-radius: 16px; overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        video { width: 100%; display: block; outline: none; }
-        .video-card h3 { margin-top: 24px; text-align: center; font-size: 1.5rem; font-weight: 700; color: var(--text-main); transition: color 0.5s; }
+        
+        .video-wrapper { width: 100%; border-radius: 16px; overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 24px; }
+        
+        /* ✨ 优化：使用现代排版替换 <center> 标签 */
+        .video-info { text-align: center; display: flex; flex-direction: column; gap: 8px; }
+        .video-title { font-size: 1.5rem; font-weight: 700; color: var(--text-main); transition: color 0.5s; margin: 0; }
+        .video-meta { font-size: 0.95rem; color: var(--text-muted); font-weight: 400; margin: 0; }
+        .highlight-tag { display: inline-block; padding: 2px 8px; background: rgba(26, 188, 156, 0.15); color: var(--accent); border-radius: 6px; font-size: 0.85rem; font-weight: bold; margin: 0 4px; }
 
         .back-nav { text-align: center; margin-bottom: 80px; }
         .btn-back { display: inline-block; padding: 14px 40px; border-radius: 30px; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); text-decoration: none; font-weight: 600; transition: all 0.3s; }
@@ -68,24 +72,23 @@
         <a href="Spike's profolio.html" class="nav-logo">CLARENCE.YE</a>
         <div class="nav-right">
             <div class="nav-links">
+                <a href="Data Analysis.html">Data Analysis</a>
                 <a href="my graphic design.html">Graphic</a>
                 <a href="3d model.html">3D Art</a>
-                <a href="my vedio.html" class="active">Vedio</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
+                <a href="my vedio.html" class="active">Video</a> <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
             </div>
-            <a href="Spike's profolio.html" class="nav-home-btn">🏠 返回主页</a>
+            <a href="Spike's profolio.html" class="nav-home-btn">🏠 主页</a>
         </div>
     </nav>
 
     <header class="page-header">
-        <h1>Vedio Design</h1>
-        <p>游戏买量广告与高燃混剪视觉体验</p>
+        <h1>Video Design</h1> <p>游戏买量广告与高燃混剪视觉体验</p>
     </header>
 
     <main class="video-container">
       
         <div class="video-card">
-            <div class="video-wrapper" style="position: relative; width: 100%; aspect-ratio: 16/9; border-radius: 16px; overflow: hidden; background: #000;">
+            <div class="video-wrapper" style="position: relative; width: 100%; aspect-ratio: 16/9;">
                 <iframe 
                     src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" 
                     title="2025 Showreel" 
@@ -95,8 +98,17 @@
                     style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
                 </iframe>
             </div>
-            <h2>2024 - 2025 Showreel</h2>
-            <center><h3>嵌入Youtube视频请稍等加载 0:00 - 1:17[2024] 1:17 - 2:54[2025]</h3></center>
+            
+            <div class="video-info">
+                <h2 class="video-title">2024 - 2025 Showreel</h2>
+                <p class="video-meta">
+                    ⏳ 正在从 YouTube 获取高清资源，请稍候... <br>
+                    <span style="font-size: 0.85rem; opacity: 0.8; display: inline-block; margin-top: 5px;">
+                        时段指引：<span class="highlight-tag">2024</span> 0:00 - 1:17  |  <span class="highlight-tag">2025</span> 1:17 - 2:54
+                    </span>
+                </p>
+            </div>
+            
         </div>
     </main>
 
