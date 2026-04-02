@@ -70,11 +70,11 @@
         .page-header h1 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; transition: color 0.5s; letter-spacing: -1px;}
         .page-header p { color: var(--text-muted); font-size: 1.1rem; transition: color 0.5s;}
 
-        /* ---------------- ✨ 折叠超级区块样式 ---------------- */
+        /* ---------------- 折叠超级区块样式 ---------------- */
         .container { max-width: 1400px; margin: 0 auto 80px; padding: 0 4vw; }
         
         .case-block {
-            background: rgba(255, 255, 255, 0.015);
+            background: rgba(255, 255, 255, 0.015); 
             border: 1px solid var(--card-border);
             border-radius: 32px;
             padding: 20px 30px 30px 30px;
@@ -86,7 +86,6 @@
         .case-block:hover { border-color: rgba(255,255,255,0.15); box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
         body.light-mode .case-block:hover { border-color: rgba(0,0,0,0.1); }
 
-        /* 区块头部 (点击折叠区域) */
         .case-header {
             display: flex; justify-content: space-between; align-items: center;
             cursor: pointer; user-select: none; padding: 10px 0;
@@ -100,7 +99,6 @@
             background: var(--accent); box-shadow: 0 0 12px var(--accent-glow);
         }
         
-        /* 展开/收起 按钮动画 */
         .toggle-icon {
             display: flex; align-items: center; justify-content: center;
             width: 44px; height: 44px; border-radius: 50%;
@@ -112,13 +110,11 @@
         .case-block:not(.collapsed) .toggle-icon { transform: rotate(180deg); background: var(--accent); color: #fff; border-color: var(--accent); }
         .case-block.collapsed:hover { border-color: var(--accent); }
 
-        /* 丝滑折叠动画核心 */
         .case-content-wrapper {
-            display: grid;
-            grid-template-rows: 1fr; /* 展开状态 */
+            display: grid; grid-template-rows: 1fr; 
             transition: grid-template-rows 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
         }
-        .case-block.collapsed .case-content-wrapper { grid-template-rows: 0fr; /* 收起状态 */ }
+        .case-block.collapsed .case-content-wrapper { grid-template-rows: 0fr; }
         .case-content { overflow: hidden; }
         .case-content-inner { padding-top: 30px; }
 
@@ -131,7 +127,7 @@
         .bento-card:hover { transform: translateY(-3px); }
 
         .card-full { grid-column: span 3; padding: 0; background: transparent; border: none;} 
-        .card-left { grid-column: span 2; padding-right: 20px; } 
+        .card-left { grid-column: span 2; padding-right: 20px; display: flex; flex-direction: column;} 
         .card-right { grid-column: span 1; display: flex; flex-direction: column; justify-content: center; } 
 
         /* ================= 视觉组件 ================= */
@@ -143,7 +139,6 @@
         .data-dashboard-img:hover { filter: invert(0) hue-rotate(0deg); opacity: 1; transform: scale(1.01); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
         body.light-mode .data-dashboard-img { filter: none; opacity: 1; }
 
-        /* 视频网格 */
         .vertical-videos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
         .vertical-video-wrapper {
             width: 100%; aspect-ratio: 9/16; border-radius: 16px; overflow: hidden; 
@@ -161,17 +156,32 @@
         .row-content { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
         .highlight { color: var(--accent); font-weight: 800; font-size: 1.1rem; padding: 0 2px; }
 
-        /* --- ✨ 弹窗灯箱 (允许在其中双指缩放) --- */
+        /* --- ✨ 新增：裂变方法论总结区块 (红圈位置) --- */
+        .strategy-section {
+            margin-top: 40px; padding: 24px; border-radius: 16px;
+            background: rgba(255,255,255,0.02); border: 1px dashed var(--card-border);
+            flex-grow: 1; /* 让它在视频下方撑满空间 */
+        }
+        body.light-mode .strategy-section { background: rgba(0,0,0,0.02); }
+        
+        .strategy-title { font-size: 1.1rem; font-weight: 700; color: var(--accent); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+        .strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+        
+        .strategy-item { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+        .strategy-item h4 { color: var(--text-main); font-size: 1rem; margin-bottom: 10px; border-left: 3px solid var(--accent); padding-left: 8px;}
+        .strategy-item ul { padding-left: 20px; margin-top: 8px; }
+        .strategy-item li { margin-bottom: 6px; }
+        .strategy-item .highlight-text { color: var(--text-main); font-weight: bold; }
+
+        /* --- 弹窗灯箱 --- */
         .lightbox { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(15px); z-index: 10000; 
             display: flex; justify-content: center; align-items: center; 
             opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
-            overflow: auto; /* 允许滚动和缩放 */
-            touch-action: pinch-zoom pan-y pan-x; /* 明确允许触摸操作 */
+            overflow: auto; touch-action: pinch-zoom pan-y pan-x; 
         }
         .lightbox.active { opacity: 1; pointer-events: auto; }
-        /* 移除图片的最大宽高限制，使其能放大 */
         .lightbox img { 
             max-width: 100vw; max-height: 100vh; 
             border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
@@ -198,6 +208,7 @@
             .bento-grid { grid-template-columns: 1fr; } 
             .card-full, .card-left, .card-right { grid-column: span 1; padding-right: 0; }
             .vertical-videos-grid { gap: 15px; }
+            .strategy-grid { grid-template-columns: 1fr; gap: 16px; } /* 手机端改为单列 */
         }
     </style>
 </head>
@@ -265,6 +276,29 @@
                                     <div class="video-sublabel">Top 3 / 8.5w 消耗</div>
                                 </div>
                             </div>
+
+                            <div class="strategy-section">
+                                <div class="strategy-title">🔄 核心策略：爆款素材残值榨干法则</div>
+                                <div class="strategy-grid">
+                                    <div class="strategy-item">
+                                        <h4>01 / 裂变与复用机制</h4>
+                                        <ul>
+                                            <li><span class="highlight-text">换身保头：</span>保留极高权重的爆款开头，替换中后段。</li>
+                                            <li><span class="highlight-text">换头保身：</span>测新钩子，微调中后段。</li>
+                                            <li><span class="highlight-text">骨架复用：</span>整体画面全换，保证文案内核不变。</li>
+                                        </ul>
+                                        <p style="font-size: 0.85rem; margin-top: 8px; opacity: 0.7;"><em>*实拍口播则采用：同场景测开头 / 异场景保开头。</em></p>
+                                    </div>
+                                    <div class="strategy-item">
+                                        <h4>02 / 流量吃透与暴力去重</h4>
+                                        <p>提取不同爆款的高光点互相拼接（<strong>1+1>2</strong>）。通过<span class="highlight-text">画中画、镜像、抽帧、贴纸</span>等手法深度去重过审。</p>
+                                        <p style="margin-top: 8px; color: var(--text-main);">
+                                            配合编导的新脚本，榨干原视频画面、音频、人物的最后一点转化价值，不断吃透流量直到跑不动为止。
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="bento-card card-right" style="background: rgba(0,0,0,0.15);">
@@ -305,11 +339,9 @@
             <div class="case-content-wrapper">
                 <div class="case-content">
                     <div class="case-content-inner bento-grid">
-                        
                         <div class="bento-card card-full" style="text-align: center; color: var(--text-muted); padding: 60px;">
                             这里是你未来要添加的新项目内容，格式参考上面的区块即可！
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -333,7 +365,6 @@
     <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">☀️</button>
 
     <script>
-        // 主题切换
         const themeBtn = document.getElementById('themeBtn');
         const body = document.body;
         themeBtn.addEventListener('click', () => {
@@ -341,13 +372,11 @@
             themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️';
         });
 
-        // 手风琴折叠展开逻辑
         function toggleCase(element) {
             const block = element.closest('.case-block');
             block.classList.toggle('collapsed');
         }
 
-        // 图片灯箱放大逻辑
         const dashboardImages = document.querySelectorAll('.dashboard-img');
         const lightbox = document.getElementById('imageLightbox');
         const lightboxImg = document.getElementById('lightboxImg');
@@ -356,7 +385,7 @@
             img.addEventListener('click', () => {
                 lightboxImg.src = img.src; 
                 lightbox.classList.add('active');
-                document.body.style.overflow = 'auto'; // 允许在查看图片时缩放
+                document.body.style.overflow = 'auto'; 
             });
         });
 
