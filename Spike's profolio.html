@@ -97,31 +97,16 @@
         .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px; transition: color 0.5s; }
         .card-title::before { content: ''; display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); transition: background 0.5s; }
 
-        /* --- ✨ 3D 磁性悬浮头像样式 --- */
-        .card-hero { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 50px 30px; perspective: 1000px; }
-        .avatar-container {
-            position: relative; width: 140px; height: 140px; margin: 0 auto 24px auto;
-            transform-style: preserve-3d; transition: transform 0.1s ease-out; /* JS 接管动画 */
-        }
-        .hero-avatar { 
-            display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; 
-            border: 3px solid rgba(255,255,255,0.4); box-shadow: 0 15px 35px rgba(0,0,0,0.4); 
-            transform: translateZ(20px); /* 让头像在 3D 空间中浮起来 */
-        }
-        /* 玻璃反光层 */
-        .avatar-glare {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 50%);
-            opacity: 0; transition: opacity 0.3s; transform: translateZ(30px); pointer-events: none;
-        }
-
+        .card-hero { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 50px 30px; }
+        .hero-avatar { display: block; margin: 0 auto 24px auto; width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.4); transition: transform 0.5s, border-color 0.5s; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .hero-avatar:hover { transform: scale(1.05) rotate(5deg); border-color: var(--accent); }
         .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s; width: 100%; text-shadow: 0 4px 10px rgba(0,0,0,0.3);}
         body.light-mode .hero-title { text-shadow: none; }
         
-        /* --- ✨ AI 打字机副标题样式 --- */
-        .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s; width: 100%; min-height: 60px;}
-        .typewriter-text { color: var(--accent); font-family: monospace; font-weight: 600; }
-        .cursor { display: inline-block; width: 8px; height: 1.2em; background-color: var(--accent); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 2px;}
+        /* --- ✨ AI 打字机专属样式 --- */
+        .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s; width: 100%; min-height: 80px; font-family: monospace;}
+        .prompt-highlight { color: var(--accent); font-weight: bold; }
+        .cursor { display: inline-block; width: 8px; height: 1.2em; background-color: var(--accent); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 4px;}
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .card-info { grid-column: span 2; display: flex; flex-direction: column; justify-content: space-between;}
@@ -161,6 +146,7 @@
         footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; margin-top: 80px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
         body.light-mode footer { text-shadow: none; }
 
+        /* --- 简历图片灯箱 --- */
         .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; overflow: auto; touch-action: pinch-zoom pan-y pan-x;}
         .lightbox.active { opacity: 1; pointer-events: auto; }
         .lightbox img { max-width: 100vw; max-height: 100vh; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); object-fit: contain; }
@@ -173,4 +159,587 @@
 
         /* ================= ✨ 密码弹窗样式 ================= */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 10001; align-items: center; justify-content: center; }
-        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); color: var(--text-main); padding: 40px 30px; border-radius: 24px; width: 90%; max-width: 380px; text-align: center; animation: fadeUp 0.3s ease forwards;
+        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); color: var(--text-main); padding: 40px 30px; border-radius: 24px; width: 90%; max-width: 380px; text-align: center; animation: fadeUp 0.3s ease forwards; }
+        .modal-content h3 { margin-top: 0; margin-bottom: 24px; font-size: 1.3rem; }
+        .modal-content input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 1rem; outline: none; transition: border-color 0.3s; text-align: center; letter-spacing: 2px; }
+        body.light-mode .modal-content input { background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.1); }
+        .modal-content input:focus { border-color: var(--accent); }
+        .modal-actions { margin-top: 25px; display: flex; gap: 15px; }
+        .modal-actions button { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: 0.2s; backdrop-filter: blur(5px); }
+        .btn-cancel { background: rgba(255,255,255,0.1); color: var(--text-main); border: 1px solid var(--glass-border); }
+        body.light-mode .btn-cancel { background: rgba(0,0,0,0.05); }
+        .btn-confirm { background: var(--accent); color: #fff; }
+
+        /* ================= ✨ 私密账本 UI ================= */
+        #privateSection { display: none; animation: fadeUp 0.8s ease forwards; }
+        .secret-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
+        .secret-header h2 { font-size: 1.5rem; color: var(--accent); text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+        body.light-mode .secret-header h2 { text-shadow: none; }
+        .data-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-data { background: var(--glass-bg); backdrop-filter: blur(10px); color: var(--text-main); border: 1px solid var(--glass-border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+        .btn-data:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-close-sec { background: rgba(239, 68, 68, 0.2); color: var(--withdraw); border-color: transparent; }
+        .btn-close-sec:hover { background: var(--withdraw); color: white; }
+
+        .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: var(--glass-bg); backdrop-filter: blur(16px); padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); text-align: center; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .stat-card h3 { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
+        .stat-card .amount { font-size: 1.6rem; font-weight: bold; }
+        .stat-recharge .amount { color: var(--recharge); text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);}
+        .stat-withdraw .amount { color: var(--withdraw); text-shadow: 0 0 10px rgba(251, 113, 133, 0.4);}
+        .stat-balance .amount { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow);}
+
+        .input-section { background: var(--glass-bg); backdrop-filter: blur(16px); padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); margin-bottom: 30px; position: relative; }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; align-items: flex-end; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group input, .form-group select { padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 1rem; outline: none; }
+        body.light-mode .form-group input, body.light-mode .form-group select { background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.1); }
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
+        .btn-add { background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; width: 100%; box-shadow: 0 4px 15px var(--accent-glow);}
+
+        .history-section { background: var(--glass-bg); backdrop-filter: blur(16px); border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); overflow: hidden; overflow-x: auto; }
+        .history-header { padding: 15px 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
+        body.light-mode .history-header { background: rgba(255,255,255,0.2); }
+        .btn-clear { background: transparent; color: var(--text-muted); border: 1px solid var(--glass-border); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-clear:hover { border-color: var(--withdraw); color: var(--withdraw); }
+
+        .ledger-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        .ledger-table th, .ledger-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        body.light-mode .ledger-table th, body.light-mode .ledger-table td { border-bottom-color: rgba(0,0,0,0.05); }
+        .ledger-table th { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        .ledger-table td { white-space: nowrap; font-size: 0.95rem; }
+        .ledger-table tr:hover { background: rgba(255,255,255,0.05); }
+        body.light-mode .ledger-table tr:hover { background: rgba(0,0,0,0.02); }
+
+        .type-recharge { color: var(--recharge); font-weight: bold; }
+        .type-withdraw { color: var(--withdraw); font-weight: bold; }
+        .bal-text { color: var(--warning); font-family: monospace; font-size: 1.05rem; }
+        .btn-delete { background: rgba(239, 68, 68, 0.15); color: var(--withdraw); border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+
+        /* 计算器 */
+        .calculator-widget {
+            display: none; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 16px;
+            padding: 20px; margin-bottom: 20px; width: 100%; max-width: 350px; margin-left: auto; margin-right: auto; box-shadow: var(--glass-shadow);
+            animation: fadeUp 0.3s ease forwards;
+        }
+        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem; }
+        .calc-screen {
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+            padding: 15px; font-size: 1.8rem; text-align: right; margin-bottom: 15px;
+            color: var(--text-main); font-family: monospace; overflow-x: auto; white-space: nowrap;
+        }
+        body.light-mode .calc-screen { background: rgba(255,255,255,0.6); border-color: rgba(0,0,0,0.1); }
+        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .calc-btn {
+            background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 0; border-radius: 8px; font-size: 1.2rem; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px);
+        }
+        body.light-mode .calc-btn { background: rgba(255,255,255,0.5); border-color: rgba(0,0,0,0.1); }
+        .calc-btn:hover { background: rgba(255,255,255,0.15); }
+        body.light-mode .calc-btn:hover { background: #fff; }
+        .calc-btn:active { transform: scale(0.95); }
+        .calc-btn.operator { color: var(--accent); font-weight: bold; font-size: 1.4rem; }
+        .calc-btn.equal { background: var(--accent); color: white; grid-column: span 2; border-color: var(--accent); box-shadow: 0 4px 15px var(--accent-glow);}
+        .calc-btn.clear { color: var(--withdraw); font-weight: bold; }
+
+        @media (max-width: 1100px) { .portfolio-links { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: 1fr; } 
+            .card-hero, .card-info, .card-skills, .portfolio-links, .card-timeline { grid-column: span 1; } 
+            .portfolio-links { grid-template-columns: 1fr; } 
+            .nav-links { display: none; } 
+            .info-grid { grid-template-columns: 1fr; }
+            .bento-card { padding: 30px 20px; border-radius: 24px; }
+            .theme-toggle-btn { bottom: 20px; right: 20px; } 
+            .lightbox-close { top: 15px; right: 20px; }
+            .dashboard { grid-template-columns: 1fr; }
+            .secret-header { flex-direction: column; align-items: flex-start; }
+            .data-actions { width: 100%; justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="video-bg">
+        <video autoplay muted loop playsinline>
+            <source src="https://cdn.pixabay.com/video/2021/08/04/83864-584742467_large.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+
+    <nav>
+        <a href="index.html" class="nav-logo">CLARENCE.YE</a>
+        <div style="display: flex; align-items: center; gap: 30px;">
+            <div class="nav-links">
+                <a href="数据分析/Data Analysis.html">Data Analysis</a>
+                <a href="my graphic design.html">Graphic</a>
+                <a href="3d model.html">3D Art</a>
+                <a href="my vedio.html">Video</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
+            </div>
+            <a class="nav-secret" onclick="openPasswordModal()" title="Secret Area" style="font-size: 1.2rem;">🔒</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <main class="bento-grid" id="mainContent">
+            
+            <div class="bento-card card-hero">
+                <img src="绿色头像.jpeg" alt="Clarence" class="hero-avatar">
+                <div>
+                    <h1 class="hero-title">Hello, 我是叶承霖 👋</h1>
+                    <p class="hero-subtitle" id="ai-prompt-text"></p>
+                </div>
+            </div>
+
+            <div class="bento-card card-info">
+                <div>
+                    <h2 class="card-title">Profile</h2>
+                    <div class="info-grid">
+                        <div class="info-item"><strong>Location</strong>广州市海珠区</div>
+                        <div class="info-item"><strong>Education</strong>广东工业大学 · 动画系</div>
+                        <div class="info-item"><strong>Email</strong>Clarenceye1@gmail.com</div>
+                        <div class="info-item"><strong>Phone</strong>+86 13719113230</div>
+                    </div>
+                </div>
+                <button class="resume-btn" id="viewResumeBtn">📄 查看完整简历图片</button>
+            </div>
+
+            <div class="bento-card card-skills">
+                <h2 class="card-title">Tech Stack</h2>
+                <div class="tag-cloud">
+                    <span class="tag">Photoshop</span> <span class="tag">Illustrator</span> <span class="tag">After Effects</span>
+                    <span class="tag">Premiere Pro</span> <span class="tag">Blender / 3D Modeling</span>
+                    <span class="tag">ComfyUI/ 即梦 / 可灵 /sora</span> <span class="tag">Trapcode Form</span>
+                </div>
+            </div>
+
+            <div class="portfolio-links">
+                <a href="数据分析/Data Analysis.html" class="link-card">
+                    <div><h3>数据分析</h3><p>Data Analysis</p></div><span class="arrow">→</span>
+                </a>
+                <a href="my graphic design.html" class="link-card"><div><h3>平面设计</h3><p>Graphic Design</p></div><span class="arrow">→</span></a>
+                <a href="3d model.html" class="link-card"><div><h3>3D 建模</h3><p>Models & Art</p></div><span class="arrow">→</span></a>
+                <a href="my vedio.html" class="link-card"><div><h3>视频设计</h3><p>Video Design</p></div><span class="arrow">→</span></a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" class="link-card">
+                    <div><h3>摄影合集</h3><p>Photography (500px)</p></div><span class="arrow arrow-external">↗</span>
+                </a>
+            </div>
+
+            <div class="bento-card card-timeline">
+                <h2 class="card-title">Experience</h2>
+                
+                <div class="timeline-item">
+                    <div class="tl-header">
+                        <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">广告视频制作</span></div>
+                        <div class="tl-date">2024.07 - Present</div>
+                    </div>
+                    <div class="tl-body">
+                        <div style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-main);">爆款内容矩阵与裂变机制打造（创意与增长）：</strong>
+                            基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top 1 爆款视频（单条消耗超 22 万元，付费贡献占比达 26.9%）。通过抽帧去重、重组开头 Hook 与 BGM，建立“素材裂变迭代机制”，成功衍生出消耗 9.5 万与 8.5 万的头部视频，主导的年度短视频累计消耗达 153 万元。
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-main);">海外市场买量体系与社群引流（数据驱动）：</strong>
+                            统筹海外 App (Frameit) 的跨终端广告素材投放，搭建完整的素材效果评估体系。一年内助力 7 个海外账户实现 24.5 万+ 美元消耗，获取 16.7 万+ 新增装机量及 5700+ 付费转化。同时通过高互动性内容策划，推动官方 Instagram 社群自然涨粉至 4.8 万。
+                        </div>
+                        <div>
+                            <strong style="color: var(--text-main);">基于 ROI 的增长模型调优（机制打法）：</strong>
+                            建立严谨的视频淘汰与优化机制，对低效素材果断缩减预算，将 70% 资源向高转化（1.2%）的核心品类（加画框-书法美化）倾斜；针对“高点击率 (2.54%)、低转化”的素材，通过优化结尾转化钩子 (Call to Action)，实现单点 ROI 提升 15%，整体年度投放效率提升 20%。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="tl-header"><div class="tl-title">广州天游网络 / 广州博冠信息 <span class="tl-role">游戏买量视频制作</span></div><div class="tl-date">2023.12 - 2024.06</div></div>
+                    <div class="tl-body">制作网易游戏《率土之滨》《大话西游》及海外发行游戏《三国云梦录》等的买量广告视频与后期包装。</div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="tl-header"><div class="tl-title">Mobvista（甲方） <span class="tl-role">品牌设计</span></div><div class="tl-date">2023.09 - 2023.12</div></div>
+                    <div class="tl-body">使用 Illustrator、AE 根据风格和要求制作海报、KV、PPT 及印刷品。负责图文内容的调整排版、视频修改，以及品牌 GIF 图片动效的制作。</div>
+                </div>
+
+            </div>
+        </main>
+
+        <section id="privateSection">
+            <div class="secret-header">
+                <h2>📈 资金充提记录本</h2>
+                <div class="data-actions">
+                    <button class="btn-data" onclick="toggleCalculator()">🧮 计算器</button>
+                    <button class="btn-data" onclick="exportData()">💾 导出备份</button>
+                    <button class="btn-data" onclick="document.getElementById('importFile').click()">📂 导入恢复</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                    <button class="btn-data btn-close-sec" onclick="closePrivateSection()">✖ 关闭</button>
+                </div>
+            </div>
+
+            <div class="dashboard">
+                <div class="stat-card stat-recharge"><h3>总充值 (入)</h3><div class="amount" id="totalRecharge">0.00</div></div>
+                <div class="stat-card stat-withdraw"><h3>总提现 (出)</h3><div class="amount" id="totalWithdraw">0.00</div></div>
+                <div class="stat-card stat-balance"><h3>总净流水 (入-出)</h3><div class="amount" id="netBalance">0.00</div></div>
+            </div>
+
+            <div class="calculator-widget" id="calculatorWidget">
+                <div class="calc-header">
+                    <span>快捷计算器</span>
+                    <span style="cursor:pointer; font-size:1.2rem;" onclick="toggleCalculator()" title="关闭">✖</span>
+                </div>
+                <div class="calc-screen" id="calcScreen">0</div>
+                <div class="calc-keys">
+                    <button class="calc-btn clear" onclick="calcClear()">C</button>
+                    <button class="calc-btn operator" onclick="calcBackspace()">←</button>
+                    <button class="calc-btn operator" onclick="calcInput('%')">%</button>
+                    <button class="calc-btn operator" onclick="calcInput('/')">÷</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('7')">7</button>
+                    <button class="calc-btn" onclick="calcInput('8')">8</button>
+                    <button class="calc-btn" onclick="calcInput('9')">9</button>
+                    <button class="calc-btn operator" onclick="calcInput('*')">×</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('4')">4</button>
+                    <button class="calc-btn" onclick="calcInput('5')">5</button>
+                    <button class="calc-btn" onclick="calcInput('6')">6</button>
+                    <button class="calc-btn operator" onclick="calcInput('-')">-</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('1')">1</button>
+                    <button class="calc-btn" onclick="calcInput('2')">2</button>
+                    <button class="calc-btn" onclick="calcInput('3')">3</button>
+                    <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('0')" style="grid-column: span 2;">0</button>
+                    <button class="calc-btn" onclick="calcInput('.')">.</button>
+                    <button class="calc-btn equal" onclick="calcResult()">=</button>
+                </div>
+            </div>
+
+            <div class="input-section">
+                <div class="input-grid">
+                    <div class="form-group"><label>日期</label><input type="date" id="dateInput"></div>
+                    <div class="form-group"><label>时间</label><input type="time" id="timeInput"></div>
+                    <div class="form-group"><label>类型</label>
+                        <select id="typeInput"><option value="recharge">充值 🟢</option><option value="withdraw">提现 🔴</option></select>
+                    </div>
+                    <div class="form-group"><label>操作金额</label><input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01"></div>
+                    <div class="form-group"><label>可用余额</label><input type="number" id="availBalInput" placeholder="0.00" min="0" step="0.01"></div>
+                    <div class="form-group"><label>钱包余额</label><input type="number" id="walletBalInput" placeholder="0.00" min="0" step="0.01"></div>
+                </div>
+                <button class="btn-add" onclick="addRecord()">➕ 添加记录</button>
+            </div>
+
+            <div class="history-section">
+                <div class="history-header">
+                    <h3 style="font-size:1.1rem; color:var(--text-main);">📜 历史明细</h3>
+                    <button class="btn-clear" onclick="clearAll()">清空全部</button>
+                </div>
+                <table class="ledger-table">
+                    <thead>
+                        <tr><th>日期 / 时间</th><th>类型</th><th>操作金额</th><th>可用余额</th><th>钱包余额</th><th>操作</th></tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 Clarence Ye. All rights reserved.</p>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img src="2026_3.jpg" alt="详细简历图" id="lightbox-img">
+    </div>
+
+    <div id="passwordModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>🔒 Restricted Area</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">请输入访问密码</p>
+            <input type="password" id="pwdInput" placeholder="Password..." onkeypress="handleEnter(event)">
+            <p id="errorMsg" style="color: #ef4444; font-size: 0.85rem; display: none; margin-top: 10px;">密码错误，请重试！</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closePasswordModal()">取消</button>
+                <button class="btn-confirm" onclick="checkPassword()">解锁进入</button>
+            </div>
+        </div>
+    </div>
+
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">☀️</button>
+
+    <script>
+        const themeBtn = document.getElementById('themeBtn');
+        const body = document.body;
+
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️';
+        });
+
+        const viewResumeBtn = document.getElementById('viewResumeBtn');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+
+        viewResumeBtn.addEventListener('click', () => {
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'auto'; // 允许双指缩放
+        });
+        lightbox.addEventListener('click', (e) => {
+            if (e.target !== lightboxImg) {
+                lightbox.classList.remove('active');
+            }
+        });
+
+        const SECRET_PASSWORD = "spike"; 
+
+        function openPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+            document.getElementById('pwdInput').value = ''; 
+            document.getElementById('errorMsg').style.display = 'none'; 
+            setTimeout(() => document.getElementById('pwdInput').focus(), 100); 
+        }
+
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+        }
+
+        function checkPassword() {
+            if (document.getElementById('pwdInput').value === SECRET_PASSWORD) {
+                closePasswordModal();
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('privateSection').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setDefaultDateTime();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('pwdInput').value = '';
+                document.getElementById('pwdInput').focus();
+            }
+        }
+
+        function handleEnter(event) { if (event.key === 'Enter') checkPassword(); }
+
+        function closePrivateSection() {
+            document.getElementById('privateSection').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'grid';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('calculatorWidget').style.display = 'none';
+        }
+
+        let calcExpression = "";
+        
+        function toggleCalculator() {
+            const calc = document.getElementById('calculatorWidget');
+            if (calc.style.display === 'none' || calc.style.display === '') {
+                calc.style.display = 'block';
+            } else {
+                calc.style.display = 'none';
+            }
+        }
+
+        function calcInput(val) {
+            if (calcExpression === "0" || calcExpression === "Error") calcExpression = "";
+            calcExpression += val;
+            updateCalcScreen();
+        }
+
+        function calcClear() {
+            calcExpression = "";
+            document.getElementById('calcScreen').innerText = "0";
+        }
+
+        function calcBackspace() {
+            calcExpression = calcExpression.slice(0, -1);
+            updateCalcScreen();
+            if (calcExpression === "") document.getElementById('calcScreen').innerText = "0";
+        }
+
+        function calcResult() {
+            try {
+                let expr = calcExpression.replace(/%/g, '/100');
+                let result = Function("return " + expr)();
+                result = Math.round(result * 1000000) / 1000000;
+                calcExpression = result.toString();
+                updateCalcScreen();
+            } catch(e) {
+                document.getElementById('calcScreen').innerText = "Error";
+                calcExpression = "";
+            }
+        }
+
+        function updateCalcScreen() {
+            let displayStr = calcExpression.replace(/\*/g, '×').replace(/\//g, '÷');
+            document.getElementById('calcScreen').innerText = displayStr || "0";
+        }
+
+        const initialLedgerData = [
+            { id: 101, timestamp: new Date("2026-03-23T08:46").getTime(), date: "2026-03-23", time: "08:46", type: "withdraw", amount: 34.68, availBal: 0, walletBal: 0 },
+            { id: 102, timestamp: new Date("2026-03-18T03:23").getTime(), date: "2026-03-18", time: "03:23", type: "recharge", amount: 83.84, availBal: 0, walletBal: 0 },
+            { id: 103, timestamp: new Date("2026-03-17T16:00").getTime(), date: "2026-03-17", time: "16:00", type: "withdraw", amount: 100.00, availBal: 0, walletBal: 0 },
+            { id: 104, timestamp: new Date("2026-03-11T09:09").getTime(), date: "2026-03-11", time: "09:09", type: "recharge", amount: 49.98, availBal: 0, walletBal: 0 }
+        ];
+
+        let records = JSON.parse(localStorage.getItem('ledgerData_v5'));
+        if (!records || records.length === 0) {
+            records = initialLedgerData;
+            localStorage.setItem('ledgerData_v5', JSON.stringify(records));
+        }
+
+        function setDefaultDateTime() {
+            const now = new Date();
+            document.getElementById('dateInput').value = now.toISOString().split('T')[0];
+            document.getElementById('timeInput').value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        }
+
+        function updateUI() {
+            let totalRecharge = 0, totalWithdraw = 0;
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+
+            if (records.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-state">暂无记录，请在上方添加</td></tr>`;
+            } else {
+                const sortedRecords = [...records].sort((a, b) => b.timestamp - a.timestamp);
+                sortedRecords.forEach(record => {
+                    if (record.type === 'recharge') totalRecharge += record.amount;
+                    else totalWithdraw += record.amount;
+
+                    const tr = document.createElement('tr');
+                    const typeText = record.type === 'recharge' ? '充值' : '提现';
+                    const typeClass = record.type === 'recharge' ? 'type-recharge' : 'type-withdraw';
+                    const sign = record.type === 'recharge' ? '+' : '-';
+
+                    tr.innerHTML = `
+                        <td>${record.date} ${record.time}</td>
+                        <td class="${typeClass}">${typeText}</td>
+                        <td class="${typeClass}">${sign} ${record.amount.toFixed(2)}</td>
+                        <td class="bal-text">${record.availBal > 0 ? record.availBal.toFixed(2) : '-'}</td>
+                        <td class="bal-text">${record.walletBal > 0 ? record.walletBal.toFixed(2) : '-'}</td>
+                        <td><button class="btn-delete" onclick="deleteRecord(${record.id})">删除</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
+
+            document.getElementById('totalRecharge').innerText = totalRecharge.toFixed(2);
+            document.getElementById('totalWithdraw').innerText = totalWithdraw.toFixed(2);
+            document.getElementById('netBalance').innerText = (totalRecharge - totalWithdraw).toFixed(2);
+            localStorage.setItem('ledgerData_v5', JSON.stringify(records));
+        }
+
+        function addRecord() {
+            const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
+            const type = document.getElementById('typeInput').value;
+            const amountVal = document.getElementById('amountInput').value;
+            const availBalVal = document.getElementById('availBalInput').value;
+            const walletBalVal = document.getElementById('walletBalInput').value;
+
+            if (!date || !time || !amountVal || amountVal <= 0) return alert('请填写完整信息！');
+
+            records.push({
+                id: Date.now(), timestamp: new Date(`${date}T${time}`).getTime(), date, time, type,
+                amount: parseFloat(amountVal), availBal: parseFloat(availBalVal || 0), walletBal: parseFloat(walletBalVal || 0)
+            });
+            
+            document.getElementById('amountInput').value = ''; 
+            document.getElementById('availBalInput').value = ''; 
+            document.getElementById('walletBalInput').value = ''; 
+            updateUI();
+        }
+
+        function deleteRecord(id) {
+            if (confirm('确定删除吗？')) { records = records.filter(r => r.id !== id); updateUI(); }
+        }
+
+        function clearAll() {
+            if (confirm('确定清空所有数据吗？此操作不可逆！')) { records = []; updateUI(); }
+        }
+
+        function exportData() {
+            if (records.length === 0) return alert("没有可以导出的数据！");
+            const dataStr = JSON.stringify(records, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ledger_backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+        }
+
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedRecords = JSON.parse(e.target.result);
+                    if (Array.isArray(importedRecords) && confirm('导入会覆盖当前手机上的数据，确认导入吗？')) {
+                        records = importedRecords; updateUI(); alert('数据导入成功！');
+                    }
+                } catch (err) { alert('解析文件失败！'); }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        window.onload = () => { updateUI(); };
+
+        // ================= ✨ 专属定制：AI 打字机特效 =================
+        const promptText = "/imagine prompt: 一名精通平面设计、3D建模与视频动效的视觉设计师。正将天马行空的创意转化为极具冲击力的数字作品，赛博朋克风格，8k分辨率，超高细节 --ar 16:9 🚀";
+        const subtitleElement = document.getElementById('ai-prompt-text');
+        let i = 0;
+        
+        function typeWriter() {
+            if (i < promptText.length) {
+                subtitleElement.innerHTML += promptText.charAt(i);
+                i++;
+                setTimeout(typeWriter, 50); // 调整打字速度，数字越小越快
+            } else {
+                subtitleElement.innerHTML += '<span class="cursor"></span>';
+            }
+        }
+        setTimeout(typeWriter, 1000); // 页面加载后延迟 1 秒启动
+
+        // ================= ✨ 专属定制：Pudgy Penguins 键盘彩蛋 =================
+        let secretCode = ['p', 'u', 'd', 'g', 'y'];
+        let inputCode = [];
+
+        window.addEventListener('keydown', (e) => {
+            inputCode.push(e.key.toLowerCase());
+            inputCode = inputCode.slice(-secretCode.length);
+            
+            if (JSON.stringify(inputCode) === JSON.stringify(secretCode)) {
+                triggerPenguinEasterEgg();
+            }
+        });
+
+        function triggerPenguinEasterEgg() {
+            const penguin = document.createElement('div');
+            penguin.innerHTML = '🐧'; // 掉落一只可爱的胖企鹅
+            penguin.style.position = 'fixed';
+            penguin.style.top = '-100px';
+            penguin.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+            penguin.style.fontSize = '80px';
+            penguin.style.zIndex = '10000';
+            penguin.style.transition = 'top 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 2.5s';
+            penguin.style.pointerEvents = 'none'; // 防止遮挡鼠标点击
+            document.body.appendChild(penguin);
+
+            // 触发掉落和旋转动画
+            setTimeout(() => {
+                penguin.style.top = window.innerHeight + 100 + 'px';
+                penguin.style.transform = 'rotate(720deg)';
+            }, 50);
+
+            // 动画结束后清理 DOM 元素，防止网页卡顿
+            setTimeout(() => {
+                document.body.removeChild(penguin);
+            }, 2600);
+        }
+    </script>
+</body>
+</html>
