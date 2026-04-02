@@ -5,78 +5,94 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clarence Ye | Visual Designer</title>
     <style>
-        /* ================= 核心变量 ================= */
+        /* ================= Web3 核心变量 ================= */
         :root {
-            --glass-bg: rgba(20, 20, 25, 0.45); 
-            --glass-border: rgba(255, 255, 255, 0.1); 
-            --glass-border-light: rgba(255, 255, 255, 0.25); 
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4); 
+            /* 深邃暗网背景与玻璃拟物 */
+            --glass-bg: rgba(13, 14, 21, 0.7); 
+            --glass-border: rgba(0, 240, 255, 0.2); 
+            --glass-border-light: rgba(189, 0, 255, 0.3); 
+            --glass-shadow: 0 0 25px rgba(0, 240, 255, 0.05); 
             
-            --text-main: #f8fafc;
-            --text-muted: #cbd5e1;
-            --accent: #1abc9c; 
-            --accent-glow: rgba(26, 188, 156, 0.6);
-            --nav-bg: rgba(10, 10, 12, 0.5);
-            --overlay-color: rgba(0, 0, 0, 0.6); 
+            /* 赛博朋克霓虹配色 */
+            --text-main: #e2e8f0;
+            --text-muted: #8b9bb4;
+            --accent: #00f0ff;        /* 霓虹青 */
+            --accent-secondary: #bd00ff; /* 霓虹紫 */
+            --accent-glow: rgba(0, 240, 255, 0.6);
+            --gradient-text: linear-gradient(90deg, var(--accent), var(--accent-secondary));
             
-            --recharge: #34d399; 
-            --withdraw: #fb7185; 
-            --warning: #fbbf24;
+            --nav-bg: rgba(10, 11, 16, 0.85);
+            --overlay-color: rgba(6, 7, 10, 0.8); 
+            
+            /* 资金盘配色 */
+            --recharge: #00ffaa; 
+            --withdraw: #ff3366; 
+            --warning: #ffaa00;
         }
 
         body.light-mode {
-            --glass-bg: rgba(255, 255, 255, 0.45); 
-            --glass-border: rgba(255, 255, 255, 0.5); 
-            --glass-border-light: rgba(255, 255, 255, 0.8); 
+            --glass-bg: rgba(255, 255, 255, 0.6); 
+            --glass-border: rgba(189, 0, 255, 0.3); 
+            --glass-border-light: rgba(0, 240, 255, 0.5); 
             --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); 
             
             --text-main: #0f172a; 
             --text-muted: #475569; 
-            --accent: #059669; 
-            --accent-glow: rgba(5, 150, 105, 0.3);
-            --nav-bg: rgba(255, 255, 255, 0.6);
-            --overlay-color: rgba(255, 255, 255, 0.3); 
+            --accent: #bd00ff; 
+            --accent-secondary: #00f0ff;
+            --accent-glow: rgba(189, 0, 255, 0.3);
+            --nav-bg: rgba(255, 255, 255, 0.8);
+            --overlay-color: rgba(255, 255, 255, 0.5); 
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
         
         body { 
             color: var(--text-main); 
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            /* 混搭等宽字体，增加科技感 */
+            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; 
             line-height: 1.6; overflow-x: hidden; 
             transition: color 0.5s ease; 
-            background: transparent; 
+            background: #050505; 
         }
 
+        /* ---------------- 背景：视频 + Web3网格线 ---------------- */
         .video-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; overflow: hidden; background-color: #000; 
         }
-        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: blur(8px) scale(1.05); }
+        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: blur(4px) scale(1.05); opacity: 0.6;}
+        
+        /* 科技网格遮罩 */
         .video-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; background: var(--overlay-color); transition: background 0.5s ease;
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; 
+            background: 
+                linear-gradient(var(--overlay-color), var(--overlay-color)),
+                linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            transition: background 0.5s ease;
         }
 
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(30px); filter: blur(5px); }
+            to { opacity: 1; transform: translateY(0); filter: blur(0); }
         }
 
         /* ---------------- 顶部导航栏 ---------------- */
         nav { 
-            position: fixed; top: 0; width: 100%; padding: 20px 5vw; 
+            position: fixed; top: 0; width: 100%; padding: 15px 5vw; 
             display: flex; justify-content: space-between; align-items: center; 
             background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
             z-index: 1000; border-bottom: 1px solid var(--glass-border); 
-            transition: background-color 0.5s ease, border-color 0.5s ease;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
         }
-        .nav-logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
+        .nav-logo { font-weight: 800; font-size: 1.3rem; letter-spacing: 2px; text-decoration: none; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .nav-links { display: flex; gap: 30px; align-items: center; }
-        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; transition: color 0.3s; font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,0.2);}
-        body.light-mode .nav-links a { text-shadow: none; }
-        .nav-links a:hover { color: var(--accent); }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.9rem; font-family: monospace; text-transform: uppercase; transition: color 0.3s; font-weight: 500;}
+        .nav-links a:hover { color: var(--accent); text-shadow: 0 0 8px var(--accent-glow); }
         
-        .nav-secret { display: flex; align-items: center; gap: 5px; cursor: pointer; font-size: 1.2rem; font-weight: 500; transition: transform 0.3s; }
-        .nav-secret:hover { transform: scale(1.1); }
+        .nav-secret { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 1rem; font-family: monospace; color: var(--accent-secondary); transition: all 0.3s; }
+        .nav-secret:hover { transform: scale(1.1); text-shadow: 0 0 10px var(--accent-secondary); }
 
         /* ---------------- Bento 网格系统 ---------------- */
         .container { max-width: 1200px; margin: 120px auto 40px; padding: 0 5vw; }
@@ -85,176 +101,171 @@
         .bento-card { 
             background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--glass-border); border-top: 1px solid var(--glass-border-light); border-left: 1px solid var(--glass-border-light); 
-            border-radius: 32px; box-shadow: var(--glass-shadow); padding: 40px; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            border-radius: 20px; box-shadow: var(--glass-shadow); padding: 40px; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
             opacity: 0; animation: fadeUp 0.8s ease forwards; position: relative; overflow: hidden;
         }
-        .bento-card:hover { border-color: var(--accent); transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); background: rgba(26, 188, 156, 0.05); }
+        /* 炫酷的悬浮扫描线效果 */
+        .bento-card::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(to bottom, transparent, rgba(0, 240, 255, 0.1), transparent);
+            transform: rotate(45deg) translateY(-100%); transition: transform 0.6s ease; pointer-events: none;
+        }
+        .bento-card:hover::after { transform: rotate(45deg) translateY(100%); }
+        .bento-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.15); }
 
         .bento-card:nth-child(1) { animation-delay: 0.1s; } .bento-card:nth-child(2) { animation-delay: 0.2s; }
         .bento-card:nth-child(3) { animation-delay: 0.3s; } .bento-card:nth-child(4) { animation-delay: 0.4s; }
         .bento-card:nth-child(5) { animation-delay: 0.5s; }
 
-        .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px; transition: color 0.5s; }
-        .card-title::before { content: ''; display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); transition: background 0.5s; }
+        .card-title { font-size: 1.2rem; font-weight: 700; font-family: monospace; margin-bottom: 24px; color: var(--accent); display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;}
+        .card-title::before { content: '/>'; color: var(--accent-secondary); font-weight: bold; }
 
         .card-hero { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 50px 30px; }
-        .hero-avatar { display: block; margin: 0 auto 24px auto; width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.4); transition: transform 0.5s, border-color 0.5s; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
-        .hero-avatar:hover { transform: scale(1.05) rotate(5deg); border-color: var(--accent); }
-        .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s; width: 100%; text-shadow: 0 4px 10px rgba(0,0,0,0.3);}
-        body.light-mode .hero-title { text-shadow: none; }
+        .hero-avatar { display: block; margin: 0 auto 24px auto; width: 140px; height: 140px; border-radius: 30%; object-fit: cover; border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent-glow); transition: all 0.5s; clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%); /* Web3 六边形头像 */ }
+        .hero-avatar:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent-secondary); box-shadow: 0 0 30px rgba(189, 0, 255, 0.6); }
+        .hero-title { font-size: 2.2rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
         
-        /* --- ✨ AI 打字机专属样式 --- */
-        .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s; width: 100%; min-height: 80px; font-family: monospace;}
-        .prompt-highlight { color: var(--accent); font-weight: bold; }
-        .cursor { display: inline-block; width: 8px; height: 1.2em; background-color: var(--accent); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 4px;}
+        .hero-subtitle { color: var(--text-muted); font-size: 1rem; line-height: 1.8; width: 100%; min-height: 80px; font-family: monospace;}
+        .cursor { display: inline-block; width: 10px; height: 1.2em; background-color: var(--accent); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 4px; box-shadow: 0 0 8px var(--accent);}
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         .card-info { grid-column: span 2; display: flex; flex-direction: column; justify-content: space-between;}
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .info-item { color: var(--text-muted); font-size: 0.95rem; transition: color 0.5s;}
-        .info-item strong { color: var(--text-main); display: block; margin-bottom: 4px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.5s;}
+        .info-item { color: var(--text-main); font-size: 0.95rem; font-family: monospace;}
+        .info-item strong { color: var(--text-muted); display: block; margin-bottom: 4px; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;}
 
-        .resume-btn { margin-top: 24px; width: 100%; padding: 14px; background: rgba(26, 188, 156, 0.15); backdrop-filter: blur(10px); color: var(--accent); border: 1px solid var(--accent); border-radius: 16px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .resume-btn:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
+        /* 赛博朋克按钮 */
+        .resume-btn { margin-top: 24px; width: 100%; padding: 14px; background: rgba(0, 240, 255, 0.05); color: var(--accent); border: 1px solid var(--accent); border-radius: 8px; font-size: 0.9rem; font-family: monospace; letter-spacing: 2px; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; position: relative; overflow: hidden;}
+        .resume-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), transparent); transition: left 0.5s; }
+        .resume-btn:hover::before { left: 100%; }
+        .resume-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent-glow); }
 
         .card-skills { grid-column: span 2; }
         .tag-cloud { display: flex; flex-wrap: wrap; gap: 12px; }
-        .tag { padding: 8px 16px; background: rgba(255,255,255,0.05); backdrop-filter: blur(5px); border-radius: 30px; font-size: 0.85rem; color: var(--text-main); border: 1px solid var(--glass-border); transition: all 0.3s; cursor: default; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
-        body.light-mode .tag { background: rgba(0,0,0,0.03); color: var(--text-main); }
-        .tag:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: scale(1.05); }
+        .tag { padding: 6px 14px; background: rgba(189,0,255,0.1); border-radius: 4px; font-size: 0.8rem; font-family: monospace; color: var(--text-main); border: 1px solid var(--glass-border-light); transition: all 0.3s; cursor: default;}
+        body.light-mode .tag { background: rgba(189,0,255,0.05); }
+        .tag:hover { background: var(--accent-secondary); color: #fff; border-color: var(--accent-secondary); transform: translateY(-2px); box-shadow: 0 4px 15px rgba(189,0,255,0.4);}
 
         .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-        .link-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 24px; padding: 28px 20px; text-decoration: none; color: inherit; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); transition: all 0.3s; }
-        .link-card:hover { border-color: var(--accent); background: rgba(26, 188, 156, 0.1); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
-        .link-card h3 { font-size: 1.15rem; margin-bottom: 6px; transition: transform 0.3s, color 0.5s; color: var(--text-main); white-space: nowrap;}
-        .link-card:hover h3 { transform: translateX(8px); color: var(--accent); }
-        .link-card p { color: var(--text-muted); font-size: 0.8rem; transition: color 0.5s; white-space: nowrap;}
-        .link-card .arrow { font-size: 1.3rem; opacity: 0.5; transition: all 0.3s; color: var(--text-main);}
-        .link-card:hover .arrow { opacity: 1; transform: translateX(5px); color: var(--accent); }
+        .link-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 12px; padding: 24px 20px; text-decoration: none; color: inherit; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); transition: all 0.3s; position: relative;}
+        .link-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px; background: var(--gradient-text); opacity: 0; transition: opacity 0.3s;}
+        .link-card:hover::before { opacity: 1; }
+        .link-card:hover { border-color: var(--accent); background: rgba(0, 240, 255, 0.05); transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,240,255,0.1); }
+        .link-card h3 { font-size: 1.1rem; margin-bottom: 4px; color: var(--text-main); white-space: nowrap; font-family: monospace;}
+        .link-card:hover h3 { color: var(--accent); }
+        .link-card p { color: var(--text-muted); font-size: 0.75rem; text-transform: uppercase; white-space: nowrap;}
+        .link-card .arrow { font-size: 1.2rem; color: var(--text-muted); transition: all 0.3s;}
+        .link-card:hover .arrow { transform: translateX(5px); color: var(--accent); }
 
         .card-timeline { grid-column: span 4; }
-        .timeline-item { border-left: 2px solid rgba(255,255,255,0.2); padding-left: 32px; margin-bottom: 40px; position: relative; transition: border-color 0.5s;}
-        body.light-mode .timeline-item { border-left-color: rgba(0,0,0,0.1); }
+        .timeline-item { border-left: 1px dashed var(--glass-border-light); padding-left: 32px; margin-bottom: 40px; position: relative; }
         .timeline-item:last-child { margin-bottom: 0; border-left-color: transparent; }
-        .timeline-item::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        .timeline-item::before { content: '♦'; position: absolute; left: -6px; top: 0; color: var(--accent-secondary); font-size: 1.2rem; line-height: 1; text-shadow: 0 0 10px var(--accent-secondary); background: var(--glass-bg); }
         .tl-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 12px; }
-        .tl-title { font-size: 1.2rem; font-weight: 600; color: var(--text-main); transition: color 0.5s;}
-        .tl-role { color: var(--accent); margin-left: 10px; font-size: 1rem; transition: color 0.5s;}
-        .tl-date { color: var(--text-main); opacity: 0.7; font-size: 0.9rem; font-family: monospace; transition: color 0.5s;}
-        .tl-body { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; transition: color 0.5s;}
+        .tl-title { font-size: 1.1rem; font-weight: 700; color: var(--text-main); }
+        .tl-role { color: var(--accent); margin-left: 10px; font-size: 0.95rem; font-family: monospace;}
+        .tl-date { color: var(--accent-secondary); font-size: 0.85rem; font-family: monospace; border: 1px solid rgba(189,0,255,0.3); padding: 2px 8px; border-radius: 4px; background: rgba(189,0,255,0.1);}
+        .tl-body { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; }
 
-        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; margin-top: 80px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        body.light-mode footer { text-shadow: none; }
+        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.8rem; font-family: monospace; margin-top: 80px; text-transform: uppercase; letter-spacing: 1px;}
 
         /* --- 简历图片灯箱 --- */
-        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; overflow: auto; touch-action: pinch-zoom pan-y pan-x;}
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; overflow: auto;}
         .lightbox.active { opacity: 1; pointer-events: auto; }
-        .lightbox img { max-width: 100vw; max-height: 100vh; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); object-fit: contain; }
+        .lightbox img { max-width: 100vw; max-height: 100vh; border: 1px solid var(--accent); box-shadow: 0 0 30px rgba(0,240,255,0.2); transform: scale(0.95); transition: transform 0.4s; object-fit: contain; }
         .lightbox.active img { transform: scale(1); }
-        .lightbox-close { position: fixed; top: 30px; right: 40px; color: rgba(255,255,255,0.6); font-size: 40px; cursor: pointer; transition: color 0.3s; font-weight: 300; z-index: 10001; }
-        .lightbox-close:hover { color: #fff; transform: scale(1.1); }
+        .lightbox-close { position: fixed; top: 30px; right: 40px; color: var(--accent); font-family: monospace; font-size: 30px; cursor: pointer; transition: all 0.3s; z-index: 10001; }
+        .lightbox-close:hover { color: #fff; text-shadow: 0 0 10px var(--accent); }
 
-        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); color: var(--text-main); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--glass-shadow); z-index: 9999; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent); color: var(--accent); }
-
-        /* ================= ✨ 密码弹窗样式 ================= */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 10001; align-items: center; justify-content: center; }
-        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); color: var(--text-main); padding: 40px 30px; border-radius: 24px; width: 90%; max-width: 380px; text-align: center; animation: fadeUp 0.3s ease forwards; }
-        .modal-content h3 { margin-top: 0; margin-bottom: 24px; font-size: 1.3rem; }
-        .modal-content input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 1rem; outline: none; transition: border-color 0.3s; text-align: center; letter-spacing: 2px; }
-        body.light-mode .modal-content input { background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.1); }
-        .modal-content input:focus { border-color: var(--accent); }
+        /* ================= ✨ 密码弹窗 ================= */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); z-index: 10001; align-items: center; justify-content: center; }
+        .modal-content { background: var(--glass-bg); border: 1px solid var(--accent-secondary); box-shadow: 0 0 30px rgba(189,0,255,0.2); color: var(--text-main); padding: 40px 30px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; animation: fadeUp 0.3s ease forwards; position: relative;}
+        .modal-content h3 { margin-top: 10px; margin-bottom: 10px; font-size: 1.5rem; font-family: monospace; color: var(--accent);}
+        .modal-content input { width: 100%; padding: 14px; border-radius: 4px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.5); color: var(--accent); font-family: monospace; font-size: 1.2rem; outline: none; transition: border-color 0.3s; text-align: center; letter-spacing: 5px; }
+        .modal-content input:focus { border-color: var(--accent); box-shadow: inset 0 0 10px rgba(0,240,255,0.2); }
         .modal-actions { margin-top: 25px; display: flex; gap: 15px; }
-        .modal-actions button { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: 0.2s; backdrop-filter: blur(5px); }
-        .btn-cancel { background: rgba(255,255,255,0.1); color: var(--text-main); border: 1px solid var(--glass-border); }
-        body.light-mode .btn-cancel { background: rgba(0,0,0,0.05); }
-        .btn-confirm { background: var(--accent); color: #fff; }
+        .modal-actions button { flex: 1; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.9rem; transition: 0.2s; }
+        .btn-cancel { background: transparent; color: var(--text-muted); border: 1px solid var(--text-muted); }
+        .btn-confirm { background: var(--accent-secondary); color: #fff; box-shadow: 0 0 15px rgba(189,0,255,0.4); }
+        .btn-confirm:hover { background: #d633ff; }
 
-        /* ================= ✨ 私密账本 UI ================= */
+        /* ================= ✨ 私密账本 ================= */
         #privateSection { display: none; animation: fadeUp 0.8s ease forwards; }
-        .secret-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
-        .secret-header h2 { font-size: 1.5rem; color: var(--accent); text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
-        body.light-mode .secret-header h2 { text-shadow: none; }
+        .secret-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid var(--glass-border); padding-bottom: 15px;}
+        .secret-header h2 { font-size: 1.5rem; font-family: monospace; background: var(--gradient-text); -webkit-background-clip: text; -webkit-text-fill-color: transparent;}
         .data-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn-data { background: var(--glass-bg); backdrop-filter: blur(10px); color: var(--text-main); border: 1px solid var(--glass-border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
-        .btn-data:hover { border-color: var(--accent); color: var(--accent); }
-        .btn-close-sec { background: rgba(239, 68, 68, 0.2); color: var(--withdraw); border-color: transparent; }
-        .btn-close-sec:hover { background: var(--withdraw); color: white; }
+        .btn-data { background: transparent; color: var(--accent); border: 1px solid var(--accent); padding: 6px 12px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+        .btn-data:hover { background: rgba(0,240,255,0.1); box-shadow: 0 0 10px var(--accent-glow); }
+        .btn-close-sec { border-color: var(--withdraw); color: var(--withdraw); }
+        .btn-close-sec:hover { background: rgba(255,51,102,0.1); box-shadow: 0 0 10px rgba(255,51,102,0.4); }
 
         .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
-        .stat-card { background: var(--glass-bg); backdrop-filter: blur(16px); padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); text-align: center; transition: transform 0.3s; }
-        .stat-card:hover { transform: translateY(-3px); border-color: var(--accent); }
-        .stat-card h3 { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
-        .stat-card .amount { font-size: 1.6rem; font-weight: bold; }
-        .stat-recharge .amount { color: var(--recharge); text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);}
-        .stat-withdraw .amount { color: var(--withdraw); text-shadow: 0 0 10px rgba(251, 113, 133, 0.4);}
-        .stat-balance .amount { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow);}
+        .stat-card { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; border: 1px solid var(--glass-border); border-left: 4px solid var(--accent); box-shadow: var(--glass-shadow); text-align: left; }
+        .stat-card h3 { font-size: 0.75rem; color: var(--text-muted); font-family: monospace; margin-bottom: 8px; }
+        .stat-card .amount { font-size: 1.8rem; font-family: monospace; font-weight: bold; }
+        .stat-recharge { border-left-color: var(--recharge); }
+        .stat-recharge .amount { color: var(--recharge); }
+        .stat-withdraw { border-left-color: var(--withdraw); }
+        .stat-withdraw .amount { color: var(--withdraw); }
+        .stat-balance { border-left-color: var(--accent-secondary); }
+        .stat-balance .amount { color: var(--accent-secondary); text-shadow: 0 0 10px rgba(189,0,255,0.5);}
 
-        .input-section { background: var(--glass-bg); backdrop-filter: blur(16px); padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); margin-bottom: 30px; position: relative; }
+        .input-section { background: rgba(0,0,0,0.4); padding: 20px; border-radius: 8px; border: 1px solid var(--glass-border); margin-bottom: 30px; }
         .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; align-items: flex-end; margin-bottom: 15px; }
         .form-group { display: flex; flex-direction: column; }
-        .form-group label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
-        .form-group input, .form-group select { padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 1rem; outline: none; }
-        body.light-mode .form-group input, body.light-mode .form-group select { background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.1); }
-        .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
-        .btn-add { background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; width: 100%; box-shadow: 0 4px 15px var(--accent-glow);}
+        .form-group label { font-size: 0.75rem; font-family: monospace; color: var(--accent); margin-bottom: 5px; }
+        .form-group input, .form-group select { padding: 10px; border-radius: 4px; border: 1px solid var(--glass-border); background: rgba(0,0,0,0.6); color: var(--text-main); font-family: monospace; font-size: 1rem; outline: none; }
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent-secondary); box-shadow: inset 0 0 5px rgba(189,0,255,0.3); }
+        .btn-add { background: var(--accent-secondary); color: white; border: none; padding: 12px 24px; border-radius: 4px; font-family: monospace; font-size: 1rem; cursor: pointer; transition: 0.2s; width: 100%;}
+        .btn-add:hover { box-shadow: 0 0 15px rgba(189,0,255,0.6); }
 
-        .history-section { background: var(--glass-bg); backdrop-filter: blur(16px); border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); overflow: hidden; overflow-x: auto; }
-        .history-header { padding: 15px 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
-        body.light-mode .history-header { background: rgba(255,255,255,0.2); }
-        .btn-clear { background: transparent; color: var(--text-muted); border: 1px solid var(--glass-border); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
-        .btn-clear:hover { border-color: var(--withdraw); color: var(--withdraw); }
+        .history-section { background: rgba(0,0,0,0.4); border-radius: 8px; border: 1px solid var(--glass-border); overflow: hidden; overflow-x: auto; }
+        .history-header { padding: 15px 20px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
+        .btn-clear { background: transparent; color: var(--withdraw); border: 1px dashed var(--withdraw); padding: 4px 10px; border-radius: 4px; cursor: pointer; font-family: monospace; font-size: 0.75rem; }
 
-        .ledger-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        .ledger-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; font-family: monospace;}
         .ledger-table th, .ledger-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        body.light-mode .ledger-table th, body.light-mode .ledger-table td { border-bottom-color: rgba(0,0,0,0.05); }
-        .ledger-table th { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
-        .ledger-table td { white-space: nowrap; font-size: 0.95rem; }
-        .ledger-table tr:hover { background: rgba(255,255,255,0.05); }
-        body.light-mode .ledger-table tr:hover { background: rgba(0,0,0,0.02); }
+        .ledger-table th { color: var(--accent); font-weight: normal; font-size: 0.8rem; }
+        .ledger-table td { font-size: 0.95rem; }
+        .ledger-table tr:hover { background: rgba(0,240,255,0.05); }
 
-        .type-recharge { color: var(--recharge); font-weight: bold; }
-        .type-withdraw { color: var(--withdraw); font-weight: bold; }
-        .bal-text { color: var(--warning); font-family: monospace; font-size: 1.05rem; }
-        .btn-delete { background: rgba(239, 68, 68, 0.15); color: var(--withdraw); border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
-        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+        .type-recharge { color: var(--recharge); }
+        .type-withdraw { color: var(--withdraw); }
+        .bal-text { color: var(--text-main); }
+        .btn-delete { background: transparent; color: var(--withdraw); border: 1px solid var(--withdraw); padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; font-family: monospace;}
 
-        /* 计算器 */
+        /* --- 主题切换按钮 --- */
+        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 45px; height: 45px; border-radius: 8px; background: rgba(0,0,0,0.6); border: 1px solid var(--accent); color: var(--accent); font-size: 1.2rem; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 9999; transition: all 0.3s; font-family: monospace;}
+        .theme-toggle-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 15px var(--accent-glow); transform: translateY(-3px);}
+
+        /* --- 计算器 --- */
         .calculator-widget {
-            display: none; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 16px;
-            padding: 20px; margin-bottom: 20px; width: 100%; max-width: 350px; margin-left: auto; margin-right: auto; box-shadow: var(--glass-shadow);
+            display: none; background: rgba(10,10,15,0.95); border: 1px solid var(--accent-secondary); border-radius: 8px;
+            padding: 20px; margin-bottom: 20px; width: 100%; max-width: 350px; margin-left: auto; margin-right: auto; box-shadow: 0 0 30px rgba(189,0,255,0.2);
             animation: fadeUp 0.3s ease forwards;
         }
-        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem; }
+        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--accent-secondary); font-family: monospace; font-size: 0.85rem; }
         .calc-screen {
-            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+            background: #000; border: 1px solid rgba(255,255,255,0.1); border-radius: 4px;
             padding: 15px; font-size: 1.8rem; text-align: right; margin-bottom: 15px;
-            color: var(--text-main); font-family: monospace; overflow-x: auto; white-space: nowrap;
+            color: var(--accent); font-family: monospace; overflow-x: auto; white-space: nowrap;
         }
-        body.light-mode .calc-screen { background: rgba(255,255,255,0.6); border-color: rgba(0,0,0,0.1); }
         .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
         .calc-btn {
             background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid rgba(255,255,255,0.1);
-            padding: 15px 0; border-radius: 8px; font-size: 1.2rem; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px);
+            padding: 15px 0; border-radius: 4px; font-family: monospace; font-size: 1.2rem; cursor: pointer; transition: 0.2s;
         }
-        body.light-mode .calc-btn { background: rgba(255,255,255,0.5); border-color: rgba(0,0,0,0.1); }
-        .calc-btn:hover { background: rgba(255,255,255,0.15); }
-        body.light-mode .calc-btn:hover { background: #fff; }
-        .calc-btn:active { transform: scale(0.95); }
-        .calc-btn.operator { color: var(--accent); font-weight: bold; font-size: 1.4rem; }
-        .calc-btn.equal { background: var(--accent); color: white; grid-column: span 2; border-color: var(--accent); box-shadow: 0 4px 15px var(--accent-glow);}
-        .calc-btn.clear { color: var(--withdraw); font-weight: bold; }
+        .calc-btn:hover { background: rgba(189,0,255,0.2); border-color: var(--accent-secondary); color: var(--accent-secondary);}
+        .calc-btn.operator { color: var(--accent); }
+        .calc-btn.equal { background: rgba(0,240,255,0.2); color: var(--accent); grid-column: span 2; border-color: var(--accent); }
+        .calc-btn.clear { color: var(--withdraw); }
 
-        @media (max-width: 1100px) { .portfolio-links { grid-template-columns: repeat(2, 1fr); } }
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; } 
             .card-hero, .card-info, .card-skills, .portfolio-links, .card-timeline { grid-column: span 1; } 
             .portfolio-links { grid-template-columns: 1fr; } 
             .nav-links { display: none; } 
             .info-grid { grid-template-columns: 1fr; }
-            .bento-card { padding: 30px 20px; border-radius: 24px; }
-            .theme-toggle-btn { bottom: 20px; right: 20px; } 
-            .lightbox-close { top: 15px; right: 20px; }
             .dashboard { grid-template-columns: 1fr; }
             .secret-header { flex-direction: column; align-items: flex-start; }
             .data-actions { width: 100%; justify-content: flex-start; }
@@ -278,9 +289,8 @@
                 <a href="my graphic design.html">Graphic</a>
                 <a href="3d model.html">3D Art</a>
                 <a href="my vedio.html">Video</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
             </div>
-            <a class="nav-secret" onclick="openPasswordModal()" title="Secret Area" style="font-size: 1.2rem;">🔒</a>
+            <a class="nav-secret" onclick="openPasswordModal()" title="Access Vault">🔒 隐藏区域</a>
         </div>
     </nav>
 
@@ -311,21 +321,21 @@
             <div class="bento-card card-skills">
                 <h2 class="card-title">Tech Stack</h2>
                 <div class="tag-cloud">
-                    <span class="tag">Photoshop</span> <span class="tag">Illustrator</span> <span class="tag">After Effects</span>
-                    <span class="tag">Premiere Pro</span> <span class="tag">Blender / 3D Modeling</span>
-                    <span class="tag">ComfyUI/ 即梦 / 可灵 /sora</span> <span class="tag">Trapcode Form</span>
+                    <span class="tag">PS/AI</span> <span class="tag">After Effects</span>
+                    <span class="tag">Premiere Pro</span> <span class="tag">Blender (3D)</span>
+                    <span class="tag">ComfyUI</span> <span class="tag">Sora / Kling</span> <span class="tag">Trapcode</span>
                 </div>
             </div>
 
             <div class="portfolio-links">
                 <a href="数据分析/Data Analysis.html" class="link-card">
-                    <div><h3>数据分析</h3><p>Data Analysis</p></div><span class="arrow">→</span>
+                    <div><h3>数据分析</h3><p>Data Analysis</p></div><span class="arrow">></span>
                 </a>
-                <a href="my graphic design.html" class="link-card"><div><h3>平面设计</h3><p>Graphic Design</p></div><span class="arrow">→</span></a>
-                <a href="3d model.html" class="link-card"><div><h3>3D 建模</h3><p>Models & Art</p></div><span class="arrow">→</span></a>
-                <a href="my vedio.html" class="link-card"><div><h3>视频设计</h3><p>Video Design</p></div><span class="arrow">→</span></a>
+                <a href="my graphic design.html" class="link-card"><div><h3>平面设计</h3><p>Graphic Design</p></div><span class="arrow">></span></a>
+                <a href="3d model.html" class="link-card"><div><h3>3D 建模</h3><p>Models & Art</p></div><span class="arrow">></span></a>
+                <a href="my vedio.html" class="link-card"><div><h3>视频设计</h3><p>Video Design</p></div><span class="arrow">></span></a>
                 <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" class="link-card">
-                    <div><h3>摄影合集</h3><p>Photography (500px)</p></div><span class="arrow arrow-external">↗</span>
+                    <div><h3>摄影合集</h3><p>Photography (500px)</p></div><span class="arrow">↗</span>
                 </a>
             </div>
 
@@ -334,33 +344,33 @@
                 
                 <div class="timeline-item">
                     <div class="tl-header">
-                        <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">广告视频制作</span></div>
+                        <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">// 广告视频制作</span></div>
                         <div class="tl-date">2024.07 - Present</div>
                     </div>
                     <div class="tl-body">
                         <div style="margin-bottom: 12px;">
-                            <strong style="color: var(--text-main);">爆款内容矩阵与裂变机制打造（创意与增长）：</strong>
-                            基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top 1 爆款视频（单条消耗超 22 万元，付费贡献占比达 26.9%）。通过抽帧去重、重组开头 Hook 与 BGM，建立“素材裂变迭代机制”，成功衍生出消耗 9.5 万与 8.5 万的头部视频，主导的年度短视频累计消耗达 153 万元。
+                            <strong style="color: var(--accent-secondary);">爆款内容矩阵与裂变机制打造（创意与增长）：</strong><br>
+                            基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top 1 爆款视频（单条消耗超 22 万元，付费贡献占比达 26.9%）。通过抽帧去重、重组开头 Hook 与 BGM，建立“素材裂变迭代机制”，衍生出消耗 9.5 万与 8.5 万的头部视频，年度短视频累计消耗达 153 万元。
                         </div>
                         <div style="margin-bottom: 12px;">
-                            <strong style="color: var(--text-main);">海外市场买量体系与社群引流（数据驱动）：</strong>
-                            统筹海外 App (Frameit) 的跨终端广告素材投放，搭建完整的素材效果评估体系。一年内助力 7 个海外账户实现 24.5 万+ 美元消耗，获取 16.7 万+ 新增装机量及 5700+ 付费转化。同时通过高互动性内容策划，推动官方 Instagram 社群自然涨粉至 4.8 万。
+                            <strong style="color: var(--accent-secondary);">海外市场买量体系与社群引流（数据驱动）：</strong><br>
+                            统筹海外 App (Frameit) 跨终端广告素材投放。一年内助力 7 个海外账户实现 24.5 万+ 美元消耗，获取 16.7 万+ 新增装机及 5700+ 付费转化。推动官方 Instagram 社群自然涨粉至 4.8 万。
                         </div>
                         <div>
-                            <strong style="color: var(--text-main);">基于 ROI 的增长模型调优（机制打法）：</strong>
-                            建立严谨的视频淘汰与优化机制，对低效素材果断缩减预算，将 70% 资源向高转化（1.2%）的核心品类（加画框-书法美化）倾斜；针对“高点击率 (2.54%)、低转化”的素材，通过优化结尾转化钩子 (Call to Action)，实现单点 ROI 提升 15%，整体年度投放效率提升 20%。
+                            <strong style="color: var(--accent-secondary);">基于 ROI 的增长模型调优（机制打法）：</strong><br>
+                            建立视频淘汰机制，资源向高转化（1.2%）品类倾斜；优化结尾转化钩子 (CTA)，实现单点 ROI 提升 15%，整体年度投放效率提升 20%。
                         </div>
                     </div>
                 </div>
 
                 <div class="timeline-item">
-                    <div class="tl-header"><div class="tl-title">广州天游网络 / 广州博冠信息 <span class="tl-role">游戏买量视频制作</span></div><div class="tl-date">2023.12 - 2024.06</div></div>
-                    <div class="tl-body">制作网易游戏《率土之滨》《大话西游》及海外发行游戏《三国云梦录》等的买量广告视频与后期包装。</div>
+                    <div class="tl-header"><div class="tl-title">广州天游网络 / 广州博冠信息 <span class="tl-role">// 游戏买量视频制作</span></div><div class="tl-date">2023.12 - 2024.06</div></div>
+                    <div class="tl-body">制作网易游戏《率土之滨》《大话西游》及海外发行游戏《三国云梦录》买量广告视频与后期包装。</div>
                 </div>
 
                 <div class="timeline-item">
-                    <div class="tl-header"><div class="tl-title">Mobvista（甲方） <span class="tl-role">品牌设计</span></div><div class="tl-date">2023.09 - 2023.12</div></div>
-                    <div class="tl-body">使用 Illustrator、AE 根据风格和要求制作海报、KV、PPT 及印刷品。负责图文内容的调整排版、视频修改，以及品牌 GIF 图片动效的制作。</div>
+                    <div class="tl-header"><div class="tl-title">Mobvista（甲方） <span class="tl-role">// 品牌设计</span></div><div class="tl-date">2023.09 - 2023.12</div></div>
+                    <div class="tl-body">使用 PS/AI/AE 根据风格要求制作海报、KV、PPT 及印刷品。负责图文内容的调整排版、视频修改及品牌 GIF 动效制作。</div>
                 </div>
 
             </div>
@@ -387,7 +397,7 @@
             <div class="calculator-widget" id="calculatorWidget">
                 <div class="calc-header">
                     <span>快捷计算器</span>
-                    <span style="cursor:pointer; font-size:1.2rem;" onclick="toggleCalculator()" title="关闭">✖</span>
+                    <span style="cursor:pointer;" onclick="toggleCalculator()" title="关闭">[x]</span>
                 </div>
                 <div class="calc-screen" id="calcScreen">0</div>
                 <div class="calc-keys">
@@ -433,7 +443,7 @@
 
             <div class="history-section">
                 <div class="history-header">
-                    <h3 style="font-size:1.1rem; color:var(--text-main);">📜 历史明细</h3>
+                    <h3 style="font-size:1rem; color:var(--accent); font-family: monospace;">📜 历史明细</h3>
                     <button class="btn-clear" onclick="clearAll()">清空全部</button>
                 </div>
                 <table class="ledger-table">
@@ -451,16 +461,16 @@
     </footer>
 
     <div class="lightbox" id="lightbox">
-        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <span class="lightbox-close" id="lightbox-close">[X]</span>
         <img src="2026_3.jpg" alt="详细简历图" id="lightbox-img">
     </div>
 
     <div id="passwordModal" class="modal-overlay">
         <div class="modal-content">
             <h3>🔒 Restricted Area</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">请输入访问密码</p>
-            <input type="password" id="pwdInput" placeholder="Password..." onkeypress="handleEnter(event)">
-            <p id="errorMsg" style="color: #ef4444; font-size: 0.85rem; display: none; margin-top: 10px;">密码错误，请重试！</p>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; font-family: monospace;">请输入访问密码</p>
+            <input type="password" id="pwdInput" placeholder="••••" onkeypress="handleEnter(event)">
+            <p id="errorMsg" style="color: #ff3366; font-size: 0.8rem; font-family:monospace; display: none; margin-top: 10px;">密码错误，请重试！</p>
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closePasswordModal()">取消</button>
                 <button class="btn-confirm" onclick="checkPassword()">解锁进入</button>
@@ -468,7 +478,7 @@
         </div>
     </div>
 
-    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">☀️</button>
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">L/D</button>
 
     <script>
         const themeBtn = document.getElementById('themeBtn');
@@ -476,7 +486,6 @@
 
         themeBtn.addEventListener('click', () => {
             body.classList.toggle('light-mode');
-            themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️';
         });
 
         const viewResumeBtn = document.getElementById('viewResumeBtn');
@@ -485,11 +494,12 @@
 
         viewResumeBtn.addEventListener('click', () => {
             lightbox.classList.add('active');
-            document.body.style.overflow = 'auto'; // 允许双指缩放
+            document.body.style.overflow = 'hidden'; 
         });
         lightbox.addEventListener('click', (e) => {
             if (e.target !== lightboxImg) {
                 lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
             }
         });
 
@@ -565,7 +575,7 @@
                 calcExpression = result.toString();
                 updateCalcScreen();
             } catch(e) {
-                document.getElementById('calcScreen').innerText = "Error";
+                document.getElementById('calcScreen').innerText = "ERR";
                 calcExpression = "";
             }
         }
@@ -577,15 +587,13 @@
 
         const initialLedgerData = [
             { id: 101, timestamp: new Date("2026-03-23T08:46").getTime(), date: "2026-03-23", time: "08:46", type: "withdraw", amount: 34.68, availBal: 0, walletBal: 0 },
-            { id: 102, timestamp: new Date("2026-03-18T03:23").getTime(), date: "2026-03-18", time: "03:23", type: "recharge", amount: 83.84, availBal: 0, walletBal: 0 },
-            { id: 103, timestamp: new Date("2026-03-17T16:00").getTime(), date: "2026-03-17", time: "16:00", type: "withdraw", amount: 100.00, availBal: 0, walletBal: 0 },
-            { id: 104, timestamp: new Date("2026-03-11T09:09").getTime(), date: "2026-03-11", time: "09:09", type: "recharge", amount: 49.98, availBal: 0, walletBal: 0 }
+            { id: 102, timestamp: new Date("2026-03-18T03:23").getTime(), date: "2026-03-18", time: "03:23", type: "recharge", amount: 83.84, availBal: 0, walletBal: 0 }
         ];
 
-        let records = JSON.parse(localStorage.getItem('ledgerData_v5'));
+        let records = JSON.parse(localStorage.getItem('ledgerData_web3'));
         if (!records || records.length === 0) {
             records = initialLedgerData;
-            localStorage.setItem('ledgerData_v5', JSON.stringify(records));
+            localStorage.setItem('ledgerData_web3', JSON.stringify(records));
         }
 
         function setDefaultDateTime() {
@@ -600,7 +608,7 @@
             tbody.innerHTML = '';
 
             if (records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="empty-state">暂无记录，请在上方添加</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--text-muted);">暂无记录</td></tr>`;
             } else {
                 const sortedRecords = [...records].sort((a, b) => b.timestamp - a.timestamp);
                 sortedRecords.forEach(record => {
@@ -614,10 +622,10 @@
 
                     tr.innerHTML = `
                         <td>${record.date} ${record.time}</td>
-                        <td class="${typeClass}">${typeText}</td>
+                        <td class="${typeClass}">[${typeText}]</td>
                         <td class="${typeClass}">${sign} ${record.amount.toFixed(2)}</td>
-                        <td class="bal-text">${record.availBal > 0 ? record.availBal.toFixed(2) : '-'}</td>
-                        <td class="bal-text">${record.walletBal > 0 ? record.walletBal.toFixed(2) : '-'}</td>
+                        <td class="bal-text">${record.availBal > 0 ? record.availBal.toFixed(2) : 'N/A'}</td>
+                        <td class="bal-text">${record.walletBal > 0 ? record.walletBal.toFixed(2) : 'N/A'}</td>
                         <td><button class="btn-delete" onclick="deleteRecord(${record.id})">删除</button></td>
                     `;
                     tbody.appendChild(tr);
@@ -627,7 +635,7 @@
             document.getElementById('totalRecharge').innerText = totalRecharge.toFixed(2);
             document.getElementById('totalWithdraw').innerText = totalWithdraw.toFixed(2);
             document.getElementById('netBalance').innerText = (totalRecharge - totalWithdraw).toFixed(2);
-            localStorage.setItem('ledgerData_v5', JSON.stringify(records));
+            localStorage.setItem('ledgerData_web3', JSON.stringify(records));
         }
 
         function addRecord() {
@@ -666,7 +674,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `ledger_backup_${new Date().toISOString().split('T')[0]}.json`;
+            a.download = `ledger_export_${new Date().toISOString().split('T')[0]}.json`;
             document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
         }
 
@@ -688,7 +696,7 @@
 
         window.onload = () => { updateUI(); };
 
-        // ================= ✨ 专属定制：AI 打字机特效 =================
+        // ================= ✨ AI 打字机特效 =================
         const promptText = "/imagine prompt: 一名精通平面设计、3D建模与视频动效的视觉设计师。正将天马行空的创意转化为极具冲击力的数字作品，赛博朋克风格，8k分辨率，超高细节 --ar 16:9 🚀";
         const subtitleElement = document.getElementById('ai-prompt-text');
         let i = 0;
@@ -697,14 +705,14 @@
             if (i < promptText.length) {
                 subtitleElement.innerHTML += promptText.charAt(i);
                 i++;
-                setTimeout(typeWriter, 50); // 调整打字速度，数字越小越快
+                setTimeout(typeWriter, 30); // 打字速度
             } else {
                 subtitleElement.innerHTML += '<span class="cursor"></span>';
             }
         }
-        setTimeout(typeWriter, 1000); // 页面加载后延迟 1 秒启动
+        setTimeout(typeWriter, 800); 
 
-        // ================= ✨ 专属定制：Pudgy Penguins 键盘彩蛋 =================
+        // ================= ✨ Pudgy Penguins 键盘彩蛋 =================
         let secretCode = ['p', 'u', 'd', 'g', 'y'];
         let inputCode = [];
 
@@ -719,23 +727,22 @@
 
         function triggerPenguinEasterEgg() {
             const penguin = document.createElement('div');
-            penguin.innerHTML = '🐧'; // 掉落一只可爱的胖企鹅
+            penguin.innerHTML = '🐧'; 
             penguin.style.position = 'fixed';
             penguin.style.top = '-100px';
             penguin.style.left = Math.random() * (window.innerWidth - 100) + 'px';
             penguin.style.fontSize = '80px';
             penguin.style.zIndex = '10000';
+            penguin.style.filter = 'drop-shadow(0 0 20px #00f0ff)';
             penguin.style.transition = 'top 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 2.5s';
-            penguin.style.pointerEvents = 'none'; // 防止遮挡鼠标点击
+            penguin.style.pointerEvents = 'none'; 
             document.body.appendChild(penguin);
 
-            // 触发掉落和旋转动画
             setTimeout(() => {
                 penguin.style.top = window.innerHeight + 100 + 'px';
                 penguin.style.transform = 'rotate(720deg)';
             }, 50);
 
-            // 动画结束后清理 DOM 元素，防止网页卡顿
             setTimeout(() => {
                 document.body.removeChild(penguin);
             }, 2600);
