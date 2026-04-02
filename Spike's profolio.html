@@ -1,718 +1,689 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rhodes Island Archive // Clarence Ye</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        /* ================= 明日方舟 (罗德岛制式) 核心变量 ================= */
-        :root {
-            /* 工业暗灰/黑背景 */
-            --ak-bg-main: #121212; 
-            --ak-bg-panel: #1a1a1a; 
-            --ak-bg-panel-light: #252525; 
-            
-            /* 明日方舟 UI 配色 */
-            --ak-text-main: #ffffff; /* 高亮白 */
-            --ak-text-muted: #c0c0c0; /* 灰白标签文案 */
-            --ak-accent-info: #00d8ff; /* 罗德岛信息蓝/青 */
-            --ak-accent-warn: #f5a623; /* 源石橙/警示黄色 */
-            --ak-border: #333333; /* 工业钢边框 */
-            --ak-border-active: #00d8ff; /* 激活态霓虹边框 */
-            
-            /* 资金记录配色 */
-            --recharge: #00ffaa; 
-            --withdraw: #ff3366; 
-            --warning: #ffaa00;
-        }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clarence Ye | Visual Designer</title>
+    <style>
+        /* ================= 核心变量 ================= */
+        :root {
+            --glass-bg: rgba(20, 20, 25, 0.45); 
+            --glass-border: rgba(255, 255, 255, 0.1); 
+            --glass-border-light: rgba(255, 255, 255, 0.25); 
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4); 
+            
+            --text-main: #f8fafc;
+            --text-muted: #cbd5e1;
+            --accent: #1abc9c; 
+            --accent-glow: rgba(26, 188, 156, 0.6);
+            --nav-bg: rgba(10, 10, 12, 0.5);
+            --overlay-color: rgba(0, 0, 0, 0.6); 
+            
+            --recharge: #34d399; 
+            --withdraw: #fb7185; 
+            --warning: #fbbf24;
+        }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        
-        body { 
-            color: var(--ak-text-main); 
-            /* 混搭高科技感的字体 */
-            font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace; 
-            line-height: 1.6; overflow-x: hidden; 
-            transition: color 0.5s ease; 
-            background: #050505; /* 纯黑底色 */
-        }
+        body.light-mode {
+            --glass-bg: rgba(255, 255, 255, 0.45); 
+            --glass-border: rgba(255, 255, 255, 0.5); 
+            --glass-border-light: rgba(255, 255, 255, 0.8); 
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15); 
+            
+            --text-main: #0f172a; 
+            --text-muted: #475569; 
+            --accent: #059669; 
+            --accent-glow: rgba(5, 150, 105, 0.3);
+            --nav-bg: rgba(255, 255, 255, 0.6);
+            --overlay-color: rgba(255, 255, 255, 0.3); 
+        }
 
-        /* ---------------- 背景：视频 + 罗德岛扫描网格 ---------------- */
-        .video-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; overflow: hidden; background-color: #000; 
-        }
-        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: blur(4px) grayscale(100%) contrast(150%) brightness(50%); opacity: 0.6;}
-        
-        /* 工业网格遮罩 */
-        .video-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; 
-            background: 
-                linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)),
-                linear-gradient(rgba(0,216,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,216,255,0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 4px 4px, 4px 4px; /* 极细网格 */
-            transition: background 0.5s ease;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            color: var(--text-main); 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            line-height: 1.6; overflow-x: hidden; 
+            transition: color 0.5s ease; 
+            background: transparent; 
+        }
 
-     @keyframes fadeUpAK {
-            from { opacity: 0; transform: translateY(20px); filter: blur(3px); }
-            to { opacity: 1; transform: translateY(0); filter: blur(0); }
-        }
-        }
+        .video-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; overflow: hidden; background-color: #000; 
+        }
+        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: blur(8px) scale(1.05); }
+        .video-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; background: var(--overlay-color); transition: background 0.5s ease;
+        }
 
-        /* ---------------- 顶部导航栏 ---------------- */
-        nav { 
-            position: fixed; top: 0; width: 100%; padding: 10px 5vw; 
-            display: flex; justify-content: space-between; align-items: center; 
-            background-color: rgba(18, 18, 18, 0.95); backdrop-filter: blur(10px); 
-            z-index: 1000; border-bottom: 2px solid var(--ak-border); 
-        }
-        .nav-logo { font-weight: 800; font-size: 1.2rem; letter-spacing: 2px; text-decoration: none; color: #fff; font-family: monospace; border: 1px solid var(--ak-border-active); padding: 5px 15px; }
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .nav-links a { color: var(--ak-text-main); text-decoration: none; font-size: 0.85rem; font-family: monospace; text-transform: uppercase; transition: color 0.3s; font-weight: 500;}
-        .nav-links a:hover { color: var(--ak-accent-info); text-shadow: 0 0 5px var(--ak-accent-info); }
-        
-        .nav-secret { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; font-family: monospace; color: var(--ak-accent-warn); border: 1px solid var(--ak-accent-warn); padding: 4px 10px; transition: all 0.3s; }
-        .nav-secret:hover { background: var(--ak-accent-warn); color: #000; box-shadow: 0 0 10px rgba(245, 166, 35, 0.6); }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-        /* ---------------- Bento 网格系统 ---------------- */
-        .container { max-width: 1200px; margin: 100px auto 40px; padding: 0 5vw; }
-        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; auto-rows: minmax(min-content, max-content); transition: opacity 0.3s; }
+        /* ---------------- 顶部导航栏 ---------------- */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 20px 5vw; 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+            z-index: 1000; border-bottom: 1px solid var(--glass-border); 
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+        }
+        .nav-logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; transition: color 0.3s; font-weight: 500; text-shadow: 0 2px 4px rgba(0,0,0,0.2);}
+        body.light-mode .nav-links a { text-shadow: none; }
+        .nav-links a:hover { color: var(--accent); }
+        
+        .nav-secret { display: flex; align-items: center; gap: 5px; cursor: pointer; font-size: 1.2rem; font-weight: 500; transition: transform 0.3s; }
+        .nav-secret:hover { transform: scale(1.1); }
 
-        .bento-card { 
-            background: var(--ak-bg-panel); border: 2px solid var(--ak-border); border-radius: 4px; /* 直角技术风 */
-            box-shadow: 0 4px 10px rgba(0,0,0,0.5); padding: 30px; transition: all 0.4s; 
-            opacity: 0; animation: fadeUpAK 0.6s ease forwards; position: relative; overflow: hidden;
-        }
-        /* 增加右上角工业装饰线 */
-        .bento-card::before {
-            content: ''; position: absolute; top: 10px; right: 10px; width: 50px; height: 2px; background: var(--ak-accent-info);
-        }
-        .bento-card:hover { border-color: var(--ak-accent-info); transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0, 216, 255, 0.15); }
+        /* ---------------- Bento 网格系统 ---------------- */
+        .container { max-width: 1200px; margin: 120px auto 40px; padding: 0 5vw; }
+        .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; auto-rows: minmax(min-content, max-content); transition: opacity 0.3s; }
 
-        .bento-card:nth-child(1) { animation-delay: 0.1s; } .bento-card:nth-child(2) { animation-delay: 0.2s; }
-        .bento-card:nth-child(3) { animation-delay: 0.3s; } .bento-card:nth-child(4) { animation-delay: 0.4s; }
-        .bento-card:nth-child(5) { animation-delay: 0.5s; }
+        .bento-card { 
+            background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border); border-top: 1px solid var(--glass-border-light); border-left: 1px solid var(--glass-border-light); 
+            border-radius: 32px; box-shadow: var(--glass-shadow); padding: 40px; transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); 
+            opacity: 0; animation: fadeUp 0.8s ease forwards; position: relative; overflow: hidden;
+        }
+        .bento-card:hover { border-color: var(--accent); transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.3); background: rgba(26, 188, 156, 0.05); }
 
-        .card-title { font-size: 1.1rem; font-weight: 700; font-family: monospace; margin-bottom: 24px; color: var(--ak-text-main); display: flex; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;}
-        .card-title::before { content: '/>'; color: var(--ak-accent-info); font-weight: bold; }
+        .bento-card:nth-child(1) { animation-delay: 0.1s; } .bento-card:nth-child(2) { animation-delay: 0.2s; }
+        .bento-card:nth-child(3) { animation-delay: 0.3s; } .bento-card:nth-child(4) { animation-delay: 0.4s; }
+        .bento-card:nth-child(5) { animation-delay: 0.5s; }
 
-        .card-hero { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 50px 30px; border-color: var(--ak-accent-info); }
-        .hero-avatar { display: block; margin: 0 auto 24px auto; width: 140px; height: 140px; border-radius: 4px; object-fit: cover; border: 2px solid var(--ak-accent-info); transition: all 0.5s; box-shadow: 0 0 10px rgba(0, 216, 255, 0.4); }
-        .hero-avatar:hover { transform: scale(1.05) rotate(5deg); border-color: var(--ak-accent-warn); box-shadow: 0 0 15px rgba(245, 166, 35, 0.6); }
-        .hero-title { font-size: 2rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; color: #fff;}
-        
-        .hero-subtitle { color: var(--ak-text-muted); font-size: 0.95rem; line-height: 1.8; width: 100%; min-height: 80px; font-family: monospace;}
-        .cursor { display: inline-block; width: 10px; height: 1.2em; background-color: var(--ak-accent-info); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 4px;}
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .card-title { font-size: 1.2rem; font-weight: 600; margin-bottom: 24px; color: var(--text-main); display: flex; align-items: center; gap: 10px; transition: color 0.5s; }
+        .card-title::before { content: ''; display: block; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); transition: background 0.5s; }
 
-        .card-info { grid-column: span 2; display: flex; flex-direction: column; justify-content: space-between; border-color: var(--ak-border);}
-        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-        .info-item { color: var(--ak-text-main); font-size: 0.9rem; font-family: monospace;}
-        .info-item strong { color: var(--ak-text-muted); display: block; margin-bottom: 4px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px;}
+        .card-hero { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 50px 30px; }
+        .hero-avatar { display: block; margin: 0 auto 24px auto; width: 140px; height: 140px; border-radius: 50%; object-fit: cover; border: 3px solid rgba(255,255,255,0.4); transition: transform 0.5s, border-color 0.5s; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+        .hero-avatar:hover { transform: scale(1.05) rotate(5deg); border-color: var(--accent); }
+        .hero-title { font-size: 2.5rem; font-weight: 800; line-height: 1.2; margin-bottom: 16px; letter-spacing: -0.5px; transition: color 0.5s; width: 100%; text-shadow: 0 4px 10px rgba(0,0,0,0.3);}
+        body.light-mode .hero-title { text-shadow: none; }
+        .hero-subtitle { color: var(--text-muted); font-size: 1.1rem; line-height: 1.8; transition: color 0.5s; width: 100%;}
 
-        /* 工业实用主义按钮 */
-        .resume-btn { margin-top: 24px; width: 100%; padding: 14px; background: #000; color: var(--ak-accent-info); border: 1px solid var(--ak-accent-info); border-radius: 4px; font-size: 0.85rem; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;}
-        .resume-btn:hover { background: var(--ak-accent-info); color: #000; box-shadow: 0 0 10px var(--ak-accent-info); }
+        .card-info { grid-column: span 2; display: flex; flex-direction: column; justify-content: space-between;}
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .info-item { color: var(--text-muted); font-size: 0.95rem; transition: color 0.5s;}
+        .info-item strong { color: var(--text-main); display: block; margin-bottom: 4px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; transition: color 0.5s;}
 
-        .card-skills { grid-column: span 2; }
-        .tag-cloud { display: flex; flex-wrap: wrap; gap: 10px; }
-        .tag { padding: 4px 10px; background: #000; border-radius: 2px; font-size: 0.75rem; font-family: monospace; color: var(--ak-accent-info); border: 1px solid #333; transition: all 0.3s; cursor: default;}
-        .tag:hover { background: var(--ak-accent-info); color: #000; border-color: var(--ak-accent-info); transform: translateY(-1px); }
+        .resume-btn { margin-top: 24px; width: 100%; padding: 14px; background: rgba(26, 188, 156, 0.15); backdrop-filter: blur(10px); color: var(--accent); border: 1px solid var(--accent); border-radius: 16px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .resume-btn:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
 
-        .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-        .link-card { background: var(--ak-bg-panel-light); border: 2px solid var(--ak-border); border-radius: 4px; padding: 20px 15px; text-decoration: none; color: inherit; display: flex; justify-content: space-between; align-items: center; transition: all 0.3s; position: relative;}
-        .link-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 4px; background: var(--ak-accent-info); opacity: 0; transition: opacity 0.3s;}
-        .link-card:hover::before { opacity: 1; }
-        .link-card:hover { border-color: var(--ak-accent-info); background: #000; transform: translateY(-3px); box-shadow: 0 4px 10px rgba(0,216,255,0.1); }
-        .link-card h3 { font-size: 1rem; margin-bottom: 4px; color: var(--ak-text-main); white-space: nowrap; font-family: monospace;}
-        .link-card:hover h3 { color: var(--ak-accent-info); }
-        .link-card p { color: var(--ak-text-muted); font-size: 0.7rem; text-transform: uppercase; white-space: nowrap;}
-        .link-card .arrow { font-size: 1.1rem; color: var(--ak-text-muted); transition: all 0.3s;}
-        .link-card:hover .arrow { transform: translateX(3px); color: var(--ak-accent-info); }
+        .card-skills { grid-column: span 2; }
+        .tag-cloud { display: flex; flex-wrap: wrap; gap: 12px; }
+        .tag { padding: 8px 16px; background: rgba(255,255,255,0.05); backdrop-filter: blur(5px); border-radius: 30px; font-size: 0.85rem; color: var(--text-main); border: 1px solid var(--glass-border); transition: all 0.3s; cursor: default; box-shadow: 0 4px 6px rgba(0,0,0,0.1);}
+        body.light-mode .tag { background: rgba(0,0,0,0.03); color: var(--text-main); }
+        .tag:hover { background: var(--accent); color: #fff; border-color: var(--accent); transform: scale(1.05); }
 
-        .card-timeline { grid-column: span 4; }
-        .timeline-item { border-left: 2px solid var(--ak-border); padding-left: 32px; margin-bottom: 40px; position: relative; }
-        .timeline-item:last-child { margin-bottom: 0; border-left-color: transparent; }
-        /* 使用明日方舟风格的菱形原点 */
-        .timeline-item::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; background: var(--ak-accent-info); border-radius: 0; transform: rotate(45deg); box-shadow: 0 0 5px var(--ak-accent-info); }
-        .tl-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 12px; }
-        .tl-title { font-size: 1rem; font-weight: 700; color: var(--ak-text-main); }
-        .tl-role { color: var(--ak-accent-info); margin-left: 10px; font-size: 0.9rem; font-family: monospace;}
-        .tl-date { color: var(--ak-accent-warn); font-size: 0.8rem; font-family: monospace; border: 1px solid #333; padding: 2px 8px; border-radius: 2px;}
-        .tl-body { color: var(--ak-text-muted); font-size: 0.9rem; line-height: 1.8; }
+        .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+        .link-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 24px; padding: 28px 20px; text-decoration: none; color: inherit; display: flex; justify-content: space-between; align-items: center; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); transition: all 0.3s; }
+        .link-card:hover { border-color: var(--accent); background: rgba(26, 188, 156, 0.1); transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
+        .link-card h3 { font-size: 1.15rem; margin-bottom: 6px; transition: transform 0.3s, color 0.5s; color: var(--text-main); white-space: nowrap;}
+        .link-card:hover h3 { transform: translateX(8px); color: var(--accent); }
+        .link-card p { color: var(--text-muted); font-size: 0.8rem; transition: color 0.5s; white-space: nowrap;}
+        .link-card .arrow { font-size: 1.3rem; opacity: 0.5; transition: all 0.3s; color: var(--text-main);}
+        .link-card:hover .arrow { opacity: 1; transform: translateX(5px); color: var(--accent); }
 
-        footer { text-align: center; padding: 40px; color: var(--ak-text-muted); font-size: 0.75rem; font-family: monospace; margin-top: 80px; text-transform: uppercase; letter-spacing: 1px;}
+        .card-timeline { grid-column: span 4; }
+        .timeline-item { border-left: 2px solid rgba(255,255,255,0.2); padding-left: 32px; margin-bottom: 40px; position: relative; transition: border-color 0.5s;}
+        body.light-mode .timeline-item { border-left-color: rgba(0,0,0,0.1); }
+        .timeline-item:last-child { margin-bottom: 0; border-left-color: transparent; }
+        .timeline-item::before { content: ''; position: absolute; left: -7px; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
+        .tl-header { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; margin-bottom: 12px; }
+        .tl-title { font-size: 1.2rem; font-weight: 600; color: var(--text-main); transition: color 0.5s;}
+        .tl-role { color: var(--accent); margin-left: 10px; font-size: 1rem; transition: color 0.5s;}
+        .tl-date { color: var(--text-main); opacity: 0.7; font-size: 0.9rem; font-family: monospace; transition: color 0.5s;}
+        .tl-body { color: var(--text-muted); font-size: 0.95rem; line-height: 1.8; transition: color 0.5s;}
 
-        /* --- 简历图片灯箱 --- */
-        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; overflow: auto;}
-        .lightbox.active { opacity: 1; pointer-events: auto; }
-        .lightbox img { max-width: 100vw; max-height: 100vh; border: 2px solid var(--ak-accent-info); box-shadow: 0 0 30px rgba(0,216,255,0.2); transform: scale(0.95); transition: transform 0.4s; object-fit: contain; }
-        .lightbox.active img { transform: scale(1); }
-        .lightbox-close { position: fixed; top: 30px; right: 40px; color: var(--ak-accent-info); font-family: monospace; font-size: 24px; cursor: pointer; transition: all 0.3s; z-index: 10001; border: 1px solid var(--ak-accent-info); padding: 5px 10px;}
-        .lightbox-close:hover { color: #fff; background: var(--ak-accent-info); box-shadow: 0 0 10px var(--ak-accent-info); }
+        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; margin-top: 80px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        body.light-mode footer { text-shadow: none; }
 
-        /* ================= ✨ 限制访问区域 (密码弹窗) ================= */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.9); z-index: 10001; align-items: center; justify-content: center; }
-        .modal-content { background: #080808; border: 1px solid var(--ak-accent-warn); box-shadow: 0 0 20px rgba(245, 166, 35, 0.2); color: var(--ak-text-main); padding: 40px 30px; border-radius: 4px; width: 90%; max-width: 380px; text-align: center; animation: fadeUpAK 0.3s ease forwards; position: relative;}
-        /* 增加明日方舟常见的警示性文本标签 */
-        .modal-content::before { content: 'RESTRICTED AREA'; position: absolute; top: 10px; left: 10px; font-family: monospace; font-size: 0.6rem; color: var(--ak-accent-warn); letter-spacing: 1px; }
-        
-        .modal-content h3 { margin-top: 15px; margin-bottom: 10px; font-size: 1.3rem; font-family: monospace; color: var(--ak-accent-warn); text-transform: uppercase;}
-        .modal-content input { width: 100%; padding: 14px; border-radius: 2px; border: 1px solid #333; background: #000; color: var(--ak-accent-warn); font-family: monospace; font-size: 1.2rem; outline: none; transition: border-color 0.3s; text-align: center; letter-spacing: 5px; }
-        .modal-content input:focus { border-color: var(--ak-accent-warn); }
-        .modal-actions { margin-top: 25px; display: flex; gap: 15px; }
-        .modal-actions button { flex: 1; padding: 12px; border: none; border-radius: 2px; cursor: pointer; font-family: monospace; font-size: 0.85rem; text-transform: uppercase; transition: 0.2s; }
-        .btn-cancel { background: transparent; color: var(--ak-text-muted); border: 1px solid #333; }
-        .btn-confirm { background: var(--ak-accent-warn); color: #000; font-weight: bold;}
-        .btn-confirm:hover { background: #fff; color: #000; box-shadow: 0 0 10px #fff; }
+        /* --- 简历图片灯箱 --- */
+        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; overflow: auto; touch-action: pinch-zoom pan-y pan-x;}
+        .lightbox.active { opacity: 1; pointer-events: auto; }
+        .lightbox img { max-width: 100vw; max-height: 100vh; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.95); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); object-fit: contain; }
+        .lightbox.active img { transform: scale(1); }
+        .lightbox-close { position: fixed; top: 30px; right: 40px; color: rgba(255,255,255,0.6); font-size: 40px; cursor: pointer; transition: color 0.3s; font-weight: 300; z-index: 10001; }
+        .lightbox-close:hover { color: #fff; transform: scale(1.1); }
 
-        /* ================= ✨ 罗德岛后勤数据系统 (私密账本) ================= */
-        #privateSection { display: none; animation: fadeUpAK 0.8s ease forwards; }
-        .secret-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; border-bottom: 2px solid var(--ak-border); padding-bottom: 15px;}
-        .secret-header h2 { font-size: 1.3rem; font-family: monospace; color: var(--ak-accent-warn);}
-        .data-actions { display: flex; gap: 10px; flex-wrap: wrap; }
-        .btn-data { background: transparent; color: var(--ak-text-main); border: 1px solid var(--ak-border); padding: 6px 12px; border-radius: 2px; font-family: monospace; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
-        .btn-data:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); background: #000;}
-        .btn-close-sec { border-color: var(--withdraw); color: var(--withdraw); background: rgba(255,51,102,0.1); }
-        .btn-close-sec:hover { background: var(--withdraw); color: white; }
+        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); color: var(--text-main); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--glass-shadow); z-index: 9999; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent); color: var(--accent); }
 
-        .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
-        .stat-card { background: #000; padding: 20px; border-radius: 2px; border: 2px solid var(--ak-border); border-left: 4px solid var(--ak-accent-info); text-align: left; }
-        .stat-card h3 { font-size: 0.7rem; color: var(--ak-text-muted); font-family: monospace; text-transform: uppercase; margin-bottom: 8px; }
-        .stat-card .amount { font-size: 1.6rem; font-family: monospace; font-weight: bold; }
-        .stat-recharge { border-left-color: var(--recharge); }
-        .stat-recharge .amount { color: var(--recharge); }
-        .stat-withdraw { border-left-color: var(--withdraw); }
-        .stat-withdraw .amount { color: var(--withdraw); }
-        .stat-balance { border-left-color: var(--ak-accent-warn); }
-        .stat-balance .amount { color: var(--ak-accent-warn); }
+        /* ================= ✨ 密码弹窗样式 ================= */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 10001; align-items: center; justify-content: center; }
+        .modal-content { background: var(--glass-bg); border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); color: var(--text-main); padding: 40px 30px; border-radius: 24px; width: 90%; max-width: 380px; text-align: center; animation: fadeUp 0.3s ease forwards; }
+        .modal-content h3 { margin-top: 0; margin-bottom: 24px; font-size: 1.3rem; }
+        .modal-content input { width: 100%; padding: 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 1rem; outline: none; transition: border-color 0.3s; text-align: center; letter-spacing: 2px; }
+        body.light-mode .modal-content input { background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.1); }
+        .modal-content input:focus { border-color: var(--accent); }
+        .modal-actions { margin-top: 25px; display: flex; gap: 15px; }
+        .modal-actions button { flex: 1; padding: 12px; border: none; border-radius: 12px; cursor: pointer; font-weight: 600; font-size: 0.95rem; transition: 0.2s; backdrop-filter: blur(5px); }
+        .btn-cancel { background: rgba(255,255,255,0.1); color: var(--text-main); border: 1px solid var(--glass-border); }
+        body.light-mode .btn-cancel { background: rgba(0,0,0,0.05); }
+        .btn-confirm { background: var(--accent); color: #fff; }
 
-        .input-section { background: rgba(255,255,255,0.02); padding: 20px; border-radius: 2px; border: 1px solid var(--ak-border); margin-bottom: 30px; }
-        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; align-items: flex-end; margin-bottom: 15px; }
-        .form-group { display: flex; flex-direction: column; }
-        .form-group label { font-size: 0.7rem; font-family: monospace; color: var(--ak-accent-info); margin-bottom: 5px; text-transform: uppercase;}
-        .form-group input, .form-group select { padding: 10px; border-radius: 2px; border: 1px solid var(--ak-border); background: #000; color: var(--ak-text-main); font-family: monospace; font-size: 0.9rem; outline: none; }
-        .form-group input:focus, .form-group select:focus { border-color: var(--ak-accent-info); }
-        .btn-add { background: var(--ak-accent-info); color: #000; border: none; padding: 12px 24px; border-radius: 2px; font-family: monospace; font-size: 0.9rem; cursor: pointer; transition: 0.2s; width: 100%; text-transform: uppercase; font-weight:bold;}
-        .btn-add:hover { background: #fff; box-shadow: 0 0 10px #fff; }
+        /* ================= ✨ 私密账本 UI ================= */
+        #privateSection { display: none; animation: fadeUp 0.8s ease forwards; }
+        .secret-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 10px; }
+        .secret-header h2 { font-size: 1.5rem; color: var(--accent); text-shadow: 0 2px 10px rgba(0,0,0,0.5);}
+        body.light-mode .secret-header h2 { text-shadow: none; }
+        .data-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-data { background: var(--glass-bg); backdrop-filter: blur(10px); color: var(--text-main); border: 1px solid var(--glass-border); padding: 8px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
+        .btn-data:hover { border-color: var(--accent); color: var(--accent); }
+        .btn-close-sec { background: rgba(239, 68, 68, 0.2); color: var(--withdraw); border-color: transparent; }
+        .btn-close-sec:hover { background: var(--withdraw); color: white; }
 
-        .history-section { background: #000; border-radius: 2px; border: 2px solid var(--ak-border); overflow: hidden; overflow-x: auto; }
-        .history-header { padding: 15px 20px; background: rgba(255,255,255,0.02); border-bottom: 2px solid var(--ak-border); display: flex; justify-content: space-between; align-items: center; }
-        .btn-clear { background: transparent; color: var(--withdraw); border: 1px dashed var(--withdraw); padding: 4px 10px; border-radius: 2px; cursor: pointer; font-family: monospace; font-size: 0.75rem; }
+        .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .stat-card { background: var(--glass-bg); backdrop-filter: blur(16px); padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); text-align: center; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); border-color: var(--accent); }
+        .stat-card h3 { font-size: 0.85rem; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
+        .stat-card .amount { font-size: 1.6rem; font-weight: bold; }
+        .stat-recharge .amount { color: var(--recharge); text-shadow: 0 0 10px rgba(52, 211, 153, 0.4);}
+        .stat-withdraw .amount { color: var(--withdraw); text-shadow: 0 0 10px rgba(251, 113, 133, 0.4);}
+        .stat-balance .amount { color: var(--accent); text-shadow: 0 0 10px var(--accent-glow);}
 
-        .ledger-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; font-family: monospace;}
-        .ledger-table th, .ledger-table td { padding: 12px 15px; border-bottom: 1px solid #1a1a1a; }
-        .ledger-table th { color: var(--ak-accent-info); font-weight: normal; font-size: 0.75rem; text-transform: uppercase; }
-        .ledger-table td { font-size: 0.85rem; }
-        .ledger-table tr:hover { background: #080808; }
+        .input-section { background: var(--glass-bg); backdrop-filter: blur(16px); padding: 20px; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); margin-bottom: 30px; position: relative; }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 15px; align-items: flex-end; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group label { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px; }
+        .form-group input, .form-group select { padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.2); color: var(--text-main); font-size: 1rem; outline: none; }
+        body.light-mode .form-group input, body.light-mode .form-group select { background: rgba(255,255,255,0.5); border: 1px solid rgba(0,0,0,0.1); }
+        .form-group input:focus, .form-group select:focus { border-color: var(--accent); }
+        .btn-add { background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; transition: background 0.2s; width: 100%; box-shadow: 0 4px 15px var(--accent-glow);}
 
-        .type-recharge { color: var(--recharge); }
-        .type-withdraw { color: var(--withdraw); }
-        .bal-text { color: var(--ak-text-main); }
-        .btn-delete { background: transparent; color: var(--withdraw); border: 1px solid var(--withdraw); padding: 3px 8px; border-radius: 2px; cursor: pointer; font-size: 0.7rem; font-family: monospace;}
+        .history-section { background: var(--glass-bg); backdrop-filter: blur(16px); border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: var(--glass-shadow); overflow: hidden; overflow-x: auto; }
+        .history-header { padding: 15px 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; }
+        body.light-mode .history-header { background: rgba(255,255,255,0.2); }
+        .btn-clear { background: transparent; color: var(--text-muted); border: 1px solid var(--glass-border); padding: 5px 12px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .btn-clear:hover { border-color: var(--withdraw); color: var(--withdraw); }
 
-        /* --- 主题切换按钮 (罗德岛制式) --- */
-        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 40px; height: 40px; border-radius: 2px; background: #000; border: 1px solid var(--ak-border); color: var(--ak-text-muted); font-size: 1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 9999; transition: all 0.3s; font-family: monospace;}
-        .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); background: #080808;}
+        .ledger-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 600px; }
+        .ledger-table th, .ledger-table td { padding: 12px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        body.light-mode .ledger-table th, body.light-mode .ledger-table td { border-bottom-color: rgba(0,0,0,0.05); }
+        .ledger-table th { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; white-space: nowrap; }
+        .ledger-table td { white-space: nowrap; font-size: 0.95rem; }
+        .ledger-table tr:hover { background: rgba(255,255,255,0.05); }
+        body.light-mode .ledger-table tr:hover { background: rgba(0,0,0,0.02); }
 
-        @media (max-width: 900px) {
-            .bento-grid { grid-template-columns: 1fr; } 
-            .card-hero, .card-info, .card-skills, .portfolio-links, .card-timeline { grid-column: span 1; } 
-            .portfolio-links { grid-template-columns: 1fr; } 
-            .nav-links { display: none; } 
-            .info-grid { grid-template-columns: 1fr; }
-            .dashboard { grid-template-columns: 1fr; }
-            .secret-header { flex-direction: column; align-items: flex-start; }
-            .data-actions { width: 100%; justify-content: flex-start; }
-        }
-    </style>
+        .type-recharge { color: var(--recharge); font-weight: bold; }
+        .type-withdraw { color: var(--withdraw); font-weight: bold; }
+        .bal-text { color: var(--warning); font-family: monospace; font-size: 1.05rem; }
+        .btn-delete { background: rgba(239, 68, 68, 0.15); color: var(--withdraw); border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+        .empty-state { text-align: center; padding: 40px; color: var(--text-muted); }
+
+        /* 计算器 */
+        .calculator-widget {
+            display: none; background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: 16px;
+            padding: 20px; margin-bottom: 20px; width: 100%; max-width: 350px; margin-left: auto; margin-right: auto; box-shadow: var(--glass-shadow);
+            animation: fadeUp 0.3s ease forwards;
+        }
+        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; color: var(--text-muted); font-size: 0.9rem; }
+        .calc-screen {
+            background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+            padding: 15px; font-size: 1.8rem; text-align: right; margin-bottom: 15px;
+            color: var(--text-main); font-family: monospace; overflow-x: auto; white-space: nowrap;
+        }
+        body.light-mode .calc-screen { background: rgba(255,255,255,0.6); border-color: rgba(0,0,0,0.1); }
+        .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+        .calc-btn {
+            background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid rgba(255,255,255,0.1);
+            padding: 15px 0; border-radius: 8px; font-size: 1.2rem; cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px);
+        }
+        body.light-mode .calc-btn { background: rgba(255,255,255,0.5); border-color: rgba(0,0,0,0.1); }
+        .calc-btn:hover { background: rgba(255,255,255,0.15); }
+        body.light-mode .calc-btn:hover { background: #fff; }
+        .calc-btn:active { transform: scale(0.95); }
+        .calc-btn.operator { color: var(--accent); font-weight: bold; font-size: 1.4rem; }
+        .calc-btn.equal { background: var(--accent); color: white; grid-column: span 2; border-color: var(--accent); box-shadow: 0 4px 15px var(--accent-glow);}
+        .calc-btn.clear { color: var(--withdraw); font-weight: bold; }
+
+        @media (max-width: 1100px) { .portfolio-links { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 900px) {
+            .bento-grid { grid-template-columns: 1fr; } 
+            .card-hero, .card-info, .card-skills, .portfolio-links, .card-timeline { grid-column: span 1; } 
+            .portfolio-links { grid-template-columns: 1fr; } 
+            .nav-links { display: none; } 
+            .info-grid { grid-template-columns: 1fr; }
+            .bento-card { padding: 30px 20px; border-radius: 24px; }
+            .theme-toggle-btn { bottom: 20px; right: 20px; } 
+            .lightbox-close { top: 15px; right: 20px; }
+            .dashboard { grid-template-columns: 1fr; }
+            .secret-header { flex-direction: column; align-items: flex-start; }
+            .data-actions { width: 100%; justify-content: flex-start; }
+        }
+    </style>
 </head>
 <body>
 
-    <div class="video-bg">
-        <video autoplay muted loop playsinline>
-            <source src="https://cdn.pixabay.com/video/2021/08/04/83864-584742467_large.mp4" type="video/mp4">
-        </video>
-    </div>
-    <div class="video-overlay"></div>
+    <div class="video-bg">
+        <video autoplay muted loop playsinline>
+            <source src="https://cdn.pixabay.com/video/2021/08/04/83864-584742467_large.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
 
-    <nav>
-        <a href="index.html" class="nav-logo">RHODES ISLAND // ARCHIVE</a>
-        <div style="display: flex; align-items: center; gap: 30px;">
-            <div class="nav-links">
-                <a href="数据分析/Data Analysis.html">Data Analysis</a>
-                <a href="my graphic design.html">Graphic</a>
-                <a href="3d model.html">3D Art</a>
-                <a href="my vedio.html">Video</a>
-            </div>
-            <a class="nav-secret" onclick="openPasswordModal()" title="Access Intelligence System">🔒 [ INTELLIGENCE ]</a>
-        </div>
-    </nav>
+    <nav>
+        <a href="index.html" class="nav-logo">CLARENCE.YE</a>
+        <div style="display: flex; align-items: center; gap: 30px;">
+            <div class="nav-links">
+                <a href="数据分析/Data Analysis.html">Data Analysis</a>
+                <a href="my graphic design.html">Graphic</a>
+                <a href="3d model.html">3D Art</a>
+                <a href="my vedio.html">Video</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
+            </div>
+            <a class="nav-secret" onclick="openPasswordModal()" title="Secret Area" style="font-size: 1.2rem;">🔒</a>
+        </div>
+    </nav>
 
-    <div class="container">
-        <main class="bento-grid" id="mainContent">
-            
-            <div class="bento-card card-hero">
-                <img src="绿色头像.jpeg" alt="Clarence" class="hero-avatar">
-                <div>
-                    <h1 class="hero-title">INIT: OPERATOR.spike</h1>
-                    <p class="hero-subtitle" id="ai-prompt-text"></p>
-                </div>
-            </div>
+    <div class="container">
+        <main class="bento-grid" id="mainContent">
+            
+            <div class="bento-card card-hero">
+                <img src="绿色头像.jpeg" alt="Clarence" class="hero-avatar">
+                <div>
+                    <h1 class="hero-title">Hello, 我是叶承霖 👋</h1>
+                    <p class="hero-subtitle">
+                        我是一名专注于 <strong>平面设计</strong>、<strong>3D建模</strong> 与 <strong>视频动效</strong> 的视觉设计师。热衷于将天马行空的创意转化为极具视觉冲击力的数字作品。
+                    </p>
+                </div>
+            </div>
 
-            <div class="bento-card card-info">
-                <div>
-                    <h2 class="card-title">[ OPERATOR PROFILE ]</h2>
-                    <div class="info-grid">
-                        <div class="info-item"><strong>Base</strong>广州市海珠区</div>
-                        <div class="info-item"><strong>Node</strong>广东工业大学 // 动画系</div>
-                        <div class="info-item"><strong>Signal</strong>Clarenceye1@gmail.com</div>
-                        <div class="info-item"><strong>Signal</strong>+86 13719113230</div>
-                    </div>
-                </div>
-                <button class="resume-btn" id="viewResumeBtn">> Verify & View Resume</button>
-            </div>
+            <div class="bento-card card-info">
+                <div>
+                    <h2 class="card-title">Profile</h2>
+                    <div class="info-grid">
+                        <div class="info-item"><strong>Location</strong>广州市海珠区</div>
+                        <div class="info-item"><strong>Education</strong>广东工业大学 · 动画系</div>
+                        <div class="info-item"><strong>Email</strong>Clarenceye1@gmail.com</div>
+                        <div class="info-item"><strong>Phone</strong>+86 13719113230</div>
+                    </div>
+                </div>
+                <button class="resume-btn" id="viewResumeBtn">📄 查看完整简历图片</button>
+            </div>
 
-            <div class="bento-card card-skills">
-                <h2 class="card-title">[ PROFICIENCY & STACK ]</h2>
-                <div class="tag-cloud">
-                    <span class="tag">PS/AI</span> <span class="tag">After Effects</span>
-                    <span class="tag">Premiere Pro</span> <span class="tag">Blender (3D)</span>
-                    <span class="tag">ComfyUI</span> <span class="tag">Sora // Kling</span> <span class="tag">Trapcode</span>
-                </div>
-            </div>
+            <div class="bento-card card-skills">
+                <h2 class="card-title">Tech Stack</h2>
+                <div class="tag-cloud">
+                    <span class="tag">Photoshop</span> <span class="tag">Illustrator</span> <span class="tag">After Effects</span>
+                    <span class="tag">Premiere Pro</span> <span class="tag">Blender / 3D Modeling</span>
+                    <span class="tag">ComfyUI/ 即梦 / 可灵 /sora</span> <span class="tag">Trapcode Form</span>
+                </div>
+            </div>
 
-            <div class="portfolio-links">
-                <a href="数据分析/Data Analysis.html" class="link-card">
-                    <div><h3>数据分析</h3><p>Logistical Analytics</p></div><span class="arrow">></span>
-                </a>
-                <a href="my graphic design.html" class="link-card"><div><h3>平面设计</h3><p>Visual Design</p></div><span class="arrow">></span></a>
-                <a href="3d model.html" class="link-card"><div><h3>3D 建模</h3><p>Assets & modeling</p></div><span class="arrow">></span></a>
-                <a href="my vedio.html" class="link-card"><div><h3>视频设计</h3><p>Motion Graphics</p></div><span class="arrow">></span></a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" class="link-card">
-                    <div><h3>摄影合集</h3><p>Galery (500px)</p></div><span class="arrow">↗</span>
-                </a>
-            </div>
+            <div class="portfolio-links">
+                <a href="数据分析/Data Analysis.html" class="link-card">
+                    <div><h3>数据分析</h3><p>Data Analysis</p></div><span class="arrow">→</span>
+                </a>
+                <a href="my graphic design.html" class="link-card"><div><h3>平面设计</h3><p>Graphic Design</p></div><span class="arrow">→</span></a>
+                <a href="3d model.html" class="link-card"><div><h3>3D 建模</h3><p>Models & Art</p></div><span class="arrow">→</span></a>
+                <a href="my vedio.html" class="link-card"><div><h3>视频设计</h3><p>Video Design</p></div><span class="arrow">→</span></a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" class="link-card">
+                    <div><h3>摄影合集</h3><p>Photography (500px)</p></div><span class="arrow arrow-external">↗</span>
+                </a>
+            </div>
 
-            <div class="bento-card card-timeline">
-                <h2 class="card-title">[ DEPLOYMENT HISTORY ]</h2>
-                
-                <div class="timeline-item">
-                    <div class="tl-header">
-                        <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">// 广告视频制作</span></div>
-                        <div class="tl-date">Block: 2024.07 - Present</div>
-                    </div>
-                    <div class="tl-body">
-                        <div style="margin-bottom: 12px;">
-                            <strong style="color: var(--ak-accent-warn);">[ Growth & Viral Mechanics ]</strong><br>
-                            基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top 1 爆款视频（单条消耗超 22 万元，付费贡献占比达 26.9%）。通过抽帧去重、重组开头 Hook 与 BGM，建立“素材裂变迭代机制”，衍生出消耗 9.5 万与 8.5 万的头部视频，年度短视频累计消耗达 153 万元。
-                        </div>
-                        <div style="margin-bottom: 12px;">
-                            <strong style="color: var(--ak-accent-warn);">[ Global UA & Community ]</strong><br>
-                            统筹海外 App (Frameit) 跨终端广告素材投放。一年内助力 7 个海外账户实现 24.5 万+ 美元消耗，获取 16.7 万+ 新增装机及 5700+ 付费转化。推动官方 Instagram 社群自然涨粉至 4.8 万。
-                        </div>
-                        <div>
-                            <strong style="color: var(--ak-accent-warn);">[ ROI Optimization ]</strong><br>
-                            建立视频淘汰机制，资源向高转化（1.2%）品类倾斜；优化结尾转化钩子 (CTA)，实现单点 ROI 提升 15%，整体年度投放效率提升 20%。
-                        </div>
-                    </div>
-                </div>
+            <div class="bento-card card-timeline">
+                <h2 class="card-title">Experience</h2>
+                
+                <div class="timeline-item">
+                    <div class="tl-header">
+                        <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">广告视频制作</span></div>
+                        <div class="tl-date">2024.07 - Present</div>
+                    </div>
+                    <div class="tl-body">
+                        <div style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-main);">爆款内容矩阵与裂变机制打造（创意与增长）：</strong>
+                            基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top 1 爆款视频（单条消耗超 22 万元，付费贡献占比达 26.9%）。通过抽帧去重、重组开头 Hook 与 BGM，建立“素材裂变迭代机制”，成功衍生出消耗 9.5 万与 8.5 万的头部视频，主导的年度短视频累计消耗达 153 万元。
+                        </div>
+                        <div style="margin-bottom: 12px;">
+                            <strong style="color: var(--text-main);">海外市场买量体系与社群引流（数据驱动）：</strong>
+                            统筹海外 App (Frameit) 的跨终端广告素材投放，搭建完整的素材效果评估体系。一年内助力 7 个海外账户实现 24.5 万+ 美元消耗，获取 16.7 万+ 新增装机量及 5700+ 付费转化。同时通过高互动性内容策划，推动官方 Instagram 社群自然涨粉至 4.8 万。
+                        </div>
+                        <div>
+                            <strong style="color: var(--text-main);">基于 ROI 的增长模型调优（机制打法）：</strong>
+                            建立严谨的视频淘汰与优化机制，对低效素材果断缩减预算，将 70% 资源向高转化（1.2%）的核心品类（加画框-书法美化）倾斜；针对“高点击率 (2.54%)、低转化”的素材，通过优化结尾转化钩子 (Call to Action)，实现单点 ROI 提升 15%，整体年度投放效率提升 20%。
+                        </div>
+                    </div>
+                </div>
 
-                <div class="timeline-item">
-                    <div class="tl-header"><div class="tl-title">广州天游网络 / 广州博冠信息 <span class="tl-role">// 游戏买量视频制作</span></div><div class="tl-date">Block: 2023.12 - 2024.06</div></div>
-                    <div class="tl-body">制作网易游戏《率土之滨》《大话西游》及海外发行游戏《三国云梦录》买量广告视频与后期包装。</div>
-                </div>
+                <div class="timeline-item">
+                    <div class="tl-header"><div class="tl-title">广州天游网络 / 广州博冠信息 <span class="tl-role">游戏买量视频制作</span></div><div class="tl-date">2023.12 - 2024.06</div></div>
+                    <div class="tl-body">制作网易游戏《率土之滨》《大话西游》及海外发行游戏《三国云梦录》等的买量广告视频与后期包装。</div>
+                </div>
 
-                <div class="timeline-item">
-                    <div class="tl-header"><div class="tl-title">Mobvista（甲方） <span class="tl-role">// 品牌设计</span></div><div class="tl-date">Block: 2023.09 - 2023.12</div></div>
-                    <div class="tl-body">使用 PS/AI/AE 根据风格要求制作海报、KV、PPT 及印刷品。负责图文内容的调整排版、视频修改及品牌 GIF 动效制作。</div>
-                </div>
+                <div class="timeline-item">
+                    <div class="tl-header"><div class="tl-title">Mobvista（甲方） <span class="tl-role">品牌设计</span></div><div class="tl-date">2023.09 - 2023.12</div></div>
+                    <div class="tl-body">使用 Illustrator、AE 根据风格和要求制作海报、KV、PPT 及印刷品。负责图文内容的调整排版、视频修改，以及品牌 GIF 图片动效的制作。</div>
+                </div>
 
-            </div>
-        </main>
+            </div>
+        </main>
 
-        <section id="privateSection">
-            <div class="secret-header">
-                <h2>[ LOGISTICAL DATA RECORD ]</h2>
-                <div class="data-actions">
-                    <button class="btn-data" onclick="toggleCalculator()">🧮 Terminal Calc</button>
-                    <button class="btn-data" onclick="exportData()">💾 Export JSON</button>
-                    <button class="btn-data" onclick="document.getElementById('importFile').click()">📂 Restore</button>
-                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
-                    <button class="btn-data btn-close-sec" onclick="closePrivateSection()">[ DISCONNECT ]</button>
-                </div>
-            </div>
+        <section id="privateSection">
+            <div class="secret-header">
+                <h2>📈 资金充提记录本</h2>
+                <div class="data-actions">
+                    <button class="btn-data" onclick="toggleCalculator()">🧮 计算器</button>
+                    <button class="btn-data" onclick="exportData()">💾 导出备份</button>
+                    <button class="btn-data" onclick="document.getElementById('importFile').click()">📂 导入恢复</button>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                    <button class="btn-data btn-close-sec" onclick="closePrivateSection()">✖ 关闭</button>
+                </div>
+            </div>
 
-            <div class="dashboard">
-                <div class="stat-card stat-recharge"><h3>Minted (In)</h3><div class="amount" id="totalRecharge">0.00</div></div>
-                <div class="stat-card stat-withdraw"><h3>Consumed (Out)</h3><div class="amount" id="totalWithdraw">0.00</div></div>
-                <div class="stat-card stat-balance"><h3>Net Assets (Flow)</h3><div class="amount" id="netBalance">0.00</div></div>
-            </div>
+            <div class="dashboard">
+                <div class="stat-card stat-recharge"><h3>总充值 (入)</h3><div class="amount" id="totalRecharge">0.00</div></div>
+                <div class="stat-card stat-withdraw"><h3>总提现 (出)</h3><div class="amount" id="totalWithdraw">0.00</div></div>
+                <div class="stat-card stat-balance"><h3>总净流水 (入-出)</h3><div class="amount" id="netBalance">0.00</div></div>
+            </div>
 
-            <div class="calculator-widget" id="calculatorWidget">
-                <div class="calc-header">
-                    <span>> term_calc.exe</span>
-                    <span style="cursor:pointer;" onclick="toggleCalculator()" title="Close">[x]</span>
-                </div>
-                <div class="calc-screen" id="calcScreen">0</div>
-                <div class="calc-keys">
-                    <button class="calc-btn clear" onclick="calcClear()">C</button>
-                    <button class="calc-btn operator" onclick="calcBackspace()">←</button>
-                    <button class="calc-btn operator" onclick="calcInput('%')">%</button>
-                    <button class="calc-btn operator" onclick="calcInput('/')">÷</button>
-                    
-                    <button class="calc-btn" onclick="calcInput('7')">7</button>
-                    <button class="calc-btn" onclick="calcInput('8')">8</button>
-                    <button class="calc-btn" onclick="calcInput('9')">9</button>
-                    <button class="calc-btn operator" onclick="calcInput('*')">×</button>
-                    
-                    <button class="calc-btn" onclick="calcInput('4')">4</button>
-                    <button class="calc-btn" onclick="calcInput('5')">5</button>
-                    <button class="calc-btn" onclick="calcInput('6')">6</button>
-                    <button class="calc-btn operator" onclick="calcInput('-')">-</button>
-                    
-                    <button class="calc-btn" onclick="calcInput('1')">1</button>
-                    <button class="calc-btn" onclick="calcInput('2')">2</button>
-                    <button class="calc-btn" onclick="calcInput('3')">3</button>
-                    <button class="calc-btn operator" onclick="calcInput('+')">+</button>
-                    
-                    <button class="calc-btn" onclick="calcInput('0')" style="grid-column: span 2;">0</button>
-                    <button class="calc-btn" onclick="calcInput('.')">.</button>
-                    <button class="calc-btn equal" onclick="calcResult()">EXEC</button>
-                </div>
-            </div>
+            <div class="calculator-widget" id="calculatorWidget">
+                <div class="calc-header">
+                    <span>快捷计算器</span>
+                    <span style="cursor:pointer; font-size:1.2rem;" onclick="toggleCalculator()" title="关闭">✖</span>
+                </div>
+                <div class="calc-screen" id="calcScreen">0</div>
+                <div class="calc-keys">
+                    <button class="calc-btn clear" onclick="calcClear()">C</button>
+                    <button class="calc-btn operator" onclick="calcBackspace()">←</button>
+                    <button class="calc-btn operator" onclick="calcInput('%')">%</button>
+                    <button class="calc-btn operator" onclick="calcInput('/')">÷</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('7')">7</button>
+                    <button class="calc-btn" onclick="calcInput('8')">8</button>
+                    <button class="calc-btn" onclick="calcInput('9')">9</button>
+                    <button class="calc-btn operator" onclick="calcInput('*')">×</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('4')">4</button>
+                    <button class="calc-btn" onclick="calcInput('5')">5</button>
+                    <button class="calc-btn" onclick="calcInput('6')">6</button>
+                    <button class="calc-btn operator" onclick="calcInput('-')">-</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('1')">1</button>
+                    <button class="calc-btn" onclick="calcInput('2')">2</button>
+                    <button class="calc-btn" onclick="calcInput('3')">3</button>
+                    <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+                    
+                    <button class="calc-btn" onclick="calcInput('0')" style="grid-column: span 2;">0</button>
+                    <button class="calc-btn" onclick="calcInput('.')">.</button>
+                    <button class="calc-btn equal" onclick="calcResult()">=</button>
+                </div>
+            </div>
 
-            <div class="input-section">
-                <div class="input-grid">
-                    <div class="form-group"><label>Timestamp (Date)</label><input type="date" id="dateInput"></div>
-                    <div class="form-group"><label>Time</label><input type="time" id="timeInput"></div>
-                    <div class="form-group"><label>Tx Type</label>
-                        <select id="typeInput"><option value="recharge">MINT (In)</option><option value="withdraw">Consumed (Out)</option></select>
-                    </div>
-                    <div class="form-group"><label>Tx Amount</label><input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01"></div>
-                    <div class="form-group"><label>Avail Bal</label><input type="number" id="availBalInput" placeholder="0.00" min="0" step="0.01"></div>
-                    <div class="form-group"><label>Wallet Bal</label><input type="number" id="walletBalInput" placeholder="0.00" min="0" step="0.01"></div>
-                </div>
-                <button class="btn-add" onclick="addRecord()">> Commit to Ledger</button>
-            </div>
+            <div class="input-section">
+                <div class="input-grid">
+                    <div class="form-group"><label>日期</label><input type="date" id="dateInput"></div>
+                    <div class="form-group"><label>时间</label><input type="time" id="timeInput"></div>
+                    <div class="form-group"><label>类型</label>
+                        <select id="typeInput"><option value="recharge">充值 🟢</option><option value="withdraw">提现 🔴</option></select>
+                    </div>
+                    <div class="form-group"><label>操作金额</label><input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01"></div>
+                    <div class="form-group"><label>可用余额</label><input type="number" id="availBalInput" placeholder="0.00" min="0" step="0.01"></div>
+                    <div class="form-group"><label>钱包余额</label><input type="number" id="walletBalInput" placeholder="0.00" min="0" step="0.01"></div>
+                </div>
+                <button class="btn-add" onclick="addRecord()">➕ 添加记录</button>
+            </div>
 
-            <div class="history-section">
-                <div class="history-header">
-                    <h3 style="font-size:0.9rem; color:var(--ak-accent-info); font-family: monospace;">> Tx_History_Log</h3>
-                    <button class="btn-clear" onclick="clearAll()">[ WIPE LOGS ]</button>
-                </div>
-                <table class="ledger-table">
-                    <thead>
-                        <tr><th>Timestamp</th><th>Type</th><th>Value</th><th>Avail_Bal</th><th>Wallet_Bal</th><th>Action</th></tr>
-                    </thead>
-                    <tbody id="tableBody"></tbody>
-                </table>
-            </div>
-        </section>
-    </div>
+            <div class="history-section">
+                <div class="history-header">
+                    <h3 style="font-size:1.1rem; color:var(--text-main);">📜 历史明细</h3>
+                    <button class="btn-clear" onclick="clearAll()">清空全部</button>
+                </div>
+                <table class="ledger-table">
+                    <thead>
+                        <tr><th>日期 / 时间</th><th>类型</th><th>操作金额</th><th>可用余额</th><th>钱包余额</th><th>操作</th></tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 
-    <footer>
-        <p>> System.copyRight(2026, "Rhodes Island / Clarence Ye")</p>
-    </footer>
+    <footer>
+        <p>&copy; 2026 Clarence Ye. All rights reserved.</p>
+    </footer>
 
-    <div class="lightbox" id="lightbox">
-        <span class="lightbox-close" id="lightbox-close">[X]</span>
-        <img src="2026_3.jpg" alt="详细简历图" id="lightbox-img">
-    </div>
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightbox-close">&times;</span>
+        <img src="2026_3.jpg" alt="详细简历图" id="lightbox-img">
+    </div>
 
-    <div id="passwordModal" class="modal-overlay">
-        <div class="modal-content">
-            <h3>Auth Required</h3>
-            <p style="font-size: 0.8rem; color: var(--ak-text-muted); margin-bottom: 20px; font-family: monospace;">Enter passphrase to decrypt archive</p>
-            <input type="password" id="pwdInput" placeholder="••••" onkeypress="handleEnter(event)">
-            <p id="errorMsg" style="color: #ff3366; font-size: 0.8rem; font-family:monospace; display: none; margin-top: 10px;">> ERR_INVALID_KEY</p>
-            <div class="modal-actions">
-                <button class="btn-cancel" onclick="closePasswordModal()">Abort</button>
-                <button class="btn-confirm" onclick="checkPassword()">Decrypt</button>
-            </div>
-        </div>
-    </div>
+    <div id="passwordModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>🔒 Restricted Area</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">请输入访问密码</p>
+            <input type="password" id="pwdInput" placeholder="Password..." onkeypress="handleEnter(event)">
+            <p id="errorMsg" style="color: #ef4444; font-size: 0.85rem; display: none; margin-top: 10px;">密码错误，请重试！</p>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closePasswordModal()">取消</button>
+                <button class="btn-confirm" onclick="checkPassword()">解锁进入</button>
+            </div>
+        </div>
+    </div>
 
-    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">L/D</button>
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">☀️</button>
 
-    <script>
-        // 控制台专属彩蛋 - 修改为罗德岛终端初始化
-        console.log(
-          "%c> RHODES ISLAND TERMINAL V1.0 \n%c> System initialization complete. \n> Operator spike (Clarence Ye) profile loaded. \n> Stand by for Operation.", 
-          "color: #00d8ff; font-size: 16px; font-weight: bold; font-family: monospace;", 
-          "color: #c0c0c0; font-size: 14px; line-height: 1.5; font-family: monospace;"
-        );
+    <script>
+        const themeBtn = document.getElementById('themeBtn');
+        const body = document.body;
 
-        const themeBtn = document.getElementById('themeBtn');
-        const body = document.body;
+        themeBtn.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️';
+        });
 
-        themeBtn.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-        });
+        const viewResumeBtn = document.getElementById('viewResumeBtn');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
 
-        const viewResumeBtn = document.getElementById('viewResumeBtn');
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
+        viewResumeBtn.addEventListener('click', () => {
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'auto'; // 允许双指缩放
+        });
+        lightbox.addEventListener('click', (e) => {
+            if (e.target !== lightboxImg) {
+                lightbox.classList.remove('active');
+            }
+        });
 
-        viewResumeBtn.addEventListener('click', () => {
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden'; 
-        });
-        lightbox.addEventListener('click', (e) => {
-            if (e.target !== lightboxImg) {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        });
+        const SECRET_PASSWORD = "spike"; 
 
-        const SECRET_PASSWORD = "spike"; 
+        function openPasswordModal() {
+            document.getElementById('passwordModal').style.display = 'flex';
+            document.getElementById('pwdInput').value = ''; 
+            document.getElementById('errorMsg').style.display = 'none'; 
+            setTimeout(() => document.getElementById('pwdInput').focus(), 100); 
+        }
 
-        function openPasswordModal() {
-            document.getElementById('passwordModal').style.display = 'flex';
-            document.getElementById('pwdInput').value = ''; 
-            document.getElementById('errorMsg').style.display = 'none'; 
-            setTimeout(() => document.getElementById('pwdInput').focus(), 100); 
-        }
+        function closePasswordModal() {
+            document.getElementById('passwordModal').style.display = 'none';
+        }
 
-        function closePasswordModal() {
-            document.getElementById('passwordModal').style.display = 'none';
-        }
+        function checkPassword() {
+            if (document.getElementById('pwdInput').value === SECRET_PASSWORD) {
+                closePasswordModal();
+                document.getElementById('mainContent').style.display = 'none';
+                document.getElementById('privateSection').style.display = 'block';
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setDefaultDateTime();
+            } else {
+                document.getElementById('errorMsg').style.display = 'block';
+                document.getElementById('pwdInput').value = '';
+                document.getElementById('pwdInput').focus();
+            }
+        }
 
-        function checkPassword() {
-            if (document.getElementById('pwdInput').value === SECRET_PASSWORD) {
-                closePasswordModal();
-                document.getElementById('mainContent').style.display = 'none';
-                document.getElementById('privateSection').style.display = 'block';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                setDefaultDateTime();
-            } else {
-                document.getElementById('errorMsg').style.display = 'block';
-                document.getElementById('pwdInput').value = '';
-                document.getElementById('pwdInput').focus();
-            }
-        }
+        function handleEnter(event) { if (event.key === 'Enter') checkPassword(); }
 
-        function handleEnter(event) { if (event.key === 'Enter') checkPassword(); }
+        function closePrivateSection() {
+            document.getElementById('privateSection').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'grid';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('calculatorWidget').style.display = 'none';
+        }
 
-        function closePrivateSection() {
-            document.getElementById('privateSection').style.display = 'none';
-            document.getElementById('mainContent').style.display = 'grid';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            document.getElementById('calculatorWidget').style.display = 'none';
-        }
+        let calcExpression = "";
+        
+        function toggleCalculator() {
+            const calc = document.getElementById('calculatorWidget');
+            if (calc.style.display === 'none' || calc.style.display === '') {
+                calc.style.display = 'block';
+            } else {
+                calc.style.display = 'none';
+            }
+        }
 
-        let calcExpression = "";
-        
-        function toggleCalculator() {
-            const calc = document.getElementById('calculatorWidget');
-            if (calc.style.display === 'none' || calc.style.display === '') {
-                calc.style.display = 'block';
-            } else {
-                calc.style.display = 'none';
-            }
-        }
+        function calcInput(val) {
+            if (calcExpression === "0" || calcExpression === "Error") calcExpression = "";
+            calcExpression += val;
+            updateCalcScreen();
+        }
 
-        function calcInput(val) {
-            if (calcExpression === "0" || calcExpression === "Error") calcExpression = "";
-            calcExpression += val;
-            updateCalcScreen();
-        }
+        function calcClear() {
+            calcExpression = "";
+            document.getElementById('calcScreen').innerText = "0";
+        }
 
-        function calcClear() {
-            calcExpression = "";
-            document.getElementById('calcScreen').innerText = "0";
-        }
+        function calcBackspace() {
+            calcExpression = calcExpression.slice(0, -1);
+            updateCalcScreen();
+            if (calcExpression === "") document.getElementById('calcScreen').innerText = "0";
+        }
 
-        function calcBackspace() {
-            calcExpression = calcExpression.slice(0, -1);
-            updateCalcScreen();
-            if (calcExpression === "") document.getElementById('calcScreen').innerText = "0";
-        }
+        function calcResult() {
+            try {
+                let expr = calcExpression.replace(/%/g, '/100');
+                let result = Function("return " + expr)();
+                result = Math.round(result * 1000000) / 1000000;
+                calcExpression = result.toString();
+                updateCalcScreen();
+            } catch(e) {
+                document.getElementById('calcScreen').innerText = "Error";
+                calcExpression = "";
+            }
+        }
 
-        function calcResult() {
-            try {
-                let expr = calcExpression.replace(/%/g, '/100');
-                let result = Function("return " + expr)();
-                result = Math.round(result * 1000000) / 1000000;
-                calcExpression = result.toString();
-                updateCalcScreen();
-            } catch(e) {
-                document.getElementById('calcScreen').innerText = "ERR";
-                calcExpression = "";
-            }
-        }
+        function updateCalcScreen() {
+            let displayStr = calcExpression.replace(/\*/g, '×').replace(/\//g, '÷');
+            document.getElementById('calcScreen').innerText = displayStr || "0";
+        }
 
-        function updateCalcScreen() {
-            let displayStr = calcExpression.replace(/\*/g, '×').replace(/\//g, '÷');
-            document.getElementById('calcScreen').innerText = displayStr || "0";
-        }
+        const initialLedgerData = [
+            { id: 101, timestamp: new Date("2026-03-23T08:46").getTime(), date: "2026-03-23", time: "08:46", type: "withdraw", amount: 34.68, availBal: 0, walletBal: 0 },
+            { id: 102, timestamp: new Date("2026-03-18T03:23").getTime(), date: "2026-03-18", time: "03:23", type: "recharge", amount: 83.84, availBal: 0, walletBal: 0 },
+            { id: 103, timestamp: new Date("2026-03-17T16:00").getTime(), date: "2026-03-17", time: "16:00", type: "withdraw", amount: 100.00, availBal: 0, walletBal: 0 },
+            { id: 104, timestamp: new Date("2026-03-11T09:09").getTime(), date: "2026-03-11", time: "09:09", type: "recharge", amount: 49.98, availBal: 0, walletBal: 0 }
+        ];
 
-        const initialLedgerData = [
-            { id: 101, timestamp: new Date("2026-03-23T08:46").getTime(), date: "2026-03-23", time: "08:46", type: "withdraw", amount: 34.68, availBal: 0, walletBal: 0 },
-            { id: 102, timestamp: new Date("2026-03-18T03:23").getTime(), date: "2026-03-18", time: "03:23", type: "recharge", amount: 83.84, availBal: 0, walletBal: 0 }
-        ];
+        let records = JSON.parse(localStorage.getItem('ledgerData_v5'));
+        if (!records || records.length === 0) {
+            records = initialLedgerData;
+            localStorage.setItem('ledgerData_v5', JSON.stringify(records));
+        }
 
-        let records = JSON.parse(localStorage.getItem('ledgerData_web3'));
-        if (!records || records.length === 0) {
-            records = initialLedgerData;
-            localStorage.setItem('ledgerData_web3', JSON.stringify(records));
-        }
+        function setDefaultDateTime() {
+            const now = new Date();
+            document.getElementById('dateInput').value = now.toISOString().split('T')[0];
+            document.getElementById('timeInput').value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+        }
 
-        function setDefaultDateTime() {
-            const now = new Date();
-            document.getElementById('dateInput').value = now.toISOString().split('T')[0];
-            document.getElementById('timeInput').value = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
-        }
+        function updateUI() {
+            let totalRecharge = 0, totalWithdraw = 0;
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
 
-        function updateUI() {
-            let totalRecharge = 0, totalWithdraw = 0;
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = '';
+            if (records.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="empty-state">暂无记录，请在上方添加</td></tr>`;
+            } else {
+                const sortedRecords = [...records].sort((a, b) => b.timestamp - a.timestamp);
+                sortedRecords.forEach(record => {
+                    if (record.type === 'recharge') totalRecharge += record.amount;
+                    else totalWithdraw += record.amount;
 
-            if (records.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px; color: var(--ak-text-muted); font-family: monospace;">No logistical data recorded</td></tr>`;
-            } else {
-                const sortedRecords = [...records].sort((a, b) => b.timestamp - a.timestamp);
-                sortedRecords.forEach(record => {
-                    if (record.type === 'recharge') totalRecharge += record.amount;
-                    else totalWithdraw += record.amount;
+                    const tr = document.createElement('tr');
+                    const typeText = record.type === 'recharge' ? '充值' : '提现';
+                    const typeClass = record.type === 'recharge' ? 'type-recharge' : 'type-withdraw';
+                    const sign = record.type === 'recharge' ? '+' : '-';
 
-                    const tr = document.createElement('tr');
-                    // 修改为 MINT / Consumed 黑话
-                    const typeText = record.type === 'recharge' ? 'MINT' : 'Consumed';
-                    const typeClass = record.type === 'recharge' ? 'type-recharge' : 'type-withdraw';
-                    const sign = record.type === 'recharge' ? '+' : '-';
+                    tr.innerHTML = `
+                        <td>${record.date} ${record.time}</td>
+                        <td class="${typeClass}">${typeText}</td>
+                        <td class="${typeClass}">${sign} ${record.amount.toFixed(2)}</td>
+                        <td class="bal-text">${record.availBal > 0 ? record.availBal.toFixed(2) : '-'}</td>
+                        <td class="bal-text">${record.walletBal > 0 ? record.walletBal.toFixed(2) : '-'}</td>
+                        <td><button class="btn-delete" onclick="deleteRecord(${record.id})">删除</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            }
 
-                    tr.innerHTML = `
-                        <td>${record.date} ${record.time}</td>
-                        <td class="${typeClass}">[${typeText}]</td>
-                        <td class="${typeClass}">${sign} ${record.amount.toFixed(2)}</td>
-                        <td class="bal-text">${record.availBal > 0 ? record.availBal.toFixed(2) : 'N/A'}</td>
-                        <td class="bal-text">${record.walletBal > 0 ? record.walletBal.toFixed(2) : 'N/A'}</td>
-                        <td><button class="btn-delete" onclick="deleteRecord(${record.id})">DROP</button></td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            }
+            document.getElementById('totalRecharge').innerText = totalRecharge.toFixed(2);
+            document.getElementById('totalWithdraw').innerText = totalWithdraw.toFixed(2);
+            document.getElementById('netBalance').innerText = (totalRecharge - totalWithdraw).toFixed(2);
+            localStorage.setItem('ledgerData_v5', JSON.stringify(records));
+        }
 
-            document.getElementById('totalRecharge').innerText = totalRecharge.toFixed(2);
-            document.getElementById('totalWithdraw').innerText = totalWithdraw.toFixed(2);
-            document.getElementById('netBalance').innerText = (totalRecharge - totalWithdraw).toFixed(2);
-            localStorage.setItem('ledgerData_web3', JSON.stringify(records));
-        }
+        function addRecord() {
+            const date = document.getElementById('dateInput').value;
+            const time = document.getElementById('timeInput').value;
+            const type = document.getElementById('typeInput').value;
+            const amountVal = document.getElementById('amountInput').value;
+            const availBalVal = document.getElementById('availBalInput').value;
+            const walletBalVal = document.getElementById('walletBalInput').value;
 
-        function addRecord() {
-            const date = document.getElementById('dateInput').value;
-            const time = document.getElementById('timeInput').value;
-            const type = document.getElementById('typeInput').value;
-            const amountVal = document.getElementById('amountInput').value;
-            const availBalVal = document.getElementById('availBalInput').value;
-            const walletBalVal = document.getElementById('walletBalInput').value;
+            if (!date || !time || !amountVal || amountVal <= 0) return alert('请填写完整信息！');
 
-            if (!date || !time || !amountVal || amountVal <= 0) return alert('Invalid transaction data!');
+            records.push({
+                id: Date.now(), timestamp: new Date(`${date}T${time}`).getTime(), date, time, type,
+                amount: parseFloat(amountVal), availBal: parseFloat(availBalVal || 0), walletBal: parseFloat(walletBalVal || 0)
+            });
+            
+            document.getElementById('amountInput').value = ''; 
+            document.getElementById('availBalInput').value = ''; 
+            document.getElementById('walletBalInput').value = ''; 
+            updateUI();
+        }
 
-            records.push({
-                id: Date.now(), timestamp: new Date(`${date}T${time}`).getTime(), date, time, type,
-                amount: parseFloat(amountVal), availBal: parseFloat(availBalVal || 0), walletBal: parseFloat(walletBalVal || 0)
-            });
-            
-            document.getElementById('amountInput').value = ''; 
-            document.getElementById('availBalInput').value = ''; 
-            document.getElementById('walletBalInput').value = ''; 
-            updateUI();
-        }
+        function deleteRecord(id) {
+            if (confirm('确定删除吗？')) { records = records.filter(r => r.id !== id); updateUI(); }
+        }
 
-        function deleteRecord(id) {
-            if (confirm('Drop this transaction log?')) { records = records.filter(r => r.id !== id); updateUI(); }
-        }
+        function clearAll() {
+            if (confirm('确定清空所有数据吗？此操作不可逆！')) { records = []; updateUI(); }
+        }
 
-        function clearAll() {
-            if (confirm('Wipe ENTIRE logistical ledger? This cannot be undone!')) { records = []; updateUI(); }
-        }
+        function exportData() {
+            if (records.length === 0) return alert("没有可以导出的数据！");
+            const dataStr = JSON.stringify(records, null, 2);
+            const blob = new Blob([dataStr], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ledger_backup_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+        }
 
-        function exportData() {
-            if (records.length === 0) return alert("Log is empty.");
-            const dataStr = JSON.stringify(records, null, 2);
-            const blob = new Blob([dataStr], { type: "application/json" });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `rhodes_ledger_${new Date().toISOString().split('T')[0]}.json`;
-            document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
-        }
+        function importData(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedRecords = JSON.parse(e.target.result);
+                    if (Array.isArray(importedRecords) && confirm('导入会覆盖当前手机上的数据，确认导入吗？')) {
+                        records = importedRecords; updateUI(); alert('数据导入成功！');
+                    }
+                } catch (err) { alert('解析文件失败！'); }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
 
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const importedRecords = JSON.parse(e.target.result);
-                    if (Array.isArray(importedRecords) && confirm('Import will overwrite current LOCAL data, proceed?')) {
-                        records = importedRecords; updateUI(); alert('Log restoration successful.');
-                    }
-                } catch (err) { alert('Failed to parse encrypted JSON file.'); }
-            };
-            reader.readAsText(file);
-            event.target.value = '';
-        }
-
-        window.onload = () => { updateUI(); };
-
-        // ================= ✨ AI 打字机特效 (罗德岛制式 Prompt) =================
-        const promptText = "> INIT /imagine prompt: Visual designer, proficient in graphic design, 3D modeling, and motion graphics. Translating abstract ideas into high-impact digital art. Industrial dystopian aesthetic, tactical UI, ultra-detailed, 8k分辨率 --ar 16:9 🚀";
-        const subtitleElement = document.getElementById('ai-prompt-text');
-        let i = 0;
-        
-        function typeWriter() {
-            if (i < promptText.length) {
-                subtitleElement.innerHTML += promptText.charAt(i);
-                i++;
-                setTimeout(typeWriter, 30); // 调整打字速度，明日方舟终端打字较快
-            } else {
-                subtitleElement.innerHTML += '<span class="cursor"></span>';
-            }
-        }
-        setTimeout(typeWriter, 800); 
-
-        // ================= ✨ Pudgy Penguins 键盘彩蛋 (保留Doctor的小宠物) =================
-        let secretCode = ['p', 'u', 'd', 'g', 'y'];
-        let inputCode = [];
-
-        window.addEventListener('keydown', (e) => {
-            inputCode.push(e.key.toLowerCase());
-            inputCode = inputCode.slice(-secretCode.length);
-            
-            if (JSON.stringify(inputCode) === JSON.stringify(secretCode)) {
-                triggerPenguinEasterEgg();
-            }
-        });
-
-        function triggerPenguinEasterEgg() {
-            const penguin = document.createElement('div');
-            penguin.innerHTML = '🐧'; 
-            penguin.style.position = 'fixed';
-            penguin.style.top = '-100px';
-            penguin.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-            penguin.style.fontSize = '80px';
-            penguin.style.zIndex = '10000';
-            /* 增加霓虹青色的发光效果 */
-            penguin.style.filter = 'drop-shadow(0 0 15px var(--ak-accent-info))';
-            penguin.style.transition = 'top 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 2.5s';
-            penguin.style.pointerEvents = 'none'; 
-            document.body.appendChild(penguin);
-
-            setTimeout(() => {
-                penguin.style.top = window.innerHeight + 100 + 'px';
-                penguin.style.transform = 'rotate(720deg)';
-            }, 50);
-
-            setTimeout(() => {
-                document.body.removeChild(penguin);
-            }, 2600);
-        }
-    </script>
+        window.onload = () => { updateUI(); };
+    </script>
 </body>
 </html>
