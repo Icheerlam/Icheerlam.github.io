@@ -28,7 +28,7 @@
         .page-header { text-align:center; margin:120px auto 40px; animation:fadeUp 0.6s forwards; position:relative; z-index:10;}
         .page-header h1 { font:800 2.2rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:10px; }
 
-        /* ✨ 绿色区域灰度化：3D 网格 */
+        /* ✨ 3D 网格 (已移除默认灰度，保持全彩) */
         .gallery-container { max-width:1400px; margin:0 auto; padding:0 5vw 80px; display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:30px; position:relative; z-index:10; }
         .gallery-card { background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:20px; position:relative; opacity:0; animation:fadeUp 0.6s forwards; transition:0.3s; display:flex; flex-direction:column; }
         .gallery-card::before { counter-increment:obj-counter; content:"[OBJ-0" counter(obj-counter) "]"; position:absolute; top:-12px; left:10px; font:bold 0.65rem 'Space Mono'; color:#000; background:var(--ak-text-muted); padding:2px 8px; z-index:10; transition:0.3s; }
@@ -37,10 +37,9 @@
         
         .img-wrapper { width:100%; border-radius:2px; overflow:hidden; background:#000; border:1px solid var(--ak-border); }
         
-        /* 默认 80% 灰度，悬停全彩 */
-        .gallery-card img, .gallery-card video { width:100%; display:block; transition:0.6s ease; filter:grayscale(80%) contrast(1.1); }
+        .gallery-card img, .gallery-card video { width:100%; display:block; transition:0.6s ease; }
         .gallery-card img { cursor:zoom-in; }
-        .gallery-card:hover img, .gallery-card:hover video { transform:scale(1.05); filter:grayscale(0) contrast(1.1); }
+        .gallery-card:hover img, .gallery-card:hover video { transform:scale(1.05); }
         
         .card-title { margin-top:20px; font:800 1rem 'Space Mono'; color:var(--ak-text-main); display:flex; align-items:center; gap:8px; text-transform:uppercase; }
         .card-title::before { content:'/>'; color:var(--ak-accent-info); }
@@ -73,7 +72,7 @@
                 <a href="my vedio.html">Video</a>
                 <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Gallery</a>
             </div>
-            <a href="Spike's profolio.html" class="nav-home-btn">[ RETURN_HOME ]</a>
+            <a href="Spike's profolio.html" class="nav-home-btn">[ RETURN ]</a>
         </div>
     </nav>
 
@@ -100,10 +99,7 @@
         <div class="gallery-card" style="--n:16"><div class="img-wrapper"><img src="3d model/fe 2.jpg" loading="lazy"></div><h4 class="card-title">角色白模渲染</h4></div>
         <div class="gallery-card" style="--n:17"><div class="img-wrapper"><img src="3d model/house 1.jpg" loading="lazy"></div><h4 class="card-title">房子低模</h4></div>
         <div class="gallery-card" style="--n:18"><div class="img-wrapper"><img src="3d model/house2.jpg" loading="lazy"></div><h4 class="card-title">房子烘焙贴图</h4></div>
-        <div class="gallery-card">
-            <div class="img-wrapper"><video controls loop autoplay muted playsinline style="width:100%; border-radius:2px;"><source src="3d model/house.mp4" type="video/mp4"></video></div>
-            <h4 class="card-title">场景动态演示</h4>
-        </div>
+        <div class="gallery-card"><div class="img-wrapper"><video controls loop autoplay muted playsinline style="width:100%; border-radius:2px;"><source src="3d model/house.mp4" type="video/mp4"></video></div><h4 class="card-title">场景动态演示</h4></div>
     </main>
 
     <div class="back-nav"><a href="Spike's profolio.html" class="btn-back">[ RETURN ]</a></div>
