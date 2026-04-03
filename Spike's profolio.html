@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Clarence Ye - 视觉设计师个人作品集。PRTS 罗德岛终端档案。">
-    <title>index.Clarence Ye</title>
+    <title>Rhodes Island Terminal // Clarence Ye</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* ================= 罗德岛制式终端 核心变量 ================= */
@@ -51,27 +50,86 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ================= 背景与全局特效 (扫描线) ================= */
+        /* 统一入场动画 (彻底移除导致白屏的 blur) */
+        @keyframes fadeUpAK { 
+            0% { opacity: 0; transform: translateY(25px); } 
+            100% { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* ================= ✨ 动态战术真实背景与 HUD 填充 ================= */
         .video-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; background: #000;
         }
-        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.4); opacity: 0.6; }
-
+        /* 加深视频灰度与对比度，营造冷峻的监控视角，完美填充左右空白 */
+        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.25) contrast(1.5); opacity: 0.8; }
+        
         .video-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; 
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
+            /* 强化工业网格纹理 */
+            background: linear-gradient(rgba(10,10,12,0.7), rgba(10,10,12,0.7)),
+                        linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
             pointer-events: none; transition: background 0.4s ease;
         }
-        body.light-mode .video-overlay { background: linear-gradient(rgba(240,242,245,0.8), rgba(240,242,245,0.8)); }
-        
-        /* 战术扫描线网格 */
-        body::before {
-            content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(var(--ak-scan-line) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-            background-size: 100% 4px, 3px 100%;
-            z-index: 100; pointer-events: none; opacity: 0.5;
+        body.light-mode .video-overlay { 
+            background: linear-gradient(rgba(240,242,245,0.85), rgba(240,242,245,0.85)),
+                        linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
         }
+
+        /* 战术雷达扫描线 */
+        .prts-scanline {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 4px; z-index: -8;
+            background: var(--ak-accent-info);
+            box-shadow: 0 0 15px var(--ak-accent-info), 0 0 30px var(--ak-accent-info);
+            opacity: 0.6; pointer-events: none;
+            animation: scan-drop 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        body.light-mode .prts-scanline { opacity: 0.3; }
+
+        @keyframes scan-drop {
+            0% { top: -10%; opacity: 0; }
+            5% { opacity: 0.6; }
+            45% { opacity: 0.6; }
+            50% { top: 110%; opacity: 0; }
+            100% { top: 110%; opacity: 0; }
+        }
+
+        /* 屏幕四角瞄准器/装甲边框 */
+        .prts-hud {
+            position: fixed; top: 20px; left: 20px; right: 20px; bottom: 20px; z-index: -8;
+            border: 1px solid rgba(0, 216, 255, 0.05); pointer-events: none; transition: 0.4s;
+        }
+        body.light-mode .prts-hud { border-color: rgba(2, 132, 199, 0.1); }
+        
+        .prts-hud::before {
+            content: ''; position: absolute; top: -2px; left: -2px; width: 50px; height: 50px;
+            border-top: 3px solid var(--ak-accent-info); border-left: 3px solid var(--ak-accent-info); transition: 0.4s;
+        }
+        .prts-hud::after {
+            content: ''; position: absolute; bottom: -2px; right: -2px; width: 50px; height: 50px;
+            border-bottom: 3px solid var(--ak-accent-info); border-right: 3px solid var(--ak-accent-info); transition: 0.4s;
+        }
+        .hud-corner.top-right {
+            position: absolute; top: -2px; right: -2px; width: 50px; height: 50px;
+            border-top: 3px solid var(--ak-accent-info); border-right: 3px solid var(--ak-accent-info); transition: 0.4s;
+        }
+        .hud-corner.bottom-left {
+            position: absolute; bottom: -2px; left: -2px; width: 50px; height: 50px;
+            border-bottom: 3px solid var(--ak-accent-info); border-left: 3px solid var(--ak-accent-info); transition: 0.4s;
+        }
+
+        /* 巨型背景代码水印 (填充左下角空白) */
+        .prts-watermark {
+            position: fixed; bottom: 10%; left: -80px; z-index: -8;
+            font-family: 'Space Mono', monospace; font-size: 5rem; font-weight: 800;
+            color: rgba(255, 255, 255, 0.015);
+            transform: rotate(-90deg); transform-origin: left bottom;
+            white-space: nowrap; pointer-events: none; user-select: none;
+        }
+        body.light-mode .prts-watermark { color: rgba(0, 0, 0, 0.02); }
 
         /* ================= 顶部导航栏 ================= */
         nav { 
@@ -89,28 +147,26 @@
         .nav-secret:hover { background: var(--ak-accent-warn); color: var(--ak-bg-main); }
 
         /* ================= Bento Card 工业战术风 ================= */
-        .container { max-width: 1200px; margin: 100px auto 40px; padding: 0 5vw; }
+        .container { max-width: 1200px; margin: 100px auto 40px; padding: 0 5vw; position: relative; z-index: 10; }
         .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
         .bento-card { 
-            background: var(--ak-bg-panel); border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border);
+            background: rgba(20, 20, 20, 0.85); /* 稍微降低透明度，透出背景视频 */
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border);
             padding: 32px; position: relative; opacity: 0; 
             animation: fadeUpAK 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s, background 0.4s;
         }
+        body.light-mode .bento-card { background: rgba(255, 255, 255, 0.9); }
+        
         /* 自动编号 [OP-0X] */
         .bento-card::after {
             counter-increment: card-counter; content: "[OP-0" counter(card-counter) "]";
             position: absolute; top: 10px; left: 12px; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-text-muted); font-weight: bold;
         }
-        .bento-card:hover { border-color: var(--ak-accent-info); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+        .bento-card:hover { border-color: var(--ak-accent-info); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
         body.light-mode .bento-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-
-        /* 统一入场动画 (无 blur，彻底解决白屏) */
-        @keyframes fadeUpAK { 
-            from { opacity: 0; transform: translateY(25px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
 
         /* --- 英雄卡片 --- */
         .card-hero { grid-column: span 2; grid-row: span 2; text-align: center; border-color: var(--ak-accent-info); display: flex; flex-direction: column; justify-content: center; align-items: center;}
@@ -150,7 +206,8 @@
 
         /* --- 业务系统直达 --- */
         .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
-        .link-card { background: var(--ak-bg-panel-light); border: 1px solid var(--ak-border); padding: 24px 20px; text-decoration: none; color: inherit; transition: 0.3s; position: relative; display: flex; flex-direction: column; justify-content: center;}
+        .link-card { background: rgba(28, 28, 28, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--ak-border); padding: 24px 20px; text-decoration: none; color: inherit; transition: 0.3s; position: relative; display: flex; flex-direction: column; justify-content: center;}
+        body.light-mode .link-card { background: rgba(248, 250, 252, 0.9); }
         .link-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px; background: var(--ak-accent-info); opacity: 0; transition: 0.3s;}
         .link-card:hover::before { opacity: 1; }
         .link-card:hover { border-color: var(--ak-accent-info); background: var(--ak-bg-main); color: var(--ak-accent-info); transform: translateY(-4px);}
@@ -170,7 +227,8 @@
         .tl-body strong { color: var(--ak-text-main); font-weight: 700;}
 
         /* ================= 私密账本系统 & 计算器 ================= */
-        #privateSection { display: none; padding: 35px; background: var(--ak-bg-panel); border: 2px solid var(--ak-border); border-top: 4px solid var(--ak-accent-warn); margin-top: 20px; animation: fadeUpAK 0.6s ease; }
+        #privateSection { display: none; padding: 35px; background: rgba(20, 20, 20, 0.95); backdrop-filter: blur(16px); border: 2px solid var(--ak-border); border-top: 4px solid var(--ak-accent-warn); margin-top: 20px; animation: fadeUpAK 0.6s ease; position: relative; z-index: 10; }
+        body.light-mode #privateSection { background: rgba(255, 255, 255, 0.95); }
         .secret-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; border-bottom: 1px solid var(--ak-border); padding-bottom: 20px;}
         .secret-header h2 { font-family: 'Space Mono', monospace; color: var(--ak-accent-warn); font-size: 1.5rem; font-weight: 800;}
         
@@ -288,14 +346,21 @@
 <body class="dark-mode">
 
     <div class="video-bg">
-        <video autoplay muted loop playsinline poster="https://web.hycdn.cn/arknights/official/pc/assets/bg-1.jpg">
-            <source src="https://cdn.pixabay.com/video/2021/08/04/83864-584742467_large.mp4" type="video/mp4">
+        <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop">
+            <source src="https://cdn.pixabay.com/video/2019/04/23/23011-332483163_large.mp4" type="video/mp4">
         </video>
     </div>
     <div class="video-overlay"></div>
 
+    <div class="prts-scanline"></div>
+    <div class="prts-hud">
+        <div class="hud-corner top-right"></div>
+        <div class="hud-corner bottom-left"></div>
+    </div>
+    <div class="prts-watermark">SYS.VER.2026 // LOGISTICAL_ARCHIVE</div>
+
     <nav>
-        <a href="index.html" class="nav-logo">PRTS // CLARENCE YE</a>
+        <a href="#" class="nav-logo">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
                 <a href="数据分析/Data Analysis.html">Data Analysis</a>
@@ -322,7 +387,7 @@
                 <h2 class="card-title">Operator Profile</h2>
                 <div class="info-grid">
                     <div class="info-item"><strong>Current_Location</strong><span>广州市海珠区</span></div>
-                    <div class="info-item"><strong>Education_Node</strong><span>广东工业大学 动画系</span></div>
+                    <div class="info-item"><strong>Education_Node</strong><span>广东工业大学 // 动画系</span></div>
                     <div class="info-item"><strong>Signal_Alpha</strong><span>Clarenceye1@gmail.com</span></div>
                     <div class="info-item"><strong>Signal_Beta</strong><span>+86 13719113230</span></div>
                 </div>
@@ -336,7 +401,7 @@
                     <span class="tag">After Effects</span>
                     <span class="tag">Blender_3D</span>
                     <span class="tag">ComfyUI</span>
-                    <span class="tag">jimeng / Kling</span>
+                    <span class="tag">Sora / Kling</span>
                     <span class="tag">Video_Ads</span>
                     <span class="tag">Growth_Mechanics</span>
                 </div>
@@ -355,7 +420,7 @@
                 
                 <div class="timeline-item">
                     <div class="tl-header">
-                        <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">// 广告视频制作</span></div>
+                        <div class="tl-title">广州家画信息技术有限公司 （甲方） <span class="tl-role">// 广告视频制作</span></div>
                         <div class="tl-date">2024.07 - Present</div>
                     </div>
                     <div class="tl-body">
@@ -375,7 +440,7 @@
                 </div>
 
                 <div class="timeline-item">
-                    <div class="tl-header"><div class="tl-title">天游网络 / 博冠信息 <span class="tl-role">// 游戏视频运营</span></div><div class="tl-date">2023.12 - 2024.06</div></div>
+                    <div class="tl-header"><div class="tl-title">天游网络 （甲方） / 博冠信息科技 （乙方） <span class="tl-role">// 游戏视频运营</span></div><div class="tl-date">2023.12 - 2024.06</div></div>
                     <div class="tl-body">负责网易游戏《率土之滨》《大话西游》及海外发行游戏《三国云梦录》的买量广告视频与后期包装。</div>
                 </div>
 
