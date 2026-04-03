@@ -6,223 +6,51 @@
     <title>Video Design // Rhodes Island</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* ================= 罗德岛制式终端 核心变量 ================= */
-        :root {
-            /* 暗夜战术模式 (默认) */
-            --ak-bg-main: #0a0a0a; 
-            --ak-bg-panel: #141414; 
-            --ak-bg-panel-light: #1c1c1c;
-            --ak-text-main: #ffffff;
-            --ak-text-muted: #7a7a7a;
-            --ak-accent-info: #00d8ff; /* 罗德岛科技蓝 */
-            --ak-accent-warn: #f5a623; /* 源石警示橙 */
-            --ak-border: #2a2a2a;
-            --ak-scan-line: rgba(0, 216, 255, 0.03);
-        }
+        :root { --ak-bg-main:#050505; --ak-bg-panel:rgba(18,18,20,0.92); --ak-text-main:#ffffff; --ak-text-muted:#7a7a7a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#2a2a2a; --ak-scan-line:rgba(0,216,255,0.03); }
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; }
+        @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
 
-        /* 医疗部白昼模式 (覆盖变量) */
-        body.light-mode {
-            --ak-bg-main: #f0f2f5; 
-            --ak-bg-panel: #ffffff; 
-            --ak-bg-panel-light: #f8fafc;
-            --ak-text-main: #1a1a1b;
-            --ak-text-muted: #64748b;
-            --ak-accent-info: #0284c7;
-            --ak-accent-warn: #ea580c;
-            --ak-border: #d1d5db;
-        }
+        /* ✨ 科技蓝图背景 */
+        .tech-bg { position:fixed; inset:0; z-index:-10; background-color:var(--ak-bg-main); background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center; opacity:0.15; filter:grayscale(100%); }
+        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:40px 40px; }
+        .prts-hud { position:fixed; inset:20px; z-index:-8; border:1px solid rgba(0,216,255,0.05); pointer-events:none; background:linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; }
 
-        /* ================= 基础重置 ================= */
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        nav { position:fixed; top:0; width:100%; padding:15px 5vw; display:flex; justify-content:space-between; align-items:center; background:var(--ak-bg-panel); border-bottom:1px solid var(--ak-border); z-index:1000; backdrop-filter:blur(10px); }
+        .nav-logo { font:800 1rem 'Space Mono'; letter-spacing:2px; color:var(--ak-text-main); text-decoration:none; border:1px solid var(--ak-accent-info); padding:5px 12px; }
+        .nav-right { display:flex; align-items:center; gap:30px; }
+        .nav-links { display:flex; gap:25px; font:0.85rem 'Space Mono'; }
+        .nav-links a { color:var(--ak-text-main); text-decoration:none; font-weight:700; text-transform:uppercase; transition:0.3s; }
+        .nav-links a:hover, .nav-links a.active { color:var(--ak-accent-info); text-shadow:0 0 8px var(--ak-accent-info); }
+        .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono'; text-decoration:none; transition:0.3s; }
+        .nav-home-btn:hover { background:var(--ak-accent-warn); color:#000; }
         
-        body { 
-            background-color: var(--ak-bg-main);
-            color: var(--ak-text-main);
-            font-family: 'Space Grotesk', -apple-system, sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
-            transition: background 0.4s ease, color 0.4s ease;
-            -webkit-font-smoothing: antialiased;
-        }
+        .page-header { text-align:center; margin:120px auto 40px; animation:fadeUp 0.6s forwards; position:relative; z-index:10;}
+        .page-header h1 { font:800 2.2rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:10px; }
 
-        /* 统一入场动画 (无 blur，避免白屏) */
-        @keyframes fadeUpAK { 
-            0% { opacity: 0; transform: translateY(25px); } 
-            100% { opacity: 1; transform: translateY(0); } 
-        }
-
-        /* ================= 动态战术背景与 HUD ================= */
-        .video-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; background: #000;
-        }
-        /* 加深视频灰度与对比度，营造冷峻的监控视角 */
-        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.3) contrast(1.3); opacity: 0.7; }
+        /* ✨ 绿色区域灰度化：视频卡片 */
+        .video-container { max-width:1000px; margin:0 auto; padding:0 5vw 80px; position:relative; z-index:10;}
+        .video-card { background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:30px; animation:fadeUp 0.8s forwards; transition:0.4s; }
+        .video-card:hover { border-color:var(--ak-accent-info); transform:translateY(-5px); box-shadow:0 15px 40px rgba(0,216,255,0.1); }
         
-        .video-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; 
-            /* 强化工业网格纹理 */
-            background: linear-gradient(rgba(10,10,12,0.85), rgba(10,10,12,0.85)),
-                        linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
-                        linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
-            pointer-events: none; transition: background 0.4s ease;
-        }
-        body.light-mode .video-overlay { 
-            background: linear-gradient(rgba(240,242,245,0.85), rgba(240,242,245,0.85)),
-                        linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
-        }
-
-        /* 战术雷达扫描线 */
-        .prts-scanline {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 4px; z-index: -8;
-            background: var(--ak-accent-info);
-            box-shadow: 0 0 15px var(--ak-accent-info), 0 0 30px var(--ak-accent-info);
-            opacity: 0.6; pointer-events: none;
-            animation: scan-drop 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-        body.light-mode .prts-scanline { opacity: 0.3; }
-
-        @keyframes scan-drop {
-            0% { top: -10%; opacity: 0; }
-            5% { opacity: 0.6; }
-            45% { opacity: 0.6; }
-            50% { top: 110%; opacity: 0; }
-            100% { top: 110%; opacity: 0; }
-        }
-
-        /* 屏幕四角瞄准器/装甲边框 */
-        .prts-hud {
-            position: fixed; top: 20px; left: 20px; right: 20px; bottom: 20px; z-index: -8;
-            border: 1px solid rgba(0, 216, 255, 0.05); pointer-events: none; transition: 0.4s;
-        }
-        body.light-mode .prts-hud { border-color: rgba(2, 132, 199, 0.1); }
+        /* iframe 容器默认灰度，悬停全彩 */
+        .video-wrapper { width:100%; border:2px solid var(--ak-border); background:#000; margin-bottom:24px; transition:0.4s; filter:grayscale(80%); }
+        .video-card:hover .video-wrapper { border-color:var(--ak-accent-info); filter:grayscale(0%); box-shadow:0 10px 30px rgba(0,0,0,0.5); }
         
-        .prts-hud::before {
-            content: ''; position: absolute; top: -2px; left: -2px; width: 50px; height: 50px;
-            border-top: 3px solid var(--ak-accent-info); border-left: 3px solid var(--ak-accent-info); transition: 0.4s;
-        }
-        .prts-hud::after {
-            content: ''; position: absolute; bottom: -2px; right: -2px; width: 50px; height: 50px;
-            border-bottom: 3px solid var(--ak-accent-info); border-right: 3px solid var(--ak-accent-info); transition: 0.4s;
-        }
-        .hud-corner.top-right {
-            position: absolute; top: -2px; right: -2px; width: 50px; height: 50px;
-            border-top: 3px solid var(--ak-accent-info); border-right: 3px solid var(--ak-accent-info); transition: 0.4s;
-        }
-        .hud-corner.bottom-left {
-            position: absolute; bottom: -2px; left: -2px; width: 50px; height: 50px;
-            border-bottom: 3px solid var(--ak-accent-info); border-left: 3px solid var(--ak-accent-info); transition: 0.4s;
-        }
+        .video-title { font:800 1.5rem 'Space Mono'; color:var(--ak-text-main); display:flex; justify-content:center; gap:10px; margin-bottom:12px;}
+        .video-title::before { content:'/>'; color:var(--ak-accent-info); }
+        .highlight-tag { display:inline-block; padding:2px 10px; border:1px solid var(--ak-accent-warn); color:var(--ak-accent-warn); font:bold 0.8rem sans-serif; }
 
-        /* 巨型背景代码水印 */
-        .prts-watermark {
-            position: fixed; bottom: 10%; left: -80px; z-index: -8;
-            font-family: 'Space Mono', monospace; font-size: 5rem; font-weight: 800;
-            color: rgba(255, 255, 255, 0.015);
-            transform: rotate(-90deg); transform-origin: left bottom;
-            white-space: nowrap; pointer-events: none; user-select: none;
-        }
-        body.light-mode .prts-watermark { color: rgba(0, 0, 0, 0.02); }
-
-        /* ================= 顶部导航栏 ================= */
-        nav { 
-            position: fixed; top: 0; width: 100%; padding: 15px 5vw; 
-            display: flex; justify-content: space-between; align-items: center; 
-            background: var(--ak-bg-panel); border-bottom: 2px solid var(--ak-border); 
-            z-index: 1000; backdrop-filter: blur(10px); transition: background 0.4s, border-color 0.4s;
-        }
-        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 6px 14px; font-size: 1.1rem; flex-shrink: 0;}
-        .nav-right { display: flex; align-items: center; gap: 30px; }
-        .nav-links { display: flex; gap: 25px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
-        .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase;}
-        .nav-links a:hover, .nav-links a.active { color: var(--ak-accent-info); text-shadow: 0 0 8px var(--ak-accent-info); }
+        .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10;}
+        .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; }
+        .btn-back:hover { background:var(--ak-accent-info); color:#000; border-color:var(--ak-accent-info); }
+        footer { text-align:center; padding:40px; color:var(--ak-text-muted); font:700 0.75rem 'Space Mono'; position:relative; z-index:10; }
         
-        .nav-home-btn {
-            padding: 6px 14px; background: transparent; color: var(--ak-accent-warn);
-            border: 1px solid var(--ak-accent-warn); font-family: 'Space Mono', monospace;
-            font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: 0.3s; text-transform: uppercase;
-        }
-        .nav-home-btn:hover { background: var(--ak-accent-warn); color: #000; box-shadow: 0 0 10px rgba(245,166,35,0.4); }
-
-        /* ================= 页面头部 ================= */
-        .page-header { text-align: center; margin: 120px auto 40px; padding: 0 20px; opacity: 0; animation: fadeUpAK 0.6s ease-out forwards; }
-        .page-header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; font-family: 'Space Mono', monospace; color: var(--ak-accent-info); text-transform: uppercase;}
-        .page-header p { color: var(--ak-text-muted); font-size: 1rem; font-family: 'Space Mono', monospace;}
-
-        /* ================= 视频卡片区块 ================= */
-        .video-container { max-width: 1000px; margin: 0 auto; padding: 0 5vw 80px; display: flex; flex-direction: column; gap: 50px; position: relative; z-index: 10;}
-        
-        .video-card { 
-            background: rgba(20, 20, 20, 0.85); /* 降低一点透明度透出背景视频 */
-            backdrop-filter: blur(16px);
-            border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border);
-            border-radius: 4px; /* 罗德岛工业风直角边 */
-            padding: 30px; 
-            opacity: 0; animation: fadeUpAK 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; 
-        }
-        body.light-mode .video-card { background: rgba(255, 255, 255, 0.9); }
-        .video-card:hover { border-color: var(--ak-accent-info); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,216,255,0.15); }
-        
-        .video-wrapper { 
-            width: 100%; border-radius: 4px; overflow: hidden; 
-            background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.6); 
-            margin-bottom: 24px; border: 2px solid var(--ak-border);
-            transition: 0.3s;
-        }
-        .video-card:hover .video-wrapper { border-color: var(--ak-accent-info); }
-        
-        .video-info { text-align: center; display: flex; flex-direction: column; gap: 12px; }
-        .video-title { font-size: 1.5rem; font-weight: 800; color: var(--ak-text-main); font-family: 'Space Mono', monospace; text-transform: uppercase; margin: 0; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;}
-        .video-title::before { content: '/>'; color: var(--ak-accent-info); }
-        .video-meta { font-size: 0.95rem; color: var(--ak-text-muted); font-weight: 400; margin: 0; font-family: 'Space Mono', monospace; line-height: 1.8;}
-        
-        .highlight-tag { 
-            display: inline-block; padding: 2px 10px; background: var(--ak-bg-main); 
-            color: var(--ak-accent-warn); border: 1px solid var(--ak-accent-warn); 
-            border-radius: 2px; font-size: 0.8rem; font-weight: bold; margin: 0 4px; 
-            text-transform: uppercase;
-        }
-
-        /* ---------------- 辅助 UI ---------------- */
-        .back-nav { text-align: center; margin-bottom: 80px; position: relative; z-index: 10;}
-        .btn-back { 
-            display: inline-block; padding: 12px 30px; background: transparent; 
-            border: 1px solid var(--ak-border); color: var(--ak-text-main); font-family: 'Space Mono', monospace; 
-            text-decoration: none; font-weight: 700; transition: 0.3s; text-transform: uppercase;
-        }
-        .btn-back:hover { background: var(--ak-accent-info); border-color: var(--ak-accent-info); color: #000; box-shadow: 0 0 15px rgba(0,216,255,0.4); }
-        
-        footer { text-align: center; padding: 40px; color: var(--ak-text-muted); font-size: 0.75rem; border-top: 1px solid var(--ak-border); font-family: 'Space Mono', monospace; text-transform: uppercase; position: relative; z-index: 10;}
-        
-        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: #000; border: 1px solid var(--ak-border); color: var(--ak-text-muted); font-size: 0.8rem; font-family: 'Space Mono'; padding: 10px; cursor: pointer; z-index: 9999; transition: 0.3s; }
-        .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); }
-
-        /* ================= 响应式断点 ================= */
-        @media (max-width: 900px) { 
-            .nav-links { display: none; } 
-            .page-header h1 { font-size: 2rem; } 
-            .theme-toggle-btn { bottom: 20px; right: 20px; } 
-        }
+        @media (max-width:900px) { .nav-links{display:none;} }
     </style>
 </head>
-<body class="dark-mode">
-
-    <div class="video-bg">
-        <video autoplay muted loop playsinline poster="https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg">
-            <source src="https://cdn.pixabay.com/video/2020/05/25/40138-424908070_large.mp4" type="video/mp4">
-        </video>
-    </div>
-    <div class="video-overlay"></div>
-    
-    <div class="prts-scanline"></div>
-    <div class="prts-hud">
-        <div class="hud-corner top-right"></div>
-        <div class="hud-corner bottom-left"></div>
-    </div>
-    <div class="prts-watermark">SYS.VER.2026 // MOTION_ARCHIVE</div>
+<body>
+    <div class="tech-bg"></div><div class="tech-overlay"></div><div class="prts-hud"></div>
 
     <nav>
         <a href="Spike's profolio.html" class="nav-logo">PRTS // CLARENCE YE</a>
@@ -239,55 +67,25 @@
     </nav>
 
     <header class="page-header">
-        <h1>[ VIDEO // MOTION DESIGN ]</h1>
-        <p>游戏买量广告与高燃混剪视觉体验</p>
+        <h1>[ VIDEO // MOTION DESIGN ]</h1><p style="color:var(--ak-text-muted);">游戏买量广告与高燃混剪视觉体验</p>
     </header>
 
     <main class="video-container">
         <div class="video-card">
-            <div class="video-wrapper" style="position: relative; width: 100%; aspect-ratio: 16/9;">
-                <iframe 
-                    src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" 
-                    title="2025 Showreel" 
-                    frameborder="0" 
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowfullscreen
-                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-                </iframe>
+            <div class="video-wrapper" style="position:relative; width:100%; aspect-ratio:16/9;">
+                <iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
             </div>
-            
-            <div class="video-info">
+            <div style="text-align:center;">
                 <h2 class="video-title">24-25_Showreel.mp4</h2>
-                <p class="video-meta">
-                    > Accessing high-res stream from YouTube, please hold... <br>
-                    <span style="font-size: 0.8rem; opacity: 0.8; display: inline-block; margin-top: 10px;">
-                        [ TIMESTAMPS ]: <span class="highlight-tag">2024</span> 0:00 - 1:17  //  <span class="highlight-tag">2025</span> 1:17 - 2:54
-                    </span>
+                <p style="color:var(--ak-text-muted); font-family:'Space Mono'; font-size:0.9rem;">
+                    > Accessing stream... <br><br>
+                    [ TIMESTAMPS ]: <span class="highlight-tag">2024</span> 0:00-1:17 // <span class="highlight-tag">2025</span> 1:17-2:54
                 </p>
             </div>
         </div>
     </main>
 
-    <div class="back-nav">
-        <a href="Spike's profolio.html" class="btn-back">[ RETURN ]</a>
-    </div>
-
-    <footer>
-        <p>> System.copyRight(2026, "Rhodes Island // Clarence Ye")</p>
-    </footer>
-
-    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // 主题切换 (罗德岛暗夜 vs 医疗部白昼)
-            const themeBtn = document.getElementById('themeBtn');
-            const body = document.body;
-            themeBtn.addEventListener('click', () => { 
-                body.classList.toggle('light-mode'); 
-                themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT'; 
-            });
-        });
-    </script>
+    <div class="back-nav"><a href="Spike's profolio.html" class="btn-back">[ RETURN ]</a></div>
+    <footer><p>> Rhodes Island Archive // System.2026</p></footer>
 </body>
 </html>
