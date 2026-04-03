@@ -3,73 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Graphic Design | Clarence Ye</title>
+    <title>Graphic Design // Rhodes Island</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --bg: #09090b; --card-bg: rgba(255, 255, 255, 0.03); --card-border: rgba(255, 255, 255, 0.08); --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #1abc9c; --accent-glow: rgba(26, 188, 156, 0.4); --nav-bg: rgba(9, 9, 11, 0.7); }
-        body.light-mode { --bg: #f4f5f7; --card-bg: #ffffff; --card-border: #e2e8f0; --text-main: #0f172a; --text-muted: #64748b; --accent: #059669; --accent-glow: rgba(5, 150, 105, 0.2); --nav-bg: rgba(255, 255, 255, 0.8); }
+        /* ================= 罗德岛制式终端 核心变量 ================= */
+        :root {
+            /* 暗夜战术模式 (默认) */
+            --ak-bg-main: #0a0a0a; 
+            --ak-bg-panel: #141414; 
+            --ak-bg-panel-light: #1c1c1c;
+            --ak-text-main: #ffffff;
+            --ak-text-muted: #7a7a7a;
+            --ak-accent-info: #00d8ff; /* 罗德岛蓝 */
+            --ak-accent-warn: #f5a623; /* 源石橙 */
+            --ak-border: #2a2a2a;
+            --ak-scan-line: rgba(0, 216, 255, 0.03);
+        }
+
+        /* 医疗部白昼模式 (覆盖变量) */
+        body.light-mode {
+            --ak-bg-main: #f0f2f5; 
+            --ak-bg-panel: #ffffff; 
+            --ak-bg-panel-light: #f8fafc;
+            --ak-text-main: #1a1a1b;
+            --ak-text-muted: #64748b;
+            --ak-accent-info: #0284c7;
+            --ak-accent-warn: #ea580c;
+            --ak-border: #d1d5db;
+        }
+
+        /* ================= 基础重置 ================= */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text-main); font-family: -apple-system, sans-serif; line-height: 1.6; overflow-x: hidden; transition: all 0.5s ease; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); filter: blur(5px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-
-        nav { position: fixed; top: 0; width: 100%; padding: 15px 5vw; display: flex; justify-content: space-between; align-items: center; background: var(--nav-bg); backdrop-filter: blur(16px); z-index: 1000; border-bottom: 1px solid var(--card-border); transition: all 0.5s ease; }
-        .nav-logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
         
-        /* ✨ 新增：导航栏右侧布局与返回按钮 */
+        body { 
+            background-color: var(--ak-bg-main);
+            color: var(--ak-text-main);
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+            -webkit-font-smoothing: antialiased;
+            counter-reset: gallery-counter; /* 开启瀑布流图片编号 */
+        }
+
+        /* 统一入场动画 (无 blur) */
+        @keyframes fadeUpAK { 
+            0% { opacity: 0; transform: translateY(25px); } 
+            100% { opacity: 1; transform: translateY(0); } 
+        }
+
+        /* ================= 背景与全局特效 ================= */
+        .video-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; background: #000;
+        }
+        
+        .video-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; 
+            background: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85));
+            pointer-events: none; transition: background 0.4s ease;
+        }
+        body.light-mode .video-overlay { background: linear-gradient(rgba(240,242,245,0.85), rgba(240,242,245,0.85)); }
+        
+        /* 战术扫描线网格 */
+        body::before {
+            content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(var(--ak-scan-line) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 3px 100%;
+            z-index: 100; pointer-events: none; opacity: 0.5;
+        }
+
+        /* ================= 顶部导航栏 ================= */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 15px 5vw; 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: var(--ak-bg-panel); border-bottom: 2px solid var(--ak-border); 
+            z-index: 1000; backdrop-filter: blur(10px); transition: background 0.4s, border-color 0.4s;
+        }
+        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 6px 14px; font-size: 1.1rem; flex-shrink: 0;}
         .nav-right { display: flex; align-items: center; gap: 30px; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500;}
-        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
-        .nav-home-btn { padding: 8px 18px; background: rgba(26, 188, 156, 0.1); color: var(--accent); border: 1px solid var(--accent); border-radius: 30px; font-size: 0.85rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; display: flex; align-items: center; gap: 6px; }
-        .nav-home-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 15px var(--accent-glow); }
+        .nav-links { display: flex; gap: 25px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
+        .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase;}
+        .nav-links a:hover, .nav-links a.active { color: var(--ak-accent-info); text-shadow: 0 0 8px var(--ak-accent-info); }
+        
+        .nav-home-btn {
+            padding: 6px 14px; background: transparent; color: var(--ak-accent-warn);
+            border: 1px solid var(--ak-accent-warn); font-family: 'Space Mono', monospace;
+            font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: 0.3s; text-transform: uppercase;
+        }
+        .nav-home-btn:hover { background: var(--ak-accent-warn); color: #000; box-shadow: 0 0 10px rgba(245,166,35,0.4); }
 
-        .page-header { text-align: center; margin: 120px auto 40px; padding: 0 20px; animation: fadeUp 0.8s ease forwards; }
-        .page-header h1 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; transition: color 0.5s;}
-        .page-header p { color: var(--text-muted); font-size: 1.1rem; transition: color 0.5s;}
+        /* ================= 页面头部 ================= */
+        .page-header { text-align: center; margin: 120px auto 40px; padding: 0 20px; opacity: 0; animation: fadeUpAK 0.6s ease-out forwards; }
+        .page-header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; font-family: 'Space Mono', monospace; color: var(--ak-accent-info); text-transform: uppercase;}
+        .page-header p { color: var(--ak-text-muted); font-size: 1rem; font-family: 'Space Mono', monospace;}
 
-        .masonry-gallery { max-width: 1600px; margin: 0 auto; padding: 0 5vw 80px; column-count: 4; column-gap: 24px; }
-        .masonry-item { break-inside: avoid; margin-bottom: 24px; background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 16px; overflow: hidden; opacity: 0; animation: fadeUp 0.8s ease forwards; transition: all 0.4s ease; position: relative; }
-        body.light-mode .masonry-item { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04); }
-        .masonry-item:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.25); }
-        .masonry-item img { width: 100%; display: block; transition: transform 0.6s ease; cursor: zoom-in; }
-        .masonry-item:hover img { transform: scale(1.03); }
+        /* ================= 瀑布流画廊 ================= */
+        .masonry-gallery { 
+            max-width: 1600px; margin: 0 auto; padding: 0 5vw 80px; 
+            column-count: 4; column-gap: 24px; 
+        }
+        
+        .masonry-item { 
+            break-inside: avoid; margin-bottom: 24px; 
+            background: var(--ak-bg-panel); border: 2px solid var(--ak-border); border-radius: 4px; /* 罗德岛直角边框 */
+            overflow: hidden; position: relative;
+            transition: all 0.4s ease; 
+            opacity: 0; animation: fadeUpAK 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
 
-        /* 灯箱效果 */
-        .lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 10000; display: flex; justify-content: center; align-items: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        /* 统一给画廊加自动编号，更有工业感 */
+        .masonry-item::before {
+            counter-increment: gallery-counter; content: "IMG-0" counter(gallery-counter);
+            position: absolute; top: 10px; left: 10px; 
+            font-family: 'Space Mono', monospace; font-size: 0.65rem; color: #fff; font-weight: bold;
+            background: rgba(0,0,0,0.6); padding: 2px 6px; border: 1px solid var(--ak-accent-info); z-index: 10;
+            opacity: 0; transition: 0.3s;
+        }
+
+        .masonry-item:hover { border-color: var(--ak-accent-info); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .masonry-item:hover::before { opacity: 1; }
+        
+        .masonry-item img { 
+            width: 100%; display: block; transition: transform 0.6s ease; cursor: zoom-in; 
+            filter: grayscale(20%); /* 默认带一点灰度，更有质感 */
+        }
+        .masonry-item:hover img { transform: scale(1.03); filter: grayscale(0%); }
+
+        /* 交错动画延迟 (前10个图片) */
+        .masonry-item:nth-child(1) { animation-delay: 0.1s; } .masonry-item:nth-child(2) { animation-delay: 0.15s; }
+        .masonry-item:nth-child(3) { animation-delay: 0.2s; } .masonry-item:nth-child(4) { animation-delay: 0.25s; }
+        .masonry-item:nth-child(5) { animation-delay: 0.3s; } .masonry-item:nth-child(6) { animation-delay: 0.35s; }
+        .masonry-item:nth-child(7) { animation-delay: 0.4s; } .masonry-item:nth-child(8) { animation-delay: 0.45s; }
+        .masonry-item:nth-child(9) { animation-delay: 0.5s; } .masonry-item:nth-child(10) { animation-delay: 0.55s; }
+
+        /* ================= 灯箱与交互 ================= */
+        .lightbox { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); z-index: 10000; 
+            display: flex; justify-content: center; align-items: center; 
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease;
+        }
         .lightbox.active { opacity: 1; pointer-events: auto; }
-        .lightbox img { max-width: 90vw; max-height: 90vh; border-radius: 8px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); transform: scale(0.95); transition: transform 0.4s ease; cursor: zoom-out; object-fit: contain; }
+        .lightbox img { 
+            max-width: 90vw; max-height: 90vh; border: 2px solid var(--ak-accent-info); 
+            box-shadow: 0 0 40px rgba(0,216,255,0.2); transform: scale(0.95); 
+            transition: transform 0.4s ease; cursor: zoom-out; object-fit: contain; 
+        }
         .lightbox.active img { transform: scale(1); }
-        .lightbox-close { position: absolute; top: 30px; right: 40px; color: rgba(255,255,255,0.6); font-size: 40px; cursor: pointer; font-weight: 300; }
-        .lightbox-close:hover { color: #fff; }
+        .lightbox-close { 
+            position: absolute; top: 25px; right: 40px; color: var(--ak-accent-info); 
+            font-family: 'Space Mono', monospace; font-size: 1.2rem; font-weight: bold; 
+            border: 1px solid var(--ak-accent-info); padding: 5px 10px; cursor: pointer; transition: 0.3s;
+        }
+        .lightbox-close:hover { background: var(--ak-accent-info); color: #000; }
 
+        /* 底部导航按钮 */
         .back-nav { text-align: center; margin-bottom: 80px; }
-        .btn-back { display: inline-block; padding: 14px 40px; border-radius: 30px; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); text-decoration: none; font-weight: 600; transition: all 0.3s; }
-        .btn-back:hover { background: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
-        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--card-border); }
-        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--nav-bg); border: 1px solid var(--card-border); color: var(--text-main); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); backdrop-filter: blur(10px); z-index: 9999; transition: all 0.3s; }
-        .theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent); color: var(--accent); }
+        .btn-back { 
+            display: inline-block; padding: 12px 30px; background: transparent; 
+            border: 1px solid var(--ak-border); color: var(--ak-text-main); font-family: 'Space Mono', monospace; 
+            text-decoration: none; font-weight: 700; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-back:hover { background: var(--ak-accent-info); border-color: var(--ak-accent-info); color: #000; }
+        
+        footer { text-align: center; padding: 40px; color: var(--ak-text-muted); font-size: 0.75rem; border-top: 1px solid var(--ak-border); font-family: 'Space Mono', monospace; text-transform: uppercase;}
+        
+        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: #000; border: 1px solid var(--ak-border); color: var(--ak-text-muted); font-size: 0.8rem; font-family: 'Space Mono'; padding: 10px; cursor: pointer; z-index: 9999; transition: 0.3s; }
+        .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); }
 
+        /* ================= 响应式断点 ================= */
         @media (max-width: 1200px) { .masonry-gallery { column-count: 3; } }
-        @media (max-width: 900px) { .masonry-gallery { column-count: 2; } .nav-links { display: none; } .page-header h1 { font-size: 2.2rem; } .theme-toggle-btn { bottom: 20px; right: 20px; } .lightbox-close { top: 15px; right: 20px; } }
+        @media (max-width: 900px) { 
+            .masonry-gallery { column-count: 2; } 
+            .nav-links { display: none; } 
+            .page-header h1 { font-size: 2.2rem; } 
+        }
         @media (max-width: 600px) { .masonry-gallery { column-count: 1; } }
     </style>
 </head>
-<body>
+<body class="dark-mode">
+    
+    <div class="video-bg">
+        <video autoplay muted loop playsinline poster="https://web.hycdn.cn/arknights/official/pc/assets/bg-1.jpg">
+            <source src="https://cdn.pixabay.com/video/2021/08/04/83864-584742467_large.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+
     <nav>
-        <a href="Spike's profolio.html" class="nav-logo">CLARENCE.YE</a>
+        <a href="Spike's profolio.html" class="nav-logo">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
                 <a href="数据分析/Data Analysis.html">Data Analysis</a>
-                <a href="my graphic design.html">Graphic</a>
+                <a href="my graphic design.html" class="active">Graphic</a>
                 <a href="3d model.html">3D Art</a>
-                <a href="my vedio.html" class="active">Video</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
+                <a href="my vedio.html">Video</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Gallery</a>
             </div>
-            <a href="Spike's profolio.html" class="nav-home-btn">🏠 主页</a>
+            <a href="Spike's profolio.html" class="nav-home-btn">[ RETURN_HOME ]</a>
         </div>
     </nav>
 
     <header class="page-header">
-        <h1>Graphic & UI Design</h1>
+        <h1>[ GRAPHIC // UI DESIGN ]</h1>
         <p>海报、包装、图形设计与排版艺术</p>
     </header>
 
@@ -109,22 +246,55 @@
         <div class="masonry-item"><img src="平面设计导出jpg的副本/331.jpg" alt="平面设计作品 33" loading="lazy"></div>
     </main>
 
-    <div class="back-nav"><a href="Spike's profolio.html" class="btn-back">← 返回主页</a></div>
-    <footer><p>&copy; 2026 Clarence Ye. All rights reserved.</p></footer>
+    <div class="back-nav"><a href="Spike's profolio.html" class="btn-back">[ RETURN ]</a></div>
+    <footer><p>> System.copyRight(2026, "Rhodes Island // Clarence Ye")</p></footer>
 
-    <div class="lightbox" id="lightbox"><span class="lightbox-close">&times;</span><img src="" alt="Enlarged Image" id="lightbox-img"></div>
-    <button class="theme-toggle-btn" id="themeBtn">☀️</button>
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">[ CLOSE ]</span>
+        <img src="" alt="Enlarged Image" id="lightbox-img">
+    </div>
+    
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
     <script>
-        const themeBtn = document.getElementById('themeBtn');
-        const body = document.body;
-        themeBtn.addEventListener('click', () => { body.classList.toggle('light-mode'); themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️'; });
+        document.addEventListener('DOMContentLoaded', () => {
+            // 主题切换 (罗德岛暗夜 vs 医疗部白昼)
+            const themeBtn = document.getElementById('themeBtn');
+            const body = document.body;
+            themeBtn.addEventListener('click', () => { 
+                body.classList.toggle('light-mode'); 
+                themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT'; 
+            });
 
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img');
-        const galleryImages = document.querySelectorAll('.masonry-item img');
-        galleryImages.forEach(img => { img.addEventListener('click', () => { lightboxImg.src = img.src; lightbox.classList.add('active'); document.body.style.overflow = 'hidden'; }); });
-        lightbox.addEventListener('click', () => { lightbox.classList.remove('active'); document.body.style.overflow = 'auto'; });
+            // 战术灯箱系统
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.querySelector('.lightbox-close');
+            const galleryImages = document.querySelectorAll('.masonry-item img');
+
+            const openLightbox = (src) => {
+                lightboxImg.src = src; 
+                lightbox.classList.add('active'); 
+                document.body.style.overflow = 'hidden';
+            };
+
+            const closeLightbox = () => {
+                lightbox.classList.remove('active'); 
+                document.body.style.overflow = 'auto';
+            };
+
+            galleryImages.forEach(img => { 
+                img.addEventListener('click', () => openLightbox(img.src)); 
+            });
+
+            lightboxClose.addEventListener('click', closeLightbox);
+            
+            lightbox.addEventListener('click', (e) => { 
+                if (e.target !== lightboxImg && e.target !== lightboxClose) {
+                    closeLightbox();
+                } 
+            });
+        });
     </script>
 </body>
 </html>
