@@ -60,12 +60,10 @@
         .video-bg {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; background: #000;
         }
-        /* 加深视频灰度与对比度，营造冷峻的监控视角，完美填充左右空白 */
         .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.25) contrast(1.5); opacity: 0.8; }
         
         .video-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; 
-            /* 强化工业网格纹理 */
             background: linear-gradient(rgba(10,10,12,0.7), rgba(10,10,12,0.7)),
                         linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
                         linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px);
@@ -121,7 +119,7 @@
             border-bottom: 3px solid var(--ak-accent-info); border-left: 3px solid var(--ak-accent-info); transition: 0.4s;
         }
 
-        /* 巨型背景代码水印 (填充左下角空白) */
+        /* 巨型背景代码水印 */
         .prts-watermark {
             position: fixed; bottom: 10%; left: -80px; z-index: -8;
             font-family: 'Space Mono', monospace; font-size: 5rem; font-weight: 800;
@@ -151,7 +149,7 @@
         .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
         .bento-card { 
-            background: rgba(20, 20, 20, 0.85); /* 稍微降低透明度，透出背景视频 */
+            background: rgba(20, 20, 20, 0.85);
             backdrop-filter: blur(16px);
             border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border);
             padding: 32px; position: relative; opacity: 0; 
@@ -160,7 +158,6 @@
         }
         body.light-mode .bento-card { background: rgba(255, 255, 255, 0.9); }
         
-        /* 自动编号 [OP-0X] */
         .bento-card::after {
             counter-increment: card-counter; content: "[OP-0" counter(card-counter) "]";
             position: absolute; top: 10px; left: 12px; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-text-muted); font-weight: bold;
@@ -168,10 +165,9 @@
         .bento-card:hover { border-color: var(--ak-accent-info); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
         body.light-mode .bento-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
-        /* --- 英雄卡片 & 头像点击动画引导 --- */
+        /* --- 英雄卡片 --- */
         .card-hero { grid-column: span 2; grid-row: span 2; text-align: center; border-color: var(--ak-accent-info); display: flex; flex-direction: column; justify-content: center; align-items: center;}
         
-        /* 头像容器：用于放置波纹动画 */
         .avatar-container {
             position: relative;
             margin-bottom: 20px;
@@ -183,15 +179,14 @@
             border: 2px solid var(--ak-accent-info); 
             padding: 4px; object-fit: cover; 
             transition: 0.4s; cursor: pointer; 
-            position: relative; z-index: 2; /* 确保头像在波纹之上 */
+            position: relative; z-index: 2; 
         }
         .hero-avatar:hover { transform: scale(1.05) rotate(3deg); border-color: var(--ak-accent-warn); }
 
-        /* 战术波纹扫描动画 (Pulse Scan) */
         .avatar-pulse {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 50%; /* 如果你的头像是圆形的，加上这个 */
+            border-radius: 50%; 
             box-shadow: 0 0 0 0 rgba(0, 216, 255, 0.7);
             animation: pulse-ring 2.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
             z-index: 1;
@@ -204,7 +199,6 @@
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 216, 255, 0); }
         }
 
-        /* 闪烁提示文字 */
         .click-hint {
             font-family: 'Space Mono', monospace;
             font-size: 0.65rem;
@@ -257,75 +251,59 @@
         .link-card h3 { font-family: 'Space Mono', monospace; font-size: 1.05rem; margin-bottom: 6px; font-weight: 800;}
         .link-card p { font-size: 0.7rem; color: var(--ak-text-muted); text-transform: uppercase; font-weight: 700;}
 
-        /* ✨ ✨ ✨ 新增：战术高亮捕获 (Target Lock) 效果用于 Video 按钮 ✨ ✨ ✨ */
-        .link-card-special {
+        /* ✨ ✨ ✨ 新增：高质感 Video 按钮专属特效 (录制/警示档案风格) ✨ ✨ ✨ */
+        .link-card-video {
             position: relative;
-            overflow: visible !important; /* 让准星角标可以向外扫，不被盖住 */
-            border: 1px solid var(--ak-border);
+            overflow: hidden;
+            border-color: rgba(245, 166, 35, 0.3) !important; /* 基础色变为源石橙 */
+            background: linear-gradient(135deg, rgba(245,166,35,0.05) 0%, rgba(0,0,0,0) 100%) !important;
             z-index: 1;
-            /* 给按钮本身加一个背景颜色差，标识它是特殊的 */
-            background: rgba(0, 216, 255, 0.05) !important;
-            transition: all 0.3s ease-in-out;
         }
-        
-        body.light-mode .link-card-special { background: rgba(2, 132, 199, 0.05) !important; }
-
-        /* 准星角标 (使用 ::before) */
-        .link-card-special::before {
-            content: '';
-            position: absolute;
-            top: 5px; left: 5px; right: 5px; bottom: 5px; /* 这里扫过的光束 */
-            border: 2px solid transparent; /* 准星颜色 */
-            /* 制作 L 型角标 (利用渐变背景和遮罩) */
-            border-top-color: var(--ak-accent-info);
-            border-left-color: var(--ak-accent-info);
-            border-radius: 1px;
-            
-            z-index: -1;
-            transition: 0.3s;
-            animation: tactical-lock 2.5s infinite ease-in-out;
-            opacity: 0.7;
-            clip-path: polygon(0 0, 30px 0, 30px 2px, 2px 2px, 2px 30px, 0 30px); /* 制作 L 型 */
+        body.light-mode .link-card-video {
+            background: linear-gradient(135deg, rgba(234,88,12,0.05) 0%, rgba(255,255,255,0) 100%) !important;
+            border-color: rgba(234, 88, 12, 0.3) !important;
         }
 
-        /* 旋转动画 */
-        @keyframes tactical-lock {
-            0% { transform: scale(1); opacity: 0.7; }
-            10% { transform: scale(1.15); opacity: 1; filter: blur(0.5px); }
-            100% { transform: scale(1); opacity: 0.7; }
+        /* 左侧常驻加粗发光警示线 */
+        .link-card-video::before {
+            content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+            background: var(--ak-accent-warn); box-shadow: 0 0 10px var(--ak-accent-warn);
+            opacity: 1 !important; transition: 0.3s;
         }
 
-        /* 准星角标的另外两角 (使用 ::after) */
-        .link-card-special::after {
-            content: '';
-            position: absolute;
-            top: 5px; left: 5px; right: 5px; bottom: 5px;
-            border: 2px solid transparent; 
-            border-bottom-color: var(--ak-accent-info);
-            border-right-color: var(--ak-accent-info);
-            border-radius: 1px;
-            
-            z-index: -1;
-            transition: 0.3s;
-            animation: tactical-lock 2.5s infinite ease-in-out;
-            opacity: 0.7;
-            clip-path: polygon(100% 100%, 100% calc(100% - 30px), calc(100% - 2px) calc(100% - 30px), calc(100% - 2px) calc(100% - 2px), calc(100% - 30px) calc(100% - 2px), calc(100% - 30px) 100%);
+        /* 悬停时的科技警示斜向网格底纹 */
+        .link-card-video::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                -45deg,
+                transparent,
+                transparent 4px,
+                rgba(245, 166, 35, 0.15) 4px,
+                rgba(245, 166, 35, 0.15) 8px
+            );
+            opacity: 0; transition: 0.4s ease; z-index: -1;
         }
 
-        .link-card-special:hover {
+        .link-card-video:hover {
             transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 0 25px rgba(0, 216, 255, 0.4);
-            border-color: var(--ak-accent-info) !important;
+            border-color: var(--ak-accent-warn) !important;
+            box-shadow: 0 10px 25px rgba(245,166,35,0.25);
         }
-        
-        .link-card-special:hover::before,
-        .link-card-special:hover::after {
-            animation: none; /* 悬停时停止呼吸，代表锁定 */
-            top: 2px; left: 2px; right: 2px; bottom: 2px; /* 移到最边缘 */
-            opacity: 1;
+        .link-card-video:hover::after { opacity: 1; }
+        .link-card-video:hover h3, .link-card-video:hover p { color: var(--ak-accent-warn) !important; }
+
+        /* REC 录制红点特效 */
+        .video-rec-dot {
+            display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+            background-color: #ff3366; margin-left: 10px; margin-bottom: 2px;
+            box-shadow: 0 0 8px #ff3366; vertical-align: middle;
+            animation: rec-blink 1.5s infinite ease-in-out;
+        }
+        @keyframes rec-blink {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(0.8); }
         }
         /* ✨ ✨ ✨ 结束 ✨ ✨ ✨ */
-
 
         /* --- 部署履历 (时间轴) --- */
         .card-timeline { grid-column: span 4; }
@@ -492,11 +470,12 @@
             <div class="bento-card card-hero">
                 <span class="elite-tag">ELITE 2 // VISUAL DESIGNER</span><br>
                 
-                <div class="avatar-container" title="Click me for a surprise!">
+                <div class="avatar-container" title="System Override Trigger">
                     <div class="avatar-pulse"></div>
                     <img src="绿色头像.jpeg" alt="Clarence Ye Avatar" class="hero-avatar" id="avatarTrigger" loading="lazy">
                 </div>
                 <div class="click-hint">> CLICK_AVATAR</div>
+
                 <h1 class="hero-title">历飞雨</h1>
                 <p class="hero-subtitle" id="ai-prompt-text"></p>
             </div>
@@ -530,8 +509,9 @@
                 <a href="my graphic design.html" class="link-card"><h3>Graphic</h3><p>Visual Arts</p></a>
                 <a href="3d model.html" class="link-card"><h3>3D Art</h3><p>Modeling</p></a>
                 
-                <a href="my vedio.html" class="link-card link-card-special">
-                    <h3>Video</h3><p>Motion Graphics</p>
+                <a href="my vedio.html" class="link-card link-card-video">
+                    <h3>Video<span class="video-rec-dot"></span></h3>
+                    <p>Motion Graphics</p>
                 </a>
                 <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="link-card"><h3>Photo</h3><p>500px Gallery</p></a>
             </div>
@@ -547,7 +527,7 @@
                     <div class="tl-body">
                         <div style="margin-bottom: 12px;">
                             <strong>[ Viral Mechanics ]</strong> 
-                            基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top 1 爆款视频（单条消耗超 22 万元，付费贡献占比 26.9%）。建立“素材裂变迭代机制”，主导年度短视频累计消耗达 153 万元.
+                            基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top 1 爆款视频（单条消耗超 22 万元，付费贡献占比 26.9%）。建立“素材裂变迭代机制”，主导年度短视频累计消耗达 153 万元。
                         </div>
                         <div style="margin-bottom: 12px;">
                             <strong>[ Global UA ]</strong> 
@@ -555,7 +535,7 @@
                         </div>
                         <div>
                             <strong>[ ROI Opt ]</strong> 
-                            建立视频淘汰机制，资源向高转化核心品类倾斜；优化结尾转化钩子 (CTA)，实现单点 ROI 提升 15%，整体年度投放效率提升 20%.
+                            建立视频淘汰机制，资源向高转化核心品类倾斜；优化结尾转化钩子 (CTA)，实现单点 ROI 提升 15%，整体年度投放效率提升 20%。
                         </div>
                     </div>
                 </div>
@@ -725,32 +705,47 @@
             }
             setTimeout(typeWriter, 800);
 
-            /* --- 4. ✨ 胖企鹅彩蛋 (鼠标点击头像触发) ✨ --- */
+            /* --- 4. ✨ 随机掉落彩蛋 (鼠标点击头像触发) ✨ --- */
             const avatarTrigger = document.getElementById('avatarTrigger');
             
             avatarTrigger.addEventListener('click', () => {
-                triggerPenguinEasterEgg();
+                triggerRandomDrop();
             });
 
-            function triggerPenguinEasterEgg() {
-                const penguin = document.createElement('div');
-                penguin.innerHTML = '🐧'; 
-                penguin.style.position = 'fixed';
-                penguin.style.top = '-100px';
-                penguin.style.left = Math.random() * (window.innerWidth - 100) + 'px';
-                penguin.style.fontSize = '80px';
-                penguin.style.zIndex = '10000';
-                penguin.style.filter = 'drop-shadow(0 0 20px var(--ak-accent-info))';
-                penguin.style.transition = 'top 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 2.5s';
-                penguin.style.pointerEvents = 'none'; 
-                document.body.appendChild(penguin);
+            function triggerRandomDrop() {
+                // 掉落物库：包含企鹅、设计工具、游戏、赛博元素等
+                const items = ['🐧', '💻', '🎨', '🎮', '🧊', '💊', '🚀', '👾', '🎧', '🔋'];
+                const randomItem = items[Math.floor(Math.random() * items.length)];
 
+                const dropEl = document.createElement('div');
+                dropEl.innerHTML = randomItem; 
+                dropEl.style.position = 'fixed';
+                dropEl.style.top = '-100px';
+                // 随机水平位置
+                dropEl.style.left = Math.random() * (window.innerWidth - 100) + 'px';
+                
+                // 随机大小 (60px 到 100px 之间)
+                const randomSize = Math.floor(Math.random() * 40) + 60;
+                dropEl.style.fontSize = randomSize + 'px';
+                
+                dropEl.style.zIndex = '10000';
+                dropEl.style.filter = 'drop-shadow(0 0 20px var(--ak-accent-info))';
+                
+                // 随机下落时间 (1.5s 到 3s 之间)，增加物理感差异
+                const dropDuration = (Math.random() * 1.5 + 1.5).toFixed(2);
+                dropEl.style.transition = `top ${dropDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform ${dropDuration}s`;
+                dropEl.style.pointerEvents = 'none'; 
+                document.body.appendChild(dropEl);
+
+                // 触发掉落和随机旋转角度
                 setTimeout(() => {
-                    penguin.style.top = window.innerHeight + 100 + 'px';
-                    penguin.style.transform = 'rotate(720deg)';
+                    dropEl.style.top = window.innerHeight + 100 + 'px';
+                    const randomRotation = Math.floor(Math.random() * 1080) - 360; // 随机旋转角度
+                    dropEl.style.transform = `rotate(${randomRotation}deg)`;
                 }, 50);
 
-                setTimeout(() => { document.body.removeChild(penguin); }, 2600);
+                // 动画结束后清理 DOM 元素
+                setTimeout(() => { document.body.removeChild(dropEl); }, dropDuration * 1000 + 100);
             }
 
             // 控制台氛围输出
