@@ -8,27 +8,26 @@
     <style>
         /* ================= 罗德岛制式终端 核心变量 ================= */
         :root {
-            --ak-bg-main: #0a0a0a; 
-            --ak-bg-panel: #141414; 
-            --ak-bg-panel-light: #1c1c1c;
+            --ak-bg-main: #050505; 
+            --ak-bg-panel: rgba(18, 18, 20, 0.92); 
+            --ak-bg-panel-light: rgba(30, 30, 35, 0.6);
             --ak-text-main: #ffffff;
             --ak-text-muted: #7a7a7a;
-            --ak-accent-info: #00d8ff; /* 罗德岛蓝 */
-            --ak-accent-warn: #f5a623; /* 源石橙 */
+            --ak-accent-info: #00d8ff; 
+            --ak-accent-warn: #f5a623; 
             --ak-border: #2a2a2a;
             --ak-scan-line: rgba(0, 216, 255, 0.03);
         }
 
-        /* 医疗部白昼模式 */
         body.light-mode {
-            --ak-bg-main: #f0f2f5; 
-            --ak-bg-panel: #ffffff; 
-            --ak-bg-panel-light: #f8fafc;
-            --ak-text-main: #1a1a1b;
+            --ak-bg-main: #e5e7eb; 
+            --ak-bg-panel: rgba(255, 255, 255, 0.95); 
+            --ak-bg-panel-light: rgba(240, 242, 245, 0.8);
+            --ak-text-main: #111;
             --ak-text-muted: #64748b;
             --ak-accent-info: #0284c7;
             --ak-accent-warn: #ea580c;
-            --ak-border: #d1d5db;
+            --ak-border: #ccc;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,66 +37,92 @@
             font-family: 'Space Grotesk', -apple-system, sans-serif; 
             line-height: 1.6; overflow-x: hidden; 
             transition: background-color 0.4s ease, color 0.4s ease; 
-            counter-reset: case-counter; /* 开启编号系统 */
+            counter-reset: case-counter; 
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* 修复白屏关键点 */
         @keyframes fadeUpAK {
             0% { opacity: 0; transform: translateY(30px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* ---------------- 背景与扫描线 ---------------- */
-        .video-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; background: #000;
+        /* ================= ✨ 统一高对比度科技蓝图背景 ================= */
+        .tech-bg { 
+            position: fixed; inset: 0; z-index: -10; 
+            background-color: var(--ak-bg-main); 
+            background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); 
+            background-size: cover; background-position: center; 
+            opacity: 0.15; filter: grayscale(100%); transition: 0.4s; 
         }
-        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.4); opacity: 0.5; }
         
-        .video-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; 
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6));
-            pointer-events: none; transition: background 0.4s;
-        }
-        body.light-mode .video-overlay { background: linear-gradient(rgba(240,242,245,0.8), rgba(240,242,245,0.8)); }
-
-        body::before {
-            content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(var(--ak-scan-line) 50%, rgba(0, 0, 0, 0.1) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
-            background-size: 100% 4px, 3px 100%;
-            z-index: 100; pointer-events: none; opacity: 0.4;
+        .tech-overlay { 
+            position: fixed; inset: 0; z-index: -9; pointer-events: none; 
+            background: linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px); 
+            background-size: 40px 40px; 
         }
 
-        /* ---------------- 顶部导航栏 ---------------- */
+        .prts-scanline { 
+            position: fixed; top: 0; left: 0; width: 100vw; height: 4px; z-index: -8; 
+            background: var(--ak-accent-info); box-shadow: 0 0 20px var(--ak-accent-info), 0 0 40px var(--ak-accent-info); 
+            opacity: 0.8; pointer-events: none; animation: scan-drop 6s infinite; 
+        }
+        body.light-mode .prts-scanline { opacity: 0.3; }
+
+        @keyframes scan-drop {
+            0% { top: -10%; opacity: 0; }
+            5%, 45% { opacity: 0.8; }
+            50%, 100% { top: 110%; opacity: 0; }
+        }
+
+        /* 战术 HUD 边框 */
+        .prts-hud { 
+            position: fixed; inset: 20px; z-index: -8; border: 1px solid rgba(0, 216, 255, 0.05); pointer-events: none; 
+            background: 
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; 
+        }
+        body.light-mode .prts-hud { border-color: rgba(2, 132, 199, 0.1); }
+
+        .prts-watermark { 
+            position: fixed; bottom: 10%; left: -80px; z-index: -8; 
+            font: 800 5rem 'Space Mono', monospace; color: rgba(255, 255, 255, 0.02); 
+            transform: rotate(-90deg); transform-origin: left bottom; white-space: nowrap; pointer-events: none; 
+        }
+        body.light-mode .prts-watermark { color: rgba(0, 0, 0, 0.02); }
+
+        /* ================= 顶部导航栏 ================= */
         nav { 
             position: fixed; top: 0; width: 100%; padding: 15px 5vw; 
             display: flex; justify-content: space-between; align-items: center; 
-            background: var(--ak-bg-panel); border-bottom: 2px solid var(--ak-border); 
+            background: var(--ak-bg-panel); border-bottom: 1px solid var(--ak-border); 
             z-index: 1000; backdrop-filter: blur(10px); transition: 0.4s;
         }
-        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 5px 12px; font-size: 1rem; }
+        .nav-logo { font: 800 1rem 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 5px 12px; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
-        .nav-links { display: flex; gap: 25px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
+        .nav-links { display: flex; gap: 25px; align-items: center; font: 0.85rem 'Space Mono', monospace;}
         .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase;}
         .nav-links a:hover, .nav-links a.active { color: var(--ak-accent-info); text-shadow: 0 0 8px var(--ak-accent-info); }
-        
-        .nav-home-btn {
-            padding: 6px 14px; background: transparent; color: var(--ak-accent-warn);
-            border: 1px solid var(--ak-accent-warn); font-family: 'Space Mono', monospace;
-            font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: 0.3s; text-transform: uppercase;
-        }
+        .nav-home-btn { padding: 6px 14px; background: transparent; color: var(--ak-accent-warn); border: 1px solid var(--ak-accent-warn); font: 700 0.85rem 'Space Mono', monospace; text-decoration: none; transition: 0.3s; text-transform: uppercase; }
         .nav-home-btn:hover { background: var(--ak-accent-warn); color: #000; box-shadow: 0 0 10px rgba(245,166,35,0.4); }
 
-        /* ---------------- 页面头部 ---------------- */
-        .page-header { text-align: center; margin: 120px auto 40px; padding: 0 20px; opacity: 0; animation: fadeUpAK 0.6s ease-out forwards; }
-        .page-header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; font-family: 'Space Mono', monospace; color: var(--ak-accent-info); text-transform: uppercase;}
-        .page-header p { color: var(--ak-text-muted); font-size: 1rem; font-family: 'Space Mono', monospace;}
+        /* ================= 页面头部 ================= */
+        .page-header { text-align: center; margin: 120px auto 40px; padding: 0 20px; opacity: 0; animation: fadeUpAK 0.6s ease-out forwards; position: relative; z-index: 10;}
+        .page-header h1 { font: 800 2.5rem 'Space Mono', monospace; color: var(--ak-accent-info); text-transform: uppercase; margin-bottom: 10px;}
+        .page-header p { color: var(--ak-text-muted); font: 1rem 'Space Mono', monospace;}
 
-        /* ---------------- 战术数据区块 ---------------- */
-        .container { max-width: 1400px; margin: 0 auto 80px; padding: 0 4vw; }
+        /* ================= 战术数据区块 (全彩无灰度) ================= */
+        .container { max-width: 1400px; margin: 0 auto 80px; padding: 0 4vw; position: relative; z-index: 10;}
         
         .case-block {
             background: var(--ak-bg-panel); 
+            backdrop-filter: blur(16px);
             border: 1px solid var(--ak-border);
             border-top: 3px solid var(--ak-border);
             padding: 25px 30px 30px 30px;
@@ -108,19 +133,19 @@
         
         .case-block::after {
             counter-increment: case-counter; content: "[CASE-0" counter(case-counter) "]";
-            position: absolute; top: 8px; left: 10px; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-text-muted); font-weight: bold;
+            position: absolute; top: 8px; left: 10px; font: bold 0.65rem 'Space Mono', monospace; color: var(--ak-text-muted);
         }
 
         .case-block:hover { border-color: var(--ak-accent-info); box-shadow: 0 5px 25px rgba(0,216,255,0.1); }
 
         .case-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; padding: 10px 0; margin-top: 10px;}
-        .case-header h2 { font-size: 1.3rem; font-weight: 800; color: var(--ak-text-main); display: flex; align-items: center; gap: 12px; margin: 0; font-family: 'Space Mono', monospace;}
+        .case-header h2 { font: 800 1.3rem 'Space Mono', monospace; color: var(--ak-text-main); display: flex; align-items: center; gap: 12px; margin: 0;}
         .case-header h2::before { content: '/>'; color: var(--ak-accent-info); font-weight: bold; }
         
         .toggle-icon {
             display: flex; align-items: center; justify-content: center; width: 36px; height: 36px;
             background: transparent; border: 1px solid var(--ak-border);
-            font-size: 1rem; color: var(--ak-text-muted); font-weight: bold; font-family: 'Space Mono';
+            font: bold 1rem 'Space Mono', monospace; color: var(--ak-text-muted); 
             transition: 0.4s;
         }
         .case-header:hover .toggle-icon { color: var(--ak-accent-info); border-color: var(--ak-accent-info); }
@@ -168,10 +193,8 @@
         .highlight { color: var(--ak-text-main); font-weight: 800; }
 
         /* 裂变方法论总结区块 */
-        .strategy-section {
-            margin-top: 40px; padding: 24px; background: var(--ak-bg-panel-light); border: 1px dashed var(--ak-border); flex-grow: 1; 
-        }
-        .strategy-title { font-size: 1rem; font-weight: 700; color: var(--ak-accent-warn); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; font-family: 'Space Mono', monospace; }
+        .strategy-section { margin-top: 40px; padding: 24px; background: var(--ak-bg-panel-light); border: 1px dashed var(--ak-border); flex-grow: 1; }
+        .strategy-title { font: 700 1rem 'Space Mono', monospace; color: var(--ak-accent-warn); margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
         .strategy-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
         .strategy-item { font-size: 0.85rem; color: var(--ak-text-muted); line-height: 1.7; }
         .strategy-item h4 { color: var(--ak-text-main); font-size: 0.9rem; margin-bottom: 10px; border-left: 3px solid var(--ak-accent-info); padding-left: 8px; font-family: 'Space Mono', monospace;}
@@ -181,7 +204,7 @@
         /* ---------------- 辅助 UI ---------------- */
         .lightbox { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0, 0, 0, 0.95); z-index: 10000; 
+            background: rgba(0, 0, 0, 0.95); z-index: 10000; backdrop-filter: blur(8px);
             display: flex; justify-content: center; align-items: center; 
             opacity: 0; pointer-events: none; transition: 0.4s; overflow: auto; 
         }
@@ -189,18 +212,23 @@
         .lightbox img { max-width: 100vw; max-height: 100vh; border: 2px solid var(--ak-accent-info); transform: scale(0.95); transition: 0.4s; object-fit: contain; filter: none !important; }
         .lightbox.active img { transform: scale(1); }
         .lightbox-close { 
-            position: fixed; top: 30px; right: 40px; color: var(--ak-accent-info); font-family: 'Space Mono'; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; z-index: 10001; border: 1px solid var(--ak-accent-info); padding: 5px 10px;
+            position: fixed; top: 30px; right: 40px; color: var(--ak-text-main); font-family: 'Space Mono'; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; z-index: 10001; border: 1px solid #fff; padding: 5px 12px; background: rgba(0,0,0,0.5);
         }
-        .lightbox-close:hover { background: var(--ak-accent-info); color: #000; }
+        .lightbox-close:hover { background: #fff; color: #000; }
 
-        .back-nav { text-align: center; margin-bottom: 80px; }
+        .back-nav { text-align: center; margin-bottom: 80px; position: relative; z-index: 10;}
         .btn-back { display: inline-block; padding: 12px 30px; background: transparent; border: 1px solid var(--ak-border); color: var(--ak-text-main); font-family: 'Space Mono', monospace; text-decoration: none; font-weight: 700; transition: 0.3s; text-transform: uppercase;}
         .btn-back:hover { background: var(--ak-accent-info); border-color: var(--ak-accent-info); color: #000; }
         
-        footer { text-align: center; padding: 40px; color: var(--ak-text-muted); font-size: 0.75rem; border-top: 1px solid var(--ak-border); font-family: 'Space Mono', monospace; text-transform: uppercase;}
+        footer { text-align: center; padding: 40px; color: var(--ak-text-muted); font-size: 0.75rem; border-top: 1px solid var(--ak-border); font-family: 'Space Mono', monospace; text-transform: uppercase; position: relative; z-index: 10;}
         
-        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: #000; border: 1px solid var(--ak-border); color: var(--ak-text-muted); font-size: 0.8rem; font-family: 'Space Mono'; padding: 10px; cursor: pointer; z-index: 9999; transition: 0.3s; }
+        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: rgba(10,10,12,0.85); backdrop-filter: blur(10px); border: 1px solid var(--ak-border); color: var(--ak-text-muted); font-size: 0.8rem; font-family: 'Space Mono'; padding: 12px 16px; cursor: pointer; z-index: 9999; transition: 0.3s; }
+        body.light-mode .theme-toggle-btn { background: rgba(255,255,255,0.9); }
         .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); }
+
+        .case-block:nth-child(1) { animation-delay: 0.1s; } 
+        .case-block:nth-child(2) { animation-delay: 0.2s; }
+        .case-block:nth-child(3) { animation-delay: 0.3s; }
 
         @media (max-width: 1000px) {
             .nav-links { display: none; } 
@@ -211,7 +239,17 @@
         }
     </style>
 </head>
-<body>
+<body class="dark-mode">
+
+    <div class="tech-bg"></div>
+    <div class="tech-overlay"></div>
+
+    <div class="prts-scanline"></div>
+    <div class="prts-hud">
+        <div class="hud-corner top-right"></div>
+        <div class="hud-corner bottom-left"></div>
+    </div>
+    <div class="prts-watermark">SYS.VER.2026 // ANALYTICS_ARCHIVE</div>
 
     <nav>
         <a href="../Spike's profolio.html" class="nav-logo">PRTS // CLARENCE YE</a>
@@ -221,20 +259,20 @@
                 <a href="../my graphic design.html">Graphic</a>
                 <a href="../3d model.html">3D Art</a>
                 <a href="../my vedio.html">Video</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Gallery</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer">Gallery</a>
             </div>
             <a href="../Spike's profolio.html" class="nav-home-btn">[ RETURN_HOME ]</a>
         </div>
     </nav>
 
     <header class="page-header">
-        <h1>[ DATA ANALYSIS // RECORD ]</h1>
-        <p>数据驱动视觉，用分析制造爆款</p>
+        <h1>[ LOGISTICAL // DATA ANALYTICS ]</h1>
+        <p>基于数据的爆款视频拆解与运营策略</p>
     </header>
 
-    <div class="container">
+    <main class="container">
         
-        <div class="case-block" style="animation-delay: 0.1s;">
+        <div class="case-block">
             <div class="case-header" onclick="toggleCase(this)">
                 <h2>信息流视频素材制作与优化</h2>
                 <div class="toggle-icon">↓</div>
@@ -326,7 +364,7 @@
             </div>
         </div>
 
-        <div class="case-block" style="animation-delay: 0.2s;">
+        <div class="case-block">
             <div class="case-header" onclick="toggleCase(this)">
                 <h2>案例分析：海外及文化视频内容表现</h2>
                 <div class="toggle-icon">↓</div>
@@ -337,7 +375,6 @@
                     <div class="case-content-inner bento-grid">
                         
                         <div class="bento-card card-full" style="background: transparent; border: none; padding: 0;">
-                            
                             <div class="vertical-videos-grid">
                                 
                                 <div>
@@ -362,7 +399,6 @@
                                 </div>
 
                             </div>
-                            
                         </div>
 
                     </div>
@@ -370,7 +406,7 @@
             </div>
         </div>
 
-    </div>
+    </main>
 
     <div class="back-nav">
         <a href="../Spike's profolio.html" class="btn-back">[ RETURN ]</a>
