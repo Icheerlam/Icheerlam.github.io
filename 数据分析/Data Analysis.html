@@ -144,10 +144,38 @@
             width: 100%; aspect-ratio: 9/16; border-radius: 16px; overflow: hidden; 
             background: #000; border: 1px solid var(--card-border); 
             box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: transform 0.3s;
+            position: relative; /* 为播放图标定位 */
         }
         .vertical-video-wrapper:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 15px 30px rgba(0,0,0,0.4); }
         .video-label { text-align: center; margin-top: 16px; color: var(--text-main); font-weight: bold; font-size: 1rem; letter-spacing: 1px; }
         .video-sublabel { font-size: 0.85rem; color: var(--text-muted); font-weight: normal; margin-top: 6px; text-align: center; }
+
+        /* ✨ 文件管理器风格的媒体播放图标 */
+        .file-media-icon {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            background: #3b82f6;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            pointer-events: none; /* 让点击穿透到下方的 video 标签 */
+            z-index: 10;
+        }
+        .file-media-icon::after {
+            content: '';
+            width: 0;
+            height: 0;
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 9px solid #fff;
+            margin-left: 3px; /* 视觉居中补正 */
+        }
 
         /* 文本排版 */
         .analysis-row { margin-bottom: 25px; display: flex; flex-direction: column; gap: 10px; }
@@ -156,11 +184,11 @@
         .row-content { color: var(--text-muted); font-size: 1rem; line-height: 1.8; }
         .highlight { color: var(--accent); font-weight: 800; font-size: 1.1rem; padding: 0 2px; }
 
-        /* --- ✨ 新增：裂变方法论总结区块 (红圈位置) --- */
+        /* 裂变方法论总结区块 */
         .strategy-section {
             margin-top: 40px; padding: 24px; border-radius: 16px;
             background: rgba(255,255,255,0.02); border: 1px dashed var(--card-border);
-            flex-grow: 1; /* 让它在视频下方撑满空间 */
+            flex-grow: 1; 
         }
         body.light-mode .strategy-section { background: rgba(0,0,0,0.02); }
         
@@ -208,7 +236,7 @@
             .bento-grid { grid-template-columns: 1fr; } 
             .card-full, .card-left, .card-right { grid-column: span 1; padding-right: 0; }
             .vertical-videos-grid { gap: 15px; }
-            .strategy-grid { grid-template-columns: 1fr; gap: 16px; } /* 手机端改为单列 */
+            .strategy-grid { grid-template-columns: 1fr; gap: 16px; } 
         }
     </style>
 </head>
@@ -330,18 +358,48 @@
             </div>
         </div>
 
-        <div class="case-block collapsed" style="animation-delay: 0.2s;">
+        <div class="case-block" style="animation-delay: 0.2s;">
             <div class="case-header" onclick="toggleCase(this)">
-                <h2>2. 这里的标题你可以随意修改</h2>
+                <h2>2. 案例分析：海外及文化视频内容表现</h2>
                 <div class="toggle-icon">↓</div>
             </div>
             
             <div class="case-content-wrapper">
                 <div class="case-content">
                     <div class="case-content-inner bento-grid">
-                        <div class="bento-card card-full" style="text-align: center; color: var(--text-muted); padding: 60px;">
-                            这里是你未来要添加的新项目内容，格式参考上面的区块即可！
+                        
+                        <div class="bento-card card-full" style="background: transparent; border: none; padding: 0;">
+                            
+                            <div class="vertical-videos-grid">
+                                
+                                <div>
+                                    <div class="vertical-video-wrapper">
+                                        <video src="260212_02_海外_ai人.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
+                                        <div class="file-media-icon"></div>
+                                    </div>
+                                    <div class="video-label" style="font-weight: normal; font-size: 0.95rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">260212_02_海外<br>_ai人.mp4</div>
+                                </div>
+
+                                <div>
+                                    <div class="vertical-video-wrapper">
+                                        <video src="王羲之.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
+                                        <div class="file-media-icon"></div>
+                                    </div>
+                                    <div class="video-label" style="font-weight: normal; font-size: 0.95rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">王羲之.mp4</div>
+                                </div>
+
+                                <div>
+                                    <div class="vertical-video-wrapper">
+                                        <video src="2026033101-海外-AI人男.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
+                                        <div class="file-media-icon"></div>
+                                    </div>
+                                    <div class="video-label" style="font-weight: normal; font-size: 0.95rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">2026033101-海<br>外-AI人男.mp4</div>
+                                </div>
+
+                            </div>
+                            
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -385,13 +443,14 @@
             img.addEventListener('click', () => {
                 lightboxImg.src = img.src; 
                 lightbox.classList.add('active');
-                document.body.style.overflow = 'auto'; 
+                document.body.style.overflow = 'hidden'; // 防止背景滚动
             });
         });
 
         lightbox.addEventListener('click', (e) => {
             if (e.target !== lightboxImg) { 
                 lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
             }
         });
     </script>
