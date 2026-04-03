@@ -190,7 +190,15 @@
 
         .click-hint { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-accent-info); margin-top: -10px; margin-bottom: 15px; font-weight: bold; animation: blink 1.5s infinite; }
         .elite-tag { background: var(--ak-accent-warn); color: #000; font-size: 11px; font-weight: 800; padding: 3px 8px; display: inline-block; transform: rotate(-3deg); margin-bottom: 12px; font-family: 'Space Mono', monospace; letter-spacing: 1px;}
-        .hero-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; text-transform: uppercase; color: var(--ak-text-main);}
+        
+        /* ✨ 调整 "历飞雨" 三个字的间距 ✨ */
+        .hero-title { 
+            font-size: 2.2rem; font-weight: 800; 
+            margin-bottom: 12px; text-transform: uppercase; color: var(--ak-text-main);
+            letter-spacing: 0.5rem; /* 拉大字间距 */
+            margin-right: -0.5rem; /* 抵消最后一个字的右侧间距，保持整体绝对居中 */
+        }
+        
         .hero-subtitle { font-family: 'Space Mono', monospace; color: var(--ak-text-muted); font-size: 0.95rem; min-height: 80px; text-align: left; line-height: 1.8;}
         .cursor { display: inline-block; width: 8px; height: 1.2em; background: var(--ak-accent-info); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 4px;}
         @keyframes blink { 50% { opacity: 0; } }
@@ -445,7 +453,7 @@
             <div class="bento-card card-skills">
                 <h2 class="card-title">Technical Protocols</h2>
                 <div class="tag-cloud">
-                    <span class="tag">PS/ILLUSTRATOR</span>
+                    <span class="tag">PS / ILLUSTRATOR</span>
                     <span class="tag">After Effects</span>
                     <span class="tag">Blender_3D</span>
                     <span class="tag">ComfyUI</span>
