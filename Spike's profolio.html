@@ -8,32 +8,29 @@
     <style>
         /* ================= 罗德岛制式终端 核心变量 ================= */
         :root {
-            /* 暗夜战术模式 (默认) */
-            --ak-bg-main: #0a0a0a; 
-            --ak-bg-panel: #141414; 
-            --ak-bg-panel-light: #1c1c1c;
+            /* 暗夜战术模式 */
+            --ak-bg-main: #050505; 
+            --ak-bg-panel: rgba(18, 18, 20, 0.92); 
             --ak-text-main: #ffffff;
             --ak-text-muted: #7a7a7a;
-            --ak-accent-info: #00d8ff; /* 罗德岛科技蓝 */
-            --ak-accent-warn: #f5a623; /* 源石警示橙 */
+            --ak-accent-info: #00d8ff; /* 罗德岛蓝 */
+            --ak-accent-warn: #f5a623; /* 源石橙 */
             --ak-border: #2a2a2a;
             --ak-scan-line: rgba(0, 216, 255, 0.03);
             
             --recharge: #00ffaa; 
             --withdraw: #ff3366; 
-            --warning: #ffaa00;
         }
 
-        /* 医疗部白昼模式 (覆盖变量) */
+        /* 医疗部白昼模式 */
         body.light-mode {
-            --ak-bg-main: #f0f2f5; 
-            --ak-bg-panel: #ffffff; 
-            --ak-bg-panel-light: #f8fafc;
-            --ak-text-main: #1a1a1b;
+            --ak-bg-main: #e5e7eb; 
+            --ak-bg-panel: rgba(255, 255, 255, 0.95); 
+            --ak-text-main: #111;
             --ak-text-muted: #64748b;
             --ak-accent-info: #0284c7;
             --ak-accent-warn: #ea580c;
-            --ak-border: #d1d5db;
+            --ak-border: #ccc;
         }
 
         /* ================= 基础重置 ================= */
@@ -46,34 +43,40 @@
             line-height: 1.6;
             overflow-x: hidden;
             transition: background 0.4s ease, color 0.4s ease;
-            counter-reset: card-counter; /* 开启卡片自动编号系统 */
+            counter-reset: card-counter; 
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 统一入场动画 */
         @keyframes fadeUpAK { 
             0% { opacity: 0; transform: translateY(25px); } 
             100% { opacity: 1; transform: translateY(0); } 
         }
 
-        /* ================= ✨ 动态战术真实背景与 HUD 填充 ================= */
-        .video-bg {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; background: #000;
+        /* ================= ✨ 背景增强：高对比度蓝图 & 暗角 ================= */
+        .tech-bg {
+            position: fixed; inset: 0; z-index: -10; 
+            background-color: var(--ak-bg-main); 
+            background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); 
+            background-size: cover; background-position: center; 
+            opacity: 0.25; 
+            filter: grayscale(100%) contrast(2.0) brightness(0.8); 
+            transition: 0.4s; 
         }
-        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.25) contrast(1.5); opacity: 0.8; }
         
-        .video-overlay {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; 
-            background: linear-gradient(rgba(10,10,12,0.7), rgba(10,10,12,0.7)),
-                        linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
-                        linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px);
+        .tech-overlay {
+            position: fixed; inset: 0; z-index: -9; pointer-events: none; 
+            background: 
+                radial-gradient(circle at 50% 50%, transparent 20%, rgba(0,0,0,0.85) 100%),
+                linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px);
             background-size: 100% 100%, 40px 40px, 40px 40px;
-            pointer-events: none; transition: background 0.4s ease;
         }
-        body.light-mode .video-overlay { 
-            background: linear-gradient(rgba(240,242,245,0.85), rgba(240,242,245,0.85)),
-                        linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
+
+        body.light-mode .tech-overlay { 
+            background: 
+                radial-gradient(circle at 50% 50%, transparent 20%, rgba(240,242,245,0.85) 100%),
+                linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
             background-size: 100% 100%, 40px 40px, 40px 40px;
         }
 
@@ -97,29 +100,20 @@
 
         /* 屏幕四角瞄准器/装甲边框 */
         .prts-hud {
-            position: fixed; top: 20px; left: 20px; right: 20px; bottom: 20px; z-index: -8;
-            border: 1px solid rgba(0, 216, 255, 0.05); pointer-events: none; transition: 0.4s;
+            position: fixed; inset: 20px; z-index: -8; border: 1px solid rgba(0, 216, 255, 0.05); pointer-events: none;
+            background: 
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,
+                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat;
+            transition: 0.4s;
         }
         body.light-mode .prts-hud { border-color: rgba(2, 132, 199, 0.1); }
-        
-        .prts-hud::before {
-            content: ''; position: absolute; top: -2px; left: -2px; width: 50px; height: 50px;
-            border-top: 3px solid var(--ak-accent-info); border-left: 3px solid var(--ak-accent-info); transition: 0.4s;
-        }
-        .prts-hud::after {
-            content: ''; position: absolute; bottom: -2px; right: -2px; width: 50px; height: 50px;
-            border-bottom: 3px solid var(--ak-accent-info); border-right: 3px solid var(--ak-accent-info); transition: 0.4s;
-        }
-        .hud-corner.top-right {
-            position: absolute; top: -2px; right: -2px; width: 50px; height: 50px;
-            border-top: 3px solid var(--ak-accent-info); border-right: 3px solid var(--ak-accent-info); transition: 0.4s;
-        }
-        .hud-corner.bottom-left {
-            position: absolute; bottom: -2px; left: -2px; width: 50px; height: 50px;
-            border-bottom: 3px solid var(--ak-accent-info); border-left: 3px solid var(--ak-accent-info); transition: 0.4s;
-        }
 
-        /* 巨型背景代码水印 */
         .prts-watermark {
             position: fixed; bottom: 10%; left: -80px; z-index: -8;
             font-family: 'Space Mono', monospace; font-size: 5rem; font-weight: 800;
@@ -133,14 +127,14 @@
         nav { 
             position: fixed; top: 0; width: 100%; padding: 15px 5vw; 
             display: flex; justify-content: space-between; align-items: center; 
-            background: var(--ak-bg-panel); border-bottom: 2px solid var(--ak-border); 
-            z-index: 1000; backdrop-filter: blur(10px); transition: background 0.4s, border-color 0.4s;
+            background: var(--ak-bg-panel); border-bottom: 1px solid var(--ak-border); 
+            z-index: 1000; backdrop-filter: blur(10px); transition: 0.4s;
         }
-        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 6px 14px; font-size: 1.1rem; }
+        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 5px 12px; font-size: 1rem; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 25px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
         .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase;}
-        .nav-links a:hover, .nav-links a.active { color: var(--ak-accent-info); text-shadow: 0 0 8px var(--ak-accent-info); }
+        .nav-links a:hover { color: var(--ak-accent-info); text-shadow: 0 0 8px var(--ak-accent-info); }
         .nav-secret { color: var(--ak-accent-warn); cursor: pointer; border: 1px solid var(--ak-accent-warn); padding: 5px 12px; font-size: 0.85rem; font-family: 'Space Mono', monospace; font-weight: 700; transition: 0.3s; }
         .nav-secret:hover { background: var(--ak-accent-warn); color: var(--ak-bg-main); }
 
@@ -149,70 +143,55 @@
         .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
         .bento-card { 
-            background: rgba(20, 20, 20, 0.85);
-            backdrop-filter: blur(16px);
+            background: var(--ak-bg-panel);
+            backdrop-filter: blur(10px);
             border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border);
             padding: 32px; position: relative; opacity: 0; 
-            animation: fadeUpAK 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s, box-shadow 0.3s, background 0.4s;
+            animation: fadeUpAK 0.6s forwards; 
+            transition: 0.4s;
         }
-        body.light-mode .bento-card { background: rgba(255, 255, 255, 0.9); }
+        
+        .bento-card:hover {
+            border-color: var(--ak-accent-info);
+            transform: translateY(-4px); 
+            box-shadow: 0 10px 30px rgba(0,216,255,0.1);
+        }
+
+        /* 英雄卡片 */
+        .card-hero { 
+            grid-column: span 2; grid-row: span 2; text-align: center; border-color: var(--ak-accent-warn); 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        }
+        .card-hero:hover { border-color: var(--ak-accent-warn); box-shadow: 0 10px 30px rgba(245,166,35,0.1); transform: translateY(-4px);}
         
         .bento-card::after {
             counter-increment: card-counter; content: "[OP-0" counter(card-counter) "]";
             position: absolute; top: 10px; left: 12px; font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-text-muted); font-weight: bold;
         }
-        .bento-card:hover { border-color: var(--ak-accent-info); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
-        body.light-mode .bento-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
-        /* --- 英雄卡片 --- */
-        .card-hero { grid-column: span 2; grid-row: span 2; text-align: center; border-color: var(--ak-accent-info); display: flex; flex-direction: column; justify-content: center; align-items: center;}
-        
-        .avatar-container {
-            position: relative;
-            margin-bottom: 20px;
-            display: inline-block;
-        }
-
+        /* --- 英雄卡片内部 --- */
+        .avatar-container { position: relative; margin-bottom: 20px; display: inline-block; }
         .hero-avatar { 
-            width: 140px; height: 140px; 
-            border: 2px solid var(--ak-accent-info); 
-            padding: 4px; object-fit: cover; 
-            transition: 0.4s; cursor: pointer; 
-            position: relative; z-index: 2; 
+            width: 140px; height: 140px; border: 2px solid var(--ak-accent-info); padding: 4px; object-fit: cover; 
+            transition: 0.4s; cursor: pointer; position: relative; z-index: 2; 
         }
         .hero-avatar:hover { transform: scale(1.05) rotate(3deg); border-color: var(--ak-accent-warn); }
 
         .avatar-pulse {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 50%; 
-            box-shadow: 0 0 0 0 rgba(0, 216, 255, 0.7);
-            animation: pulse-ring 2.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
-            z-index: 1;
-            pointer-events: none;
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 50%; 
+            box-shadow: 0 0 0 0 rgba(0, 216, 255, 0.7); animation: pulse-ring 2.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+            z-index: 1; pointer-events: none;
         }
-
         @keyframes pulse-ring {
             0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 216, 255, 0.7); }
             70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(0, 216, 255, 0); }
             100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 216, 255, 0); }
         }
 
-        .click-hint {
-            font-family: 'Space Mono', monospace;
-            font-size: 0.65rem;
-            color: var(--ak-accent-info);
-            margin-top: -10px;
-            margin-bottom: 15px;
-            font-weight: bold;
-            animation: blink 1.5s infinite;
-        }
-
+        .click-hint { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-accent-info); margin-top: -10px; margin-bottom: 15px; font-weight: bold; animation: blink 1.5s infinite; }
         .elite-tag { background: var(--ak-accent-warn); color: #000; font-size: 11px; font-weight: 800; padding: 3px 8px; display: inline-block; transform: rotate(-3deg); margin-bottom: 12px; font-family: 'Space Mono', monospace; letter-spacing: 1px;}
-        .hero-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; text-transform: uppercase;}
+        .hero-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; text-transform: uppercase; color: var(--ak-text-main);}
         .hero-subtitle { font-family: 'Space Mono', monospace; color: var(--ak-text-muted); font-size: 0.95rem; min-height: 80px; text-align: left; line-height: 1.8;}
-        
         .cursor { display: inline-block; width: 8px; height: 1.2em; background: var(--ak-accent-info); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 4px;}
         @keyframes blink { 50% { opacity: 0; } }
 
@@ -224,7 +203,6 @@
         .info-item strong { display: block; font-size: 0.7rem; color: var(--ak-accent-info); text-transform: uppercase; font-family: 'Space Mono', monospace; margin-bottom: 4px;}
         .info-item span { font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700;}
 
-        /* 呼吸警示按钮 */
         .resume-btn { 
             margin-top: 24px; width: 100%; padding: 14px; background: transparent; border: 1px solid var(--ak-accent-info); 
             color: var(--ak-accent-info); font-family: 'Space Mono', monospace; cursor: pointer; transition: 0.3s;
@@ -243,67 +221,44 @@
 
         /* --- 业务系统直达 --- */
         .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
-        .link-card { background: rgba(28, 28, 28, 0.85); backdrop-filter: blur(16px); border: 1px solid var(--ak-border); padding: 24px 20px; text-decoration: none; color: inherit; transition: 0.3s; position: relative; display: flex; flex-direction: column; justify-content: center;}
-        body.light-mode .link-card { background: rgba(248, 250, 252, 0.9); }
+        .link-card { background: var(--ak-bg-panel); backdrop-filter: blur(10px); border: 1px solid var(--ak-border); padding: 24px 20px; text-decoration: none; color: inherit; transition: 0.4s; position: relative; display: flex; flex-direction: column; justify-content: center;}
         .link-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px; background: var(--ak-accent-info); opacity: 0; transition: 0.3s;}
         .link-card:hover::before { opacity: 1; }
-        .link-card:hover { border-color: var(--ak-accent-info); background: var(--ak-bg-main); color: var(--ak-accent-info); transform: translateY(-4px);}
+        .link-card:hover { border-color: var(--ak-accent-info); transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,216,255,0.15);}
         .link-card h3 { font-family: 'Space Mono', monospace; font-size: 1.05rem; margin-bottom: 6px; font-weight: 800;}
         .link-card p { font-size: 0.7rem; color: var(--ak-text-muted); text-transform: uppercase; font-weight: 700;}
 
-        /* ✨ ✨ ✨ 新增：高质感 Video 按钮专属特效 (录制/警示档案风格) ✨ ✨ ✨ */
+        /* Video 按钮专属特效 */
         .link-card-video {
-            position: relative;
             overflow: hidden;
-            border-color: rgba(245, 166, 35, 0.3) !important; /* 基础色变为源石橙 */
+            border-color: rgba(245, 166, 35, 0.3) !important; 
             background: linear-gradient(135deg, rgba(245,166,35,0.05) 0%, rgba(0,0,0,0) 100%) !important;
-            z-index: 1;
         }
-        body.light-mode .link-card-video {
-            background: linear-gradient(135deg, rgba(234,88,12,0.05) 0%, rgba(255,255,255,0) 100%) !important;
-            border-color: rgba(234, 88, 12, 0.3) !important;
-        }
-
-        /* 左侧常驻加粗发光警示线 */
         .link-card-video::before {
             content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
             background: var(--ak-accent-warn); box-shadow: 0 0 10px var(--ak-accent-warn);
             opacity: 1 !important; transition: 0.3s;
         }
-
-        /* 悬停时的科技警示斜向网格底纹 */
         .link-card-video::after {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background: repeating-linear-gradient(
-                -45deg,
-                transparent,
-                transparent 4px,
-                rgba(245, 166, 35, 0.15) 4px,
-                rgba(245, 166, 35, 0.15) 8px
-            );
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(-45deg, transparent, transparent 4px, rgba(245, 166, 35, 0.15) 4px, rgba(245, 166, 35, 0.15) 8px);
             opacity: 0; transition: 0.4s ease; z-index: -1;
         }
-
         .link-card-video:hover {
             transform: translateY(-4px) scale(1.02);
             border-color: var(--ak-accent-warn) !important;
-            box-shadow: 0 10px 25px rgba(245,166,35,0.25);
+            box-shadow: 0 10px 25px rgba(245,166,35,0.25) !important;
         }
         .link-card-video:hover::after { opacity: 1; }
         .link-card-video:hover h3, .link-card-video:hover p { color: var(--ak-accent-warn) !important; }
 
-        /* REC 录制红点特效 */
         .video-rec-dot {
             display: inline-block; width: 8px; height: 8px; border-radius: 50%;
             background-color: #ff3366; margin-left: 10px; margin-bottom: 2px;
             box-shadow: 0 0 8px #ff3366; vertical-align: middle;
             animation: rec-blink 1.5s infinite ease-in-out;
         }
-        @keyframes rec-blink {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.3; transform: scale(0.8); }
-        }
-        /* ✨ ✨ ✨ 结束 ✨ ✨ ✨ */
+        @keyframes rec-blink { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.8); } }
 
         /* --- 部署履历 (时间轴) --- */
         .card-timeline { grid-column: span 4; }
@@ -436,12 +391,8 @@
 </head>
 <body class="dark-mode">
 
-    <div class="video-bg">
-        <video autoplay muted loop playsinline poster="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop">
-            <source src="https://cdn.pixabay.com/video/2019/04/23/23011-332483163_large.mp4" type="video/mp4">
-        </video>
-    </div>
-    <div class="video-overlay"></div>
+    <div class="tech-bg"></div>
+    <div class="tech-overlay"></div>
 
     <div class="prts-scanline"></div>
     <div class="prts-hud">
@@ -513,6 +464,7 @@
                     <h3>Video<span class="video-rec-dot"></span></h3>
                     <p>Motion Graphics</p>
                 </a>
+                
                 <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="link-card"><h3>Photo</h3><p>500px Gallery</p></a>
             </div>
 
@@ -659,7 +611,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
-            /* --- 1. 主题切换 (罗德岛暗夜 vs 医疗部白昼) --- */
+            /* --- 1. 主题切换 --- */
             const themeBtn = document.getElementById('themeBtn');
             const body = document.body;
 
@@ -698,14 +650,14 @@
                 if (typingIndex < promptText.length) {
                     subtitleElement.innerHTML += promptText.charAt(typingIndex);
                     typingIndex++;
-                    setTimeout(typeWriter, 35); // 终端打字速度偏快
+                    setTimeout(typeWriter, 35); 
                 } else {
                     subtitleElement.innerHTML += '<span class="cursor"></span>';
                 }
             }
             setTimeout(typeWriter, 800);
 
-            /* --- 4. ✨ 随机掉落彩蛋 (鼠标点击头像触发) ✨ --- */
+            /* --- 4. 随机掉落彩蛋 (鼠标点击头像触发) --- */
             const avatarTrigger = document.getElementById('avatarTrigger');
             
             avatarTrigger.addEventListener('click', () => {
@@ -713,7 +665,6 @@
             });
 
             function triggerRandomDrop() {
-                // 掉落物库：包含企鹅、设计工具、游戏、赛博元素等
                 const items = ['🐧', '💻', '🎨', '🎮', '🧊', '💊', '🚀', '👾', '🎧', '🔋'];
                 const randomItem = items[Math.floor(Math.random() * items.length)];
 
@@ -721,36 +672,29 @@
                 dropEl.innerHTML = randomItem; 
                 dropEl.style.position = 'fixed';
                 dropEl.style.top = '-100px';
-                // 随机水平位置
                 dropEl.style.left = Math.random() * (window.innerWidth - 100) + 'px';
                 
-                // 随机大小 (60px 到 100px 之间)
                 const randomSize = Math.floor(Math.random() * 40) + 60;
                 dropEl.style.fontSize = randomSize + 'px';
                 
                 dropEl.style.zIndex = '10000';
                 dropEl.style.filter = 'drop-shadow(0 0 20px var(--ak-accent-info))';
                 
-                // 随机下落时间 (1.5s 到 3s 之间)，增加物理感差异
                 const dropDuration = (Math.random() * 1.5 + 1.5).toFixed(2);
                 dropEl.style.transition = `top ${dropDuration}s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform ${dropDuration}s`;
                 dropEl.style.pointerEvents = 'none'; 
                 document.body.appendChild(dropEl);
 
-                // 触发掉落和随机旋转角度
                 setTimeout(() => {
                     dropEl.style.top = window.innerHeight + 100 + 'px';
-                    const randomRotation = Math.floor(Math.random() * 1080) - 360; // 随机旋转角度
+                    const randomRotation = Math.floor(Math.random() * 1080) - 360;
                     dropEl.style.transform = `rotate(${randomRotation}deg)`;
                 }, 50);
 
-                // 动画结束后清理 DOM 元素
                 setTimeout(() => { document.body.removeChild(dropEl); }, dropDuration * 1000 + 100);
             }
 
-            // 控制台氛围输出
             console.log("%c> PRTS SYSTEM INITIALIZED", "color: #00d8ff; font-size: 18px; font-weight: bold; font-family: monospace;");
-            console.log("%c> Profile Spike (Clarence Ye) loaded successfully.", "color: #7a7a7a; font-size: 12px; font-family: monospace;");
         });
 
         /* --- 5. 权限验证系统 --- */
