@@ -3,91 +3,247 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Design | Clarence Ye</title>
+    <title>Video Design // Rhodes Island</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
+        /* ================= 罗德岛制式终端 核心变量 ================= */
         :root {
-            --bg: #09090b; --card-bg: rgba(255, 255, 255, 0.03); --card-border: rgba(255, 255, 255, 0.08);
-            --text-main: #f8fafc; --text-muted: #94a3b8; --accent: #1abc9c; 
-            --accent-glow: rgba(26, 188, 156, 0.4); --nav-bg: rgba(9, 9, 11, 0.7);
+            /* 暗夜战术模式 (默认) */
+            --ak-bg-main: #0a0a0a; 
+            --ak-bg-panel: #141414; 
+            --ak-bg-panel-light: #1c1c1c;
+            --ak-text-main: #ffffff;
+            --ak-text-muted: #7a7a7a;
+            --ak-accent-info: #00d8ff; /* 罗德岛科技蓝 */
+            --ak-accent-warn: #f5a623; /* 源石警示橙 */
+            --ak-border: #2a2a2a;
+            --ak-scan-line: rgba(0, 216, 255, 0.03);
         }
+
+        /* 医疗部白昼模式 (覆盖变量) */
         body.light-mode {
-            --bg: #f4f5f7; --card-bg: #ffffff; --card-border: #e2e8f0; 
-            --text-main: #0f172a; --text-muted: #64748b; --accent: #059669; 
-            --accent-glow: rgba(5, 150, 105, 0.2); --nav-bg: rgba(255, 255, 255, 0.8);
+            --ak-bg-main: #f0f2f5; 
+            --ak-bg-panel: #ffffff; 
+            --ak-bg-panel-light: #f8fafc;
+            --ak-text-main: #1a1a1b;
+            --ak-text-muted: #64748b;
+            --ak-accent-info: #0284c7;
+            --ak-accent-warn: #ea580c;
+            --ak-border: #d1d5db;
         }
+
+        /* ================= 基础重置 ================= */
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); color: var(--text-main); font-family: -apple-system, sans-serif; line-height: 1.6; overflow-x: hidden; transition: background-color 0.5s ease, color 0.5s ease; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); filter: blur(5px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-
-        /* 导航栏样式 */
-        nav { position: fixed; top: 0; width: 100%; padding: 15px 5vw; display: flex; justify-content: space-between; align-items: center; background: var(--nav-bg); backdrop-filter: blur(16px); z-index: 1000; border-bottom: 1px solid var(--card-border); transition: all 0.5s ease; }
-        .nav-logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; color: var(--text-main); text-decoration: none; }
         
-        .nav-right { display: flex; align-items: center; gap: 30px; }
-        .nav-links { display: flex; gap: 30px; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: color 0.3s; font-weight: 500;}
-        .nav-links a:hover, .nav-links a.active { color: var(--accent); }
-        .nav-home-btn {
-            padding: 8px 18px; background: rgba(26, 188, 156, 0.1); color: var(--accent);
-            border: 1px solid var(--accent); border-radius: 30px; font-size: 0.85rem;
-            font-weight: 600; text-decoration: none; transition: all 0.3s ease;
-            display: flex; align-items: center; gap: 6px;
+        body { 
+            background-color: var(--ak-bg-main);
+            color: var(--ak-text-main);
+            font-family: 'Space Grotesk', -apple-system, sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.4s ease, color 0.4s ease;
+            -webkit-font-smoothing: antialiased;
         }
-        .nav-home-btn:hover { background: var(--accent); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 15px var(--accent-glow); }
 
-        .page-header { text-align: center; margin: 120px auto 40px; padding: 0 20px; animation: fadeUp 0.8s ease forwards; }
-        .page-header h1 { font-size: 3rem; font-weight: 800; margin-bottom: 10px; transition: color 0.5s;}
-        .page-header p { color: var(--text-muted); font-size: 1.1rem; transition: color 0.5s;}
+        /* 统一入场动画 (无 blur，避免白屏) */
+        @keyframes fadeUpAK { 
+            0% { opacity: 0; transform: translateY(25px); } 
+            100% { opacity: 1; transform: translateY(0); } 
+        }
 
-        .video-container { max-width: 1000px; margin: 0 auto; padding: 0 5vw 80px; display: flex; flex-direction: column; gap: 50px; }
-        .video-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 32px; padding: 24px; opacity: 0; animation: fadeUp 0.8s ease forwards; transition: all 0.4s ease; }
-        body.light-mode .video-card { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05); }
-        .video-card:hover { border-color: var(--accent); transform: translateY(-5px); box-shadow: 0 20px 50px rgba(0,0,0,0.25); }
+        /* ================= 动态战术背景与 HUD ================= */
+        .video-bg {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -10; background: #000;
+        }
+        /* 加深视频灰度与对比度，营造冷峻的监控视角 */
+        .video-bg video { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.3) contrast(1.3); opacity: 0.7; }
         
-        .video-wrapper { width: 100%; border-radius: 16px; overflow: hidden; background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 24px; }
+        .video-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -9; 
+            /* 强化工业网格纹理 */
+            background: linear-gradient(rgba(10,10,12,0.85), rgba(10,10,12,0.85)),
+                        linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
+                        linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            pointer-events: none; transition: background 0.4s ease;
+        }
+        body.light-mode .video-overlay { 
+            background: linear-gradient(rgba(240,242,245,0.85), rgba(240,242,245,0.85)),
+                        linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        /* 战术雷达扫描线 */
+        .prts-scanline {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 4px; z-index: -8;
+            background: var(--ak-accent-info);
+            box-shadow: 0 0 15px var(--ak-accent-info), 0 0 30px var(--ak-accent-info);
+            opacity: 0.6; pointer-events: none;
+            animation: scan-drop 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+        body.light-mode .prts-scanline { opacity: 0.3; }
+
+        @keyframes scan-drop {
+            0% { top: -10%; opacity: 0; }
+            5% { opacity: 0.6; }
+            45% { opacity: 0.6; }
+            50% { top: 110%; opacity: 0; }
+            100% { top: 110%; opacity: 0; }
+        }
+
+        /* 屏幕四角瞄准器/装甲边框 */
+        .prts-hud {
+            position: fixed; top: 20px; left: 20px; right: 20px; bottom: 20px; z-index: -8;
+            border: 1px solid rgba(0, 216, 255, 0.05); pointer-events: none; transition: 0.4s;
+        }
+        body.light-mode .prts-hud { border-color: rgba(2, 132, 199, 0.1); }
         
-        /* ✨ 优化：使用现代排版替换 <center> 标签 */
-        .video-info { text-align: center; display: flex; flex-direction: column; gap: 8px; }
-        .video-title { font-size: 1.5rem; font-weight: 700; color: var(--text-main); transition: color 0.5s; margin: 0; }
-        .video-meta { font-size: 0.95rem; color: var(--text-muted); font-weight: 400; margin: 0; }
-        .highlight-tag { display: inline-block; padding: 2px 8px; background: rgba(26, 188, 156, 0.15); color: var(--accent); border-radius: 6px; font-size: 0.85rem; font-weight: bold; margin: 0 4px; }
+        .prts-hud::before {
+            content: ''; position: absolute; top: -2px; left: -2px; width: 50px; height: 50px;
+            border-top: 3px solid var(--ak-accent-info); border-left: 3px solid var(--ak-accent-info); transition: 0.4s;
+        }
+        .prts-hud::after {
+            content: ''; position: absolute; bottom: -2px; right: -2px; width: 50px; height: 50px;
+            border-bottom: 3px solid var(--ak-accent-info); border-right: 3px solid var(--ak-accent-info); transition: 0.4s;
+        }
+        .hud-corner.top-right {
+            position: absolute; top: -2px; right: -2px; width: 50px; height: 50px;
+            border-top: 3px solid var(--ak-accent-info); border-right: 3px solid var(--ak-accent-info); transition: 0.4s;
+        }
+        .hud-corner.bottom-left {
+            position: absolute; bottom: -2px; left: -2px; width: 50px; height: 50px;
+            border-bottom: 3px solid var(--ak-accent-info); border-left: 3px solid var(--ak-accent-info); transition: 0.4s;
+        }
 
-        .back-nav { text-align: center; margin-bottom: 80px; }
-        .btn-back { display: inline-block; padding: 14px 40px; border-radius: 30px; background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-main); text-decoration: none; font-weight: 600; transition: all 0.3s; }
-        .btn-back:hover { background: var(--accent); border-color: var(--accent); color: #fff; transform: translateY(-3px); box-shadow: 0 10px 20px var(--accent-glow); }
-        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.9rem; border-top: 1px solid var(--card-border); }
+        /* 巨型背景代码水印 */
+        .prts-watermark {
+            position: fixed; bottom: 10%; left: -80px; z-index: -8;
+            font-family: 'Space Mono', monospace; font-size: 5rem; font-weight: 800;
+            color: rgba(255, 255, 255, 0.015);
+            transform: rotate(-90deg); transform-origin: left bottom;
+            white-space: nowrap; pointer-events: none; user-select: none;
+        }
+        body.light-mode .prts-watermark { color: rgba(0, 0, 0, 0.02); }
 
-        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%; background: var(--nav-bg); border: 1px solid var(--card-border); color: var(--text-main); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.15); backdrop-filter: blur(10px); z-index: 9999; transition: all 0.3s; }
-        .theme-toggle-btn:hover { transform: scale(1.1) rotate(15deg); border-color: var(--accent); color: var(--accent); }
+        /* ================= 顶部导航栏 ================= */
+        nav { 
+            position: fixed; top: 0; width: 100%; padding: 15px 5vw; 
+            display: flex; justify-content: space-between; align-items: center; 
+            background: var(--ak-bg-panel); border-bottom: 2px solid var(--ak-border); 
+            z-index: 1000; backdrop-filter: blur(10px); transition: background 0.4s, border-color 0.4s;
+        }
+        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 6px 14px; font-size: 1.1rem; flex-shrink: 0;}
+        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .nav-links { display: flex; gap: 25px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
+        .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase;}
+        .nav-links a:hover, .nav-links a.active { color: var(--ak-accent-info); text-shadow: 0 0 8px var(--ak-accent-info); }
+        
+        .nav-home-btn {
+            padding: 6px 14px; background: transparent; color: var(--ak-accent-warn);
+            border: 1px solid var(--ak-accent-warn); font-family: 'Space Mono', monospace;
+            font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: 0.3s; text-transform: uppercase;
+        }
+        .nav-home-btn:hover { background: var(--ak-accent-warn); color: #000; box-shadow: 0 0 10px rgba(245,166,35,0.4); }
 
-        @media (max-width: 900px) {
+        /* ================= 页面头部 ================= */
+        .page-header { text-align: center; margin: 120px auto 40px; padding: 0 20px; opacity: 0; animation: fadeUpAK 0.6s ease-out forwards; }
+        .page-header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; font-family: 'Space Mono', monospace; color: var(--ak-accent-info); text-transform: uppercase;}
+        .page-header p { color: var(--ak-text-muted); font-size: 1rem; font-family: 'Space Mono', monospace;}
+
+        /* ================= 视频卡片区块 ================= */
+        .video-container { max-width: 1000px; margin: 0 auto; padding: 0 5vw 80px; display: flex; flex-direction: column; gap: 50px; position: relative; z-index: 10;}
+        
+        .video-card { 
+            background: rgba(20, 20, 20, 0.85); /* 降低一点透明度透出背景视频 */
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border);
+            border-radius: 4px; /* 罗德岛工业风直角边 */
+            padding: 30px; 
+            opacity: 0; animation: fadeUpAK 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+            transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease; 
+        }
+        body.light-mode .video-card { background: rgba(255, 255, 255, 0.9); }
+        .video-card:hover { border-color: var(--ak-accent-info); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,216,255,0.15); }
+        
+        .video-wrapper { 
+            width: 100%; border-radius: 4px; overflow: hidden; 
+            background: #000; box-shadow: 0 10px 30px rgba(0,0,0,0.6); 
+            margin-bottom: 24px; border: 2px solid var(--ak-border);
+            transition: 0.3s;
+        }
+        .video-card:hover .video-wrapper { border-color: var(--ak-accent-info); }
+        
+        .video-info { text-align: center; display: flex; flex-direction: column; gap: 12px; }
+        .video-title { font-size: 1.5rem; font-weight: 800; color: var(--ak-text-main); font-family: 'Space Mono', monospace; text-transform: uppercase; margin: 0; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px;}
+        .video-title::before { content: '/>'; color: var(--ak-accent-info); }
+        .video-meta { font-size: 0.95rem; color: var(--ak-text-muted); font-weight: 400; margin: 0; font-family: 'Space Mono', monospace; line-height: 1.8;}
+        
+        .highlight-tag { 
+            display: inline-block; padding: 2px 10px; background: var(--ak-bg-main); 
+            color: var(--ak-accent-warn); border: 1px solid var(--ak-accent-warn); 
+            border-radius: 2px; font-size: 0.8rem; font-weight: bold; margin: 0 4px; 
+            text-transform: uppercase;
+        }
+
+        /* ---------------- 辅助 UI ---------------- */
+        .back-nav { text-align: center; margin-bottom: 80px; position: relative; z-index: 10;}
+        .btn-back { 
+            display: inline-block; padding: 12px 30px; background: transparent; 
+            border: 1px solid var(--ak-border); color: var(--ak-text-main); font-family: 'Space Mono', monospace; 
+            text-decoration: none; font-weight: 700; transition: 0.3s; text-transform: uppercase;
+        }
+        .btn-back:hover { background: var(--ak-accent-info); border-color: var(--ak-accent-info); color: #000; box-shadow: 0 0 15px rgba(0,216,255,0.4); }
+        
+        footer { text-align: center; padding: 40px; color: var(--ak-text-muted); font-size: 0.75rem; border-top: 1px solid var(--ak-border); font-family: 'Space Mono', monospace; text-transform: uppercase; position: relative; z-index: 10;}
+        
+        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: #000; border: 1px solid var(--ak-border); color: var(--ak-text-muted); font-size: 0.8rem; font-family: 'Space Mono'; padding: 10px; cursor: pointer; z-index: 9999; transition: 0.3s; }
+        .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); }
+
+        /* ================= 响应式断点 ================= */
+        @media (max-width: 900px) { 
             .nav-links { display: none; } 
-            .page-header h1 { font-size: 2.2rem; }
-            .theme-toggle-btn { bottom: 20px; right: 20px; }
+            .page-header h1 { font-size: 2rem; } 
+            .theme-toggle-btn { bottom: 20px; right: 20px; } 
         }
     </style>
 </head>
-<body>
-   <nav>
-        <a href="Spike's profolio.html" class="nav-logo">CLARENCE.YE</a>
+<body class="dark-mode">
+
+    <div class="video-bg">
+        <video autoplay muted loop playsinline poster="https://images.pexels.com/photos/3165335/pexels-photo-3165335.jpeg">
+            <source src="https://cdn.pixabay.com/video/2020/05/25/40138-424908070_large.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="video-overlay"></div>
+    
+    <div class="prts-scanline"></div>
+    <div class="prts-hud">
+        <div class="hud-corner top-right"></div>
+        <div class="hud-corner bottom-left"></div>
+    </div>
+    <div class="prts-watermark">SYS.VER.2026 // MOTION_ARCHIVE</div>
+
+    <nav>
+        <a href="Spike's profolio.html" class="nav-logo">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
                 <a href="数据分析/Data Analysis.html">Data Analysis</a>
                 <a href="my graphic design.html">Graphic</a>
                 <a href="3d model.html">3D Art</a>
                 <a href="my vedio.html" class="active">Video</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Photography</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Gallery</a>
             </div>
-            <a href="Spike's profolio.html" class="nav-home-btn">🏠 主页</a>
+            <a href="Spike's profolio.html" class="nav-home-btn">[ RETURN_HOME ]</a>
         </div>
     </nav>
 
     <header class="page-header">
-        <h1>Video Design</h1> <p>游戏买量广告与高燃混剪视觉体验</p>
+        <h1>[ VIDEO // MOTION DESIGN ]</h1>
+        <p>游戏买量广告与高燃混剪视觉体验</p>
     </header>
 
     <main class="video-container">
-      
         <div class="video-card">
             <div class="video-wrapper" style="position: relative; width: 100%; aspect-ratio: 16/9;">
                 <iframe 
@@ -101,32 +257,36 @@
             </div>
             
             <div class="video-info">
-                <h2 class="video-title">2024 - 2025 Showreel</h2>
+                <h2 class="video-title">24-25_Showreel.mp4</h2>
                 <p class="video-meta">
-                    ⏳ 正在从 YouTube 获取高清资源，请稍候... <br>
-                    <span style="font-size: 0.85rem; opacity: 0.8; display: inline-block; margin-top: 5px;">
-                        时段指引：<span class="highlight-tag">2024</span> 0:00 - 1:17  |  <span class="highlight-tag">2025</span> 1:17 - 2:54
+                    > Accessing high-res stream from YouTube, please hold... <br>
+                    <span style="font-size: 0.8rem; opacity: 0.8; display: inline-block; margin-top: 10px;">
+                        [ TIMESTAMPS ]: <span class="highlight-tag">2024</span> 0:00 - 1:17  //  <span class="highlight-tag">2025</span> 1:17 - 2:54
                     </span>
                 </p>
             </div>
-            
         </div>
     </main>
 
     <div class="back-nav">
-        <a href="Spike's profolio.html" class="btn-back">← 返回主页</a>
+        <a href="Spike's profolio.html" class="btn-back">[ RETURN ]</a>
     </div>
 
-    <footer><p>&copy; 2026 Clarence Ye. All rights reserved.</p></footer>
+    <footer>
+        <p>> System.copyRight(2026, "Rhodes Island // Clarence Ye")</p>
+    </footer>
 
-    <button class="theme-toggle-btn" id="themeBtn">☀️</button>
+    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
     <script>
-        const themeBtn = document.getElementById('themeBtn');
-        const body = document.body;
-        themeBtn.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-            themeBtn.innerHTML = body.classList.contains('light-mode') ? '🌙' : '☀️';
+        document.addEventListener('DOMContentLoaded', () => {
+            // 主题切换 (罗德岛暗夜 vs 医疗部白昼)
+            const themeBtn = document.getElementById('themeBtn');
+            const body = document.body;
+            themeBtn.addEventListener('click', () => { 
+                body.classList.toggle('light-mode'); 
+                themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT'; 
+            });
         });
     </script>
 </body>
