@@ -50,7 +50,7 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 统一入场动画 (彻底移除导致白屏的 blur) */
+        /* 统一入场动画 */
         @keyframes fadeUpAK { 
             0% { opacity: 0; transform: translateY(25px); } 
             100% { opacity: 1; transform: translateY(0); } 
@@ -168,10 +168,53 @@
         .bento-card:hover { border-color: var(--ak-accent-info); transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
         body.light-mode .bento-card:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
 
-        /* --- 英雄卡片 --- */
+        /* --- 英雄卡片 & 头像点击动画引导 --- */
         .card-hero { grid-column: span 2; grid-row: span 2; text-align: center; border-color: var(--ak-accent-info); display: flex; flex-direction: column; justify-content: center; align-items: center;}
-        .hero-avatar { width: 140px; height: 140px; border: 2px solid var(--ak-accent-info); padding: 4px; margin-bottom: 20px; object-fit: cover; transition: 0.4s;}
+        
+        /* 头像容器：用于放置波纹动画 */
+        .avatar-container {
+            position: relative;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .hero-avatar { 
+            width: 140px; height: 140px; 
+            border: 2px solid var(--ak-accent-info); 
+            padding: 4px; object-fit: cover; 
+            transition: 0.4s; cursor: pointer; 
+            position: relative; z-index: 2; /* 确保头像在波纹之上 */
+        }
         .hero-avatar:hover { transform: scale(1.05) rotate(3deg); border-color: var(--ak-accent-warn); }
+
+        /* 战术波纹扫描动画 (Pulse Scan) */
+        .avatar-pulse {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 50%; /* 如果你的头像是圆形的，加上这个 */
+            box-shadow: 0 0 0 0 rgba(0, 216, 255, 0.7);
+            animation: pulse-ring 2.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 216, 255, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 20px rgba(0, 216, 255, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 216, 255, 0); }
+        }
+
+        /* 闪烁提示文字 */
+        .click-hint {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--ak-accent-info);
+            margin-top: -10px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            animation: blink 1.5s infinite;
+        }
+
         .elite-tag { background: var(--ak-accent-warn); color: #000; font-size: 11px; font-weight: 800; padding: 3px 8px; display: inline-block; transform: rotate(-3deg); margin-bottom: 12px; font-family: 'Space Mono', monospace; letter-spacing: 1px;}
         .hero-title { font-size: 2.2rem; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px; text-transform: uppercase;}
         .hero-subtitle { font-family: 'Space Mono', monospace; color: var(--ak-text-muted); font-size: 0.95rem; min-height: 80px; text-align: left; line-height: 1.8;}
@@ -213,6 +256,76 @@
         .link-card:hover { border-color: var(--ak-accent-info); background: var(--ak-bg-main); color: var(--ak-accent-info); transform: translateY(-4px);}
         .link-card h3 { font-family: 'Space Mono', monospace; font-size: 1.05rem; margin-bottom: 6px; font-weight: 800;}
         .link-card p { font-size: 0.7rem; color: var(--ak-text-muted); text-transform: uppercase; font-weight: 700;}
+
+        /* ✨ ✨ ✨ 新增：战术高亮捕获 (Target Lock) 效果用于 Video 按钮 ✨ ✨ ✨ */
+        .link-card-special {
+            position: relative;
+            overflow: visible !important; /* 让准星角标可以向外扫，不被盖住 */
+            border: 1px solid var(--ak-border);
+            z-index: 1;
+            /* 给按钮本身加一个背景颜色差，标识它是特殊的 */
+            background: rgba(0, 216, 255, 0.05) !important;
+            transition: all 0.3s ease-in-out;
+        }
+        
+        body.light-mode .link-card-special { background: rgba(2, 132, 199, 0.05) !important; }
+
+        /* 准星角标 (使用 ::before) */
+        .link-card-special::before {
+            content: '';
+            position: absolute;
+            top: 5px; left: 5px; right: 5px; bottom: 5px; /* 这里扫过的光束 */
+            border: 2px solid transparent; /* 准星颜色 */
+            /* 制作 L 型角标 (利用渐变背景和遮罩) */
+            border-top-color: var(--ak-accent-info);
+            border-left-color: var(--ak-accent-info);
+            border-radius: 1px;
+            
+            z-index: -1;
+            transition: 0.3s;
+            animation: tactical-lock 2.5s infinite ease-in-out;
+            opacity: 0.7;
+            clip-path: polygon(0 0, 30px 0, 30px 2px, 2px 2px, 2px 30px, 0 30px); /* 制作 L 型 */
+        }
+
+        /* 旋转动画 */
+        @keyframes tactical-lock {
+            0% { transform: scale(1); opacity: 0.7; }
+            10% { transform: scale(1.15); opacity: 1; filter: blur(0.5px); }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+
+        /* 准星角标的另外两角 (使用 ::after) */
+        .link-card-special::after {
+            content: '';
+            position: absolute;
+            top: 5px; left: 5px; right: 5px; bottom: 5px;
+            border: 2px solid transparent; 
+            border-bottom-color: var(--ak-accent-info);
+            border-right-color: var(--ak-accent-info);
+            border-radius: 1px;
+            
+            z-index: -1;
+            transition: 0.3s;
+            animation: tactical-lock 2.5s infinite ease-in-out;
+            opacity: 0.7;
+            clip-path: polygon(100% 100%, 100% calc(100% - 30px), calc(100% - 2px) calc(100% - 30px), calc(100% - 2px) calc(100% - 2px), calc(100% - 30px) calc(100% - 2px), calc(100% - 30px) 100%);
+        }
+
+        .link-card-special:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 0 25px rgba(0, 216, 255, 0.4);
+            border-color: var(--ak-accent-info) !important;
+        }
+        
+        .link-card-special:hover::before,
+        .link-card-special:hover::after {
+            animation: none; /* 悬停时停止呼吸，代表锁定 */
+            top: 2px; left: 2px; right: 2px; bottom: 2px; /* 移到最边缘 */
+            opacity: 1;
+        }
+        /* ✨ ✨ ✨ 结束 ✨ ✨ ✨ */
+
 
         /* --- 部署履历 (时间轴) --- */
         .card-timeline { grid-column: span 4; }
@@ -378,7 +491,12 @@
             
             <div class="bento-card card-hero">
                 <span class="elite-tag">ELITE 2 // VISUAL DESIGNER</span><br>
-                <img src="绿色头像.jpeg" alt="Clarence Ye Avatar" class="hero-avatar" loading="lazy">
+                
+                <div class="avatar-container" title="Click me for a surprise!">
+                    <div class="avatar-pulse"></div>
+                    <img src="绿色头像.jpeg" alt="Clarence Ye Avatar" class="hero-avatar" id="avatarTrigger" loading="lazy">
+                </div>
+                <div class="click-hint">> CLICK_AVATAR</div>
                 <h1 class="hero-title">历飞雨</h1>
                 <p class="hero-subtitle" id="ai-prompt-text"></p>
             </div>
@@ -388,7 +506,7 @@
                 <div class="info-grid">
                     <div class="info-item"><strong>Current_Location</strong><span>广州市海珠区</span></div>
                     <div class="info-item"><strong>Education_Node</strong><span>广东工业大学 // 动画系</span></div>
-                    <div class="info-item"><strong>Signal_Alpha</strong><span>Clrenceye1@gmail.com</span></div>
+                    <div class="info-item"><strong>Signal_Alpha</strong><span>Clarenceye1@gmail.com</span></div>
                     <div class="info-item"><strong>Signal_Beta</strong><span>+86 13719113230</span></div>
                 </div>
                 <button class="resume-btn" id="viewResumeBtn">> ACCESS ENCRYPTED RESUME</button>
@@ -411,7 +529,10 @@
                 <a href="数据分析/Data Analysis.html" class="link-card"><h3>Data</h3><p>Logistical Analytics</p></a>
                 <a href="my graphic design.html" class="link-card"><h3>Graphic</h3><p>Visual Arts</p></a>
                 <a href="3d model.html" class="link-card"><h3>3D Art</h3><p>Modeling</p></a>
-                <a href="my vedio.html" class="link-card"><h3>Video</h3><p>Motion Graphics</p></a>
+                
+                <a href="my vedio.html" class="link-card link-card-special">
+                    <h3>Video</h3><p>Motion Graphics</p>
+                </a>
                 <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="link-card"><h3>Photo</h3><p>500px Gallery</p></a>
             </div>
 
@@ -426,7 +547,7 @@
                     <div class="tl-body">
                         <div style="margin-bottom: 12px;">
                             <strong>[ Viral Mechanics ]</strong> 
-                            基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top 1 爆款视频（单条消耗超 22 万元，付费贡献占比 26.9%）。建立“素材裂变迭代机制”，主导年度短视频累计消耗达 153 万元。
+                            基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top 1 爆款视频（单条消耗超 22 万元，付费贡献占比 26.9%）。建立“素材裂变迭代机制”，主导年度短视频累计消耗达 153 万元.
                         </div>
                         <div style="margin-bottom: 12px;">
                             <strong>[ Global UA ]</strong> 
@@ -434,7 +555,7 @@
                         </div>
                         <div>
                             <strong>[ ROI Opt ]</strong> 
-                            建立视频淘汰机制，资源向高转化核心品类倾斜；优化结尾转化钩子 (CTA)，实现单点 ROI 提升 15%，整体年度投放效率提升 20%。
+                            建立视频淘汰机制，资源向高转化核心品类倾斜；优化结尾转化钩子 (CTA)，实现单点 ROI 提升 15%，整体年度投放效率提升 20%.
                         </div>
                     </div>
                 </div>
@@ -445,7 +566,7 @@
                 </div>
 
                 <div class="timeline-item">
-                    <div class="tl-header"><div class="tl-title">Mobvista （甲方）<span class="tl-role">// 品牌设计</span></div><div class="tl-date">2023.09 - 2023.12</div></div>
+                    <div class="tl-header"><div class="tl-title">Mobvista (甲方) <span class="tl-role">// 品牌设计</span></div><div class="tl-date">2023.09 - 2023.12</div></div>
                     <div class="tl-body">使用 PS/AI/AE 制作海报、KV、PPT 及印刷品。负责图文内容排版、视频修改及品牌 GIF 动效制作。</div>
                 </div>
             </div>
@@ -604,17 +725,11 @@
             }
             setTimeout(typeWriter, 800);
 
-            /* --- 4. Pudgy Penguins 隐藏彩蛋 (键盘键入 "pudgy") --- */
-            const secretCode = ['p', 'u', 'd', 'g', 'y'];
-            let inputBuffer = [];
-
-            window.addEventListener('keydown', (e) => {
-                inputBuffer.push(e.key.toLowerCase());
-                inputBuffer = inputBuffer.slice(-secretCode.length);
-                
-                if (JSON.stringify(inputBuffer) === JSON.stringify(secretCode)) {
-                    triggerPenguinEasterEgg();
-                }
+            /* --- 4. ✨ 胖企鹅彩蛋 (鼠标点击头像触发) ✨ --- */
+            const avatarTrigger = document.getElementById('avatarTrigger');
+            
+            avatarTrigger.addEventListener('click', () => {
+                triggerPenguinEasterEgg();
             });
 
             function triggerPenguinEasterEgg() {
