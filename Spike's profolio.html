@@ -130,13 +130,26 @@
             background: var(--ak-bg-panel); border-bottom: 1px solid var(--ak-border); 
             z-index: 1000; backdrop-filter: blur(10px); transition: 0.4s;
         }
-        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 5px 12px; font-size: 1rem; }
+        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 5px 12px; font-size: 1rem; cursor: pointer;}
         .nav-right { display: flex; align-items: center; gap: 30px; }
         .nav-links { display: flex; gap: 25px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
-        .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase;}
+        .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase; cursor: pointer;}
         .nav-links a:hover { color: var(--ak-accent-info); text-shadow: 0 0 8px var(--ak-accent-info); }
         .nav-secret { color: var(--ak-accent-warn); cursor: pointer; border: 1px solid var(--ak-accent-warn); padding: 5px 12px; font-size: 0.85rem; font-family: 'Space Mono', monospace; font-weight: 700; transition: 0.3s; }
         .nav-secret:hover { background: var(--ak-accent-warn); color: var(--ak-bg-main); }
+
+        /* ================= 音频控制开关 ================= */
+        .audio-toggle-btn {
+            position: fixed; top: 20px; left: 5vw; 
+            background: transparent; color: var(--ak-accent-info); border: 1px solid var(--ak-accent-info); 
+            padding: 5px 10px; font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: bold;
+            cursor: pointer; z-index: 1500; transition: 0.3s; margin-left: 200px;
+        }
+        .audio-toggle-btn:hover { background: var(--ak-accent-info); color: #000; box-shadow: 0 0 10px var(--ak-accent-info);}
+        .audio-toggle-btn.muted { color: var(--ak-text-muted); border-color: var(--ak-text-muted); }
+        .audio-toggle-btn.muted:hover { background: var(--ak-text-muted); color: #000; }
+
+        @media (max-width: 768px) { .audio-toggle-btn { margin-left: 0; top: 70px; } }
 
         /* ================= Bento Card 工业战术风 ================= */
         .container { max-width: 1200px; margin: 100px auto 40px; padding: 0 5vw; position: relative; z-index: 10; }
@@ -197,7 +210,7 @@
             letter-spacing: 0.5rem; margin-right: -0.5rem; 
         }
         
-        .hero-subtitle { font-family: 'Space Mono', monospace; color: var(--ak-text-muted); font-size: 0.95rem; min-height: 80px; text-align: left; line-height: 1.8;}
+        .hero-subtitle { font-family: 'Space Mono', monospace; color: var(--ak-text-muted); font-size: 0.95rem; min-height: 80px; text-align: left; line-height: 1.8; padding: 0 15px;}
         .cursor { display: inline-block; width: 8px; height: 1.2em; background: var(--ak-accent-info); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 4px;}
         @keyframes blink { 50% { opacity: 0; } }
 
@@ -227,7 +240,7 @@
 
         /* --- 业务系统直达 --- */
         .portfolio-links { grid-column: span 4; display: grid; grid-template-columns: repeat(5, 1fr); gap: 15px; }
-        .link-card { background: var(--ak-bg-panel); backdrop-filter: blur(10px); border: 1px solid var(--ak-border); padding: 24px 20px; text-decoration: none; color: inherit; transition: 0.4s; position: relative; display: flex; flex-direction: column; justify-content: center;}
+        .link-card { background: var(--ak-bg-panel); backdrop-filter: blur(10px); border: 1px solid var(--ak-border); padding: 24px 20px; text-decoration: none; color: inherit; transition: 0.4s; position: relative; display: flex; flex-direction: column; justify-content: center; cursor: pointer;}
         .link-card::before { content: ''; position: absolute; left: 0; top: 0; height: 100%; width: 3px; background: var(--ak-accent-info); opacity: 0; transition: 0.3s;}
         .link-card:hover::before { opacity: 1; }
         .link-card:hover { border-color: var(--ak-accent-info); transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,216,255,0.15);}
@@ -278,11 +291,11 @@
         .tl-body { font-size: 0.95rem; color: var(--ak-text-muted); margin-top: 10px; line-height: 1.8; }
         .tl-body strong { color: var(--ak-text-main); font-weight: 700;}
 
-        /* ✨ 新增：个人日志区块 ✨ */
+        /* --- 个人日志区块 --- */
         .card-log { 
             grid-column: span 4; 
             border-color: var(--ak-border); 
-            border-left: 4px solid var(--ak-accent-warn); /* 橙色强调边框 */
+            border-left: 4px solid var(--ak-accent-warn);
         }
         .card-log:hover { border-color: var(--ak-accent-warn); }
         .log-content p { 
@@ -401,6 +414,11 @@
         .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: var(--ak-bg-main); color: var(--ak-text-muted); border: 1px solid var(--ak-border); padding: 12px 16px; font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700; cursor: pointer; z-index: 1500; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);}
         .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); transform: translateY(-3px);}
 
+        /* 音频控制按钮 */
+        .audio-control-btn { position: fixed; top: 20px; left: 20px; background: rgba(0,0,0,0.5); border: 1px solid var(--ak-accent-info); color: var(--ak-accent-info); padding: 8px 12px; font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700; cursor: pointer; z-index: 1500; transition: 0.3s; }
+        .audio-control-btn:hover { background: var(--ak-accent-info); color: #000; }
+        .audio-control-btn.muted { border-color: var(--ak-text-muted); color: var(--ak-text-muted); }
+
         /* ================= 响应式 ================= */
         @media (max-width: 1024px) {
             .bento-grid { grid-template-columns: repeat(2, 1fr); }
@@ -417,10 +435,22 @@
             .dashboard { grid-template-columns: 1fr; }
             .secret-header { flex-direction: column; align-items: flex-start; }
             .data-actions { width: 100%; justify-content: flex-start; }
+            .audio-control-btn { top: 70px; left: 5vw; }
         }
     </style>
 </head>
 <body class="dark-mode">
+
+    <audio id="bgmAudio" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-hologram-191.mp3" type="audio/mpeg"> </audio>
+    <audio id="hoverSound">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2573/2573-preview.mp3" type="audio/mpeg"> </audio>
+    <audio id="clickSound">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg"> </audio>
+    <audio id="avatarSound">
+        <source src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3" type="audio/mpeg"> </audio>
+
+    <button id="audioToggle" class="audio-control-btn muted">[ AUDIO: OFF ]</button>
 
     <div class="tech-bg"></div>
     <div class="tech-overlay"></div>
@@ -433,28 +463,28 @@
     <div class="prts-watermark">SYS.VER.2026 // LOGISTICAL_ARCHIVE</div>
 
     <nav>
-        <a href="#" class="nav-logo">PRTS // CLARENCE YE</a>
+        <a href="#" class="nav-logo interactable">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
-                <a href="数据分析/Data Analysis.html">Data Analysis</a>
-                <a href="my graphic design.html">Graphic</a>
-                <a href="3d model.html">3D Art</a>
-                <a href="my vedio.html">Video</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer">Gallery</a>
+                <a href="数据分析/Data Analysis.html" class="interactable">Data Analysis</a>
+                <a href="my graphic design.html" class="interactable">Graphic</a>
+                <a href="3d model.html" class="interactable">3D Art</a>
+                <a href="my vedio.html" class="interactable">Video</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="interactable">Gallery</a>
             </div>
-            <a class="nav-secret" onclick="openPasswordModal()" title="Secure Access">[ DECRYPT_SYSTEM ]</a>
+            <a class="nav-secret interactable" onclick="openPasswordModal()" title="Secure Access">[ DECRYPT_SYSTEM ]</a>
         </div>
     </nav>
 
     <div class="container">
         <main class="bento-grid" id="mainContent">
             
-            <div class="bento-card card-hero">
+            <div class="bento-card card-hero interactable">
                 <span class="elite-tag">ELITE 2 // VISUAL DESIGNER</span><br>
                 
                 <div class="avatar-container" title="System Override Trigger">
                     <div class="avatar-pulse"></div>
-                    <img src="绿色头像.jpeg" alt="Clarence Ye Avatar" class="hero-avatar" id="avatarTrigger" loading="lazy">
+                    <img src="绿色头像.jpeg" alt="Clarence Ye Avatar" class="hero-avatar interactable" id="avatarTrigger" loading="lazy">
                 </div>
                 <div class="click-hint">> CLICK_AVATAR</div>
 
@@ -462,7 +492,7 @@
                 <p class="hero-subtitle" id="ai-prompt-text"></p>
             </div>
 
-            <div class="bento-card card-info">
+            <div class="bento-card card-info interactable">
                 <h2 class="card-title">Operator Profile</h2>
                 <div class="info-grid">
                     <div class="info-item"><strong>Current_Location</strong><span>广州市海珠区</span></div>
@@ -470,36 +500,36 @@
                     <div class="info-item"><strong>Signal_Alpha</strong><span>Clarenceye1@gmail.com</span></div>
                     <div class="info-item"><strong>Signal_Beta</strong><span>+86 13719113230</span></div>
                 </div>
-                <button class="resume-btn" id="viewResumeBtn">> ACCESS ENCRYPTED RESUME</button>
+                <button class="resume-btn interactable" id="viewResumeBtn">> ACCESS ENCRYPTED RESUME</button>
             </div>
 
-            <div class="bento-card card-skills">
+            <div class="bento-card card-skills interactable">
                 <h2 class="card-title">Technical Protocols</h2>
                 <div class="tag-cloud">
-                    <span class="tag">PS/ILLUSTRATOR</span>
-                    <span class="tag">After Effects</span>
-                    <span class="tag">Blender_3D</span>
-                    <span class="tag">ComfyUI</span>
-                    <span class="tag">Jimeng / Kling</span>
-                    <span class="tag">Video_Ads</span>
-                    <span class="tag">Growth_Mechanics</span>
+                    <span class="tag interactable">PS/ILLUSTRATOR</span>
+                    <span class="tag interactable">After Effects</span>
+                    <span class="tag interactable">Blender_3D</span>
+                    <span class="tag interactable">ComfyUI</span>
+                    <span class="tag interactable">Jimeng / Kling</span>
+                    <span class="tag interactable">Video_Ads</span>
+                    <span class="tag interactable">Growth_Mechanics</span>
                 </div>
             </div>
 
             <div class="portfolio-links">
-                <a href="数据分析/Data Analysis.html" class="link-card"><h3>Data</h3><p>Logistical Analytics</p></a>
-                <a href="my graphic design.html" class="link-card"><h3>Graphic</h3><p>Visual Arts</p></a>
-                <a href="3d model.html" class="link-card"><h3>3D Art</h3><p>Modeling</p></a>
+                <a href="数据分析/Data Analysis.html" class="link-card interactable"><h3>Data</h3><p>Logistical Analytics</p></a>
+                <a href="my graphic design.html" class="link-card interactable"><h3>Graphic</h3><p>Visual Arts</p></a>
+                <a href="3d model.html" class="link-card interactable"><h3>3D Art</h3><p>Modeling</p></a>
                 
-                <a href="my vedio.html" class="link-card link-card-video">
+                <a href="my vedio.html" class="link-card link-card-video interactable">
                     <h3>Video<span class="video-rec-dot"></span></h3>
                     <p>Motion Graphics</p>
                 </a>
                 
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="link-card"><h3>Photo</h3><p>500px Gallery</p></a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="link-card interactable"><h3>Photo</h3><p>500px Gallery</p></a>
             </div>
 
-            <div class="bento-card card-timeline">
+            <div class="bento-card card-timeline interactable">
                 <h2 class="card-title">Deployment History</h2>
                 
                 <div class="timeline-item">
@@ -534,7 +564,7 @@
                 </div>
             </div>
 
-            <div class="bento-card card-log">
+            <div class="bento-card card-log interactable">
                 <h2 class="card-title">Terminal Record // 2026</h2>
                 <div class="log-content">
                     <p>现在回看以前的设计作品，很多的确不尽如人意，但也有一些是做得好的，包括我以前的作品集和里面的产物。一些内容，看起来让人觉得太学生气了，于商业，很多东西其实只要做得简单美观，表达清晰效果要比胡乱摆弄好得多。不过几年前的我的确没有足够的认知想明白自己在做什么，为了什么。也没有意识去清晰地“展现自己”，在AI快速迭代的当下，人讲故事的能力会变得越加重要。</p>
@@ -552,11 +582,11 @@
             <div class="secret-header">
                 <h2>[ LOGISTICAL_DATA_VAULT ]</h2>
                 <div class="data-actions">
-                    <button class="btn-data" onclick="toggleCalculator()">[ TERMINAL_CALC ]</button>
-                    <button class="btn-data" onclick="exportData()">[ EXPORT_JSON ]</button>
-                    <button class="btn-data" onclick="document.getElementById('importFile').click()">[ RESTORE_SYS ]</button>
+                    <button class="btn-data interactable" onclick="toggleCalculator()">[ TERMINAL_CALC ]</button>
+                    <button class="btn-data interactable" onclick="exportData()">[ EXPORT_JSON ]</button>
+                    <button class="btn-data interactable" onclick="document.getElementById('importFile').click()">[ RESTORE_SYS ]</button>
                     <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
-                    <button class="btn-data btn-close-sec" onclick="closePrivateSection()">[ DISCONNECT ]</button>
+                    <button class="btn-data btn-close-sec interactable" onclick="closePrivateSection()">[ DISCONNECT ]</button>
                 </div>
             </div>
 
@@ -569,54 +599,54 @@
             <div class="calculator-widget" id="calculatorWidget">
                 <div class="calc-header">
                     <span>> calc.exe</span>
-                    <span style="cursor:pointer; font-size:1.2rem; opacity:0.7;" onclick="toggleCalculator()" title="关闭">[ X ]</span>
+                    <span style="cursor:pointer; font-size:1.2rem; opacity:0.7;" class="interactable" onclick="toggleCalculator()" title="关闭">[ X ]</span>
                 </div>
                 <div class="calc-screen" id="calcScreen">0</div>
                 <div class="calc-keys">
-                    <button class="calc-btn clear" onclick="calcClear()">C</button>
-                    <button class="calc-btn operator" onclick="calcBackspace()">←</button>
-                    <button class="calc-btn operator" onclick="calcInput('%')">%</button>
-                    <button class="calc-btn operator" onclick="calcInput('/')">÷</button>
+                    <button class="calc-btn clear interactable" onclick="calcClear()">C</button>
+                    <button class="calc-btn operator interactable" onclick="calcBackspace()">←</button>
+                    <button class="calc-btn operator interactable" onclick="calcInput('%')">%</button>
+                    <button class="calc-btn operator interactable" onclick="calcInput('/')">÷</button>
                     
-                    <button class="calc-btn" onclick="calcInput('7')">7</button>
-                    <button class="calc-btn" onclick="calcInput('8')">8</button>
-                    <button class="calc-btn" onclick="calcInput('9')">9</button>
-                    <button class="calc-btn operator" onclick="calcInput('*')">×</button>
+                    <button class="calc-btn interactable" onclick="calcInput('7')">7</button>
+                    <button class="calc-btn interactable" onclick="calcInput('8')">8</button>
+                    <button class="calc-btn interactable" onclick="calcInput('9')">9</button>
+                    <button class="calc-btn operator interactable" onclick="calcInput('*')">×</button>
                     
-                    <button class="calc-btn" onclick="calcInput('4')">4</button>
-                    <button class="calc-btn" onclick="calcInput('5')">5</button>
-                    <button class="calc-btn" onclick="calcInput('6')">6</button>
-                    <button class="calc-btn operator" onclick="calcInput('-')">-</button>
+                    <button class="calc-btn interactable" onclick="calcInput('4')">4</button>
+                    <button class="calc-btn interactable" onclick="calcInput('5')">5</button>
+                    <button class="calc-btn interactable" onclick="calcInput('6')">6</button>
+                    <button class="calc-btn operator interactable" onclick="calcInput('-')">-</button>
                     
-                    <button class="calc-btn" onclick="calcInput('1')">1</button>
-                    <button class="calc-btn" onclick="calcInput('2')">2</button>
-                    <button class="calc-btn" onclick="calcInput('3')">3</button>
-                    <button class="calc-btn operator" onclick="calcInput('+')">+</button>
+                    <button class="calc-btn interactable" onclick="calcInput('1')">1</button>
+                    <button class="calc-btn interactable" onclick="calcInput('2')">2</button>
+                    <button class="calc-btn interactable" onclick="calcInput('3')">3</button>
+                    <button class="calc-btn operator interactable" onclick="calcInput('+')">+</button>
                     
-                    <button class="calc-btn" onclick="calcInput('0')" style="grid-column: span 2;">0</button>
-                    <button class="calc-btn" onclick="calcInput('.')">.</button>
-                    <button class="calc-btn equal" onclick="calcResult()">EXEC</button>
+                    <button class="calc-btn interactable" onclick="calcInput('0')" style="grid-column: span 2;">0</button>
+                    <button class="calc-btn interactable" onclick="calcInput('.')">.</button>
+                    <button class="calc-btn equal interactable" onclick="calcResult()">EXEC</button>
                 </div>
             </div>
 
             <div class="input-section">
                 <div class="input-grid">
-                    <div class="form-group"><label>Timestamp (Date)</label><input type="date" id="dateInput"></div>
-                    <div class="form-group"><label>Time</label><input type="time" id="timeInput"></div>
+                    <div class="form-group"><label>Timestamp (Date)</label><input type="date" id="dateInput" class="interactable"></div>
+                    <div class="form-group"><label>Time</label><input type="time" id="timeInput" class="interactable"></div>
                     <div class="form-group"><label>Tx Type</label>
-                        <select id="typeInput"><option value="recharge">MINT (In)</option><option value="withdraw">BURN (Out)</option></select>
+                        <select id="typeInput" class="interactable"><option value="recharge">MINT (In)</option><option value="withdraw">BURN (Out)</option></select>
                     </div>
-                    <div class="form-group"><label>Value</label><input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01"></div>
-                    <div class="form-group"><label>Platform Bal</label><input type="number" id="availBalInput" placeholder="Optional" min="0" step="0.01"></div>
-                    <div class="form-group"><label>Bank Bal</label><input type="number" id="walletBalInput" placeholder="Optional" min="0" step="0.01"></div>
+                    <div class="form-group"><label>Value</label><input type="number" id="amountInput" placeholder="0.00" min="0" step="0.01" class="interactable"></div>
+                    <div class="form-group"><label>Platform Bal</label><input type="number" id="availBalInput" placeholder="Optional" min="0" step="0.01" class="interactable"></div>
+                    <div class="form-group"><label>Bank Bal</label><input type="number" id="walletBalInput" placeholder="Optional" min="0" step="0.01" class="interactable"></div>
                 </div>
-                <button class="btn-add" onclick="addRecord()">> COMMIT_TO_LEDGER</button>
+                <button class="btn-add interactable" onclick="addRecord()">> COMMIT_TO_LEDGER</button>
             </div>
 
             <div class="history-section">
                 <div class="history-header">
                     <h3 style="font-size:0.95rem; color:var(--ak-accent-info); font-weight:800; font-family:'Space Mono', monospace;">> TX_HISTORY_LOG</h3>
-                    <button class="btn-clear" onclick="clearAll()">[ WIPE_LOGS ]</button>
+                    <button class="btn-clear interactable" onclick="clearAll()">[ WIPE_LOGS ]</button>
                 </div>
                 <table class="ledger-table">
                     <thead>
@@ -633,7 +663,7 @@
     </footer>
 
     <div class="lightbox" id="lightbox">
-        <span class="lightbox-close" id="lightbox-close" aria-label="Close Image">[ CLOSE ]</span>
+        <span class="lightbox-close interactable" id="lightbox-close" aria-label="Close Image">[ CLOSE ]</span>
         <img src="2026_3.jpg" alt="Clarence Ye Resume" id="lightbox-img" loading="lazy">
     </div>
 
@@ -641,20 +671,63 @@
         <div class="modal-content">
             <h3>AUTH REQUIRED</h3>
             <p style="font-size: 0.75rem; color: #888; margin-bottom: 24px; font-family: 'Space Mono', monospace;">Enter master passphrase to decrypt archive</p>
-            <input type="password" id="pwdInput" placeholder="••••" onkeypress="handleEnter(event)" aria-label="Password Input">
+            <input type="password" id="pwdInput" placeholder="••••" onkeypress="handleEnter(event)" aria-label="Password Input" class="interactable">
             <p id="errorMsg" style="color: #ff3366; font-size: 0.8rem; display: none; margin-top: 12px; font-weight: 700; font-family: 'Space Mono', monospace;">> ERR_INVALID_KEY</p>
             <div class="modal-actions">
-                <button class="btn-confirm" onclick="checkPassword()">DECRYPT</button>
+                <button class="btn-confirm interactable" onclick="checkPassword()">DECRYPT</button>
             </div>
-            <button class="btn-cancel" onclick="closePasswordModal()">[ ABORT_OPERATION ]</button>
+            <button class="btn-cancel interactable" onclick="closePasswordModal()">[ ABORT_OPERATION ]</button>
         </div>
     </div>
 
-    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
+    <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             
+            /* --- 0. 音频系统控制 --- */
+            const bgmAudio = document.getElementById('bgmAudio');
+            const hoverSound = document.getElementById('hoverSound');
+            const clickSound = document.getElementById('clickSound');
+            const avatarSound = document.getElementById('avatarSound'); // 头像专属音效
+            const audioToggle = document.getElementById('audioToggle');
+            
+            let isAudioEnabled = false; // 默认静音
+
+            audioToggle.addEventListener('click', () => {
+                isAudioEnabled = !isAudioEnabled;
+                if(isAudioEnabled) {
+                    audioToggle.innerHTML = '[ AUDIO: ON ]';
+                    audioToggle.classList.remove('muted');
+                    bgmAudio.volume = 0.35; // 背景音量
+                    bgmAudio.play().catch(e => console.log("BGM autoplay prevented"));
+                    playSound(clickSound);
+                } else {
+                    audioToggle.innerHTML = '[ AUDIO: OFF ]';
+                    audioToggle.classList.add('muted');
+                    bgmAudio.pause();
+                }
+            });
+
+            function playSound(audioElement) {
+                if(!isAudioEnabled) return;
+                audioElement.currentTime = 0; 
+                audioElement.volume = 0.5;
+                audioElement.play().catch(e => {});
+            }
+
+            // 为所有带 .interactable 类的元素和所有卡片 (.bento-card) 添加悬停音效
+            const hoverTargets = document.querySelectorAll('.interactable, button, a, .bento-card');
+            hoverTargets.forEach(el => {
+                el.addEventListener('mouseenter', () => playSound(hoverSound));
+            });
+
+            // 为可点击的互动元素添加点击音效
+            const clickTargets = document.querySelectorAll('.interactable:not(.hero-avatar), button, a');
+            clickTargets.forEach(el => {
+                el.addEventListener('click', () => playSound(clickSound));
+            });
+
             /* --- 1. 主题切换 --- */
             const themeBtn = document.getElementById('themeBtn');
             const body = document.body;
@@ -706,6 +779,7 @@
             
             avatarTrigger.addEventListener('click', () => {
                 triggerRandomDrop();
+                playSound(avatarSound); // 触发头像专属音效
             });
 
             function triggerRandomDrop() {
@@ -866,7 +940,7 @@
                         <td class="${typeClass}">${sign} ${record.amount.toFixed(2)}</td>
                         <td class="bal-text">${record.availBal > 0 ? record.availBal.toFixed(2) : 'N/A'}</td>
                         <td class="bal-text">${record.walletBal > 0 ? record.walletBal.toFixed(2) : 'N/A'}</td>
-                        <td><button class="btn-delete" onclick="deleteRecord(${record.id})">DROP</button></td>
+                        <td><button class="btn-delete interactable" onclick="deleteRecord(${record.id})">DROP</button></td>
                     `;
                     tbody.appendChild(tr);
                 });
