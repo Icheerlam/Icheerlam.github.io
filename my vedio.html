@@ -37,7 +37,7 @@
         .video-wrapper-wide { width:100%; border:2px solid var(--ak-border); background:#000; margin-bottom:24px; transition:0.4s; position:relative; aspect-ratio:16/9; }
         .video-card:hover .video-wrapper-wide { border-color:var(--ak-accent-info); box-shadow:0 10px 30px rgba(0,0,0,0.5); }
         
-        /* ✨ 新增：支持任意拖拽缩放的播放窗口 ✨ */
+        /* 支持任意拖拽缩放的播放窗口 */
         .single-video-column { 
             display: flex; flex-direction: column; gap: 50px; margin-bottom: 30px; 
             align-items: center; 
@@ -56,9 +56,9 @@
             border: 2px solid var(--ak-border); background: #000; 
             border-radius: 2px;
             overflow: hidden; 
-            resize: both; /* 🚀 核心：允许水平和垂直自由拖拽缩放 */
+            resize: both; /* 允许水平和垂直自由拖拽缩放 */
             position: relative;
-            transition: border-color 0.3s, box-shadow 0.3s; /* 不给宽/高加过渡，否则拖拽会延迟卡顿 */
+            transition: border-color 0.3s, box-shadow 0.3s; 
         }
         
         /* 拖拽角标提示 */
@@ -73,7 +73,7 @@
         /* 内部视频智能填充 */
         .resizable-video-wrapper video {
             width: 100%; height: 100%;
-            object-fit: contain; /* 核心：无论外框怎么拉扁拉长，视频始终完整居中，不裁切不拉伸 */
+            object-fit: contain; /* 无论外框怎么拉扁拉长，视频始终完整居中，不裁切不拉伸 */
             display: block;
         }
         
@@ -136,8 +136,9 @@
                 
                 <div class="video-item-center">
                     <div class="resizable-video-wrapper">
-                        <video controls playsinline preload="metadata">
-                            <source src="app产品展示视频/mobvista十二生序1.mp4" type="video/mp4">
+                        <video controls playsinline preload="metadata" 
+                               src="app产品展示视频/mobvista十二生序1.mp4#t=27"
+                               onplay="if(this.dataset.played !== '1'){this.currentTime=0; this.dataset.played='1';}">
                         </video>
                     </div>
                     <div class="sub-label">
@@ -148,8 +149,9 @@
 
                 <div class="video-item-center">
                     <div class="resizable-video-wrapper">
-                        <video controls playsinline preload="metadata">
-                            <source src="app产品展示视频/mobvista十二生序2.mp4" type="video/mp4">
+                        <video controls playsinline preload="metadata" 
+                               src="app产品展示视频/mobvista十二生序2.mp4#t=29"
+                               onplay="if(this.dataset.played !== '1'){this.currentTime=0; this.dataset.played='1';}">
                         </video>
                     </div>
                     <div class="sub-label">
