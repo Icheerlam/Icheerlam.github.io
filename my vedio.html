@@ -30,7 +30,7 @@
 
         /* ✨ 视频容器通用样式 */
         .video-container { max-width:1000px; margin:0 auto; padding:0 5vw 80px; display:flex; flex-direction:column; gap:40px; position:relative; z-index:10;}
-        .video-card { background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:30px; animation:fadeUp 0.8s forwards; transition:0.4s; }
+        .video-card { background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:30px; animation:fadeUp 0.8s forwards; transition:0.4s; opacity: 0; }
         .video-card:hover { border-color:var(--ak-accent-info); transform:translateY(-5px); box-shadow:0 15px 40px rgba(0,216,255,0.1); }
         
         /* 单个横屏视频 Wrapper (Showreel 用) */
@@ -131,7 +131,6 @@
         </div>
 
         <div class="video-card" style="animation-delay: 0.2s;">
-            
             <div class="single-video-column">
                 
                 <div class="video-item-center">
@@ -167,6 +166,19 @@
                 <p style="color:var(--ak-text-muted); font-family:'Space Mono'; font-size:0.9rem;">
                     > Local archives loaded. <br><br>
                     [ TYPE ]: <span class="highlight-tag">MOTION GRAPHICS / BRANDING</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="video-card" style="animation-delay: 0.4s;">
+            <div class="video-wrapper-wide">
+                <iframe src="https://www.youtube.com/embed/BziFgsUG-y4?rel=0&controls=1&modestbranding=1&vq=hd1080" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+            </div>
+            <div style="text-align:center;">
+                <h2 class="video-title">Project // Logistical Ad</h2>
+                <p style="color:var(--ak-text-muted); font-family:'Space Mono'; font-size:0.9rem;">
+                    > External stream accessed... <br><br>
+                    [ TYPE ]: <span class="highlight-tag">COMMERCIAL / ADVERTISEMENT</span>
                 </p>
             </div>
         </div>
