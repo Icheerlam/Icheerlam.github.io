@@ -138,10 +138,10 @@
         .nav-secret { color: var(--ak-accent-warn); cursor: pointer; border: 1px solid var(--ak-accent-warn); padding: 5px 12px; font-size: 0.85rem; font-family: 'Space Mono', monospace; font-weight: 700; transition: 0.3s; text-transform: uppercase;}
         .nav-secret:hover { background: var(--ak-accent-warn); color: var(--ak-bg-main); }
 
-        /* ================= 音频控制区 (左侧) ================= */
+        /* ================= 音频控制区 (PC端) ================= */
         .audio-toggle-btn {
             position: fixed; 
-            top: 75px; 
+            top: 80px; 
             left: 5vw; 
             background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(5px);
             color: var(--ak-accent-info); border: 1px solid var(--ak-accent-info); 
@@ -153,7 +153,7 @@
         .audio-toggle-btn.muted { color: var(--ak-text-muted); border-color: var(--ak-text-muted); }
         .audio-toggle-btn.muted:hover { background: var(--ak-text-muted); color: #000; }
 
-        /* 新增：战术混音台 (调节滑块) */
+        /* 战术混音台 (调节滑块) */
         .volume-panel {
             position: fixed; 
             top: 120px; 
@@ -189,11 +189,6 @@
             -webkit-appearance: none; width: 8px; height: 12px; background: var(--ak-accent-info); cursor: pointer; border-radius: 1px;
         }
         .vol-slider::-webkit-slider-thumb:hover { background: var(--ak-accent-warn); }
-
-        @media (max-width: 768px) { 
-            .audio-toggle-btn { top: 75px; } 
-            .volume-panel { top: 115px; transform: scale(0.9); transform-origin: top left; }
-        }
 
         /* ================= Bento Card 工业战术风 ================= */
         .container { max-width: 1200px; margin: 130px auto 40px; padding: 0 5vw; position: relative; z-index: 10; }
@@ -454,11 +449,11 @@
         .btn-cancel { background: transparent; color: var(--ak-text-muted); border: none; margin-top: 15px; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: bold;}
         .btn-cancel:hover { color: #fff; }
 
-        /* 主题切换悬浮键 */
-        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: var(--ak-bg-main); color: var(--ak-text-muted); border: 1px solid var(--ak-border); padding: 12px 16px; font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700; cursor: pointer; z-index: 1500; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);}
+        /* 主题切换悬浮键 (桌面端在右下，移动端在右下) */
+        .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: var(--ak-bg-main); color: var(--ak-text-muted); border: 1px solid var(--ak-border); padding: 12px 16px; font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700; cursor: pointer; z-index: 2000; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);}
         .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); transform: translateY(-3px);}
 
-        /* ================= 响应式 ================= */
+        /* ================= 移动端专属适配 (核心修复) ================= */
         @media (max-width: 1024px) {
             .bento-grid { grid-template-columns: repeat(2, 1fr); }
             .portfolio-links { grid-column: span 2; }
@@ -474,6 +469,20 @@
             .dashboard { grid-template-columns: 1fr; }
             .secret-header { flex-direction: column; align-items: flex-start; }
             .data-actions { width: 100%; justify-content: flex-start; }
+            
+            /* ===== 移动端专属优化：音效控制面板移至左下角 ===== */
+            .audio-toggle-btn { 
+                top: auto; bottom: 20px; left: 20px; 
+                width: auto; padding: 10px 14px; z-index: 2000;
+            }
+            .volume-panel { 
+                top: auto; bottom: 70px; left: 20px; 
+                transform: scale(0.85); transform-origin: bottom left; 
+                z-index: 1999;
+            }
+            .theme-toggle-btn {
+                bottom: 20px; right: 20px; z-index: 2000;
+            }
         }
     </style>
 </head>
@@ -560,7 +569,7 @@
                 <div class="info-grid">
                     <div class="info-item"><strong>Current_Location</strong><span>广州市海珠区</span></div>
                     <div class="info-item"><strong>Education_Node</strong><span>广东工业大学 // 动画系</span></div>
-                    <div class="info-item"><strong>Signal_Alpha</strong><span>Clarenceye1@gmail.com</span></div>
+                    <div class="info-item"><strong>Signal_Alpha</strong><span>Clrenceye1@gmail.com （没打错）</span></div>
                     <div class="info-item"><strong>Signal_Beta</strong><span>+86 13719113230</span></div>
                 </div>
                 <button class="resume-btn interactable" id="viewResumeBtn">> ACCESS ENCRYPTED RESUME</button>
@@ -785,7 +794,7 @@
                 }
             });
 
-            // 修改 PlaySound，接收特定的音量滑块作为参数
+            // 不使用克隆，直接重播音频
             function playSound(audioElement, volInputRef) {
                 if(!isAudioEnabled) return;
                 
