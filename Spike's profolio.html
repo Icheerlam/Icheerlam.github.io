@@ -441,14 +441,18 @@
 </head>
 <body class="dark-mode">
 
-    <audio id="bgmAudio" loop>
-        <source src="https://assets.mixkit.co/music/preview/mixkit-hologram-191.mp3" type="audio/mpeg"> </audio>
-    <audio id="hoverSound">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2573/2573-preview.mp3" type="audio/mpeg"> </audio>
-    <audio id="clickSound">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg"> </audio>
-    <audio id="avatarSound">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3" type="audio/mpeg"> </audio>
+ <audio id="bgmAudio" loop preload="auto">
+        <source src="https://actions.google.com/sounds/v1/science_fiction/scifi_hum.ogg" type="audio/ogg"> 
+    </audio>
+    <audio id="hoverSound" preload="auto">
+        <source src="https://actions.google.com/sounds/v1/ui/button_click.ogg" type="audio/ogg"> 
+    </audio>
+    <audio id="clickSound" preload="auto">
+        <source src="https://actions.google.com/sounds/v1/ui/computer_keypress.ogg" type="audio/ogg"> 
+    </audio>
+    <audio id="avatarSound" preload="auto">
+        <source src="https://actions.google.com/sounds/v1/magic/magic_chime.ogg" type="audio/ogg"> 
+    </audio>
 
     <button id="audioToggle" class="audio-control-btn muted">[ AUDIO: OFF ]</button>
 
