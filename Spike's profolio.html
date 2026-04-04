@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rhodes Island Terminal // Clarence Ye</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
         /* ================= 罗德岛制式终端 核心变量 ================= */
         :root {
@@ -138,7 +138,7 @@
         .nav-secret { color: var(--ak-accent-warn); cursor: pointer; border: 1px solid var(--ak-accent-warn); padding: 5px 12px; font-size: 0.85rem; font-family: 'Space Mono', monospace; font-weight: 700; transition: 0.3s; text-transform: uppercase;}
         .nav-secret:hover { background: var(--ak-accent-warn); color: var(--ak-bg-main); }
 
-        /* ================= 音频控制区 (PC端) ================= */
+        /* ================= 音频控制区 (左侧) ================= */
         .audio-toggle-btn {
             position: fixed; 
             top: 80px; 
@@ -189,6 +189,22 @@
             -webkit-appearance: none; width: 8px; height: 12px; background: var(--ak-accent-info); cursor: pointer; border-radius: 1px;
         }
         .vol-slider::-webkit-slider-thumb:hover { background: var(--ak-accent-warn); }
+
+        /* ================= 主题切换悬浮键 ================= */
+        .theme-toggle-btn { 
+            position: fixed; bottom: 30px; right: 30px; background: var(--ak-bg-main); 
+            color: var(--ak-text-muted); border: 1px solid var(--ak-border); 
+            padding: 12px 16px; font-family: 'Space Mono', monospace; font-size: 0.8rem; 
+            font-weight: 700; cursor: pointer; z-index: 1500; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); transform: translateY(-3px);}
+
+        /* 移动端适配 (按钮防遮挡) */
+        @media (max-width: 768px) { 
+            .audio-toggle-btn { top: auto; bottom: 20px; left: 20px; z-index: 2000; width: 120px; padding: 10px;} 
+            .volume-panel { top: auto; bottom: 70px; left: 20px; transform: scale(0.85); transform-origin: bottom left; z-index: 1999; }
+            .theme-toggle-btn { bottom: 20px; right: 20px; z-index: 2000;}
+        }
 
         /* ================= Bento Card 工业战术风 ================= */
         .container { max-width: 1200px; margin: 130px auto 40px; padding: 0 5vw; position: relative; z-index: 10; }
@@ -243,20 +259,11 @@
         .click-hint { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-accent-info); margin-top: -10px; margin-bottom: 15px; font-weight: bold; animation: blink 1.5s infinite; }
         .elite-tag { background: var(--ak-accent-warn); color: #000; font-size: 11px; font-weight: 800; padding: 3px 8px; display: inline-block; transform: rotate(-3deg); margin-bottom: 12px; font-family: 'Space Mono', monospace; letter-spacing: 1px;}
         
-        /* ✨ 历飞雨 纯正高级黑体 战术样式 ✨ */
+        /* ✨ 恢复到最初的干净样式 ✨ */
         .hero-title { 
-            font-size: 2.6rem; 
-            font-weight: 900; 
-            margin-bottom: 12px; 
-            color: var(--ak-text-main);
-            letter-spacing: 0.4rem; 
-            margin-right: -0.4rem; 
-            /* 换回干净、硬朗的现代无衬线黑体，配合倾斜更有高级感 */
-            font-family: 'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
-            /* 战术倾斜 */
-            transform: skewX(-8deg); 
-            /* 罗德岛蓝 全息投影边缘错位感 */
-            text-shadow: 3px 3px 0px rgba(0, 216, 255, 0.35);
+            font-size: 2.2rem; font-weight: 800; 
+            margin-bottom: 12px; text-transform: uppercase; color: var(--ak-text-main);
+            letter-spacing: 0.5rem; margin-right: -0.5rem; 
         }
         
         .hero-subtitle { font-family: 'Space Mono', monospace; color: var(--ak-text-muted); font-size: 0.95rem; min-height: 80px; text-align: left; line-height: 1.8; padding: 0 15px;}
@@ -499,7 +506,7 @@
 <body class="dark-mode">
 
     <audio id="bgmAudio" loop preload="auto">
-        <source src="音效/背景音乐.mp3" type="audio/mpeg"> 
+        <source src="音效/Belly Breathing.mp3" type="audio/mpeg"> 
     </audio>
     <audio id="hoverSound" preload="auto">
         <source src="音效/鼠标悬停.mp3" type="audio/mpeg"> 
