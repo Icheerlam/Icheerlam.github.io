@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rhodes Island Terminal // Clarence Ye</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         /* ================= 罗德岛制式终端 核心变量 ================= */
         :root {
@@ -156,7 +156,7 @@
         /* 战术混音台 (调节滑块) */
         .volume-panel {
             position: fixed; 
-            top: 120px; 
+            top: 125px; 
             left: 5vw; 
             background: rgba(10, 10, 12, 0.85); 
             backdrop-filter: blur(5px);
@@ -243,10 +243,20 @@
         .click-hint { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-accent-info); margin-top: -10px; margin-bottom: 15px; font-weight: bold; animation: blink 1.5s infinite; }
         .elite-tag { background: var(--ak-accent-warn); color: #000; font-size: 11px; font-weight: 800; padding: 3px 8px; display: inline-block; transform: rotate(-3deg); margin-bottom: 12px; font-family: 'Space Mono', monospace; letter-spacing: 1px;}
         
+        /* ✨ 历飞雨 纯正高级黑体 战术样式 ✨ */
         .hero-title { 
-            font-size: 2.2rem; font-weight: 800; 
-            margin-bottom: 12px; text-transform: uppercase; color: var(--ak-text-main);
-            letter-spacing: 0.5rem; margin-right: -0.5rem; 
+            font-size: 2.6rem; 
+            font-weight: 900; 
+            margin-bottom: 12px; 
+            color: var(--ak-text-main);
+            letter-spacing: 0.4rem; 
+            margin-right: -0.4rem; 
+            /* 换回干净、硬朗的现代无衬线黑体，配合倾斜更有高级感 */
+            font-family: 'Space Grotesk', -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', sans-serif;
+            /* 战术倾斜 */
+            transform: skewX(-8deg); 
+            /* 罗德岛蓝 全息投影边缘错位感 */
+            text-shadow: 3px 3px 0px rgba(0, 216, 255, 0.35);
         }
         
         .hero-subtitle { font-family: 'Space Mono', monospace; color: var(--ak-text-muted); font-size: 0.95rem; min-height: 80px; text-align: left; line-height: 1.8; padding: 0 15px;}
@@ -259,7 +269,7 @@
         .card-title::before { content: '/>'; color: var(--ak-accent-info); font-weight: bold; }
         .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
         .info-item strong { display: block; font-size: 0.7rem; color: var(--ak-accent-info); text-transform: uppercase; font-family: 'Space Mono', monospace; margin-bottom: 4px;}
-        .info-item span { font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700;}
+        .info-item span { font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700; line-height: 1.4; display: block;}
 
         .resume-btn { 
             margin-top: 24px; width: 100%; padding: 14px; background: transparent; border: 1px solid var(--ak-accent-info); 
@@ -489,7 +499,7 @@
 <body class="dark-mode">
 
     <audio id="bgmAudio" loop preload="auto">
-        <source src="音效/背景音乐.mp3" type="audio/mpeg"> 
+        <source src="音效/Belly Breathing.mp3" type="audio/mpeg"> 
     </audio>
     <audio id="hoverSound" preload="auto">
         <source src="音效/鼠标悬停.mp3" type="audio/mpeg"> 
@@ -569,8 +579,7 @@
                 
                 <div class="info-grid">
                     <div class="info-item"><strong>Current_Location</strong><span>广州市海珠区</span></div>
-                    <div class="info-item"><strong>Education_Node</strong><span>广东工业大学 // 动画系</span></div>
-                    <div class="info-item"><strong>Enrollment</strong><span>2020.09 - 2024.07</span></div>
+                    <div class="info-item"><strong>Education_Node</strong><span>广东工业大学 // 动画系<br>2020.09 - 2024.07</span></div>
                     <div class="info-item"><strong>Languages</strong><span>粤语 / 英语 (CET-6)</span></div>
                     <div class="info-item"><strong>Signal_Alpha</strong><span>Clrenceye1@gmail.com（没打错）</span></div>
                     <div class="info-item"><strong>Signal_Beta</strong><span>+86 13719113230</span></div>
