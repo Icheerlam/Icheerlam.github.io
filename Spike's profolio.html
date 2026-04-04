@@ -138,15 +138,12 @@
         .nav-secret { color: var(--ak-accent-warn); cursor: pointer; border: 1px solid var(--ak-accent-warn); padding: 5px 12px; font-size: 0.85rem; font-family: 'Space Mono', monospace; font-weight: 700; transition: 0.3s; }
         .nav-secret:hover { background: var(--ak-accent-warn); color: var(--ak-bg-main); }
 
-        /* ================= 音频控制开关 (修复重叠) ================= */
+        /* ================= 音频控制开关 ================= */
         .audio-toggle-btn {
-            position: fixed; 
-            top: 80px; /* 调整 top 值，使其在导航栏下方 */
-            left: 5vw; 
+            position: fixed; top: 80px; left: 5vw; 
             background: transparent; color: var(--ak-accent-info); border: 1px solid var(--ak-accent-info); 
             padding: 5px 10px; font-family: 'Space Mono', monospace; font-size: 0.7rem; font-weight: bold;
-            cursor: pointer; z-index: 1500; transition: 0.3s; 
-            /* 移除了 margin-left: 200px; */
+            cursor: pointer; z-index: 1500; transition: 0.3s;
         }
         .audio-toggle-btn:hover { background: var(--ak-accent-info); color: #000; box-shadow: 0 0 10px var(--ak-accent-info);}
         .audio-toggle-btn.muted { color: var(--ak-text-muted); border-color: var(--ak-text-muted); }
@@ -155,7 +152,7 @@
         @media (max-width: 768px) { .audio-toggle-btn { top: 75px; } }
 
         /* ================= Bento Card 工业战术风 ================= */
-        .container { max-width: 1200px; margin: 130px auto 40px; padding: 0 5vw; position: relative; z-index: 10; } /* 增加了 margin-top 避免被按钮遮挡 */
+        .container { max-width: 1200px; margin: 140px auto 40px; padding: 0 5vw; position: relative; z-index: 10; }
         .bento-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
 
         .bento-card { 
@@ -433,21 +430,26 @@
             .dashboard { grid-template-columns: 1fr; }
             .secret-header { flex-direction: column; align-items: flex-start; }
             .data-actions { width: 100%; justify-content: flex-start; }
+            .audio-toggle-btn { top: 75px; left: 5vw; margin-left: 0;}
         }
     </style>
 </head>
 <body class="dark-mode">
 
-    <audio id="bgmAudio" loop>
-        <source src="https://assets.mixkit.co/music/preview/mixkit-hologram-191.mp3" type="audio/mpeg"> </audio>
-    <audio id="hoverSound">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2573/2573-preview.mp3" type="audio/mpeg"> </audio>
-    <audio id="clickSound">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3" type="audio/mpeg"> </audio>
-    <audio id="avatarSound">
-        <source src="https://assets.mixkit.co/active_storage/sfx/2019/2019-preview.mp3" type="audio/mpeg"> </audio>
+    <audio id="bgmAudio" loop preload="auto">
+        <source src="音效/背景音乐.mp3" type="audio/mpeg"> 
+    </audio>
+    <audio id="hoverSound" preload="auto">
+        <source src="音效/鼠标悬停.mp3" type="audio/mpeg"> 
+    </audio>
+    <audio id="clickSound" preload="auto">
+        <source src="音效/鼠标点击.mp3" type="audio/mpeg"> 
+    </audio>
+    <audio id="avatarSound" preload="auto">
+        <source src="音效/点击头像.mp3" type="audio/mpeg"> 
+    </audio>
 
-    <button id="audioToggle" class="audio-toggle-btn muted">[ AUDIO: OFF ]</button>
+    <button id="audioToggle" class="audio-toggle-btn muted interactable">[ AUDIO: OFF ]</button>
 
     <div class="tech-bg"></div>
     <div class="tech-overlay"></div>
@@ -708,19 +710,19 @@
 
             function playSound(audioElement) {
                 if(!isAudioEnabled) return;
-                audioElement.currentTime = 0; 
-                audioElement.volume = 0.5;
-                audioElement.play().catch(e => {});
+                let soundClone = audioElement.cloneNode();
+                soundClone.volume = 0.6;
+                soundClone.play().catch(e => {});
             }
 
-            const hoverTargets = document.querySelectorAll('.interactable, button, a, .bento-card');
-            hoverTargets.forEach(el => {
+            const interactables = document.querySelectorAll('.interactable, button, a, .bento-card');
+            
+            interactables.forEach(el => {
                 el.addEventListener('mouseenter', () => playSound(hoverSound));
-            });
-
-            const clickTargets = document.querySelectorAll('.interactable:not(.hero-avatar), button, a');
-            clickTargets.forEach(el => {
-                el.addEventListener('click', () => playSound(clickSound));
+                
+                if (el.tagName.toLowerCase() === 'button' || el.tagName.toLowerCase() === 'a' || el.classList.contains('nav-secret')) {
+                    el.addEventListener('click', () => playSound(clickSound));
+                }
             });
 
             /* --- 1. 主题切换 --- */
@@ -754,7 +756,7 @@
             });
 
             /* --- 3. AI 打字机终端特效 --- */
-            const promptText = "> INIT /imagine prompt: Visual designer, elite operator Spike. Specialist in 3D modeling, motion graphics and AI workflows. Industrial aesthetic, tactical UI, ultra-detailed, 8k resolution --ar 16:9 _";
+            const promptText = "> 网页的设计参考了明日方舟的机械感 UI 设计，根据初始旧网页询问 Gemini 3.1 Pro 改造效果，上传到 Github。页面左上角按钮可开关按钮交互音效，页面右下角可切换日夜模式，点击头像会掉落物体。 _";
             const subtitleElement = document.getElementById('ai-prompt-text');
             let typingIndex = 0;
             
