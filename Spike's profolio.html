@@ -444,7 +444,7 @@
         /* ================= 辅助 UI 与弹窗 ================= */
         footer { text-align: center; padding: 40px; color: var(--ak-text-muted); font-family: 'Space Mono', monospace; font-size: 0.75rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px;}
 
-        /* 灯箱 */
+        /* 灯箱 (目前不再用于简历，但保留样式以备后用) */
         .lightbox { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.95); backdrop-filter: blur(5px); z-index: 3000; display: none; justify-content: center; align-items: center; 
@@ -466,11 +466,11 @@
         .btn-cancel { background: transparent; color: var(--ak-text-muted); border: none; margin-top: 15px; cursor: pointer; font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: bold;}
         .btn-cancel:hover { color: #fff; }
 
-        /* 主题切换悬浮键 (桌面端在右下，移动端在右下) */
+        /* 主题切换悬浮键 */
         .theme-toggle-btn { position: fixed; bottom: 30px; right: 30px; background: var(--ak-bg-main); color: var(--ak-text-muted); border: 1px solid var(--ak-border); padding: 12px 16px; font-family: 'Space Mono', monospace; font-size: 0.8rem; font-weight: 700; cursor: pointer; z-index: 2000; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);}
         .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); transform: translateY(-3px);}
 
-        /* ================= 移动端专属适配 (核心修复) ================= */
+        /* ================= 移动端专属适配 ================= */
         @media (max-width: 1024px) {
             .bento-grid { grid-template-columns: repeat(2, 1fr); }
             .portfolio-links { grid-column: span 2; }
@@ -487,7 +487,6 @@
             .secret-header { flex-direction: column; align-items: flex-start; }
             .data-actions { width: 100%; justify-content: flex-start; }
             
-            /* ===== 移动端专属优化：音效控制面板移至左下角 ===== */
             .audio-toggle-btn { 
                 top: auto; bottom: 20px; left: 20px; 
                 width: auto; padding: 10px 14px; z-index: 2000;
@@ -851,25 +850,17 @@
                 themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
             });
 
-            /* --- 2. 档案灯箱系统 --- */
+            /* --- 2. 档案跳转系统 (原灯箱系统) --- */
             const viewResumeBtn = document.getElementById('viewResumeBtn');
+            
+            // 原来的灯箱相关 DOM 获取保留，以防页面其它交互报错
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
             const lightboxClose = document.getElementById('lightbox-close');
 
-            const openLightbox = () => {
-                lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden'; 
-            };
-            const closeLightbox = () => {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = '';
-            };
-
-            viewResumeBtn.addEventListener('click', openLightbox);
-            lightboxClose.addEventListener('click', closeLightbox);
-            lightbox.addEventListener('click', (e) => {
-                if (e.target !== lightboxImg) closeLightbox();
+            // ✅ 将原本开启灯箱的事件，直接改为页面跳转
+            viewResumeBtn.addEventListener('click', () => {
+                window.location.href = '我的简历.html';
             });
 
             /* --- 3. AI 打字机终端特效 --- */
