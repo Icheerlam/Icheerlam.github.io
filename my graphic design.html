@@ -76,7 +76,7 @@
     </header>
 
     <main class="masonry-gallery" id="galleryBox">
-        </main>
+    </main>
 
     <div class="back-nav"><a href="Spike's profolio.html" class="btn-back">[ RETURN ]</a></div>
     <footer><p>> Rhodes Island Archive // System.2026</p></footer>
@@ -88,7 +88,14 @@
         document.addEventListener('DOMContentLoaded', () => {
             const box = $('#galleryBox');
             for(let i=1; i<=33; i++) {
-                box.innerHTML += `<div class="masonry-item" style="animation-delay:${i*0.03}s"><img src="平面设计导出jpg的副本/${i}1.jpg" loading="lazy"></div>`;
+                let fileName = `${i}1.jpg`;
+                
+                // 去掉索引 22-26 的默认图片，替换为 emo1.jpg - emo5.jpg
+                if (i >= 22 && i <= 26) {
+                    fileName = `emo${i - 21}.jpg`;
+                }
+
+                box.innerHTML += `<div class="masonry-item" style="animation-delay:${i*0.03}s"><img src="平面设计导出jpg的副本/${fileName}" loading="lazy"></div>`;
             }
             const lb = $('#lightbox'), lbImg = $('#lightbox-img');
             const toggleLB = (src = '') => { lbImg.src = src; lb.classList.toggle('active'); document.body.style.overflow = src ? 'hidden' : ''; };
