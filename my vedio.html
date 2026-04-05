@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Design // Rhodes Island</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         /* ================= 罗德岛制式终端 核心变量 ================= */
         :root {
@@ -98,13 +98,13 @@
             background: var(--ak-bg-panel); border-bottom: 1px solid var(--ak-border); 
             z-index: 1000; backdrop-filter: blur(10px); transition: 0.4s;
         }
-        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 5px 12px; cursor: pointer; }
+        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 5px 12px; font-size: 1rem; cursor: pointer;}
         .nav-right { display: flex; align-items: center; gap: 30px; }
-        .nav-links { display: flex; gap: 25px; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
-        .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase; cursor: pointer; }
+        .nav-links { display: flex; gap: 25px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
+        .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase; cursor: pointer;}
         .nav-links a:hover, .nav-links a.active { color: var(--ak-accent-info); text-shadow: 0 0 8px var(--ak-accent-info); }
-        .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono', monospace; text-decoration:none; transition:0.3s; cursor: pointer; }
-        .nav-home-btn:hover { background:var(--ak-accent-warn); color:#000; }
+        .nav-secret { color: var(--ak-accent-warn); cursor: pointer; border: 1px solid var(--ak-accent-warn); padding: 5px 12px; font-size: 0.85rem; font-family: 'Space Mono', monospace; font-weight: 700; transition: 0.3s; text-transform: uppercase;}
+        .nav-secret:hover { background: var(--ak-accent-warn); color: var(--ak-bg-main); }
 
         /* ================= 音频控制区 (左侧) ================= */
         .audio-toggle-btn {
@@ -121,7 +121,7 @@
         .audio-toggle-btn.muted { color: var(--ak-text-muted); border-color: var(--ak-text-muted); }
         .audio-toggle-btn.muted:hover { background: var(--ak-text-muted); color: #000; }
 
-        /* 战术混音台 (调节滑块) */
+        /* ✨ 战术混音台 (支持折叠收放) ✨ */
         .volume-panel {
             position: fixed; 
             top: 125px; 
@@ -133,11 +133,9 @@
             padding: 15px; 
             width: 170px;
             z-index: 998; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 12px;
             transition: 0.3s opacity, 0.3s border-color;
             opacity: 0.5; /* 默认半透明，悬停亮起 */
+            overflow: hidden;
         }
         .volume-panel:hover {
             opacity: 1;
@@ -146,8 +144,28 @@
         }
         .vol-header {
             font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-accent-info);
-            margin-bottom: 5px; font-weight: bold; border-bottom: 1px dashed var(--ak-border); padding-bottom: 5px; text-transform: uppercase;
+            font-weight: bold; padding-bottom: 5px; text-transform: uppercase;
+            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px dashed var(--ak-border);
+            transition: 0.2s color;
         }
+        .vol-header:hover { color: var(--ak-text-main); }
+        
+        /* 内部横条容器，用于收放动画 */
+        .vol-content {
+            display: flex; flex-direction: column; gap: 12px;
+            transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
+            max-height: 200px; opacity: 1; margin-top: 10px;
+        }
+        
+        /* 折叠状态 */
+        .volume-panel.collapsed .vol-content {
+            max-height: 0; opacity: 0; margin-top: 0; pointer-events: none;
+        }
+        .volume-panel.collapsed .vol-header {
+            border-bottom: none; padding-bottom: 0;
+        }
+
         .vol-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
         .vol-row label { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-text-muted); width: 40px; text-align: left; }
         .vol-slider {
@@ -243,23 +261,27 @@
     <button id="audioToggle" class="audio-toggle-btn muted interactable">[ AUDIO: OFF ]</button>
     
     <div class="volume-panel" id="volumePanel">
-        <div class="vol-header">AUDIO_MIXER</div>
-        
-        <div class="vol-row">
-            <label>BGM</label>
-            <input type="range" class="vol-slider interactable" id="bgmVol" min="0" max="1" step="0.01" value="0.35">
+        <div class="vol-header interactable" id="volHeader">
+            <span>AUDIO_MIXER</span>
+            <span id="volIcon">[-]</span>
         </div>
-        <div class="vol-row">
-            <label>HOVR</label>
-            <input type="range" class="vol-slider interactable" id="hoverVol" min="0" max="1" step="0.01" value="0.60">
-        </div>
-        <div class="vol-row">
-            <label>CLCK</label>
-            <input type="range" class="vol-slider interactable" id="clickVol" min="0" max="1" step="0.01" value="0.80">
-        </div>
-        <div class="vol-row">
-            <label>SPEC</label>
-            <input type="range" class="vol-slider interactable" id="specialVol" min="0" max="1" step="0.01" value="0.80">
+        <div class="vol-content" id="volContent">
+            <div class="vol-row">
+                <label>BGM</label>
+                <input type="range" class="vol-slider interactable" id="bgmVol" min="0" max="1" step="0.01" value="0.35">
+            </div>
+            <div class="vol-row">
+                <label>HOVR</label>
+                <input type="range" class="vol-slider interactable" id="hoverVol" min="0" max="1" step="0.01" value="0.60">
+            </div>
+            <div class="vol-row">
+                <label>CLCK</label>
+                <input type="range" class="vol-slider interactable" id="clickVol" min="0" max="1" step="0.01" value="0.80">
+            </div>
+            <div class="vol-row">
+                <label>SPEC</label>
+                <input type="range" class="vol-slider interactable" id="specialVol" min="0" max="1" step="0.01" value="0.80">
+            </div>
         </div>
     </div>
 
@@ -378,6 +400,11 @@
             const clickVol = document.getElementById('clickVol');
             const specialVol = document.getElementById('specialVol');
             
+            // 获取混音台折叠相关元素
+            const volHeader = document.getElementById('volHeader');
+            const volumePanel = document.getElementById('volumePanel');
+            const volIcon = document.getElementById('volIcon');
+            
             let isAudioEnabled = false; 
 
             // 监听 BGM 滑块实时改变音量
@@ -394,7 +421,7 @@
                     audioToggle.classList.remove('muted');
                     bgmAudio.volume = bgmVol.value; 
                     bgmAudio.play().catch(e => console.log("BGM autoplay prevented"));
-                    playSound(clickSound, clickVol); // 播放开启提示音
+                    playSound(clickSound, clickVol); 
                 } else {
                     audioToggle.innerHTML = '[ AUDIO: OFF ]';
                     audioToggle.classList.add('muted');
@@ -402,7 +429,14 @@
                 }
             });
 
-            // 不克隆节点，直接播放
+            // 混音台折叠/展开逻辑
+            volHeader.addEventListener('click', () => {
+                volumePanel.classList.toggle('collapsed');
+                volIcon.textContent = volumePanel.classList.contains('collapsed') ? '[+]' : '[-]';
+                playSound(clickSound, clickVol); // 触发点击音效
+            });
+
+            // 播放音频并读取对应的滑块音量
             function playSound(audioElement, volInputRef) {
                 if(!isAudioEnabled) return;
                 audioElement.currentTime = 0;
@@ -421,9 +455,10 @@
                 
                 // 点击音效
                 if (el.tagName.toLowerCase() === 'button' || el.tagName.toLowerCase() === 'a') {
-                    // 排除掉音量滑块自身的点击音效，避免拖动时狂响
-                    if(!el.classList.contains('vol-slider')) {
-                        // 左上角 Logo 专属音效
+                    // 排除掉音量滑块和折叠头部的自身重复绑定
+                    if(!el.classList.contains('vol-slider') && el.id !== 'volHeader') {
+                        
+                        // 彩蛋：点击左上角 Logo 触发纯粹的音效
                         if(el.classList.contains('nav-logo')) {
                             el.addEventListener('click', () => {
                                 playSound(specialSound, specialVol);
