@@ -170,7 +170,7 @@
     <div class="tech-bg"></div><div class="tech-overlay"></div><div class="prts-hud"></div>
 
     <nav>
-        <a href="Spike's profolio.html" class="nav-logo interactable">PRTS // CLARENCE YE</a>
+        <a class="nav-logo interactable">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
                 <a href="数据分析/Data Analysis.html" class="interactable">Data Analysis</a>
@@ -199,9 +199,15 @@
         const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
         document.addEventListener('DOMContentLoaded', () => {
             const box = $('#galleryBox');
-            for(let i=1; i<=33; i++) {
+            
+            // 核心修复：独立维护图片的索引，使 GIF 块不占用 JPG 的文件名序号
+            let jpgIndex = 1;
+            
+            // 循环生成 34 个项目（33 张图 + 1 个 GIF 块）
+            for(let i=1; i<=34; i++) {
                 
-                if (i === 19) {
+                // 将原来的 GIF 块设为第 20 个项目 (让出第19个位置给 191.jpg)
+                if (i === 20) {
                     box.innerHTML += `
                         <div class="masonry-item interactable" style="animation-delay:${i*0.03}s">
                             <div style="display: flex; flex-direction: column;">
@@ -222,9 +228,13 @@
                             </div>
                         </div>`;
                 } else {
-                    let fileName = `${i}1.jpg`;
-                    if (i >= 22 && i <= 26) { fileName = `emo${i - 21}.jpg`; }
+                    // 生成普通的 JPG 瀑布流块
+                    let fileName = `${jpgIndex}1.jpg`;
+                    if (jpgIndex >= 22 && jpgIndex <= 26) { fileName = `emo${jpgIndex - 21}.jpg`; }
                     box.innerHTML += `<div class="masonry-item interactable" style="animation-delay:${i*0.03}s"><img src="平面设计导出jpg的副本/${fileName}" loading="lazy" class="img-clicker"></div>`;
+                    
+                    // 只有生成了 JPG，才推进序号
+                    jpgIndex++;
                 }
             }
             
@@ -251,6 +261,11 @@
             
             let isAudioEnabled = false; 
 
+            // 将变量挂载到 window，使 img 的 onclick 也能访问
+            window.isAudioEnabled = false; 
+            window.clickSound = clickSound;
+            window.clickVol = clickVol;
+
             // BGM 实时音量调节
             bgmVol.addEventListener('input', (e) => {
                 if(isAudioEnabled) { bgmAudio.volume = e.target.value; }
@@ -259,6 +274,7 @@
             // 总开关
             audioToggle.addEventListener('click', () => {
                 isAudioEnabled = !isAudioEnabled;
+                window.isAudioEnabled = isAudioEnabled; // 同步全局状态
                 if(isAudioEnabled) {
                     audioToggle.innerHTML = '[ AUDIO: ON ]';
                     audioToggle.classList.remove('muted');
@@ -293,7 +309,11 @@
                 $$('.img-clicker').forEach(img => {
                     img.onclick = () => {
                         toggleLB(img.src);
-                        playSound(clickSound, clickVol);
+                        if(window.isAudioEnabled) {
+                            window.clickSound.currentTime = 0;
+                            window.clickSound.volume = window.clickVol.value;
+                            window.clickSound.play().catch(e=>{});
+                        }
                     };
                 });
 
@@ -308,7 +328,10 @@
                         // 排除滑块本身和折叠头
                         if(!el.classList.contains('vol-slider') && el.id !== 'volHeader') {
                             if(el.classList.contains('nav-logo')) {
-                                el.addEventListener('click', () => playSound(specialSound, specialVol));
+                                el.addEventListener('click', (e) => {
+                                    e.preventDefault(); 
+                                    playSound(specialSound, specialVol);
+                                });
                             } else {
                                 el.addEventListener('click', () => playSound(clickSound, clickVol));
                             }
