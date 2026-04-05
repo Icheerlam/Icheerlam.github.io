@@ -89,16 +89,21 @@
             const box = $('#galleryBox');
             for(let i=1; i<=33; i++) {
                 
-                // 专门处理 img-019，横向排布、减低高度且保证不被裁剪
+                // 专门处理 img-019，加入自定义文字和高度对齐的并排 GIF
                 if (i === 19) {
                     box.innerHTML += `
                         <div class="masonry-item" style="animation-delay:${i*0.03}s">
-                            <div style="display: flex; gap: 10px; height: 260px; align-items: center;">
-                                <div style="flex: 1; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                                    <img src="1024_ae_1.gif" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;">
+                            <div style="display: flex; flex-direction: column;">
+                                
+                                <div style="color: #48E5B6; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; font-weight: 900; font-size: 1.25rem; margin-bottom: 12px; letter-spacing: 1px; line-height: 1;">
+                                    企业活动gif
                                 </div>
-                                <div style="flex: 1; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                                    <img src="M星巡游_5.gif" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;">
+                                
+                                <div style="display: flex; gap: 20px; height: 260px; justify-content: flex-start; align-items: flex-start;">
+                                    
+                                    <img src="1024_ae_1.gif" loading="lazy" style="height: 100%; width: auto; object-fit: contain;">
+                                    
+                                    <img src="M星巡游_5.gif" loading="lazy" style="height: 100%; width: auto; object-fit: contain;">
                                 </div>
                             </div>
                         </div>`;
