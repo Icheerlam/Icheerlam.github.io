@@ -7,69 +7,65 @@
     <style>
         /* ================= 1. 基础样式重置与全局设置 ================= */
         * {
-            box-sizing: border-box; /* 确保 padding 和 border 不会撑大元素的指定宽度 */
+            box-sizing: border-box; 
             margin: 0;
             padding: 0;
         }
 
         body {
-            background-color: #f3f4f6; /* 网页整体的浅灰色背景 */
-            color: #111; /* 默认的深色字体，比纯黑稍微柔和 */
-            /* 优先使用系统自带的无衬线字体，保证在不同设备上的阅读体验 */
+            background-color: #f3f4f6; 
+            color: #111; 
             font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
-            display: flex; /* 开启 Flex 布局，用于左右分栏（左边控制面板，右边简历） */
+            display: flex; 
         }
 
         /* ================= 2. 左侧控制面板 (UI) ================= */
         .editor-panel {
-            width: 320px; /* 固定控制面板的宽度 */
-            height: 100vh; /* 高度占满整个屏幕视口 */
+            width: 320px; 
+            height: 100vh; 
             background: #ffffff;
-            border-right: 1px solid #ddd; /* 右侧分割线 */
+            border-right: 1px solid #ddd; 
             padding: 20px;
-            position: fixed; /* 固定在屏幕左侧，滑动右侧简历时面板不动 */
+            position: fixed; 
             left: 0;
             top: 0;
-            overflow-y: auto; /* 如果控制面板内容过多，允许面板内部上下滚动 */
-            box-shadow: 2px 0 10px rgba(0,0,0,0.05); /* 添加一点淡淡的右侧阴影，增加立体感 */
-            z-index: 2000; /* 确保面板层级在最上面，不被其他内容遮挡 */
+            overflow-y: auto; 
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05); 
+            z-index: 2000; 
         }
 
         .editor-panel h3 {
             font-size: 16px;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #111; /* 标题下方的粗黑线 */
+            border-bottom: 2px solid #111; 
         }
 
-        /* 控制面板里的每一组调节器（比如字体大小、行高）的包裹层 */
         .control-group {
             margin-bottom: 20px;
         }
 
         .control-group label {
-            display: block; /* 让标签独占一行 */
+            display: block; 
             font-size: 13px;
             font-weight: bold;
             margin-bottom: 8px;
             color: #555;
         }
 
-        /* 包含滑块和数值显示的横向排列框 */
         .slider-wrapper {
             display: flex;
             align-items: center;
-            gap: 10px; /* 滑块和数值之间的间距 */
+            gap: 10px; 
         }
 
         input[type="range"] {
-            flex: 1; /* 让滑块占据剩余的所有宽度 */
+            flex: 1; 
             cursor: pointer;
         }
 
-        /* 显示具体数值的小灰框 (如 14px) */
         .val-display {
-            font-family: monospace; /* 使用等宽字体，数字看起来更整齐 */
+            font-family: monospace; 
             font-size: 12px;
             width: 40px;
             text-align: right;
@@ -81,7 +77,7 @@
         /* 左侧面板按钮的通用样式 */
         .panel-btn {
             display: block;
-            width: 100%; /* 按钮宽度占满面板 */
+            width: 100%; 
             padding: 10px;
             margin-bottom: 10px;
             border: none;
@@ -89,7 +85,9 @@
             font-weight: bold;
             cursor: pointer;
             text-align: center;
-            transition: 0.2s; /* 悬停颜色渐变动画 */
+            text-decoration: none; /* 针对 <a> 标签按钮 */
+            box-sizing: border-box;
+            transition: 0.2s; 
         }
 
         /* 具体按钮的颜色定义 */
@@ -98,6 +96,18 @@
         
         .btn-print { background: #007bff; color: #fff; }
         .btn-print:hover { background: #0056b3; }
+
+        /* ✨ 新增：专属的 RETURN 返回按钮样式 */
+        .btn-return { 
+            background: transparent; 
+            color: #111; 
+            border: 2px solid #111; 
+            margin-top: 20px; /* 距离上面操作区稍微拉开一点距离 */
+        }
+        .btn-return:hover { 
+            background: #111; 
+            color: #fff; 
+        }
 
         /* 面板底部的帮助提示文字 */
         .hint-text {
@@ -109,97 +119,85 @@
 
         /* ================= 3. 右侧简历主视口 ================= */
         .main-viewport {
-            flex: 1; /* 占据屏幕右侧剩余的所有空间 */
-            margin-left: 320px; /* 强制向右推 320px，给左侧固定的控制面板留出空位 */
+            flex: 1; 
+            margin-left: 320px; 
             padding: 40px;
             min-height: 100vh;
         }
 
         /* ================= 4. 简历主体 (核心 A4 纸张效果) ================= */
         .resume-container {
-            max-width: 800px; /* 限制最大宽度，模拟 A4 纸张比例 */
-            background: #ffffff; /* 纯白底色 */
-            margin: 0 auto; /* 在右侧视口中水平居中 */
-            padding: 40px 50px; /* 纸张内部的留白（出血位） */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 模拟纸张浮在桌面上的阴影 */
+            max-width: 800px; 
+            background: #ffffff; 
+            margin: 0 auto; 
+            padding: 40px 50px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
             border-radius: 4px;
-            outline: none; /* 移除点击进入编辑状态时浏览器默认的难看蓝框 */
+            outline: none; 
             
-            /* 【核心黑科技】：定义 CSS 变量，用于接收 JS 滑块传来的数值 */
-            --resume-fs: 14px;      /* 字体大小变量 */
-            --resume-lh: 1.6;       /* 行高变量 */
-            --resume-margin: 8px;   /* 段落间距变量 */
+            --resume-fs: 14px;      
+            --resume-lh: 1.6;       
+            --resume-margin: 8px;   
             
-            /* 将这些变量应用到整个简历纸张上 */
             font-size: var(--resume-fs);
             line-height: var(--resume-lh);
         }
 
-        /* 当用户点击简历开始编辑时，边框会发出一圈淡淡的蓝光，提示处于编辑状态 */
         .resume-container:focus {
             box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5), 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         /* ================= 5. 简历内部的排版细节 ================= */
         header { text-align: center; margin-bottom: 25px; }
-        /* 姓名大标题 */
         header h1 { font-size: 28px; font-weight: 700; letter-spacing: 4px; margin-bottom: 15px; color: #000; }
         
-        /* 联系方式模块：上下加粗细线，模拟传统简历表头 */
         .contact-info { border-top: 2px solid #000; border-bottom: 1px solid #ccc; padding: 10px 0; margin-bottom: 10px; }
         .info-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
         .info-row:last-child { margin-bottom: 0; }
         .info-item strong { font-weight: 600; }
         .info-item a { color: #111; text-decoration: none; border-bottom: 1px dashed #666; }
         
-        /* 模块标题 (技能、正职经验等) */
         h2.section-title { font-size: 18px; font-weight: 700; border-bottom: 2px solid #000; padding-bottom: 5px; margin-top: 25px; margin-bottom: 15px; color: #000; }
         
-        /* 列表通用样式：项目符号及缩进 */
         ul { list-style-type: disc; padding-left: 20px; }
-        /* 列表项的底部间距绑定了 CSS 变量，这样滑动面板时这里的间距就会变化 */
         li { margin-bottom: var(--resume-margin); text-align: justify; }
         li strong { font-weight: 700; }
         
-        /* 经历块的表头 (公司名称、职位、日期分布在两端) */
         .experience-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font-weight: 700; font-size: 15px; }
-        .company-name { font-style: italic; } /* 斜体字表示公司 */
+        .company-name { font-style: italic; } 
         .job-title { font-style: italic; }
         .date { font-style: italic; color: #333; }
         .experience-item { margin-bottom: 20px; }
         .experience-item:last-child { margin-bottom: 0; }
 
-        /* ================= 6. 打印机专属样式优化 (核心导出逻辑) ================= */
-        /* 当用户按下 Ctrl+P 或点击导出 PDF 时，这段 CSS 才会生效 */
+        /* ================= 6. 打印机专属样式优化 ================= */
         @media print {
             body {
-                background: #fff; /* 强制背景为白色 */
-                -webkit-print-color-adjust: exact; /* 强制打印彩色背景和图形 */
-                display: block; /* 取消左中右的 Flex 布局，恢复正常文档流 */
+                background: #fff; 
+                -webkit-print-color-adjust: exact; 
+                display: block; 
             }
             .editor-panel {
-                display: none !important; /* 核心：导出 PDF 时彻底隐藏左侧的控制面板 */
+                display: none !important; 
             }
             .main-viewport {
-                margin-left: 0; /* 移除之前给左侧面板留的空位 */
-                padding: 0; /* 移除网页上的留白 */
+                margin-left: 0; 
+                padding: 0; 
             }
             .resume-container {
                 margin: 0;
                 padding: 0;
-                box-shadow: none; /* 移除纸张阴影，让它变成纯粹的文档内容 */
+                box-shadow: none; 
                 max-width: 100%;
             }
         }
 
         /* ================= 7. 手机端适配 (响应式) ================= */
         @media (max-width: 900px) {
-            body { flex-direction: column; } /* 屏幕变窄时，左右布局变成上下布局 */
-            /* 控制面板解除固定，变成普通的顶部区块 */
+            body { flex-direction: column; } 
             .editor-panel { position: static; width: 100%; height: auto; border-right: none; border-bottom: 1px solid #ddd; }
-            /* 恢复主视口的间距 */
             .main-viewport { margin-left: 0; padding: 20px 10px; }
-            .info-row { flex-direction: column; gap: 5px; } /* 手机上联系方式换行显示 */
+            .info-row { flex-direction: column; gap: 5px; } 
             .experience-header { flex-direction: column; gap: 2px; }
         }
     </style>
@@ -235,7 +233,8 @@
 
         <button class="panel-btn btn-print" onclick="window.print()">🖨️ 导出为 PDF</button>
         <button class="panel-btn btn-save" onclick="downloadHTML()">💾 保存网页文件</button>
-        <a href="Spike's profolio.html" style="display: block; text-align: center; text-decoration: none; color: #111; font-weight: bold; margin-top: 10px; border: 1px solid #111; padding: 8px; border-radius: 4px;">返回主页</a>
+        
+        <a href="Spike's profolio.html" class="panel-btn btn-return">← [ RETURN ] 返回主页</a>
 
         <div class="hint-text">
             * 提示：右侧简历区域的文字可以直接点击修改。<br>
@@ -323,22 +322,16 @@
     </div>
 
     <script>
-        // 获取整个简历画板的 DOM 节点
         const resumeCanvas = document.getElementById('resume-canvas');
         
-        /* * 字体大小调节逻辑
-         * 监听输入滑块的 input 事件（拖动时触发），将获取到的数值加上 'px'
-         * 然后写入简历容器的 CSS 变量 `--resume-fs` 中，实现实时排版更新。
-         */
         const fsSlider = document.getElementById('fs-slider');
         const fsVal = document.getElementById('fs-val');
         fsSlider.addEventListener('input', (e) => {
             const val = e.target.value;
-            fsVal.innerText = val + 'px'; // 更新左侧面板显示的数字
-            resumeCanvas.style.setProperty('--resume-fs', val + 'px'); // 注入 CSS 变量
+            fsVal.innerText = val + 'px'; 
+            resumeCanvas.style.setProperty('--resume-fs', val + 'px'); 
         });
 
-        /* 行高调节逻辑 (同上) */
         const lhSlider = document.getElementById('lh-slider');
         const lhVal = document.getElementById('lh-val');
         lhSlider.addEventListener('input', (e) => {
@@ -347,7 +340,6 @@
             resumeCanvas.style.setProperty('--resume-lh', val);
         });
 
-        /* 段落间距调节逻辑 (同上) */
         const marginSlider = document.getElementById('margin-slider');
         const marginVal = document.getElementById('margin-val');
         marginSlider.addEventListener('input', (e) => {
@@ -356,36 +348,21 @@
             resumeCanvas.style.setProperty('--resume-margin', val + 'px');
         });
 
-        /*
-         * 核心功能：下载修改后的 HTML 文件
-         * 这个函数会将整个网页当前的状态（包括你刚才打字修改的内容、拖动滑块改变的样式）
-         * 打包成一个新的 HTML 文件，触发浏览器下载。
-         */
         function downloadHTML() {
-            // 在保存前临时关闭编辑功能，防止页面上残留的文本输入光标和蓝框被一起保存下来
             resumeCanvas.setAttribute('contenteditable', 'false');
-            
-            // 提取整个页面的所有 HTML 代码（包含 <!DOCTYPE html> 到 </html>）
             let htmlContent = document.documentElement.outerHTML;
-            
-            // 提取完代码后，重新开启编辑功能，让用户可以继续修改
             resumeCanvas.setAttribute('contenteditable', 'true');
 
-            // 利用 Blob 对象生成一个文本文件数据流
             const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-            // 为这个数据流生成一个临时的浏览器内部 URL
             const url = URL.createObjectURL(blob);
-            
-            // 动态创建一个 <a> 标签模拟点击下载
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'resume_edited.html'; // 设置下载的文件名
-            document.body.appendChild(a); // 将 <a> 标签临时放到页面中
-            a.click(); // 触发点击，开始下载
-            document.body.removeChild(a); // 下载后移除 <a> 标签
-            URL.revokeObjectURL(url); // 释放内存中的临时 URL
+            a.download = 'resume_edited.html'; 
+            document.body.appendChild(a); 
+            a.click(); 
+            document.body.removeChild(a); 
+            URL.revokeObjectURL(url); 
             
-            // 弹出成功提示
             alert('修改已保存并开始下载！请在浏览器的下载文件夹中查看 resume_edited.html');
         }
     </script>
