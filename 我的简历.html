@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>历飞雨 - 简历编辑器</title>
+    <style>
+        /* ================= 1. 基础样式重置与全局设置 ================= */
+        * {
+            box-sizing: border-box; /* 确保 padding 和 border 不会撑大元素的指定宽度 */
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f3f4f6; /* 网页整体的浅灰色背景 */
+            color: #111; /* 默认的深色字体，比纯黑稍微柔和 */
+            /* 优先使用系统自带的无衬线字体，保证在不同设备上的阅读体验 */
+            font-family: 'PingFang SC', 'Microsoft YaHei', 'Helvetica Neue', Arial, sans-serif;
+            display: flex; /* 开启 Flex 布局，用于左右分栏（左边控制面板，右边简历） */
+        }
+
+        /* ================= 2. 左侧控制面板 (UI) ================= */
+        .editor-panel {
+            width: 320px; /* 固定控制面板的宽度 */
+            height: 100vh; /* 高度占满整个屏幕视口 */
+            background: #ffffff;
+            border-right: 1px solid #ddd; /* 右侧分割线 */
+            padding: 20px;
+            position: fixed; /* 固定在屏幕左侧，滑动右侧简历时面板不动 */
+            left: 0;
+            top: 0;
+            overflow-y: auto; /* 如果控制面板内容过多，允许面板内部上下滚动 */
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05); /* 添加一点淡淡的右侧阴影，增加立体感 */
+            z-index: 2000; /* 确保面板层级在最上面，不被其他内容遮挡 */
+        }
+
+        .editor-panel h3 {
+            font-size: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #111; /* 标题下方的粗黑线 */
+        }
+
+        /* 控制面板里的每一组调节器（比如字体大小、行高）的包裹层 */
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block; /* 让标签独占一行 */
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #555;
+        }
+
+        /* 包含滑块和数值显示的横向排列框 */
+        .slider-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px; /* 滑块和数值之间的间距 */
+        }
+
+        input[type="range"] {
+            flex: 1; /* 让滑块占据剩余的所有宽度 */
+            cursor: pointer;
+        }
+
+        /* 显示具体数值的小灰框 (如 14px) */
+        .val-display {
+            font-family: monospace; /* 使用等宽字体，数字看起来更整齐 */
+            font-size: 12px;
+            width: 40px;
+            text-align: right;
+            background: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        /* 左侧面板按钮的通用样式 */
+        .panel-btn {
+            display: block;
+            width: 100%; /* 按钮宽度占满面板 */
+            padding: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s; /* 悬停颜色渐变动画 */
+        }
+
+        /* 具体按钮的颜色定义 */
+        .btn-save { background: #000; color: #fff; }
+        .btn-save:hover { background: #333; }
+        
+        .btn-print { background: #007bff; color: #fff; }
+        .btn-print:hover { background: #0056b3; }
+
+        /* 面板底部的帮助提示文字 */
+        .hint-text {
+            font-size: 12px;
+            color: #888;
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+
+        /* ================= 3. 右侧简历主视口 ================= */
+        .main-viewport {
+            flex: 1; /* 占据屏幕右侧剩余的所有空间 */
+            margin-left: 320px; /* 强制向右推 320px，给左侧固定的控制面板留出空位 */
+            padding: 40px;
+            min-height: 100vh;
+        }
+
+        /* ================= 4. 简历主体 (核心 A4 纸张效果) ================= */
+        .resume-container {
+            max-width: 800px; /* 限制最大宽度，模拟 A4 纸张比例 */
+            background: #ffffff; /* 纯白底色 */
+            margin: 0 auto; /* 在右侧视口中水平居中 */
+            padding: 40px 50px; /* 纸张内部的留白（出血位） */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 模拟纸张浮在桌面上的阴影 */
+            border-radius: 4px;
+            outline: none; /* 移除点击进入编辑状态时浏览器默认的难看蓝框 */
+            
+            /* 【核心黑科技】：定义 CSS 变量，用于接收 JS 滑块传来的数值 */
+            --resume-fs: 14px;      /* 字体大小变量 */
+            --resume-lh: 1.6;       /* 行高变量 */
+            --resume-margin: 8px;   /* 段落间距变量 */
+            
+            /* 将这些变量应用到整个简历纸张上 */
+            font-size: var(--resume-fs);
+            line-height: var(--resume-lh);
+        }
+
+        /* 当用户点击简历开始编辑时，边框会发出一圈淡淡的蓝光，提示处于编辑状态 */
+        .resume-container:focus {
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5), 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ================= 5. 简历内部的排版细节 ================= */
+        header { text-align: center; margin-bottom: 25px; }
+        /* 姓名大标题 */
+        header h1 { font-size: 28px; font-weight: 700; letter-spacing: 4px; margin-bottom: 15px; color: #000; }
+        
+        /* 联系方式模块：上下加粗细线，模拟传统简历表头 */
+        .contact-info { border-top: 2px solid #000; border-bottom: 1px solid #ccc; padding: 10px 0; margin-bottom: 10px; }
+        .info-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+        .info-row:last-child { margin-bottom: 0; }
+        .info-item strong { font-weight: 600; }
+        .info-item a { color: #111; text-decoration: none; border-bottom: 1px dashed #666; }
+        
+        /* 模块标题 (技能、正职经验等) */
+        h2.section-title { font-size: 18px; font-weight: 700; border-bottom: 2px solid #000; padding-bottom: 5px; margin-top: 25px; margin-bottom: 15px; color: #000; }
+        
+        /* 列表通用样式：项目符号及缩进 */
+        ul { list-style-type: disc; padding-left: 20px; }
+        /* 列表项的底部间距绑定了 CSS 变量，这样滑动面板时这里的间距就会变化 */
+        li { margin-bottom: var(--resume-margin); text-align: justify; }
+        li strong { font-weight: 700; }
+        
+        /* 经历块的表头 (公司名称、职位、日期分布在两端) */
+        .experience-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; font-weight: 700; font-size: 15px; }
+        .company-name { font-style: italic; } /* 斜体字表示公司 */
+        .job-title { font-style: italic; }
+        .date { font-style: italic; color: #333; }
+        .experience-item { margin-bottom: 20px; }
+        .experience-item:last-child { margin-bottom: 0; }
+
+        /* ================= 6. 打印机专属样式优化 (核心导出逻辑) ================= */
+        /* 当用户按下 Ctrl+P 或点击导出 PDF 时，这段 CSS 才会生效 */
+        @media print {
+            body {
+                background: #fff; /* 强制背景为白色 */
+                -webkit-print-color-adjust: exact; /* 强制打印彩色背景和图形 */
+                display: block; /* 取消左中右的 Flex 布局，恢复正常文档流 */
+            }
+            .editor-panel {
+                display: none !important; /* 核心：导出 PDF 时彻底隐藏左侧的控制面板 */
+            }
+            .main-viewport {
+                margin-left: 0; /* 移除之前给左侧面板留的空位 */
+                padding: 0; /* 移除网页上的留白 */
+            }
+            .resume-container {
+                margin: 0;
+                padding: 0;
+                box-shadow: none; /* 移除纸张阴影，让它变成纯粹的文档内容 */
+                max-width: 100%;
+            }
+        }
+
+        /* ================= 7. 手机端适配 (响应式) ================= */
+        @media (max-width: 900px) {
+            body { flex-direction: column; } /* 屏幕变窄时，左右布局变成上下布局 */
+            /* 控制面板解除固定，变成普通的顶部区块 */
+            .editor-panel { position: static; width: 100%; height: auto; border-right: none; border-bottom: 1px solid #ddd; }
+            /* 恢复主视口的间距 */
+            .main-viewport { margin-left: 0; padding: 20px 10px; }
+            .info-row { flex-direction: column; gap: 5px; } /* 手机上联系方式换行显示 */
+            .experience-header { flex-direction: column; gap: 2px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="editor-panel" id="no-print-area">
+        <h3>排版控制器</h3>
+        
+        <div class="control-group">
+            <label>正文字体大小</label>
+            <div class="slider-wrapper">
+                <input type="range" id="fs-slider" min="12" max="18" step="1" value="14">
+                <span class="val-display" id="fs-val">14px</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>行高 (呼吸感)</label>
+            <div class="slider-wrapper">
+                <input type="range" id="lh-slider" min="1.2" max="2.2" step="0.1" value="1.6">
+                <span class="val-display" id="lh-val">1.6</span>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label>列表段落间距</label>
+            <div class="slider-wrapper">
+                <input type="range" id="margin-slider" min="0" max="16" step="2" value="8">
+                <span class="val-display" id="margin-val">8px</span>
+            </div>
+        </div>
+
+        <button class="panel-btn btn-print" onclick="window.print()">🖨️ 导出为 PDF</button>
+        <button class="panel-btn btn-save" onclick="downloadHTML()">💾 保存网页文件</button>
+        <a href="Spike's profolio.html" style="display: block; text-align: center; text-decoration: none; color: #111; font-weight: bold; margin-top: 10px; border: 1px solid #111; padding: 8px; border-radius: 4px;">返回主页</a>
+
+        <div class="hint-text">
+            * 提示：右侧简历区域的文字可以直接点击修改。<br>
+            * 点击"保存网页"可将修改后的文字和排版样式下载为 HTML 文件永久保留。
+        </div>
+    </div>
+
+    <div class="main-viewport">
+        
+        <div class="resume-container" id="resume-canvas" contenteditable="true" spellcheck="false">
+            
+            <header>
+                <h1>历飞雨</h1>
+                <div class="contact-info" contenteditable="false">
+                    <div class="info-row">
+                        <div class="info-item" contenteditable="true"><strong>手机/微信：</strong>+86 13719113230</div>
+                        <div class="info-item" contenteditable="true"><strong>电子邮箱：</strong>clarenceye1@gmail.com</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item" contenteditable="true"><strong>教育：</strong>广东工业大学 动画系 2020年9月 - 2024年7月</div>
+                        <div class="info-item" contenteditable="true"><strong>语言：</strong>英语 (CET-6)，粤语</div>
+                    </div>
+                    <div class="info-row">
+                        <div class="info-item" contenteditable="true"><strong>Github：</strong><a href="https://icheerlam.github.io/Spike's%20profolio.html" target="_blank">https://icheerlam.github.io/Spike's%20profolio.html</a></div>
+                    </div>
+                </div>
+            </header>
+
+            <section>
+                <h2 class="section-title">技能</h2>
+                <ul>
+                    <li><strong>内容制作 & 素材能力：</strong>AE/PR/剪映/PS，独立负责从寻找素材到制作完成的全流程，月均产出 20+ 条高标准视觉素材，通过预设流程优化，将复杂动效的制作周期缩短 30%。</li>
+                    <li>根据用户偏好，进行素材/脚本制作，视频可以用于广告投放，A/B test (效果广告的制作) 并基于数据反馈持续迭代优化，如针对点击率低于均值 1.5%的广告视频，进行重剪，替换核心镜头与节奏节点。</li>
+                    <li><strong>AI能力：</strong>即梦/可灵/comfyUI/Gemini，如 Nano banana 生成动态分镜图，缩短设计周期 50%以上。即梦画布设计 IP 角色设计，AI 视频，comfyUI 处理视频声音替换对口型，换脸。Gemini 制作简单的前端效果。</li>
+                </ul>
+            </section>
+
+            <section>
+                <h2 class="section-title">正职经验</h2>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <span class="company-name">广州家画信息技术有限公司</span>
+                        <span class="job-title">内容运营/视频营销</span>
+                        <span class="date">2024年7月 - 2026年7月</span>
+                    </div>
+                    <ul>
+                        <li><strong>国内爆款打造：</strong>基于国内 App (加画框) 漏斗转化模型与用户停留时长分析，主导产出年度 Top1 爆款视频，单条消耗超 22 万元，付费贡献占比达 26.9%。建立“素材裂变迭代机制”，通过抽帧去重、重组开头 Hook 与 BGM，衍生出消耗 9.5 万、8.5 万的头部视频，<strong>年度主导短视频累计消耗达 153 万元。</strong></li>
+                        <li><strong>海外买量运营：</strong>统筹海外 App (Frameit) 跨终端广告素材投放，搭建完整的素材效果评估体系，1年内助力7个海外账户实现 24.5 万+美元消耗，获取 16.7 万+新增装机量及 5700+付费转化。策划高互动性视频内容，推动官方 Instagram 账号 3.2 万涨粉至 4.8 万。</li>
+                        <li><strong>增长模型调优：</strong>建立视频淘汰与优化机制，缩减低效素材预算，将 70%资源向高转化(1.2%)核心品类倾斜；针对“高点击率(2.54%)、低转化”素材优化结尾 CTA，实现单点 ROI 提升 15%，<strong>整体年度投放效率提升 20%。</strong></li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="section-title">实习经验</h2>
+                
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <span class="company-name">广州天游网络/博冠信息科技</span>
+                        <span class="job-title">内容运营/视频营销</span>
+                        <span class="date">2023年12月 - 2024年6月</span>
+                    </div>
+                    <ul>
+                        <li><strong>广告素材制作：</strong>熟练使用 AE、PR、剪映工具，基于脚本与已有素材完成游戏内录、素材剪辑，产出《率土之滨》《射雕》《轮回双生》《三国云梦录》等国内及海外投放素材。精准匹配各平台用户偏好，为《率土之滨》定制竖版动态战报短视频，单条 CTR 达 3.1%；其中7条进入平台推荐池，平均复用周期延长至 11.6 天。主导《轮回双生》海外素材本地化，结合东南亚用户偏好优化节奏与视觉符号，单条 CPI 降低 18%。</li>
+                        <li><strong>素材迭代优化：</strong>调研韩国和东南亚用户的视频习惯，定期生成针对性的报告，对该地区用户进行广告设计，广告的转化率达到 1.8%，结合素材测试数据与用户反馈，通过 A/B 测试持续迭代广告视频结构，提升 CTR 与转化率，为项目提供高表现素材支持，核心素材投放周期较均值延长 20%。</li>
+                    </ul>
+                </div>
+
+                <div class="experience-item">
+                    <div class="experience-header">
+                        <span class="company-name">Mobvista</span>
+                        <span class="job-title">品牌视觉运营</span>
+                        <span class="date">2023年9月 - 2023年12月</span>
+                    </div>
+                    <ul>
+                        <li><strong>品牌内容产出：</strong>负责品牌视觉内容策划与输出，产出海报、KV，banner 素材 23 套，助力品牌曝光量提升 15%。</li>
+                        <li><strong>物料优化落地：</strong>优化品牌宣传物料的排版与视觉呈现，提升内容转化率 2.4%，支持 3 场营销活动顺利落地；调研用户习惯挖掘核心痛点，结合产品调性产出平面设计物料，适配全渠道传播需求。</li>
+                        <li><strong>视频制作：</strong>制作一个企业活动宣传视频，一个营销方法介绍视频制作，使信息密度提升 30%的同时保持观看舒适度。</li>
+                    </ul>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script>
+        // 获取整个简历画板的 DOM 节点
+        const resumeCanvas = document.getElementById('resume-canvas');
+        
+        /* * 字体大小调节逻辑
+         * 监听输入滑块的 input 事件（拖动时触发），将获取到的数值加上 'px'
+         * 然后写入简历容器的 CSS 变量 `--resume-fs` 中，实现实时排版更新。
+         */
+        const fsSlider = document.getElementById('fs-slider');
+        const fsVal = document.getElementById('fs-val');
+        fsSlider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            fsVal.innerText = val + 'px'; // 更新左侧面板显示的数字
+            resumeCanvas.style.setProperty('--resume-fs', val + 'px'); // 注入 CSS 变量
+        });
+
+        /* 行高调节逻辑 (同上) */
+        const lhSlider = document.getElementById('lh-slider');
+        const lhVal = document.getElementById('lh-val');
+        lhSlider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            lhVal.innerText = val;
+            resumeCanvas.style.setProperty('--resume-lh', val);
+        });
+
+        /* 段落间距调节逻辑 (同上) */
+        const marginSlider = document.getElementById('margin-slider');
+        const marginVal = document.getElementById('margin-val');
+        marginSlider.addEventListener('input', (e) => {
+            const val = e.target.value;
+            marginVal.innerText = val + 'px';
+            resumeCanvas.style.setProperty('--resume-margin', val + 'px');
+        });
+
+        /*
+         * 核心功能：下载修改后的 HTML 文件
+         * 这个函数会将整个网页当前的状态（包括你刚才打字修改的内容、拖动滑块改变的样式）
+         * 打包成一个新的 HTML 文件，触发浏览器下载。
+         */
+        function downloadHTML() {
+            // 在保存前临时关闭编辑功能，防止页面上残留的文本输入光标和蓝框被一起保存下来
+            resumeCanvas.setAttribute('contenteditable', 'false');
+            
+            // 提取整个页面的所有 HTML 代码（包含 <!DOCTYPE html> 到 </html>）
+            let htmlContent = document.documentElement.outerHTML;
+            
+            // 提取完代码后，重新开启编辑功能，让用户可以继续修改
+            resumeCanvas.setAttribute('contenteditable', 'true');
+
+            // 利用 Blob 对象生成一个文本文件数据流
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            // 为这个数据流生成一个临时的浏览器内部 URL
+            const url = URL.createObjectURL(blob);
+            
+            // 动态创建一个 <a> 标签模拟点击下载
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'resume_edited.html'; // 设置下载的文件名
+            document.body.appendChild(a); // 将 <a> 标签临时放到页面中
+            a.click(); // 触发点击，开始下载
+            document.body.removeChild(a); // 下载后移除 <a> 标签
+            URL.revokeObjectURL(url); // 释放内存中的临时 URL
+            
+            // 弹出成功提示
+            alert('修改已保存并开始下载！请在浏览器的下载文件夹中查看 resume_edited.html');
+        }
+    </script>
+
+</body>
+</html>
