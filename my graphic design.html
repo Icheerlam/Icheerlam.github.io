@@ -89,16 +89,16 @@
             const box = $('#galleryBox');
             for(let i=1; i<=33; i++) {
                 
-                // 专门处理 img-019，将其替换为横向排布的两个 GIF
+                // 专门处理 img-019，横向排布、减低高度且保证不被裁剪
                 if (i === 19) {
                     box.innerHTML += `
                         <div class="masonry-item" style="animation-delay:${i*0.03}s">
-                            <div style="display: flex; gap: 10px;">
-                                <div style="flex: 1; overflow: hidden; display: flex;">
-                                    <img src="1024_ae_1.gif" loading="lazy" style="height: 100%; width: 100%; object-fit: cover;">
+                            <div style="display: flex; gap: 10px; height: 260px; align-items: center;">
+                                <div style="flex: 1; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <img src="1024_ae_1.gif" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;">
                                 </div>
-                                <div style="flex: 1; overflow: hidden; display: flex;">
-                                    <img src="M星巡游_5.gif" loading="lazy" style="height: 100%; width: 100%; object-fit: cover;">
+                                <div style="flex: 1; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                                    <img src="M星巡游_5.gif" loading="lazy" style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;">
                                 </div>
                             </div>
                         </div>`;
