@@ -327,7 +327,6 @@
             .volume-panel { top: auto; bottom: 70px; left: 20px; transform: scale(0.85); transform-origin: bottom left; z-index: 1999; }
             .theme-toggle-btn { bottom: 20px; right: 20px; z-index: 2000;}
             
-            /* 在小屏幕下将提示框位置上移，防止被底部按钮遮挡 */
             .right-hint-box { top: 20%; transform: none; right: 0; }
         }
     </style>
@@ -547,6 +546,13 @@
                             
                             <div style="flex: 1; min-width: 280px; max-width: 400px; display: flex; flex-direction: column; align-items: center;">
                                 <div class="vertical-video-wrapper interactable" style="width: 100%;">
+                                    <video src="../app产品展示视频/Frameit_10K粉.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
+                                </div>
+                                <div class="video-label" style="font-weight: normal; font-size: 0.85rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">Frameit_10K粉.mp4</div>
+                            </div>
+
+                            <div style="flex: 1; min-width: 280px; max-width: 400px; display: flex; flex-direction: column; align-items: center;">
+                                <div class="vertical-video-wrapper interactable" style="width: 100%;">
                                     <video src="../app产品展示视频/黑人合拍.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
                                 </div>
                                 <div class="video-label" style="font-weight: normal; font-size: 0.85rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">黑人合拍.mp4</div>
@@ -662,7 +668,6 @@
                     }
                 }
             });
-
 
             /* ================== 页面原生逻辑 ================== */
             const themeBtn = document.getElementById('themeBtn');
