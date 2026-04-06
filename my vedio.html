@@ -98,82 +98,43 @@
             background: var(--ak-bg-panel); border-bottom: 1px solid var(--ak-border); 
             z-index: 1000; backdrop-filter: blur(10px); transition: 0.4s;
         }
-        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 5px 12px; font-size: 1rem; cursor: pointer;}
+        .nav-logo { font-weight: 800; font-family: 'Space Mono', monospace; letter-spacing: 2px; color: var(--ak-text-main); text-decoration: none; border: 1px solid var(--ak-accent-info); padding: 5px 12px; cursor: pointer; }
         .nav-right { display: flex; align-items: center; gap: 30px; }
-        .nav-links { display: flex; gap: 25px; align-items: center; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
-        .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase; cursor: pointer;}
+        .nav-links { display: flex; gap: 25px; font-family: 'Space Mono', monospace; font-size: 0.85rem;}
+        .nav-links a { color: var(--ak-text-main); text-decoration: none; transition: 0.3s; font-weight: 700; text-transform: uppercase; cursor: pointer; }
         .nav-links a:hover, .nav-links a.active { color: var(--ak-accent-info); text-shadow: 0 0 8px var(--ak-accent-info); }
-        .nav-secret { color: var(--ak-accent-warn); cursor: pointer; border: 1px solid var(--ak-accent-warn); padding: 5px 12px; font-size: 0.85rem; font-family: 'Space Mono', monospace; font-weight: 700; transition: 0.3s; text-transform: uppercase;}
-        .nav-secret:hover { background: var(--ak-accent-warn); color: var(--ak-bg-main); }
+        
+        /* 右上角按钮：黄色 (ak-accent-warn) */
+        .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono', monospace; text-decoration:none; transition:0.3s; cursor: pointer; }
+        .nav-home-btn:hover { background:var(--ak-accent-warn); color:#000; box-shadow: 0 0 10px var(--ak-accent-warn); }
 
         /* ================= 音频控制区 (左侧) ================= */
         .audio-toggle-btn {
-            position: fixed; 
-            top: 80px; 
-            left: 5vw; 
-            background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(5px);
+            position: fixed; top: 80px; left: 5vw; background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(5px);
             color: var(--ak-accent-info); border: 1px solid var(--ak-accent-info); 
             padding: 6px 12px; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: bold;
-            cursor: pointer; z-index: 999; transition: 0.3s; border-radius: 2px;
-            width: 170px; text-align: center; letter-spacing: 1px;
+            cursor: pointer; z-index: 999; transition: 0.3s; border-radius: 2px; width: 170px; text-align: center; letter-spacing: 1px;
         }
         .audio-toggle-btn:hover { background: var(--ak-accent-info); color: #000; box-shadow: 0 0 10px var(--ak-accent-info);}
         .audio-toggle-btn.muted { color: var(--ak-text-muted); border-color: var(--ak-text-muted); }
         .audio-toggle-btn.muted:hover { background: var(--ak-text-muted); color: #000; }
 
-        /* ✨ 战术混音台 (支持折叠收放) ✨ */
+        /* 战术混音台 (调节滑块) */
         .volume-panel {
-            position: fixed; 
-            top: 125px; 
-            left: 5vw; 
-            background: rgba(10, 10, 12, 0.85); 
-            backdrop-filter: blur(5px);
-            border: 1px solid var(--ak-border); 
-            border-top: 3px solid var(--ak-border);
-            padding: 15px; 
-            width: 170px;
-            z-index: 998; 
-            transition: 0.3s opacity, 0.3s border-color;
-            opacity: 0.5; /* 默认半透明，悬停亮起 */
-            overflow: hidden;
+            position: fixed; top: 125px; left: 5vw; background: rgba(10, 10, 12, 0.85); backdrop-filter: blur(5px);
+            border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border); padding: 15px; width: 170px;
+            z-index: 998; display: flex; flex-direction: column; gap: 12px; transition: 0.3s opacity, 0.3s border-color; opacity: 0.5; cursor: pointer; overflow: hidden;
         }
-        .volume-panel:hover {
-            opacity: 1;
-            border-color: var(--ak-accent-info);
-            box-shadow: 0 0 15px rgba(0, 216, 255, 0.1);
-        }
-        .vol-header {
-            font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-accent-info);
-            font-weight: bold; padding-bottom: 5px; text-transform: uppercase;
-            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px dashed var(--ak-border);
-            transition: 0.2s color;
-        }
+        .volume-panel:hover { opacity: 1; border-color: var(--ak-accent-info); box-shadow: 0 0 15px rgba(0, 216, 255, 0.1); }
+        .vol-header { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-accent-info); font-weight: bold; padding-bottom: 5px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--ak-border); transition: 0.2s color; }
         .vol-header:hover { color: var(--ak-text-main); }
-        
-        /* 内部横条容器，用于收放动画 */
-        .vol-content {
-            display: flex; flex-direction: column; gap: 12px;
-            transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
-            max-height: 200px; opacity: 1; margin-top: 10px;
-        }
-        
-        /* 折叠状态 */
-        .volume-panel.collapsed .vol-content {
-            max-height: 0; opacity: 0; margin-top: 0; pointer-events: none;
-        }
-        .volume-panel.collapsed .vol-header {
-            border-bottom: none; padding-bottom: 0;
-        }
-
+        .vol-content { display: flex; flex-direction: column; gap: 12px; transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease; max-height: 200px; opacity: 1; margin-top: 10px; }
+        .volume-panel.collapsed .vol-content { max-height: 0; opacity: 0; margin-top: 0; pointer-events: none; }
+        .volume-panel.collapsed .vol-header { border-bottom: none; padding-bottom: 0; }
         .vol-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
         .vol-row label { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-text-muted); width: 40px; text-align: left; }
-        .vol-slider {
-            -webkit-appearance: none; width: 100%; height: 3px; background: var(--ak-border); outline: none; border-radius: 2px;
-        }
-        .vol-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; width: 8px; height: 12px; background: var(--ak-accent-info); cursor: pointer; border-radius: 1px;
-        }
+        .vol-slider { -webkit-appearance: none; width: 100%; height: 3px; background: var(--ak-border); outline: none; border-radius: 2px; }
+        .vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 8px; height: 12px; background: var(--ak-accent-info); cursor: pointer; border-radius: 1px; }
         .vol-slider::-webkit-slider-thumb:hover { background: var(--ak-accent-warn); }
 
         /* ================= 主题切换悬浮键 ================= */
@@ -219,21 +180,35 @@
             scroll-margin-top: 100px; 
         }
         .video-card:hover { border-color:var(--ak-accent-info); transform:translateY(-5px); box-shadow:0 15px 40px rgba(0,216,255,0.1); }
-        
+
+        /* 🔥 核心修复：突破全屏时的卡片毛玻璃及形变限制，保证原生的全屏体验生效 🔥 */
+        .video-card:fullscreen, .video-card:-webkit-full-screen, .video-card:-ms-fullscreen {
+            backdrop-filter: none !important;
+            transform: none !important;
+            padding: 0 !important;
+            border: none !important;
+        }
+
         .video-wrapper-wide { width:100%; border:2px solid var(--ak-border); background:#000; margin-bottom:24px; transition:0.4s; position:relative; aspect-ratio:16/9; }
         .video-card:hover .video-wrapper-wide { border-color:var(--ak-accent-info); box-shadow:0 10px 30px rgba(0,0,0,0.5); }
         
         .single-video-column { display: flex; flex-direction: column; gap: 50px; margin-bottom: 30px; align-items: center; }
         .video-item-center { width: 100%; display: flex; flex-direction: column; align-items: center; }
+        
+        /* 🔥 核心修复：将高度写死改为按 16:9 比例适配，防止在窄屏手机上溢出切断播放栏 🔥 */
         .resizable-video-wrapper { 
-            width: 640px; height: 360px; min-width: 280px; min-height: 180px; max-width: 100%; 
+            width: 640px; aspect-ratio: 16/9; height: auto; min-width: 280px; max-width: 100%; 
             border: 2px solid var(--ak-border); background: #000; border-radius: 2px;
             overflow: hidden; resize: both; position: relative; transition: border-color 0.3s, box-shadow 0.3s; 
         }
         .resizable-video-wrapper::after { content: '◢'; position: absolute; bottom: 2px; right: 4px; color: var(--ak-accent-info); font-size: 14px; pointer-events: none; opacity: 0.8; }
         .video-card:hover .resizable-video-wrapper { border-color: var(--ak-accent-info); box-shadow:0 0 15px rgba(0,216,255,0.3); }
+        
         .resizable-video-wrapper video { width: 100%; height: 100%; object-fit: contain; display: block; }
         
+        /* 全屏时视频修复 */
+        video:fullscreen, video:-webkit-full-screen { width: 100vw !important; height: 100vh !important; object-fit: contain !important; background: #000 !important; }
+
         .video-title { font:800 1.5rem 'Space Mono'; color:var(--ak-text-main); display:flex; justify-content:center; align-items: center; gap:10px; margin-bottom:12px; text-transform: uppercase;}
         .video-title::before { content:'/>'; color:var(--ak-accent-info); }
         .highlight-tag { display:inline-block; padding:2px 10px; border:1px solid var(--ak-accent-warn); color:var(--ak-accent-warn); font:bold 0.8rem sans-serif; }
@@ -308,6 +283,7 @@
         <a href="#sec-showreel" class="toc-link interactable active">01. Showreel</a>
         <a href="#sec-mobvista" class="toc-link interactable">02. Mobvista</a>
         <a href="#sec-logistical" class="toc-link interactable">03. Project Ad</a>
+        <a href="#sec-comparison" class="toc-link interactable">04. Comparison</a>
     </aside>
 
     <header class="page-header">
@@ -318,7 +294,7 @@
         
         <div class="video-card interactable" id="sec-showreel">
             <div class="video-wrapper-wide">
-                <iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+                <iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" frameborder="0" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
             </div>
             <div style="text-align:center;">
                 <h2 class="video-title">24-25_Showreel.mp4</h2>
@@ -333,7 +309,7 @@
             <div class="single-video-column">
                 <div class="video-item-center">
                     <div class="resizable-video-wrapper">
-                        <video controls playsinline preload="metadata" 
+                        <video controls playsinline="true" webkit-playsinline="true" x5-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" preload="metadata" 
                                src="app产品展示视频/mobvista十二生序1.mp4#t=29"
                                onplay="if(this.dataset.played !== '1'){this.currentTime=0; this.dataset.played='1';}">
                         </video>
@@ -346,7 +322,7 @@
 
                 <div class="video-item-center">
                     <div class="resizable-video-wrapper">
-                        <video controls playsinline preload="metadata" 
+                        <video controls playsinline="true" webkit-playsinline="true" x5-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" preload="metadata" 
                                src="app产品展示视频/mobvista十二生序2.mp4#t=27"
                                onplay="if(this.dataset.played !== '1'){this.currentTime=0; this.dataset.played='1';}">
                         </video>
@@ -369,13 +345,53 @@
 
         <div class="video-card interactable" id="sec-logistical" style="animation-delay: 0.4s;">
             <div class="video-wrapper-wide">
-                <iframe src="https://www.youtube.com/embed/BziFgsUG-y4?rel=0&controls=1&modestbranding=1&vq=hd1080" frameborder="0" allowfullscreen style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
+                <iframe src="https://www.youtube.com/embed/BziFgsUG-y4?rel=0&controls=1&modestbranding=1&vq=hd1080" frameborder="0" allow="fullscreen; autoplay; encrypted-media; picture-in-picture" allowfullscreen="true" webkitallowfullscreen="true" mozallowfullscreen="true" style="position:absolute; top:0; left:0; width:100%; height:100%;"></iframe>
             </div>
             <div style="text-align:center;">
                 <h2 class="video-title">Project // Logistical Ad</h2>
                 <p style="color:var(--ak-text-muted); font-family:'Space Mono'; font-size:0.9rem;">
                     > External stream accessed... <br><br>
                     [ TYPE ]: <span class="highlight-tag">COMMERCIAL / ADVERTISEMENT</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="video-card interactable" id="sec-comparison" style="animation-delay: 0.6s;">
+            <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center;">
+                
+                <div class="video-item-center" style="flex: 1; min-width: 300px;">
+                    <div class="resizable-video-wrapper" style="width: 100%; height: auto; aspect-ratio: 16/9;">
+                        <video controls playsinline="true" webkit-playsinline="true" x5-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" preload="metadata" 
+                               src="包装前.mp4"
+                               onplay="if(this.dataset.played !== '1'){this.currentTime=0; this.dataset.played='1';}">
+                        </video>
+                    </div>
+                    <div class="sub-label">
+                        [ ASSET_RAW ] 包装前原片
+                        <span class="drag-hint">↘ DRAG CORNER TO RESIZE PLAYER</span>
+                    </div>
+                </div>
+
+                <div class="video-item-center" style="flex: 1; min-width: 300px;">
+                    <div class="resizable-video-wrapper" style="width: 100%; height: auto; aspect-ratio: 16/9;">
+                        <video controls playsinline="true" webkit-playsinline="true" x5-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" preload="metadata" 
+                               src="包装后.mp4"
+                               onplay="if(this.dataset.played !== '1'){this.currentTime=0; this.dataset.played='1';}">
+                        </video>
+                    </div>
+                    <div class="sub-label">
+                        [ ASSET_FINAL ] 包装后成片
+                        <span class="drag-hint">↘ DRAG CORNER TO RESIZE PLAYER</span>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div style="text-align:center; border-top: 1px dashed var(--ak-border); padding-top: 20px; margin-top: 30px;">
+                <h2 class="video-title">Before & After // 包装对比</h2>
+                <p style="color:var(--ak-text-muted); font-family:'Space Mono'; font-size:0.9rem;">
+                    > Visual enhancement complete. <br><br>
+                    [ TYPE ]: <span class="highlight-tag">POST-PROCESSING / VFX</span>
                 </p>
             </div>
         </div>
