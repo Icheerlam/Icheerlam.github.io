@@ -148,22 +148,19 @@
             border: 1px solid var(--ak-border); border-left: 3px solid var(--ak-accent-warn);
             padding: 15px; z-index: 100; opacity: 0; 
             animation: hintEntrance 1s forwards; animation-delay: 0.5s;
-            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 折叠动画 */
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
         }
         body.light-mode .right-hint-box { background: rgba(255,255,255,0.9); }
         
-        /* 提示框进场动画，避免影响 transform Y 轴居中 */
         @keyframes hintEntrance {
             0% { opacity: 0; margin-top: 20px; }
             100% { opacity: 1; margin-top: 0; }
         }
 
-        /* 折叠状态 */
         .right-hint-box.collapsed {
-            right: -170px; /* 隐藏主框体，刚好卡在屏幕边缘 */
+            right: -170px; 
         }
 
-        /* 侧边悬浮开关按钮 */
         .hint-toggle {
             position: absolute;
             left: -24px;
@@ -259,7 +256,7 @@
         .data-dashboard-img:hover { filter: invert(0) hue-rotate(0deg); opacity: 1; border-color: var(--ak-accent-info); }
         body.light-mode .data-dashboard-img { filter: none; opacity: 1; }
 
-        .vertical-videos-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .vertical-videos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; justify-content: center;}
         .vertical-video-wrapper {
             width: 100%; aspect-ratio: 9/16; overflow: hidden; 
             background: #000; border: 2px solid var(--ak-border); 
@@ -314,20 +311,19 @@
         .case-block:nth-child(1) { animation-delay: 0.1s; } 
         .case-block:nth-child(2) { animation-delay: 0.2s; }
         .case-block:nth-child(3) { animation-delay: 0.3s; }
+        .case-block:nth-child(4) { animation-delay: 0.4s; } 
 
         @media (max-width: 1300px) {
-            .right-hint-box { display: none; } /* 屏幕较小时隐藏右侧提示以防遮挡 */
+            .right-hint-box { display: none; } 
         }
 
         @media (max-width: 1000px) {
             .nav-links { display: none; } 
             .bento-grid { grid-template-columns: 1fr; } 
             .card-full, .card-left, .card-right { grid-column: span 1; padding-right: 0; }
-            .vertical-videos-grid { gap: 15px; }
             .strategy-grid { grid-template-columns: 1fr; gap: 16px; } 
         }
 
-        /* 移动端适配 (按钮防遮挡) */
         @media (max-width: 768px) { 
             .audio-toggle-btn { top: auto; bottom: 20px; left: 20px; z-index: 2000; width: 120px; padding: 10px;} 
             .volume-panel { top: auto; bottom: 70px; left: 20px; transform: scale(0.85); transform-origin: bottom left; z-index: 1999; }
@@ -536,6 +532,39 @@
             </div>
         </div>
 
+        <div class="case-block interactable">
+            <div class="case-header interactable" onclick="toggleCase(this)">
+                <h2>案例分析：海外本地化创意素材</h2>
+                <div class="toggle-icon">↓</div>
+            </div>
+            
+            <div class="case-content-wrapper">
+                <div class="case-content">
+                    <div class="case-content-inner">
+                        
+                        <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center;">
+                            
+                            <div style="flex: 1; min-width: 280px; max-width: 400px; display: flex; flex-direction: column; align-items: center;">
+                                <div class="vertical-video-wrapper interactable" style="width: 100%;">
+                                    <video src="../app产品展示视频/黑人合拍.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
+                                </div>
+                                <div class="video-label" style="font-weight: normal; font-size: 0.85rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">黑人合拍.mp4</div>
+                            </div>
+
+                            <div style="flex: 1; min-width: 280px; max-width: 400px; display: flex; flex-direction: column; align-items: center;">
+                                <div class="vertical-video-wrapper interactable" style="width: 100%;">
+                                    <video src="../app产品展示视频/香蕉卡点.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
+                                </div>
+                                <div class="video-label" style="font-weight: normal; font-size: 0.85rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">香蕉卡点.mp4</div>
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <div class="back-nav">
@@ -632,7 +661,6 @@
                     }
                 }
             });
-
 
             /* ================== 页面原生逻辑 ================== */
             const themeBtn = document.getElementById('themeBtn');
