@@ -101,7 +101,10 @@
         /* ✨ 瀑布流卡片与图片 ✨ */
         .masonry-gallery { max-width:1600px; margin:0 auto; padding:0 5vw 80px; column-count:4; column-gap:24px; position:relative; z-index:10;}
         .masonry-item { break-inside:avoid; margin-bottom:24px; background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:10px; opacity:0; animation:fadeUp 0.6s forwards; transition:0.4s; position:relative; cursor: pointer; }
+        
+        /* 强制覆盖 content 的数值内容，解决数字顺序跳跃的问题 */
         .masonry-item::before { counter-increment:gallery-counter; content:"[IMG-0" counter(gallery-counter) "]"; position:absolute; top:20px; left:20px; font:bold 0.65rem 'Space Mono'; color:#000; background:var(--ak-text-muted); padding:2px 8px; z-index:10; transition:0.3s; opacity:0;}
+        
         .masonry-item:hover { border-color:var(--ak-accent-info); transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,216,255,0.1); }
         .masonry-item:hover::before { opacity:1; background:var(--ak-accent-info); }
         
@@ -202,14 +205,22 @@
             
             // 核心修复：独立维护图片的索引，使 GIF 块不占用 JPG 的文件名序号
             let jpgIndex = 1;
+            // 页面实际渲染的卡片计数（用于处理动画延迟）
+            let renderCounter = 1;
             
-            // 循环生成 34 个项目（33 张图 + 1 个 GIF 块）
+            // 循环遍历，最高循环到 34 结束
             for(let i=1; i<=34; i++) {
                 
-                // 将原来的 GIF 块设为第 20 个项目 (让出第19个位置给 191.jpg)
+                // 1. 跳过指定的图片索引 (IMG-028 到 IMG-031 对应的 jpg)
+                if (jpgIndex >= 28 && jpgIndex <= 31 && i !== 20) {
+                    jpgIndex++;
+                    continue; 
+                }
+
+                // 2. 将 GIF 块固定插入在原本图片19的位置之后 (i === 20 时插入)
                 if (i === 20) {
                     box.innerHTML += `
-                        <div class="masonry-item interactable" style="animation-delay:${i*0.03}s">
+                        <div class="masonry-item interactable" style="animation-delay:${renderCounter*0.03}s">
                             <div style="display: flex; flex-direction: column;">
                                 
                                 <div style="color: #48E5B6; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; font-weight: 900; font-size: 0.85rem; margin-bottom: 12px; letter-spacing: 1px; line-height: 1; text-transform: none; text-shadow: none;">
@@ -227,14 +238,20 @@
                                 
                             </div>
                         </div>`;
+                    renderCounter++;
                 } else {
-                    // 生成普通的 JPG 瀑布流块
+                    // 3. 生成普通的 JPG 瀑布流块
                     let fileName = `${jpgIndex}1.jpg`;
-                    if (jpgIndex >= 22 && jpgIndex <= 26) { fileName = `emo${jpgIndex - 21}.jpg`; }
-                    box.innerHTML += `<div class="masonry-item interactable" style="animation-delay:${i*0.03}s"><img src="平面设计导出jpg的副本/${fileName}" loading="lazy" class="img-clicker"></div>`;
                     
-                    // 只有生成了 JPG，才推进序号
+                    // emo1.jpg ~ emo5.jpg 的映射逻辑保持不变 (对应 22-26)
+                    if (jpgIndex >= 22 && jpgIndex <= 26) { 
+                        fileName = `emo${jpgIndex - 21}.jpg`; 
+                    }
+
+                    box.innerHTML += `<div class="masonry-item interactable" style="animation-delay:${renderCounter*0.03}s"><img src="平面设计导出jpg的副本/${fileName}" loading="lazy" class="img-clicker"></div>`;
+                    
                     jpgIndex++;
+                    renderCounter++;
                 }
             }
             
