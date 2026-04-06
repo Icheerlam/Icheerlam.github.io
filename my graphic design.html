@@ -208,16 +208,10 @@
             // 页面实际渲染的卡片计数（用于处理动画延迟）
             let renderCounter = 1;
             
-            // 循环遍历，最高循环到 34 结束
-            for(let i=1; i<=34; i++) {
+            // 恢复所有图片显示，总共循环 38 次 (37张图 + 1个GIF块)
+            for(let i=1; i<=38; i++) {
                 
-                // 1. 跳过指定的图片索引 (IMG-028 到 IMG-031 对应的 jpg)
-                if (jpgIndex >= 28 && jpgIndex <= 31 && i !== 20) {
-                    jpgIndex++;
-                    continue; 
-                }
-
-                // 2. 将 GIF 块固定插入在原本图片19的位置之后 (i === 20 时插入)
+                // 将 GIF 块固定插入在原本图片19的位置之后 (i === 20 时插入)
                 if (i === 20) {
                     box.innerHTML += `
                         <div class="masonry-item interactable" style="animation-delay:${renderCounter*0.03}s">
@@ -240,10 +234,10 @@
                         </div>`;
                     renderCounter++;
                 } else {
-                    // 3. 生成普通的 JPG 瀑布流块
+                    // 生成普通的 JPG 瀑布流块
                     let fileName = `${jpgIndex}1.jpg`;
                     
-                    // emo1.jpg ~ emo5.jpg 的映射逻辑保持不变 (对应 22-26)
+                    // emo1.jpg ~ emo5.jpg 的映射逻辑保持不变 (对应原本文件名序号 22-26)
                     if (jpgIndex >= 22 && jpgIndex <= 26) { 
                         fileName = `emo${jpgIndex - 21}.jpg`; 
                     }
