@@ -112,12 +112,97 @@
         .nav-home-btn { padding: 6px 14px; background: transparent; color: var(--ak-accent-warn); border: 1px solid var(--ak-accent-warn); font: 700 0.85rem 'Space Mono', monospace; text-decoration: none; transition: 0.3s; text-transform: uppercase; }
         .nav-home-btn:hover { background: var(--ak-accent-warn); color: #000; box-shadow: 0 0 10px rgba(245,166,35,0.4); }
 
+        /* ================= 音频控制区 (左侧) ================= */
+        .audio-toggle-btn {
+            position: fixed; top: 80px; left: 5vw; background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(5px);
+            color: var(--ak-accent-info); border: 1px solid var(--ak-accent-info); 
+            padding: 6px 12px; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: bold;
+            cursor: pointer; z-index: 999; transition: 0.3s; border-radius: 2px; width: 170px; text-align: center; letter-spacing: 1px;
+        }
+        .audio-toggle-btn:hover { background: var(--ak-accent-info); color: #000; box-shadow: 0 0 10px var(--ak-accent-info);}
+        .audio-toggle-btn.muted { color: var(--ak-text-muted); border-color: var(--ak-text-muted); }
+        .audio-toggle-btn.muted:hover { background: var(--ak-text-muted); color: #000; }
+
+        /* 战术混音台 (调节滑块) */
+        .volume-panel {
+            position: fixed; top: 125px; left: 5vw; background: rgba(10, 10, 12, 0.85); backdrop-filter: blur(5px);
+            border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border); padding: 15px; width: 170px;
+            z-index: 998; display: flex; flex-direction: column; gap: 12px; transition: 0.3s opacity, 0.3s border-color; opacity: 0.5; overflow: hidden;
+        }
+        .volume-panel:hover { opacity: 1; border-color: var(--ak-accent-info); box-shadow: 0 0 15px rgba(0, 216, 255, 0.1); }
+        .vol-header { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-accent-info); font-weight: bold; padding-bottom: 5px; text-transform: uppercase; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--ak-border); transition: 0.2s color; }
+        .vol-header:hover { color: var(--ak-text-main); }
+        .vol-content { display: flex; flex-direction: column; gap: 12px; transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease; max-height: 200px; opacity: 1; margin-top: 10px; }
+        .volume-panel.collapsed .vol-content { max-height: 0; opacity: 0; margin-top: 0; pointer-events: none; }
+        .volume-panel.collapsed .vol-header { border-bottom: none; padding-bottom: 0; }
+        .vol-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+        .vol-row label { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-text-muted); width: 40px; text-align: left; }
+        .vol-slider { -webkit-appearance: none; width: 100%; height: 3px; background: var(--ak-border); outline: none; border-radius: 2px; }
+        .vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 8px; height: 12px; background: var(--ak-accent-info); cursor: pointer; border-radius: 1px; }
+        .vol-slider::-webkit-slider-thumb:hover { background: var(--ak-accent-warn); }
+
+        /* ================= ✨ 右侧提示区块 (支持折叠) ================= */
+        .right-hint-box {
+            position: fixed; right: 4vw; top: 50%; transform: translateY(-50%);
+            width: 170px; background: rgba(10, 10, 12, 0.85); backdrop-filter: blur(5px);
+            border: 1px solid var(--ak-border); border-left: 3px solid var(--ak-accent-warn);
+            padding: 15px; z-index: 100; opacity: 0; 
+            animation: hintEntrance 1s forwards; animation-delay: 0.5s;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1); /* 折叠动画 */
+        }
+        body.light-mode .right-hint-box { background: rgba(255,255,255,0.9); }
+        
+        /* 提示框进场动画，避免影响 transform Y 轴居中 */
+        @keyframes hintEntrance {
+            0% { opacity: 0; margin-top: 20px; }
+            100% { opacity: 1; margin-top: 0; }
+        }
+
+        /* 折叠状态 */
+        .right-hint-box.collapsed {
+            right: -170px; /* 隐藏主框体，刚好卡在屏幕边缘 */
+        }
+
+        /* 侧边悬浮开关按钮 */
+        .hint-toggle {
+            position: absolute;
+            left: -24px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 48px;
+            background: rgba(10, 10, 12, 0.85);
+            border: 1px solid var(--ak-border);
+            border-right: none;
+            border-left: 3px solid var(--ak-accent-warn);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--ak-accent-warn);
+            font-family: 'Space Mono', monospace;
+            font-weight: bold;
+            font-size: 1rem;
+            backdrop-filter: blur(5px);
+            border-radius: 4px 0 0 4px;
+            transition: 0.3s background-color, 0.3s color;
+            padding: 0;
+            outline: none;
+        }
+        body.light-mode .hint-toggle { background: rgba(255,255,255,0.9); }
+        .hint-toggle:hover { background: var(--ak-accent-warn); color: #000; }
+
+        .hint-title { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--ak-accent-warn); font-weight: bold; margin-bottom: 8px; letter-spacing: 1px;}
+        .hint-text { font-size: 0.8rem; color: var(--ak-text-muted); line-height: 1.6; }
+        .hint-link { color: var(--ak-accent-info); text-decoration: none; font-weight: bold; transition: 0.3s; display: inline-block; margin-top: 12px; font-family: 'Space Mono', monospace; font-size: 0.75rem;}
+        .hint-link:hover { color: var(--ak-text-main); text-shadow: 0 0 8px var(--ak-accent-info); }
+
         /* ================= 页面头部 ================= */
         .page-header { text-align: center; margin: 120px auto 40px; padding: 0 20px; opacity: 0; animation: fadeUpAK 0.6s ease-out forwards; position: relative; z-index: 10;}
         .page-header h1 { font: 800 2.5rem 'Space Mono', monospace; color: var(--ak-accent-info); text-transform: uppercase; margin-bottom: 10px;}
         .page-header p { color: var(--ak-text-muted); font: 1rem 'Space Mono', monospace;}
 
-        /* ================= 战术数据区块 (全彩无灰度) ================= */
+        /* ================= 战术数据区块 ================= */
         .container { max-width: 1400px; margin: 0 auto 80px; padding: 0 4vw; position: relative; z-index: 10;}
         
         .case-block {
@@ -230,6 +315,10 @@
         .case-block:nth-child(2) { animation-delay: 0.2s; }
         .case-block:nth-child(3) { animation-delay: 0.3s; }
 
+        @media (max-width: 1300px) {
+            .right-hint-box { display: none; } /* 屏幕较小时隐藏右侧提示以防遮挡 */
+        }
+
         @media (max-width: 1000px) {
             .nav-links { display: none; } 
             .bento-grid { grid-template-columns: 1fr; } 
@@ -237,9 +326,50 @@
             .vertical-videos-grid { gap: 15px; }
             .strategy-grid { grid-template-columns: 1fr; gap: 16px; } 
         }
+
+        /* 移动端适配 (按钮防遮挡) */
+        @media (max-width: 768px) { 
+            .audio-toggle-btn { top: auto; bottom: 20px; left: 20px; z-index: 2000; width: 120px; padding: 10px;} 
+            .volume-panel { top: auto; bottom: 70px; left: 20px; transform: scale(0.85); transform-origin: bottom left; z-index: 1999; }
+            .theme-toggle-btn { bottom: 20px; right: 20px; z-index: 2000;}
+        }
     </style>
 </head>
 <body class="dark-mode">
+
+    <audio id="bgmAudio" loop preload="auto"><source src="../音效/Belly Breathing.mp3" type="audio/mpeg"></audio>
+    <audio id="hoverSound" preload="auto"><source src="../音效/鼠标悬停.mp3" type="audio/mpeg"></audio>
+    <audio id="clickSound" preload="auto"><source src="../音效/鼠标点击.mp3" type="audio/mpeg"></audio>
+
+    <button id="audioToggle" class="audio-toggle-btn muted interactable">[ AUDIO: OFF ]</button>
+    
+    <div class="volume-panel" id="volumePanel">
+        <div class="vol-header interactable" id="volHeader">
+            <span>AUDIO_MIXER</span>
+            <span id="volIcon">[-]</span>
+        </div>
+        <div class="vol-content" id="volContent">
+            <div class="vol-row">
+                <label>BGM</label>
+                <input type="range" class="vol-slider interactable" id="bgmVol" min="0" max="1" step="0.01" value="0.35">
+            </div>
+            <div class="vol-row">
+                <label>HOVR</label>
+                <input type="range" class="vol-slider interactable" id="hoverVol" min="0" max="1" step="0.01" value="0.60">
+            </div>
+            <div class="vol-row">
+                <label>CLCK</label>
+                <input type="range" class="vol-slider interactable" id="clickVol" min="0" max="1" step="0.01" value="0.80">
+            </div>
+        </div>
+    </div>
+
+    <aside class="right-hint-box" id="rightHintBox">
+        <button class="hint-toggle interactable" id="hintToggleBtn">〉</button>
+        <div class="hint-title">[ NOTICE ]</div>
+        <div class="hint-text">在 <strong style="color:var(--ak-text-main);">Video</strong> 页面也可以看到其他的数据分析。</div>
+        <a href="../my vedio.html" class="hint-link interactable">GO TO VIDEO ></a>
+    </aside>
 
     <div class="tech-bg"></div>
     <div class="tech-overlay"></div>
@@ -252,16 +382,16 @@
     <div class="prts-watermark">SYS.VER.2026 // ANALYTICS_ARCHIVE</div>
 
     <nav>
-        <a href="../Spike's profolio.html" class="nav-logo">PRTS // CLARENCE YE</a>
+        <a href="../Spike's profolio.html" class="nav-logo interactable">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
-                <a href="Data Analysis.html" class="active">Data Analysis</a>
-                <a href="../my graphic design.html">Graphic</a>
-                <a href="../3d model.html">3D Art</a>
-                <a href="../my vedio.html">Video</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer">Gallery</a>
+                <a href="Data Analysis.html" class="active interactable">Data Analysis</a>
+                <a href="../my graphic design.html" class="interactable">Graphic</a>
+                <a href="../3d model.html" class="interactable">3D Art</a>
+                <a href="../my vedio.html" class="interactable">Video</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="interactable">Gallery</a>
             </div>
-            <a href="../Spike's profolio.html" class="nav-home-btn">[ RETURN_HOME ]</a>
+            <a href="../Spike's profolio.html" class="nav-home-btn interactable">[ RETURN_HOME ]</a>
         </div>
     </nav>
 
@@ -272,8 +402,8 @@
 
     <main class="container">
         
-        <div class="case-block">
-            <div class="case-header" onclick="toggleCase(this)">
+        <div class="case-block interactable">
+            <div class="case-header interactable" onclick="toggleCase(this)">
                 <h2>信息流视频素材制作与优化</h2>
                 <div class="toggle-icon">↓</div>
             </div>
@@ -282,31 +412,31 @@
                 <div class="case-content">
                     <div class="case-content-inner bento-grid">
                         
-                        <div class="bento-card card-full">
-                            <img src="信息top3.jpg" alt="数据看板" class="data-dashboard-img dashboard-img" title="点击放大查看原图">
+                        <div class="bento-card card-full interactable">
+                            <img src="信息top3.jpg" alt="数据看板" class="data-dashboard-img dashboard-img interactable" title="点击放大查看原图">
                         </div>
 
-                        <div class="bento-card card-left">
+                        <div class="bento-card card-left interactable">
                             <div style="font-size: 1.1rem; font-weight: bold; color: var(--ak-accent-info); margin-bottom: 24px; font-family: 'Space Mono', monospace;">
                                 > 爆款视频裂变演示
                             </div>
                             <div class="vertical-videos-grid">
                                 <div>
-                                    <div class="vertical-video-wrapper">
+                                    <div class="vertical-video-wrapper interactable">
                                         <video src="书法美化装裱1.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
                                     </div>
                                     <div class="video-label">A1</div>
                                     <div class="video-sublabel">Top 1 / 22w 消耗</div>
                                 </div>
                                 <div>
-                                    <div class="vertical-video-wrapper">
+                                    <div class="vertical-video-wrapper interactable">
                                         <video src="书法美化装裱2.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
                                     </div>
                                     <div class="video-label">A2</div>
                                     <div class="video-sublabel">Top 2 / 9.5w 消耗</div>
                                 </div>
                                 <div>
-                                    <div class="vertical-video-wrapper">
+                                    <div class="vertical-video-wrapper interactable">
                                         <video src="书法美化装裱3.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
                                     </div>
                                     <div class="video-label">A3</div>
@@ -335,7 +465,7 @@
                             </div>
                         </div>
 
-                        <div class="bento-card card-right" style="background: var(--ak-bg-main);">
+                        <div class="bento-card card-right interactable" style="background: var(--ak-bg-main);">
                             <div class="analysis-row">
                                 <div class="row-label">TARGET</div>
                                 <div class="row-content">制作出多条能够高效转化的爆款买量素材。</div>
@@ -364,8 +494,8 @@
             </div>
         </div>
 
-        <div class="case-block">
-            <div class="case-header" onclick="toggleCase(this)">
+        <div class="case-block interactable">
+            <div class="case-header interactable" onclick="toggleCase(this)">
                 <h2>案例分析：海外及文化视频内容表现</h2>
                 <div class="toggle-icon">↓</div>
             </div>
@@ -374,25 +504,25 @@
                 <div class="case-content">
                     <div class="case-content-inner bento-grid">
                         
-                        <div class="bento-card card-full" style="background: transparent; border: none; padding: 0;">
+                        <div class="bento-card card-full interactable" style="background: transparent; border: none; padding: 0;">
                             <div class="vertical-videos-grid">
                                 
                                 <div>
-                                    <div class="vertical-video-wrapper">
+                                    <div class="vertical-video-wrapper interactable">
                                         <video src="../app产品展示视频/260212_02_海外_ai人.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
                                     </div>
                                     <div class="video-label" style="font-weight: normal; font-size: 0.85rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">260212_02_海外<br>_ai人.mp4</div>
                                 </div>
 
                                 <div>
-                                    <div class="vertical-video-wrapper">
+                                    <div class="vertical-video-wrapper interactable">
                                         <video src="../app产品展示视频/王羲之.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
                                     </div>
                                     <div class="video-label" style="font-weight: normal; font-size: 0.85rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">王羲之.mp4</div>
                                 </div>
 
                                 <div>
-                                    <div class="vertical-video-wrapper">
+                                    <div class="vertical-video-wrapper interactable">
                                         <video src="../app产品展示视频/2026033101-海外-AI人男.mp4" controls playsinline webkit-playsinline preload="metadata" style="width: 100%; height: 100%; object-fit: cover; display: block;"></video>
                                     </div>
                                     <div class="video-label" style="font-weight: normal; font-size: 0.85rem; word-break: break-all; margin-top: 12px; line-height: 1.4;">2026033101-海<br>外-AI人男.mp4</div>
@@ -409,7 +539,7 @@
     </main>
 
     <div class="back-nav">
-        <a href="../Spike's profolio.html" class="btn-back">[ RETURN ]</a>
+        <a href="../Spike's profolio.html" class="btn-back interactable">[ RETURN ]</a>
     </div>
 
     <footer>
@@ -417,42 +547,131 @@
     </footer>
 
     <div class="lightbox" id="imageLightbox">
-        <span class="lightbox-close" id="lightboxClose">[ CLOSE ]</span>
+        <span class="lightbox-close interactable" id="lightboxClose">[ CLOSE ]</span>
         <img src="" alt="数据大图" id="lightboxImg">
     </div>
 
-    <button class="theme-toggle-btn" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
+    <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
     <script>
-        const themeBtn = document.getElementById('themeBtn');
-        const body = document.body;
-        themeBtn.addEventListener('click', () => {
-            body.classList.toggle('light-mode');
-            themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
-        });
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            /* ================== 音频控制系统集成 ================== */
+            const bgmAudio = document.getElementById('bgmAudio');
+            const hoverSound = document.getElementById('hoverSound');
+            const clickSound = document.getElementById('clickSound');
+            const audioToggle = document.getElementById('audioToggle');
+            
+            const bgmVol = document.getElementById('bgmVol');
+            const hoverVol = document.getElementById('hoverVol');
+            const clickVol = document.getElementById('clickVol');
+            
+            const volHeader = document.getElementById('volHeader');
+            const volumePanel = document.getElementById('volumePanel');
+            const volIcon = document.getElementById('volIcon');
+            
+            let isAudioEnabled = false; 
 
-        function toggleCase(element) {
-            const block = element.closest('.case-block');
-            block.classList.toggle('collapsed');
-        }
-
-        const dashboardImages = document.querySelectorAll('.dashboard-img');
-        const lightbox = document.getElementById('imageLightbox');
-        const lightboxImg = document.getElementById('lightboxImg');
-
-        dashboardImages.forEach(img => {
-            img.addEventListener('click', () => {
-                lightboxImg.src = img.src; 
-                lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden'; 
+            // 监听 BGM 滑块实时改变音量
+            bgmVol.addEventListener('input', (e) => {
+                if(isAudioEnabled) {
+                    bgmAudio.volume = e.target.value;
+                }
             });
-        });
 
-        lightbox.addEventListener('click', (e) => {
-            if (e.target !== lightboxImg) { 
+            audioToggle.addEventListener('click', () => {
+                isAudioEnabled = !isAudioEnabled;
+                if(isAudioEnabled) {
+                    audioToggle.innerHTML = '[ AUDIO: ON ]';
+                    audioToggle.classList.remove('muted');
+                    bgmAudio.volume = bgmVol.value; 
+                    bgmAudio.play().catch(e => console.log("BGM autoplay prevented"));
+                    playSound(clickSound, clickVol); 
+                } else {
+                    audioToggle.innerHTML = '[ AUDIO: OFF ]';
+                    audioToggle.classList.add('muted');
+                    bgmAudio.pause();
+                }
+            });
+
+            // 混音台折叠/展开逻辑
+            volHeader.addEventListener('click', () => {
+                volumePanel.classList.toggle('collapsed');
+                volIcon.textContent = volumePanel.classList.contains('collapsed') ? '[+]' : '[-]';
+                playSound(clickSound, clickVol); 
+            });
+
+            function playSound(audioElement, volInputRef) {
+                if(!isAudioEnabled || !audioElement) return;
+                audioElement.currentTime = 0;
+                audioElement.volume = volInputRef.value;
+                let playPromise = audioElement.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {});
+                }
+            }
+
+            // 右侧提示框折叠逻辑
+            const rightHintBox = document.getElementById('rightHintBox');
+            const hintToggleBtn = document.getElementById('hintToggleBtn');
+            if(hintToggleBtn && rightHintBox) {
+                hintToggleBtn.addEventListener('click', () => {
+                    rightHintBox.classList.toggle('collapsed');
+                    hintToggleBtn.innerHTML = rightHintBox.classList.contains('collapsed') ? '〈' : '〉';
+                });
+            }
+
+            // 绑定所有交互元素的音效
+            const interactables = document.querySelectorAll('.interactable, a, button, .case-header, .dashboard-img');
+            interactables.forEach(el => {
+                el.addEventListener('mouseenter', () => playSound(hoverSound, hoverVol));
+                
+                if (el.tagName.toLowerCase() === 'button' || el.tagName.toLowerCase() === 'a' || el.classList.contains('case-header') || el.classList.contains('dashboard-img') || el.classList.contains('hint-toggle')) {
+                    if(!el.classList.contains('vol-slider') && el.id !== 'volHeader') {
+                        el.addEventListener('click', () => playSound(clickSound, clickVol));
+                    }
+                }
+            });
+
+
+            /* ================== 页面原生逻辑 ================== */
+            const themeBtn = document.getElementById('themeBtn');
+            const body = document.body;
+            themeBtn.addEventListener('click', () => {
+                body.classList.toggle('light-mode');
+                themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
+            });
+
+            // 暴露 toggleCase 给全局使用 (绑定到 HTML onClick)
+            window.toggleCase = function(element) {
+                const block = element.closest('.case-block');
+                block.classList.toggle('collapsed');
+            }
+
+            const dashboardImages = document.querySelectorAll('.dashboard-img');
+            const lightbox = document.getElementById('imageLightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxClose = document.getElementById('lightboxClose');
+
+            dashboardImages.forEach(img => {
+                img.addEventListener('click', () => {
+                    lightboxImg.src = img.src; 
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden'; 
+                });
+            });
+
+            lightboxClose.addEventListener('click', () => {
                 lightbox.classList.remove('active');
                 document.body.style.overflow = 'auto';
-            }
+            });
+
+            lightbox.addEventListener('click', (e) => {
+                if (e.target !== lightboxImg) { 
+                    lightbox.classList.remove('active');
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
     </script>
 </body>
