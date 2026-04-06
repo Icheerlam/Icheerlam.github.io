@@ -8,7 +8,6 @@
     <style>
         /* ================= 罗德岛制式终端 核心变量 ================= */
         :root {
-            /* 暗夜战术模式 */
             --ak-bg-main: #050505; 
             --ak-bg-panel: rgba(18, 18, 20, 0.92); 
             --ak-text-main: #ffffff;
@@ -19,7 +18,6 @@
             --ak-scan-line: rgba(0, 216, 255, 0.03);
         }
 
-        /* 医疗部白昼模式 */
         body.light-mode {
             --ak-bg-main: #e5e7eb; 
             --ak-bg-panel: rgba(255, 255, 255, 0.95); 
@@ -32,13 +30,12 @@
 
         * { box-sizing:border-box; margin:0; padding:0; }
         
-        /* ✨ 开启平滑滚动 */
         html { scroll-behavior: smooth; }
 
         body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; transition: background 0.4s ease, color 0.4s ease; }
         @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
 
-        /* ✨ 科技蓝图背景 */
+        /* 科技蓝图背景 */
         .tech-bg { position:fixed; inset:0; z-index:-10; background-color:var(--ak-bg-main); background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center; opacity:0.15; filter:grayscale(100%); transition: 0.4s; }
         .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:40px 40px; }
         
@@ -82,16 +79,7 @@
         }
         body.light-mode .prts-hud { border-color: rgba(2, 132, 199, 0.1); }
 
-        .prts-watermark {
-            position: fixed; bottom: 10%; left: -80px; z-index: -8;
-            font-family: 'Space Mono', monospace; font-size: 5rem; font-weight: 800;
-            color: rgba(255, 255, 255, 0.015);
-            transform: rotate(-90deg); transform-origin: left bottom;
-            white-space: nowrap; pointer-events: none; user-select: none;
-        }
-        body.light-mode .prts-watermark { color: rgba(0, 0, 0, 0.02); }
-
-        /* ================= 顶部导航栏 ================= */
+        /* 导航与顶部 */
         nav { 
             position: fixed; top: 0; width: 100%; padding: 15px 5vw; 
             display: flex; justify-content: space-between; align-items: center; 
@@ -106,7 +94,7 @@
         .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono', monospace; text-decoration:none; transition:0.3s; cursor: pointer; }
         .nav-home-btn:hover { background:var(--ak-accent-warn); color:#000; box-shadow: 0 0 10px var(--ak-accent-warn); }
 
-        /* ================= 音频控制区 (左侧) ================= */
+        /* 音频控制区 */
         .audio-toggle-btn {
             position: fixed; top: 80px; left: 5vw; background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(5px);
             color: var(--ak-accent-info); border: 1px solid var(--ak-accent-info); 
@@ -117,7 +105,6 @@
         .audio-toggle-btn.muted { color: var(--ak-text-muted); border-color: var(--ak-text-muted); }
         .audio-toggle-btn.muted:hover { background: var(--ak-text-muted); color: #000; }
 
-        /* 战术混音台 (调节滑块) */
         .volume-panel {
             position: fixed; top: 125px; left: 5vw; background: rgba(10, 10, 12, 0.85); backdrop-filter: blur(5px);
             border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border); padding: 15px; width: 170px;
@@ -135,7 +122,6 @@
         .vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 8px; height: 12px; background: var(--ak-accent-info); cursor: pointer; border-radius: 1px; }
         .vol-slider::-webkit-slider-thumb:hover { background: var(--ak-accent-warn); }
 
-        /* ================= 主题切换悬浮键 ================= */
         .theme-toggle-btn { 
             position: fixed; bottom: 30px; right: 30px; background: var(--ak-bg-main); 
             color: var(--ak-text-muted); border: 1px solid var(--ak-border); 
@@ -154,7 +140,7 @@
         .page-header { text-align:center; margin:140px auto 40px; animation:fadeUp 0.6s forwards; position:relative; z-index:10;}
         .page-header h1 { font:800 2.2rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:10px; }
 
-        /* ✨ 右侧悬浮目录栏 */
+        /* 目录栏 */
         .toc-sidebar {
             position: fixed; right: 4vw; top: 50%; transform: translateY(-50%);
             display: flex; flex-direction: column; gap: 20px; z-index: 100;
@@ -168,7 +154,7 @@
         .toc-link.active { color: var(--ak-accent-info); text-shadow: 0 0 10px rgba(0,216,255,0.4); }
         .toc-link:hover::before, .toc-link.active::before { height: 100%; }
 
-        /* ✨ 视频容器通用样式 */
+        /* 视频容器样式 */
         .video-container { max-width:1000px; margin:0 auto; padding:0 5vw 80px; display:flex; flex-direction:column; gap:40px; position:relative; z-index:10;}
         
         .video-card { 
@@ -179,7 +165,6 @@
         }
         .video-card:hover { border-color:var(--ak-accent-info); transform:translateY(-5px); box-shadow:0 15px 40px rgba(0,216,255,0.1); }
 
-        /* 全屏修复 */
         .video-card:fullscreen, .video-card:-webkit-full-screen, .video-card:-ms-fullscreen {
             backdrop-filter: none !important;
             transform: none !important;
@@ -354,12 +339,12 @@
         </div>
 
         <div class="video-card interactable" id="sec-comparison" style="animation-delay: 0.6s;">
-            <div style="display: flex; gap: 30px; flex-wrap: wrap; justify-content: center;">
+            <div style="display: flex; flex-direction: column; gap: 40px; align-items: center;">
                 
-                <div class="video-item-center" style="flex: 1; min-width: 300px;">
-                    <div class="resizable-video-wrapper" style="width: 100%; height: auto; aspect-ratio: 16/9;">
+                <div class="video-item-center">
+                    <div class="resizable-video-wrapper">
                         <video controls playsinline="true" webkit-playsinline="true" x5-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" preload="metadata" 
-                               src="包装前.mp4"
+                               src="2B套地洞刷怪.mp4"
                                onplay="if(this.dataset.played !== '1'){this.currentTime=0; this.dataset.played='1';}">
                         </video>
                     </div>
@@ -369,10 +354,10 @@
                     </div>
                 </div>
 
-                <div class="video-item-center" style="flex: 1; min-width: 300px;">
-                    <div class="resizable-video-wrapper" style="width: 100%; height: auto; aspect-ratio: 16/9;">
+                <div class="video-item-center">
+                    <div class="resizable-video-wrapper">
                         <video controls playsinline="true" webkit-playsinline="true" x5-playsinline="true" x5-video-player-type="h5" x5-video-player-fullscreen="true" preload="metadata" 
-                               src="包装后.mp4"
+                               src="2B套地洞刷怪包装.mp4"
                                onplay="if(this.dataset.played !== '1'){this.currentTime=0; this.dataset.played='1';}">
                         </video>
                     </div>
