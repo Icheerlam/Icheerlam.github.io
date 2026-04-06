@@ -208,11 +208,18 @@
             // 页面实际渲染的卡片计数（用于处理动画延迟）
             let renderCounter = 1;
             
-            // 恢复所有图片显示，总共循环 38 次 (37张图 + 1个GIF块)
-            for(let i=1; i<=38; i++) {
+            // 定义需要跳过渲染的图片索引数组
+            const hiddenJpgIndexes = [28, 29, 30, 31, 33, 37, 38];
+            
+            // 循环遍历
+            // 因为我们要处理到第 38 张图，所以循环至少到 38，但由于中间有被跳过的，可能需要循环更多次
+            // 安全起见，我们使用一个 while 循环，直到渲染出足够的元素或 jpgIndex 超出范围
+            let loopIndex = 1;
+
+            while (jpgIndex <= 38) {
                 
-                // 将 GIF 块固定插入在原本图片19的位置之后 (i === 20 时插入)
-                if (i === 20) {
+                // 将 GIF 块固定插入在原本图片19的位置之后 (loopIndex === 20 时插入)
+                if (loopIndex === 20) {
                     box.innerHTML += `
                         <div class="masonry-item interactable" style="animation-delay:${renderCounter*0.03}s">
                             <div style="display: flex; flex-direction: column;">
@@ -233,20 +240,29 @@
                             </div>
                         </div>`;
                     renderCounter++;
-                } else {
-                    // 生成普通的 JPG 瀑布流块
-                    let fileName = `${jpgIndex}1.jpg`;
-                    
-                    // emo1.jpg ~ emo5.jpg 的映射逻辑保持不变 (对应原本文件名序号 22-26)
-                    if (jpgIndex >= 22 && jpgIndex <= 26) { 
-                        fileName = `emo${jpgIndex - 21}.jpg`; 
-                    }
-
-                    box.innerHTML += `<div class="masonry-item interactable" style="animation-delay:${renderCounter*0.03}s"><img src="平面设计导出jpg的副本/${fileName}" loading="lazy" class="img-clicker"></div>`;
-                    
-                    jpgIndex++;
-                    renderCounter++;
+                    loopIndex++;
+                    continue; // GIF块渲染完后，当前循环跳过，进入下一次循环渲染第19张图
                 }
+
+                // 检查当前的 jpgIndex 是否在需要隐藏的数组中
+                if (hiddenJpgIndexes.includes(jpgIndex)) {
+                    jpgIndex++; // 索引增加，但跳过渲染
+                    continue; 
+                }
+
+                // 生成普通的 JPG 瀑布流块
+                let fileName = `${jpgIndex}1.jpg`;
+                
+                // emo1.jpg ~ emo5.jpg 的映射逻辑保持不变 (对应原本文件名序号 22-26)
+                if (jpgIndex >= 22 && jpgIndex <= 26) { 
+                    fileName = `emo${jpgIndex - 21}.jpg`; 
+                }
+
+                box.innerHTML += `<div class="masonry-item interactable" style="animation-delay:${renderCounter*0.03}s"><img src="平面设计导出jpg的副本/${fileName}" loading="lazy" class="img-clicker"></div>`;
+                
+                jpgIndex++;
+                renderCounter++;
+                loopIndex++;
             }
             
             const lb = $('#lightbox'), lbImg = $('#lightbox-img');
