@@ -313,21 +313,22 @@
         .case-block:nth-child(3) { animation-delay: 0.3s; }
         .case-block:nth-child(4) { animation-delay: 0.4s; } 
 
-        @media (max-width: 1300px) {
-            .right-hint-box { display: none; } 
-        }
-
         @media (max-width: 1000px) {
             .nav-links { display: none; } 
             .bento-grid { grid-template-columns: 1fr; } 
             .card-full, .card-left, .card-right { grid-column: span 1; padding-right: 0; }
+            .vertical-videos-grid { gap: 15px; }
             .strategy-grid { grid-template-columns: 1fr; gap: 16px; } 
         }
 
+        /* 移动端适配 (包含右侧提示框的位置调整) */
         @media (max-width: 768px) { 
             .audio-toggle-btn { top: auto; bottom: 20px; left: 20px; z-index: 2000; width: 120px; padding: 10px;} 
             .volume-panel { top: auto; bottom: 70px; left: 20px; transform: scale(0.85); transform-origin: bottom left; z-index: 1999; }
             .theme-toggle-btn { bottom: 20px; right: 20px; z-index: 2000;}
+            
+            /* 在小屏幕下将提示框位置上移，防止被底部按钮遮挡 */
+            .right-hint-box { top: 20%; transform: none; right: 0; }
         }
     </style>
 </head>
@@ -363,7 +364,7 @@
     <aside class="right-hint-box" id="rightHintBox">
         <button class="hint-toggle interactable" id="hintToggleBtn">〉</button>
         <div class="hint-title">[ NOTICE ]</div>
-        <div class="hint-text">在 <strong style="color:var(--ak-text-main);">Video</strong> 页面也可以看到其他的数据分析。</div>
+        <div class="hint-text">本页面视频偏 <strong style="color:var(--ak-text-main);">[数据]</strong>，Video 页面偏 <strong style="color:var(--ak-text-main);">[质量]</strong> ，也可以看到其他的数据分析。</div>
         <a href="../my vedio.html" class="hint-link interactable">GO TO VIDEO ></a>
     </aside>
 
@@ -661,6 +662,7 @@
                     }
                 }
             });
+
 
             /* ================== 页面原生逻辑 ================== */
             const themeBtn = document.getElementById('themeBtn');
