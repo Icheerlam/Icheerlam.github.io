@@ -37,9 +37,9 @@
         body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; transition: background 0.4s ease, color 0.4s ease; }
         @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
 
-        /* 科技动态背景 */
-        .tech-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; object-fit:cover; z-index:-10; opacity:0.25; filter:grayscale(100%); transition: 0.4s; pointer-events: none; }
-        body.light-mode .tech-bg { opacity: 0.08; filter: grayscale(100%) invert(1); }
+        /* 科技动态背景（已去除黑白滤镜，改为彩色） */
+        .tech-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; object-fit:cover; z-index:-10; opacity:0.35; transition: 0.4s; pointer-events: none; }
+        body.light-mode .tech-bg { opacity: 0.15; filter: none; }
         
         .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:40px 40px; }
         
@@ -247,9 +247,10 @@
 
     <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
-    <video class="tech-bg" src="飞船转动.mp4" autoplay loop muted playsinline></video>
+    <video class="tech-bg" id="techBgVideo" src="飞船转动.mp4" autoplay loop muted playsinline></video>
     <div class="tech-overlay"></div>
     <div class="prts-hud"></div>
+
     <nav>
         <a href="Spike's profolio.html" class="nav-logo interactable">PRTS // CLARENCE YE</a>
         <div class="nav-right">
@@ -457,6 +458,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            /* --- 控制背景视频播放速度 --- */
+            const techBgVideo = document.getElementById('techBgVideo');
+            if(techBgVideo) {
+                techBgVideo.playbackRate = 1.0; // 恢复正常速度
+            }
+
             /* --- 1. 音频系统控制 --- */
             const bgmAudio = document.getElementById('bgmAudio');
             const hoverSound = document.getElementById('hoverSound');
