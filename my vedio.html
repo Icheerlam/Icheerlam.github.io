@@ -37,23 +37,22 @@
         body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; transition: background 0.4s ease, color 0.4s ease; }
         @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
 
-        /* 科技动态背景 */
-        .tech-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; object-fit:cover; z-index:-10; opacity:0.45; filter:grayscale(100%); transition: 0.4s; pointer-events: none; }
-        body.light-mode .tech-bg { opacity: 0.08; filter: grayscale(100%) invert(1); }
+        /* 科技动态背景（核心修改：已完全去除黑白滤镜，呈现彩色画面） */
+        .tech-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; object-fit:cover; z-index:-10; opacity:0.6; transition: 0.4s; pointer-events: none; }
+        body.light-mode .tech-bg { opacity: 0.25; filter: none; }
         
-        /* ======== 核心修改：新增黑色背景滤镜（蒙层） ======== */
+        /* 黑色蒙层（滤镜），用于调暗、弱化背景 */
         .tech-dimmer {
             position: fixed;
             inset: 0;
             z-index: -9.5; /* 位于视频(-10)之上，网格(-9)之下 */
-            background: rgba(0, 0, 0, 0.2); /* 70% 不透明度的纯黑，深沉、弱化背景 */
+            background: rgba(0, 0, 0, 0.7); /* 70% 不透明度的纯黑，深沉、弱化背景 */
             pointer-events: none;
             transition: background 0.4s ease; /* 适配主题切换 */
         }
         body.light-mode .tech-dimmer {
-            background: rgba(255, 255, 255, 0.3); /* 亮色模式下使用白色蒙层 */
+            background: rgba(0, 0, 0, 0.3); /* 亮色模式下使用低不透明度的黑色蒙层，轻微弱化 */
         }
-        /* ==================================================== */
 
         .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:40px 40px; }
         
@@ -475,12 +474,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            /* --- 控制背景视频播放速度 --- */
-            const techBgVideo = document.getElementById('techBgVideo');
-            if(techBgVideo) {
-                techBgVideo.playbackRate = 1.0; // 正常速度
-            }
-
             /* --- 1. 音频系统控制 --- */
             const bgmAudio = document.getElementById('bgmAudio');
             const hoverSound = document.getElementById('hoverSound');
