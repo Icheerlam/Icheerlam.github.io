@@ -10,6 +10,7 @@
         :root {
             --ak-bg-main: #050505; 
             --ak-bg-panel: rgba(18, 18, 20, 0.92); 
+            --ak-bg-panel-light: rgba(30, 30, 35, 0.6);
             --ak-text-main: #ffffff;
             --ak-text-muted: #7a7a7a;
             --ak-accent-info: #00d8ff; 
@@ -21,6 +22,7 @@
         body.light-mode {
             --ak-bg-main: #e5e7eb; 
             --ak-bg-panel: rgba(255, 255, 255, 0.95); 
+            --ak-bg-panel-light: rgba(240, 242, 245, 0.8);
             --ak-text-main: #111;
             --ak-text-muted: #64748b;
             --ak-accent-info: #0284c7;
@@ -35,8 +37,10 @@
         body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; transition: background 0.4s ease, color 0.4s ease; }
         @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
 
-        /* 科技蓝图背景 */
-        .tech-bg { position:fixed; inset:0; z-index:-10; background-color:var(--ak-bg-main); background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center; opacity:0.15; filter:grayscale(100%); transition: 0.4s; }
+        /* 科技动态背景 */
+        .tech-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; object-fit:cover; z-index:-10; opacity:0.25; filter:grayscale(100%); transition: 0.4s; pointer-events: none; }
+        body.light-mode .tech-bg { opacity: 0.08; filter: grayscale(100%) invert(1); }
+        
         .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:40px 40px; }
         
         body.light-mode .tech-overlay { 
@@ -243,8 +247,9 @@
 
     <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
-    <div class="tech-bg"></div><div class="tech-overlay"></div><div class="prts-hud"></div>
-
+    <video class="tech-bg" src="飞船转动.mp4" autoplay loop muted playsinline></video>
+    <div class="tech-overlay"></div>
+    <div class="prts-hud"></div>
     <nav>
         <a href="Spike's profolio.html" class="nav-logo interactable">PRTS // CLARENCE YE</a>
         <div class="nav-right">
