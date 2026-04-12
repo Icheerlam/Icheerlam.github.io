@@ -247,9 +247,10 @@
 
     <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
-    <video class="tech-bg" src="飞船转动.mp4" autoplay loop muted playsinline></video>
+    <video class="tech-bg" id="techBgVideo" src="飞船转动.mp4" autoplay loop muted playsinline></video>
     <div class="tech-overlay"></div>
     <div class="prts-hud"></div>
+
     <nav>
         <a href="Spike's profolio.html" class="nav-logo interactable">PRTS // CLARENCE YE</a>
         <div class="nav-right">
@@ -457,6 +458,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            /* --- 控制背景视频慢放两倍 --- */
+            const techBgVideo = document.getElementById('techBgVideo');
+            if(techBgVideo) {
+                techBgVideo.playbackRate = 0.5;
+            }
+
             /* --- 1. 音频系统控制 --- */
             const bgmAudio = document.getElementById('bgmAudio');
             const hoverSound = document.getElementById('hoverSound');
