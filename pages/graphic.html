@@ -121,7 +121,27 @@
         .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10;}
         .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; cursor: pointer; }
         .btn-back:hover { background:var(--ak-accent-info); color:#000; border-color:var(--ak-accent-info); }
-        footer { text-align:center; padding:40px; color:var(--ak-text-muted); font:700 0.75rem 'Space Mono'; position:relative; z-index:10; }
+        footer {
+            position: relative;
+            text-align: center;
+            padding: 40px;
+            color: var(--ak-text-muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            border-top: 1px solid var(--ak-border);
+            z-index: 10;
+        }
+        footer::before, footer::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            width: 20px;
+            height: 4px;
+            background: var(--ak-accent-info);
+        }
+        footer::before { left: 0; }
+        footer::after { right: 0; }
         
         /* 移动端适配 (按钮防遮挡) */
         @media (max-width:1200px) { .masonry-gallery { column-count:3; } }
@@ -136,10 +156,10 @@
 </head>
 <body class="dark-mode">
 
-    <audio id="bgmAudio" loop preload="auto"><source src="音效/Sowing Chia Seed.mp3" type="audio/mpeg"></audio>
-    <audio id="hoverSound" preload="auto"><source src="音效/鼠标悬停.mp3" type="audio/mpeg"></audio>
-    <audio id="clickSound" preload="auto"><source src="音效/鼠标点击.mp3" type="audio/mpeg"></audio>
-    <audio id="specialSound" preload="auto"><source src="音效/点击头像.mp3" type="audio/mpeg"></audio>
+    <audio id="bgmAudio" loop preload="auto"><source src="../assets/audio/Sowing Chia Seed.mp3" type="audio/mpeg"></audio>
+    <audio id="hoverSound" preload="auto"><source src="../assets/audio/鼠标悬停.mp3" type="audio/mpeg"></audio>
+    <audio id="clickSound" preload="auto"><source src="../assets/audio/鼠标点击.mp3" type="audio/mpeg"></audio>
+    <audio id="specialSound" preload="auto"><source src="../assets/audio/点击头像.mp3" type="audio/mpeg"></audio>
 
     <button id="audioToggle" class="audio-toggle-btn muted interactable">[ AUDIO: OFF ]</button>
     
@@ -176,13 +196,13 @@
         <a class="nav-logo interactable">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
-                <a href="数据分析/Data Analysis.html" class="interactable">Data Analysis</a>
-                <a href="my graphic design.html" class="active interactable">Graphic</a>
-                <a href="3d model.html" class="interactable">3D Art</a>
-                <a href="my vedio.html" class="interactable">Video</a>
+                <a href="data.html" class="interactable">Data Analysis</a>
+                <a href="graphic.html" class="active interactable">Graphic</a>
+                <a href="3d.html" class="interactable">3D Art</a>
+                <a href="video.html" class="interactable">Video</a>
                 <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" class="interactable">Gallery</a>
             </div>
-            <a href="Spike's profolio.html" class="nav-home-btn interactable">[ RETURN ]</a>
+            <a href="../index.html" class="nav-home-btn interactable">[ RETURN ]</a>
         </div>
     </nav>
 
@@ -191,25 +211,25 @@
     </header>
 
     <main class="masonry-gallery" id="galleryBox">
-        <div class="masonry-item interactable" style="animation-delay:0.03s"><img src="平面设计导出jpg的副本/11.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.06s"><img src="平面设计导出jpg的副本/21.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.09s"><img src="平面设计导出jpg的副本/31.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.12s"><img src="平面设计导出jpg的副本/41.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.15s"><img src="平面设计导出jpg的副本/51.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.18s"><img src="平面设计导出jpg的副本/61.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.21s"><img src="平面设计导出jpg的副本/71.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.24s"><img src="平面设计导出jpg的副本/81.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.27s"><img src="平面设计导出jpg的副本/91.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.30s"><img src="平面设计导出jpg的副本/101.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.33s"><img src="平面设计导出jpg的副本/111.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.36s"><img src="平面设计导出jpg的副本/121.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.39s"><img src="平面设计导出jpg的副本/131.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.42s"><img src="平面设计导出jpg的副本/141.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.45s"><img src="平面设计导出jpg的副本/151.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.48s"><img src="平面设计导出jpg的副本/161.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.51s"><img src="平面设计导出jpg的副本/171.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.54s"><img src="平面设计导出jpg的副本/181.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.57s"><img src="平面设计导出jpg的副本/191.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.03s"><img src="../works/graphic/11.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.06s"><img src="../works/graphic/21.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.09s"><img src="../works/graphic/31.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.12s"><img src="../works/graphic/41.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.15s"><img src="../works/graphic/51.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.18s"><img src="../works/graphic/61.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.21s"><img src="../works/graphic/71.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.24s"><img src="../works/graphic/81.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.27s"><img src="../works/graphic/91.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.30s"><img src="../works/graphic/101.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.33s"><img src="../works/graphic/111.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.36s"><img src="../works/graphic/121.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.39s"><img src="../works/graphic/131.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.42s"><img src="../works/graphic/141.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.45s"><img src="../works/graphic/151.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.48s"><img src="../works/graphic/161.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.51s"><img src="../works/graphic/171.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.54s"><img src="../works/graphic/181.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.57s"><img src="../works/graphic/191.jpg" loading="lazy" class="img-clicker"></div>
 
         <div class="masonry-item interactable" style="animation-delay:0.60s">
             <div style="display: flex; flex-direction: column;">
@@ -227,30 +247,30 @@
             </div>
         </div>
 
-        <div class="masonry-item interactable" style="animation-delay:0.63s"><img src="平面设计导出jpg的副本/201.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.66s"><img src="平面设计导出jpg的副本/211.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.63s"><img src="../works/graphic/201.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.66s"><img src="../works/graphic/211.jpg" loading="lazy" class="img-clicker"></div>
         
-        <div class="masonry-item interactable" style="animation-delay:0.69s"><img src="平面设计导出jpg的副本/emo1.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.72s"><img src="平面设计导出jpg的副本/emo2.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.75s"><img src="平面设计导出jpg的副本/emo3.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.78s"><img src="平面设计导出jpg的副本/emo4.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.81s"><img src="平面设计导出jpg的副本/emo5.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.69s"><img src="../works/graphic/emo1.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.72s"><img src="../works/graphic/emo2.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.75s"><img src="../works/graphic/emo3.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.78s"><img src="../works/graphic/emo4.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.81s"><img src="../works/graphic/emo5.jpg" loading="lazy" class="img-clicker"></div>
         
-     <!--   <div class="masonry-item interactable" style="animation-delay:0.84s"><img src="平面设计导出jpg的副本/271.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.87s"><img src="平面设计导出jpg的副本/281.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.90s"><img src="平面设计导出jpg的副本/291.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.93s"><img src="平面设计导出jpg的副本/301.jpg" loading="lazy" class="img-clicker"></div>  !-->
-        <div class="masonry-item interactable" style="animation-delay:0.96s"><img src="平面设计导出jpg的副本/311.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.99s"><img src="平面设计导出jpg的副本/321.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.02s"><img src="平面设计导出jpg的副本/331.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.05s"><img src="平面设计导出jpg的副本/341.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.08s"><img src="平面设计导出jpg的副本/351.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.11s"><img src="平面设计导出jpg的副本/361.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.14s"><img src="平面设计导出jpg的副本/371.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.17s"><img src="平面设计导出jpg的副本/381.jpg" loading="lazy" class="img-clicker"></div>
+     <!--   <div class="masonry-item interactable" style="animation-delay:0.84s"><img src="../works/graphic/271.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.87s"><img src="../works/graphic/281.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.90s"><img src="../works/graphic/291.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.93s"><img src="../works/graphic/301.jpg" loading="lazy" class="img-clicker"></div>  !-->
+        <div class="masonry-item interactable" style="animation-delay:0.96s"><img src="../works/graphic/311.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:0.99s"><img src="../works/graphic/321.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:1.02s"><img src="../works/graphic/331.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:1.05s"><img src="../works/graphic/341.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:1.08s"><img src="../works/graphic/351.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:1.11s"><img src="../works/graphic/361.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:1.14s"><img src="../works/graphic/371.jpg" loading="lazy" class="img-clicker"></div>
+        <div class="masonry-item interactable" style="animation-delay:1.17s"><img src="../works/graphic/381.jpg" loading="lazy" class="img-clicker"></div>
     </main>
 
-    <div class="back-nav"><a href="Spike's profolio.html" class="btn-back interactable">[ RETURN ]</a></div>
+    <div class="back-nav"><a href="../index.html" class="btn-back interactable">[ RETURN ]</a></div>
     <footer><p>> Rhodes Island Archive // System.2026</p></footer>
 
     <div class="lightbox" id="lightbox"><span class="lightbox-close interactable">[ X ]</span><img src="" id="lightbox-img"></div>

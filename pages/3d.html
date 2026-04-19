@@ -53,7 +53,27 @@
         .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10;}
         .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; }
         .btn-back:hover { background:var(--ak-accent-info); color:#000; border-color:var(--ak-accent-info); }
-        footer { text-align:center; padding:40px; color:var(--ak-text-muted); font:700 0.75rem 'Space Mono'; position:relative; z-index:10; }
+        footer {
+            position: relative;
+            text-align: center;
+            padding: 40px;
+            color: var(--ak-text-muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            border-top: 1px solid var(--ak-border);
+            z-index: 10;
+        }
+        footer::before, footer::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            width: 20px;
+            height: 4px;
+            background: var(--ak-accent-info);
+        }
+        footer::before { left: 0; }
+        footer::after { right: 0; }
         
         @media (max-width:900px) { .nav-links{display:none;} .gallery-container{grid-template-columns:repeat(auto-fill,minmax(280px,1fr));} }
     </style>
@@ -63,16 +83,16 @@
     <div class="tech-bg"></div><div class="tech-overlay"></div><div class="prts-hud"></div>
 
     <nav>
-        <a href="Spike's profolio.html" class="nav-logo">PRTS // CLARENCE YE</a>
+        <a href="../index.html" class="nav-logo">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
-                <a href="数据分析/Data Analysis.html">Data Analysis</a>
-                <a href="my graphic design.html">Graphic</a>
-                <a href="3d model.html" class="active">3D Art</a>
-                <a href="my vedio.html">Video</a>
+                <a href="data.html">Data Analysis</a>
+                <a href="graphic.html">Graphic</a>
+                <a href="3d.html" class="active">3D Art</a>
+                <a href="video.html">Video</a>
                 <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Gallery</a>
             </div>
-            <a href="Spike's profolio.html" class="nav-home-btn">[ RETURN ]</a>
+            <a href="../index.html" class="nav-home-btn">[ RETURN ]</a>
         </div>
     </nav>
 
@@ -81,28 +101,28 @@
     </header>
 
     <main class="gallery-container">
-        <div class="gallery-card" style="--n:1"><div class="img-wrapper"><img src="3d model/gun 1.png" loading="lazy"></div><h4 class="card-title">手枪模型</h4></div>
-        <div class="gallery-card" style="--n:2"><div class="img-wrapper"><img src="3d model/gun 2.jpg" loading="lazy"></div><h4 class="card-title">手枪贴图</h4></div>
-        <div class="gallery-card" style="--n:3"><div class="img-wrapper"><img src="3d model/grenade.jpg" loading="lazy"></div><h4 class="card-title">金克丝手雷</h4></div>
-        <div class="gallery-card" style="--n:4"><div class="img-wrapper"><img src="3d model/radio.jpg" loading="lazy"></div><h4 class="card-title">高模收音机</h4></div>
-        <div class="gallery-card" style="--n:5"><div class="img-wrapper"><img src="3d model/头骨 1.png" loading="lazy"></div><h4 class="card-title">头骨雕刻</h4></div>
-        <div class="gallery-card" style="--n:6"><div class="img-wrapper"><img src="3d model/头骨 2.jpg" loading="lazy"></div><h4 class="card-title">头骨侧视图</h4></div>
-        <div class="gallery-card" style="--n:7"><div class="img-wrapper"><img src="3d model/nomad1.png" loading="lazy"></div><h4 class="card-title">Nomad Sculpt 1</h4></div>
-        <div class="gallery-card" style="--n:8"><div class="img-wrapper"><img src="3d model/nomad2.png" loading="lazy"></div><h4 class="card-title">Nomad Sculpt 2</h4></div>
-        <div class="gallery-card" style="--n:9"><div class="img-wrapper"><img src="3d model/小鹿.jpg" loading="lazy"></div><h4 class="card-title">Nomad - 小鹿</h4></div>
-        <div class="gallery-card" style="--n:10"><div class="img-wrapper"><img src="3d model/ed 1.png" loading="lazy"></div><h4 class="card-title">角色建模 1</h4></div>
-        <div class="gallery-card" style="--n:11"><div class="img-wrapper"><img src="3d model/ed 2.jpg" loading="lazy"></div><h4 class="card-title">角色建模 1 渲染</h4></div>
-        <div class="gallery-card" style="--n:12"><div class="img-wrapper"><img src="3d model/rt 1.png" loading="lazy"></div><h4 class="card-title">机甲高达</h4></div>
-        <div class="gallery-card" style="--n:13"><div class="img-wrapper"><img src="3d model/rt 2.jpg" loading="lazy"></div><h4 class="card-title">机甲高达渲染</h4></div>
-        <div class="gallery-card" style="--n:14"><div class="img-wrapper"><img src="3d model/axe.jpg" loading="lazy"></div><h4 class="card-title">战斧</h4></div>
-        <div class="gallery-card" style="--n:15"><div class="img-wrapper"><img src="3d model/fe 1.png" loading="lazy"></div><h4 class="card-title">角色建模 2</h4></div>
-        <div class="gallery-card" style="--n:16"><div class="img-wrapper"><img src="3d model/fe 2.jpg" loading="lazy"></div><h4 class="card-title">角色白模渲染</h4></div>
-        <div class="gallery-card" style="--n:17"><div class="img-wrapper"><img src="3d model/house 1.jpg" loading="lazy"></div><h4 class="card-title">房子低模</h4></div>
-        <div class="gallery-card" style="--n:18"><div class="img-wrapper"><img src="3d model/house2.jpg" loading="lazy"></div><h4 class="card-title">房子烘焙贴图</h4></div>
-        <div class="gallery-card"><div class="img-wrapper"><video controls loop autoplay muted playsinline style="width:100%; border-radius:2px;"><source src="3d model/house.mp4" type="video/mp4"></video></div><h4 class="card-title">场景动态演示</h4></div>
+        <div class="gallery-card" style="--n:1"><div class="img-wrapper"><img src="../works/3d/gun 1.png" loading="lazy"></div><h4 class="card-title">手枪模型</h4></div>
+        <div class="gallery-card" style="--n:2"><div class="img-wrapper"><img src="../works/3d/gun 2.jpg" loading="lazy"></div><h4 class="card-title">手枪贴图</h4></div>
+        <div class="gallery-card" style="--n:3"><div class="img-wrapper"><img src="../works/3d/grenade.jpg" loading="lazy"></div><h4 class="card-title">金克丝手雷</h4></div>
+        <div class="gallery-card" style="--n:4"><div class="img-wrapper"><img src="../works/3d/radio.jpg" loading="lazy"></div><h4 class="card-title">高模收音机</h4></div>
+        <div class="gallery-card" style="--n:5"><div class="img-wrapper"><img src="../works/3d/头骨 1.png" loading="lazy"></div><h4 class="card-title">头骨雕刻</h4></div>
+        <div class="gallery-card" style="--n:6"><div class="img-wrapper"><img src="../works/3d/头骨 2.jpg" loading="lazy"></div><h4 class="card-title">头骨侧视图</h4></div>
+        <div class="gallery-card" style="--n:7"><div class="img-wrapper"><img src="../works/3d/nomad1.png" loading="lazy"></div><h4 class="card-title">Nomad Sculpt 1</h4></div>
+        <div class="gallery-card" style="--n:8"><div class="img-wrapper"><img src="../works/3d/nomad2.png" loading="lazy"></div><h4 class="card-title">Nomad Sculpt 2</h4></div>
+        <div class="gallery-card" style="--n:9"><div class="img-wrapper"><img src="../works/3d/小鹿.jpg" loading="lazy"></div><h4 class="card-title">Nomad - 小鹿</h4></div>
+        <div class="gallery-card" style="--n:10"><div class="img-wrapper"><img src="../works/3d/ed 1.png" loading="lazy"></div><h4 class="card-title">角色建模 1</h4></div>
+        <div class="gallery-card" style="--n:11"><div class="img-wrapper"><img src="../works/3d/ed 2.jpg" loading="lazy"></div><h4 class="card-title">角色建模 1 渲染</h4></div>
+        <div class="gallery-card" style="--n:12"><div class="img-wrapper"><img src="../works/3d/rt 1.png" loading="lazy"></div><h4 class="card-title">机甲高达</h4></div>
+        <div class="gallery-card" style="--n:13"><div class="img-wrapper"><img src="../works/3d/rt 2.jpg" loading="lazy"></div><h4 class="card-title">机甲高达渲染</h4></div>
+        <div class="gallery-card" style="--n:14"><div class="img-wrapper"><img src="../works/3d/axe.jpg" loading="lazy"></div><h4 class="card-title">战斧</h4></div>
+        <div class="gallery-card" style="--n:15"><div class="img-wrapper"><img src="../works/3d/fe 1.png" loading="lazy"></div><h4 class="card-title">角色建模 2</h4></div>
+        <div class="gallery-card" style="--n:16"><div class="img-wrapper"><img src="../works/3d/fe 2.jpg" loading="lazy"></div><h4 class="card-title">角色白模渲染</h4></div>
+        <div class="gallery-card" style="--n:17"><div class="img-wrapper"><img src="../works/3d/house 1.jpg" loading="lazy"></div><h4 class="card-title">房子低模</h4></div>
+        <div class="gallery-card" style="--n:18"><div class="img-wrapper"><img src="../works/3d/house2.jpg" loading="lazy"></div><h4 class="card-title">房子烘焙贴图</h4></div>
+        <div class="gallery-card"><div class="img-wrapper"><video controls loop autoplay muted playsinline style="width:100%; border-radius:2px;"><source src="../works/3d/house.mp4" type="video/mp4"></video></div><h4 class="card-title">场景动态演示</h4></div>
     </main>
 
-    <div class="back-nav"><a href="Spike's profolio.html" class="btn-back">[ RETURN ]</a></div>
+    <div class="back-nav"><a href="../index.html" class="btn-back">[ RETURN ]</a></div>
     <footer><p>> Rhodes Island Archive // System.2026</p></footer>
 
     <div class="lightbox" id="lightbox"><span class="lightbox-close">[ X ]</span><img src="" id="lightbox-img"></div>
