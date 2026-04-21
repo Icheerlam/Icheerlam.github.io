@@ -66,7 +66,7 @@
             position:relative; overflow:hidden;
         }
         .feature-card:hover { border-color:var(--ak-accent-info); transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,216,255,0.1); }
-        .feature-card::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg,transparent,transparent 4px,rgba(0,216,255,0.03) 4px,rgba(0,216,255,0.03) 8px); opacity:0; transition:0.4s; }
+        .feature-card::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg,transparent,transparent 4px,rgba(0,216,255,0.03) 4px,rgba(0,216,255,0.03) 8px); opacity:0; transition:0.4s; pointer-events:none; }
         .feature-card:hover::before { opacity:1; }
 
         /* 视频分析功能 - 主卡片（特效更强） */
