@@ -5,47 +5,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Analysis // Rhodes Island</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --ak-bg-main:#0A0A0E; --ak-bg-panel:rgba(18,20,25,0.85); --ak-text-main:#e0e6ed; --ak-text-muted:#828a9a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#1f232b; }
+        :root { --ak-bg-main:#050505; --ak-bg-panel:rgba(18,18,20,0.92); --ak-text-main:#ffffff; --ak-text-muted:#7a7a7a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#2a2a2a; --ak-scan-line:rgba(0,216,255,0.03); }
         * { box-sizing:border-box; margin:0; padding:0; }
         html { scroll-behavior:smooth; }
-        body { font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; }
+        body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; }
 
         @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
         @keyframes spin { to{transform:rotate(360deg);} }
-        @keyframes scan-drop { 0%{top:-10%;opacity:0;} 5%{opacity:0.4;} 45%{opacity:0.4;} 50%,100%{top:110%;opacity:0;} }
 
         .tech-bg { position:fixed; inset:0; z-index:-10; background-color:var(--ak-bg-main); background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center; opacity:0.15; filter:grayscale(100%); }
-        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:radial-gradient(circle at 50% 50%,transparent 20%,rgba(10,10,14,0.85) 100%),linear-gradient(rgba(0,216,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,216,255,0.04) 1px,transparent 1px); background-size:100% 100%,40px 40px,40px 40px; }
-        .prts-scanline { position:fixed; top:0; left:0; width:100vw; height:4px; z-index:-8; background:var(--ak-accent-info); box-shadow:0 0 15px var(--ak-accent-info),0 0 30px var(--ak-accent-info); opacity:0.4; pointer-events:none; animation:scan-drop 6s cubic-bezier(0.4,0,0.2,1) infinite; }
-        .prts-hud { position:fixed; inset:20px; z-index:-8; border:1px solid rgba(0,216,255,0.08); pointer-events:none; background:linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; }
+        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:40px 40px; }
+        .prts-hud { position:fixed; inset:20px; z-index:-8; border:1px solid rgba(0,216,255,0.05); pointer-events:none; background:linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; }
 
-        /* PRTS 导航 */
         nav { position:fixed; top:0; width:100%; padding:15px 5vw; display:flex; justify-content:space-between; align-items:center; background:var(--ak-bg-panel); border-bottom:1px solid var(--ak-border); z-index:1000; backdrop-filter:blur(10px); }
-        .nav-logo { font:800 1rem 'Space Mono'; letter-spacing:2px; color:var(--ak-text-main); text-decoration:none; border:1px solid var(--ak-accent-info); padding:5px 12px; cursor:pointer; transition:0.3s; }
+        .nav-logo { font:800 1rem 'Space Mono'; letter-spacing:2px; color:var(--ak-text-main); text-decoration:none; border:1px solid var(--ak-accent-info); padding:5px 12px; transition:0.3s; }
         .nav-logo:hover { background:var(--ak-accent-info); color:#000; }
         .nav-right { display:flex; align-items:center; gap:30px; }
         .nav-links { display:flex; gap:25px; font:0.85rem 'Space Mono'; }
-        .nav-links a { color:var(--ak-text-main); text-decoration:none; font-weight:700; text-transform:uppercase; transition:0.3s; cursor:pointer; }
+        .nav-links a { color:var(--ak-text-main); text-decoration:none; font-weight:700; text-transform:uppercase; transition:0.3s; }
         .nav-links a:hover, .nav-links a.active { color:var(--ak-accent-info); text-shadow:0 0 8px var(--ak-accent-info); }
-        .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono'; text-decoration:none; transition:0.3s; cursor:pointer; }
+        .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono'; text-decoration:none; transition:0.3s; }
         .nav-home-btn:hover { background:var(--ak-accent-warn); color:#000; }
 
-        /* 主题切换 */
-        .theme-toggle-btn { position:fixed; bottom:30px; right:30px; background:var(--ak-bg-panel); color:var(--ak-text-muted); border:1px solid var(--ak-border); padding:12px 16px; font-family:'Space Mono',monospace; font-size:0.8rem; font-weight:700; cursor:pointer; z-index:1500; transition:0.3s; box-shadow:0 4px 10px rgba(0,0,0,0.5); }
-        .theme-toggle-btn:hover { border-color:var(--ak-accent-info); color:var(--ak-accent-info); transform:translateY(-3px); }
-
-        /* PRTS 风格内容面板 */
-        .page-header { text-align:center; margin:120px auto 40px; padding:0 20px; position:relative; z-index:10; }
+        .page-header { text-align:center; margin:120px auto 40px; animation:fadeUp 0.6s forwards; position:relative; z-index:10; }
         .page-header h1 { font:800 2.2rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:10px; }
-        .page-header p { color:var(--ak-text-muted); font-family:'Space Mono',monospace; }
+        .page-header p { color:var(--ak-text-muted); font-family:'Space Mono',monospace; font-size:0.9rem; }
 
         .app-container { max-width:900px; margin:0 auto 80px; padding:0 5vw; position:relative; z-index:10; }
 
-        .ak-panel { background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:28px 32px; margin-bottom:28px; opacity:0; animation:fadeUp 0.6s forwards; transition:0.4s; }
-        .ak-panel:hover { border-color:var(--ak-accent-info); box-shadow:0 5px 25px rgba(0,216,255,0.08); }
+        .ak-panel { background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:28px 32px; margin-bottom:28px; opacity:0; animation:fadeUp 0.6s forwards; transition:0.3s; position:relative; }
+        .ak-panel:hover { border-color:var(--ak-accent-info); box-shadow:0 5px 25px rgba(0,216,255,0.08); transform:translateY(-2px); }
         .panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; cursor:pointer; }
         .panel-title { font:800 1rem 'Space Mono'; color:var(--ak-text-main); display:flex; align-items:center; gap:10px; text-transform:uppercase; }
         .panel-title::before { content:'/>'; color:var(--ak-accent-info); }
@@ -55,79 +45,87 @@
         .panel-body { overflow:hidden; transition:max-height 0.4s ease,opacity 0.3s ease; }
         .ak-panel.collapsed .panel-body { max-height:0; opacity:0; pointer-events:none; }
 
-        /* Tailwind 内部样式适配 */
-        .tw-bg-white { background-color:var(--ak-bg-panel) !important; border-color:var(--ak-border) !important; box-shadow:0 10px 40px rgba(0,0,0,0.3) !important; }
-        .tw-text-gray-800 { color:var(--ak-text-main) !important; }
-        .tw-text-gray-700 { color:var(--ak-text-muted) !important; }
-        .tw-text-gray-600 { color:var(--ak-text-muted) !important; }
-        .tw-text-gray-500 { color:var(--ak-text-muted) !important; }
-        .tw-text-gray-400 { color:var(--ak-text-muted) !important; }
-        .tw-text-gray-200 { color:var(--ak-border) !important; }
-        .tw-border-gray-300 { border-color:var(--ak-border) !important; }
-        .tw-border-gray-200 { border-color:var(--ak-border) !important; }
-        .tw-border-purple-500 { border-color:#667eea !important; }
-        .tw-text-purple-600 { color:#667eea !important; }
-        .tw-bg-purple-600 { background:#667eea !important; }
-        .tw-bg-purple-700 { background:#5a6fd6 !important; }
-        .tw-bg-blue-500 { background:#3b82f6 !important; }
-        .tw-bg-blue-600 { background:#2563eb !important; }
-        .tw-bg-red-500 { background:#ef4444 !important; }
-        .tw-bg-red-600 { background:#dc2626 !important; }
-        .tw-bg-orange-500 { background:#f97316 !important; }
-        .tw-bg-orange-600 { background:#ea580c !important; }
-        .tw-bg-blue-50 { background:rgba(59,130,246,0.1) !important; }
-        .tw-border-blue-400 { border-color:#60a5fa !important; }
-        .tw-text-blue-700 { color:#60a5fa !important; }
-        .tw-bg-gray-50 { background:var(--ak-bg-main) !important; }
-        .tw-border-gray-400 { border-color:var(--ak-border) !important; }
-        .tw-ring-purple-500 { --tw-ring-color:#667eea !important; }
-        .tw-placeholder-gray-400::placeholder { color:var(--ak-text-muted) !important; }
+        .form-group { margin-bottom:18px; }
+        .form-group label { display:block; font:700 0.75rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
+        .form-group select, .form-group input[type="password"] {
+            width:100%; padding:12px; background:var(--ak-bg-main); border:1px solid var(--ak-border);
+            color:var(--ak-text-main); font-family:'Space Mono',monospace; font-size:0.85rem;
+            outline:none; transition:0.3s;
+        }
+        .form-group select:focus, .form-group input:focus { border-color:var(--ak-accent-info); }
+        .form-group select option { background:var(--ak-bg-main); color:var(--ak-text-main); }
 
-        /* 覆盖层叠问题 */
-        .ak-panel .tw-bg-white { background:var(--ak-bg-panel) !important; }
-        .ak-panel input, .ak-panel select { background:var(--ak-bg-main) !important; color:var(--ak-text-main) !important; border-color:var(--ak-border) !important; }
-        .ak-panel select option { background:var(--ak-bg-main) !important; color:var(--ak-text-main) !important; }
+        .info-box { border-left:3px solid var(--ak-accent-info); background:rgba(0,216,255,0.05); padding:16px; margin:16px 0; }
+        .info-box p { font-size:0.85rem; color:var(--ak-accent-info); font-family:'Space Mono',monospace; margin-bottom:8px; }
+        .info-box ul { font-size:0.8rem; color:var(--ak-text-muted); list-style:none; padding:0; }
+        .info-box li { padding:4px 0 4px 16px; position:relative; }
+        .info-box li::before { content:'>'; position:absolute; left:0; color:var(--ak-accent-info); font-weight:bold; }
+        .info-box a { color:var(--ak-accent-info); text-decoration:underline; }
 
-        /* 上传区 */
-        .upload-zone { border:2px dashed var(--ak-border) !important; transition:all 0.3s ease; }
-        .upload-zone:hover { border-color:#667eea !important; background-color:rgba(102,126,234,0.05) !important; }
-        .upload-zone.dragover { border-color:#667eea !important; background-color:rgba(102,126,234,0.08) !important; }
-        .upload-zone.has-file { border-color:#667eea !important; border-style:solid !important; }
+        .btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; background:transparent; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 0.85rem 'Space Mono'; cursor:pointer; transition:0.3s; text-transform:uppercase; letter-spacing:1px; }
+        .btn:hover { border-color:var(--ak-accent-info); color:var(--ak-accent-info); transform:translateY(-2px); box-shadow:0 4px 15px rgba(0,216,255,0.1); }
+        .btn:disabled { opacity:0.3; cursor:not-allowed; transform:none !important; box-shadow:none !important; }
+        .btn-primary { border-color:var(--ak-accent-info); color:var(--ak-accent-info); }
+        .btn-primary:hover { background:var(--ak-accent-info); color:#000; }
+        .btn-warn { border-color:var(--ak-accent-warn); color:var(--ak-accent-warn); }
+        .btn-warn:hover { background:var(--ak-accent-warn); color:#000; }
+        .btn-danger { border-color:#ff3366; color:#ff3366; }
+        .btn-danger:hover { background:#ff3366; color:#fff; }
+        .btn-sm { padding:6px 14px; font-size:0.75rem; }
 
-        /* 加载动画 */
-        .loader { border:4px solid var(--ak-border); border-top-color:#667eea; border-radius:50%; width:40px; height:40px; animation:spin 1s linear infinite; margin:0 auto 16px; }
+        .upload-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+        .upload-slot { border:1px solid var(--ak-border); padding:20px; transition:0.3s; }
+        .upload-slot:hover { border-color:var(--ak-accent-info); }
+        .upload-slot-title { font:700 0.85rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:14px; }
 
-        /* 结果面板 */
+        .upload-zone { border:2px dashed var(--ak-border); padding:30px 20px; text-align:center; cursor:pointer; transition:0.3s; }
+        .upload-zone:hover { border-color:var(--ak-accent-info); background:rgba(0,216,255,0.03); }
+        .upload-zone.dragover { border-color:var(--ak-accent-info); background:rgba(0,216,255,0.06); }
+        .upload-zone.has-file { border-color:var(--ak-accent-info); border-style:solid; }
+        .upload-icon { font-size:1.8rem; color:var(--ak-text-muted); margin-bottom:8px; }
+        .upload-zone p { color:var(--ak-text-muted); font-size:0.85rem; font-family:'Space Mono',monospace; }
+        .upload-zone small { color:var(--ak-text-muted); opacity:0.5; font-size:0.75rem; }
+
+        .video-preview { display:none; margin-top:14px; }
+        .video-preview.active { display:block; }
+        .video-preview video { width:100%; max-height:240px; background:#000; }
+        .video-meta { margin-top:10px; font-size:0.8rem; color:var(--ak-text-muted); font-family:'Space Mono',monospace; }
+        .video-meta p { margin-bottom:3px; }
+        .video-meta strong { color:var(--ak-text-main); }
+
+        .action-row { display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; margin-top:24px; padding-top:20px; border-top:1px dashed var(--ak-border); }
+
+        .loading-panel { display:none; text-align:center; padding:50px 20px; }
+        .loading-panel.active { display:block; }
+        .loader { border:4px solid var(--ak-border); border-top-color:var(--ak-accent-info); border-radius:50%; width:40px; height:40px; animation:spin 1s linear infinite; margin:0 auto 16px; }
+        .loading-panel p { font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--ak-text-muted); }
+        .loading-panel small { display:block; margin-top:6px; color:var(--ak-text-muted); font-size:0.75rem; opacity:0.6; }
+
         .result-panel { display:none; }
         .result-panel.active { display:block; }
         .result-content { color:var(--ak-text-muted); font-size:0.9rem; line-height:1.9; }
-        .result-content h1 { font:800 1.2rem 'Space Mono'; color:#667eea; margin:20px 0 10px; text-transform:uppercase; }
-        .result-content h2 { font:700 1rem 'Space Mono'; color:var(--ak-text-main); margin:16px 0 8px; border-bottom:1px dashed var(--ak-border); padding-bottom:6px; }
+        .result-content h1 { font:800 1.2rem 'Space Mono'; color:var(--ak-accent-info); margin:24px 0 10px; text-transform:uppercase; }
+        .result-content h2 { font:700 1rem 'Space Mono'; color:var(--ak-text-main); margin:18px 0 8px; border-bottom:1px dashed var(--ak-border); padding-bottom:6px; }
         .result-content h3 { font:700 0.9rem 'Space Mono'; color:var(--ak-text-main); margin:14px 0 6px; }
         .result-content table { width:100%; border-collapse:collapse; margin:12px 0; font-family:'Space Mono',monospace; font-size:0.8rem; }
         .result-content th, .result-content td { border:1px solid var(--ak-border); padding:8px 12px; text-align:left; }
-        .result-content th { color:#667eea; background:rgba(102,126,234,0.1); }
+        .result-content th { color:var(--ak-accent-info); background:rgba(0,216,255,0.05); }
         .result-content td { color:var(--ak-text-muted); }
-        .result-content strong { color:#667eea; }
+        .result-content strong { color:var(--ak-accent-info); }
         .result-content li { margin-left:20px; margin-bottom:4px; color:var(--ak-text-muted); }
 
-        /* 历史记录 */
         .history-panel { display:none; }
         .history-panel.active { display:block; }
         .history-item { border:1px solid var(--ak-border); padding:16px; margin-bottom:12px; transition:0.3s; }
-        .history-item:hover { border-color:#667eea; }
+        .history-item:hover { border-color:var(--ak-accent-info); }
+        .history-item-header { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px; margin-bottom:8px; }
         .history-item-title { font:bold 0.85rem 'Space Mono'; color:var(--ak-text-main); display:flex; align-items:center; gap:8px; }
-        .history-badge { padding:2px 8px; font-size:0.65rem; border:1px solid; }
-        .history-badge.single { color:#667eea; border-color:#667eea; }
-        .history-badge.compare { color:#f97316; border-color:#f97316; }
+        .history-badge { padding:2px 8px; font-size:0.65rem; border:1px solid; font-family:'Space Mono',monospace; }
+        .history-badge.single { color:var(--ak-accent-info); border-color:var(--ak-accent-info); }
+        .history-badge.compare { color:var(--ak-accent-warn); border-color:var(--ak-accent-warn); }
+        .history-actions { display:flex; gap:8px; }
         .history-item-time { font-size:0.75rem; font-family:'Space Mono'; color:var(--ak-text-muted); }
         .history-empty { text-align:center; padding:40px; color:var(--ak-text-muted); font-family:'Space Mono'; font-size:0.85rem; }
-
-        /* 加载状态 */
-        .loading-panel { display:none; text-align:center; padding:40px; }
-        .loading-panel.active { display:block; }
-        .loading-panel p { font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--ak-text-muted); }
-        .loading-panel small { display:block; margin-top:6px; color:var(--ak-text-muted); font-size:0.75rem; opacity:0.6; }
 
         .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10; }
         .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; }
@@ -138,30 +136,27 @@
         footer::before { left:0; }
         footer::after { right:0; }
 
-        @media (max-width:900px) { .nav-links { display:none; } }
-        @media (max-width:768px) { .theme-toggle-btn { bottom:20px; right:20px; } }
+        @media (max-width:768px) { .upload-grid { grid-template-columns:1fr; } .nav-links { display:none; } }
     </style>
 </head>
 <body>
 
     <div class="tech-bg"></div>
     <div class="tech-overlay"></div>
-    <div class="prts-scanline"></div>
     <div class="prts-hud"></div>
 
-    <!-- PRTS 导航栏 -->
     <nav>
-        <a href="https://icheerlam.github.io/" class="nav-logo interactable">PRTS // CLARENCE YE</a>
+        <a href="https://icheerlam.github.io/" class="nav-logo">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
-                <a href="data.html" class="interactable">Data Analysis</a>
-                <a href="graphic.html" class="interactable">Graphic</a>
-                <a href="3d.html" class="interactable">3D Art</a>
-                <a href="video.html" class="interactable">Video</a>
-                <a href="vibecoding.html" class="active interactable">Vibecoding</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" class="interactable">Gallery</a>
+                <a href="data.html">Data Analysis</a>
+                <a href="graphic.html">Graphic</a>
+                <a href="3d.html">3D Art</a>
+                <a href="video.html">Video</a>
+                <a href="vibecoding.html" class="active">Vibecoding</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Gallery</a>
             </div>
-            <a href="vibecoding.html" class="nav-home-btn interactable">[ &lt; VIBECODING ]</a>
+            <a href="vibecoding.html" class="nav-home-btn">[ &lt; VIBECODING ]</a>
         </div>
     </nav>
 
@@ -172,28 +167,27 @@
 
     <main class="app-container">
 
-        <!-- API 配置 -->
         <div class="ak-panel" id="apiPanel" style="animation-delay:0.1s;">
-            <div class="panel-header interactable" onclick="togglePanel('apiPanel')">
+            <div class="panel-header" onclick="togglePanel('apiPanel')">
                 <div class="panel-title">API Config</div>
-                <div class="panel-toggle interactable">&#8595;</div>
+                <div class="panel-toggle">&#8595;</div>
             </div>
             <div class="panel-body">
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">选择 AI 服务</label>
-                    <select id="aiService" onchange="updateApiKeyPlaceholder()" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 tw-ring-purple-500">
+                <div class="form-group">
+                    <label>选择 AI 服务</label>
+                    <select id="aiService" onchange="updateApiKeyPlaceholder()">
                         <option value="qwen">通义千问（阿里云）</option>
                         <option value="claude">Claude API</option>
                         <option value="openai">OpenAI API</option>
                     </select>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">API Key</label>
-                    <input type="password" id="apiKey" placeholder="请输入 API Key" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 tw-ring-purple-500">
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="password" id="apiKey" placeholder="请输入 API Key">
                 </div>
-                <div class="mb-4">
-                    <label class="block text-gray-700 font-medium mb-2">视频平台（用于分析）</label>
-                    <select id="platform" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 tw-ring-purple-500">
+                <div class="form-group">
+                    <label>视频平台（用于分析）</label>
+                    <select id="platform">
                         <option value="douyin">抖音</option>
                         <option value="xiaohongshu">小红书</option>
                         <option value="shipinhao">视频号</option>
@@ -202,60 +196,53 @@
                         <option value="tiktok">TikTok（海外）</option>
                     </select>
                 </div>
-                <div class="tw-bg-blue-50 tw-border-blue-400 border-l-4 p-4 rounded">
-                    <p class="text-sm tw-text-blue-700">
-                        <strong>如何获取 API Key：</strong>
-                    </p>
-                    <ul class="text-sm tw-text-blue-700 mt-2 list-disc list-inside">
-                        <li><strong>通义千问：</strong><a href="https://dashscope.console.aliyun.com/" target="_blank" class="underline">阿里云控制台</a>，开通 DashScope 服务</li>
-                        <li><strong>Claude：</strong><a href="https://console.anthropic.com/" target="_blank" class="underline">Anthropic Console</a>（需科学上网）</li>
-                        <li><strong>OpenAI：</strong><a href="https://platform.openai.com/" target="_blank" class="underline">OpenAI Platform</a>（需科学上网）</li>
+                <div class="info-box">
+                    <p><strong>如何获取 API Key：</strong></p>
+                    <ul>
+                        <li><strong>通义千问：</strong><a href="https://dashscope.console.aliyun.com/" target="_blank">阿里云控制台</a>，开通 DashScope 服务</li>
+                        <li><strong>Claude：</strong><a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a>（需科学上网）</li>
+                        <li><strong>OpenAI：</strong><a href="https://platform.openai.com/" target="_blank">OpenAI Platform</a>（需科学上网）</li>
                     </ul>
                 </div>
-                <button onclick="saveApiKey()" class="tw-bg-purple-600 hover:tw-bg-purple-700 text-white px-6 py-2 rounded-lg transition mt-4">
-                    <i class="fa fa-save mr-2"></i>保存配置
-                </button>
+                <button onclick="saveApiKey()" class="btn btn-primary">&#9656; 保存配置</button>
             </div>
         </div>
 
-        <!-- 视频上传 -->
         <div class="ak-panel" id="uploadPanel" style="animation-delay:0.2s;">
-            <div class="panel-header interactable" onclick="togglePanel('uploadPanel')">
+            <div class="panel-header" onclick="togglePanel('uploadPanel')">
                 <div class="panel-title">Upload Video</div>
-                <div class="panel-toggle interactable">&#8595;</div>
+                <div class="panel-toggle">&#8595;</div>
             </div>
             <div class="panel-body">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- 视频 A -->
-                    <div class="tw-border tw-border-gray-200 rounded-lg p-4">
-                        <p class="text-sm font-bold tw-text-purple-600 mb-3"><i class="fa fa-video-camera mr-1"></i>视频 A</p>
-                        <div class="upload-zone rounded-lg p-8 text-center cursor-pointer" id="uploadZone1">
-                            <i class="fa fa-cloud-upload text-4xl tw-text-gray-400 mb-2"></i>
-                            <p class="tw-text-gray-600 text-sm mb-1">拖拽或点击上传</p>
-                            <p class="text-xs tw-text-gray-400">MP4, MOV, AVI</p>
-                            <input type="file" id="videoInput1" accept="video/*" class="hidden">
+                <div class="upload-grid">
+                    <div class="upload-slot">
+                        <div class="upload-slot-title">&#9654; 视频 A</div>
+                        <div class="upload-zone" id="uploadZone1">
+                            <div class="upload-icon">&#9653;</div>
+                            <p>拖拽或点击上传</p>
+                            <small>MP4, MOV, AVI</small>
+                            <input type="file" id="videoInput1" accept="video/*" style="display:none">
                         </div>
-                        <div class="video-preview hidden mt-3" id="videoPreview1">
-                            <video id="videoPlayer1" controls class="w-full max-h-64 rounded-lg"></video>
-                            <div class="mt-2 text-sm tw-text-gray-600 space-y-1">
+                        <div class="video-preview" id="videoPreview1">
+                            <video id="videoPlayer1" controls></video>
+                            <div class="video-meta">
                                 <p><strong>文件：</strong><span id="fileName1"></span></p>
                                 <p><strong>大小：</strong><span id="fileSize1"></span></p>
                                 <p><strong>时长：</strong><span id="videoDuration1"></span></p>
                             </div>
                         </div>
                     </div>
-                    <!-- 视频 B -->
-                    <div class="tw-border tw-border-gray-200 rounded-lg p-4">
-                        <p class="text-sm font-bold tw-text-blue-500 mb-3"><i class="fa fa-video-camera mr-1"></i>视频 B</p>
-                        <div class="upload-zone rounded-lg p-8 text-center cursor-pointer" id="uploadZone2">
-                            <i class="fa fa-cloud-upload text-4xl tw-text-gray-400 mb-2"></i>
-                            <p class="tw-text-gray-600 text-sm mb-1">拖拽或点击上传</p>
-                            <p class="text-xs tw-text-gray-400">MP4, MOV, AVI</p>
-                            <input type="file" id="videoInput2" accept="video/*" class="hidden">
+                    <div class="upload-slot">
+                        <div class="upload-slot-title">&#9654; 视频 B</div>
+                        <div class="upload-zone" id="uploadZone2">
+                            <div class="upload-icon">&#9653;</div>
+                            <p>拖拽或点击上传</p>
+                            <small>MP4, MOV, AVI</small>
+                            <input type="file" id="videoInput2" accept="video/*" style="display:none">
                         </div>
-                        <div class="video-preview hidden mt-3" id="videoPreview2">
-                            <video id="videoPlayer2" controls class="w-full max-h-64 rounded-lg"></video>
-                            <div class="mt-2 text-sm tw-text-gray-600 space-y-1">
+                        <div class="video-preview" id="videoPreview2">
+                            <video id="videoPlayer2" controls></video>
+                            <div class="video-meta">
                                 <p><strong>文件：</strong><span id="fileName2"></span></p>
                                 <p><strong>大小：</strong><span id="fileSize2"></span></p>
                                 <p><strong>时长：</strong><span id="videoDuration2"></span></p>
@@ -263,29 +250,20 @@
                         </div>
                     </div>
                 </div>
-                <!-- 操作按钮 -->
-                <div class="mt-4 flex items-center justify-center gap-4 flex-wrap">
-                    <button onclick="analyzeVideo(1)" id="btnAnalyze1" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-3 rounded-lg font-medium transition transform hover:scale-105 disabled:opacity-40 disabled:transform-none disabled:cursor-not-allowed" disabled>
-                        <i class="fa fa-magic mr-2"></i>分析视频 A
-                    </button>
-                    <button onclick="analyzeVideo(2)" id="btnAnalyze2" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-3 rounded-lg font-medium transition transform hover:scale-105 disabled:opacity-40 disabled:transform-none disabled:cursor-not-allowed" disabled>
-                        <i class="fa fa-magic mr-2"></i>分析视频 B
-                    </button>
-                    <button onclick="compareVideos()" id="btnCompare" class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-6 py-3 rounded-lg font-medium transition transform hover:scale-105 disabled:opacity-40 disabled:transform-none disabled:cursor-not-allowed" disabled>
-                        <i class="fa fa-columns mr-2"></i>对比分析
-                    </button>
-                    <button onclick="togglePanel('historyPanel')" class="tw-bg-blue-500 hover:tw-bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition">历史记录</button>
+                <div class="action-row">
+                    <button onclick="analyzeVideo(1)" id="btnAnalyze1" class="btn btn-primary" disabled>&#9656; 分析视频 A</button>
+                    <button onclick="analyzeVideo(2)" id="btnAnalyze2" class="btn btn-primary" disabled>&#9656; 分析视频 B</button>
+                    <button onclick="compareVideos()" id="btnCompare" class="btn btn-warn" disabled>&#8646; 对比分析</button>
+                    <button onclick="togglePanel('historyPanel')" class="btn btn-sm">&#8635; 历史记录</button>
                 </div>
             </div>
         </div>
 
-        <!-- 加载状态 -->
         <div class="loading-panel" id="loadingState">
             <div class="loader"></div>
             <p>正在分析视频内容，请稍候...<small id="loadingDetail">提取视频关键帧中...</small></p>
         </div>
 
-        <!-- 分析结果 -->
         <div class="result-panel" id="analysisResult">
             <div class="ak-panel" style="animation-delay:0s;">
                 <div class="panel-title">Analysis Report</div>
@@ -293,12 +271,11 @@
             </div>
         </div>
 
-        <!-- 历史记录 -->
         <div class="history-panel" id="historyPanel">
             <div class="ak-panel" style="animation-delay:0s;">
-                <div class="panel-header interactable" onclick="togglePanel('historyPanel')">
+                <div class="panel-header" onclick="togglePanel('historyPanel')">
                     <div class="panel-title">History</div>
-                    <div class="panel-toggle interactable">&#8595;</div>
+                    <div class="panel-toggle">&#8595;</div>
                 </div>
                 <div class="panel-body">
                     <div id="historyList"></div>
@@ -308,11 +285,8 @@
 
     </main>
 
-    <div class="back-nav"><a href="vibecoding.html" class="btn-back interactable">[ &lt; VIBECODING ]</a></div>
-
-    <footer><p>> Video Analysis System // Rhodes Island // System.2026</p></footer>
-
-    <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
+    <div class="back-nav"><a href="vibecoding.html" class="btn-back">[ &lt; VIBECODING ]</a></div>
+    <footer><p>> Rhodes Island Archive // Video Analysis // System.2026</p></footer>
 
     <script>
         let currentVideoFile1 = null;
@@ -324,10 +298,6 @@
             setupUploadZone(1);
             setupUploadZone(2);
             renderHistory();
-            document.getElementById('themeBtn').addEventListener('click', () => {
-                document.body.classList.toggle('light-mode');
-                document.getElementById('themeBtn').textContent = document.body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
-            });
         });
 
         function togglePanel(id) {
@@ -355,6 +325,7 @@
 
         function setupUploadZone(slot) {
             const zone=document.getElementById('uploadZone'+slot), input=document.getElementById('videoInput'+slot);
+            zone.addEventListener('click', () => input.click());
             zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('dragover');});
             zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
             zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('dragover');if(e.dataTransfer.files[0])handleFile(slot,e.dataTransfer.files[0]);});
@@ -364,7 +335,7 @@
         function handleFile(slot,file) {
             if(slot===1)currentVideoFile1=file;else currentVideoFile2=file;
             const player=document.getElementById('videoPlayer'+slot), preview=document.getElementById('videoPreview'+slot), zone=document.getElementById('uploadZone'+slot);
-            player.src=URL.createObjectURL(file); preview.classList.remove('hidden'); preview.classList.add('active'); zone.classList.add('has-file');
+            player.src=URL.createObjectURL(file); preview.classList.add('active'); zone.classList.add('has-file');
             document.getElementById('fileName'+slot).textContent=file.name;
             document.getElementById('fileSize'+slot).textContent=formatSize(file.size);
             player.onloadedmetadata=()=>{document.getElementById('videoDuration'+slot).textContent=formatDur(player.duration);updateButtons();};
@@ -393,7 +364,7 @@
 
         const PLAT_NAMES={douyin:'抖音',xiaohongshu:'小红书',shipinhao:'视频号',bilibili:'B站',kuaishou:'快手',tiktok:'TikTok'};
 
-        const PROMPT_SINGLE=`你是资深视频运营专家，精通${PLAT_NAMES[douyin]}平台的算法推荐机制和内容运营策略。请仔细观察视频每一帧，根据实际内容深度分析。所有数据必须给出具体数字。
+        const PROMPT_SINGLE=`你是资深视频运营专家，精通${PLAT_NAMES.douyin}平台的算法推荐机制和内容运营策略。请仔细观察视频每一帧，根据实际内容深度分析。所有数据必须给出具体数字。
 
 ## 1. 内容概述
 - 人物、场景、物品（穿着/动作/表情/背景）
@@ -401,7 +372,7 @@
 - 核心卖点和看点
 
 ## 2. 目标用户画像
-- 性别比例、年龄段、地域分布、兴趣标签（5个）、消费能力
+- 性别比例、年龄段、地域分布、兴趣标签（5���）、消费能力
 
 ## 3. 数据预测（给出具体数字）
 - 预计播放量/完播率/点赞率/评论率/转发率/收藏率
@@ -430,7 +401,7 @@
 
         async function callAI(frames,cfg){
             const plat=PLAT_NAMES[cfg.platform]||cfg.platform;
-            const prompt=PROMPT_SINGLE.replace('${PLAT_NAMES[douyin]}',plat);
+            const prompt=PROMPT_SINGLE.replace(PLAT_NAMES.douyin,plat);
             if(cfg.service==='qwen'){
                 const r=await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-plus',input:{messages:[{role:'user',content:[{image:frames[0]},{text:prompt}]}]}})});
                 if(!r.ok)throw new Error((await r.json()).message||'API失败');
@@ -449,7 +420,7 @@
 
         async function callCompare(f1,f2,cfg){
             const plat=PLAT_NAMES[cfg.platform]||cfg.platform;
-            const prompt=PROMPT_COMPARE.replace('${PLAT_NAMES[douyin]}',plat);
+            const prompt=PROMPT_COMPARE.replace(PLAT_NAMES.douyin,plat);
             if(cfg.service==='qwen'){
                 const r=await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-plus',input:{messages:[{role:'user',content:[{text:'视频A关键帧：'},{image:f1[0]},{text:'视频B关键帧：'},{image:f2[0]},{text:prompt}]}]}})});
                 if(!r.ok)throw new Error((await r.json()).message||'API失败');
@@ -517,7 +488,7 @@
         function renderHistory(){
             const list=document.getElementById('historyList');
             if(!analysisHistory.length){list.innerHTML='<div class="history-empty">> NO HISTORY FOUND</div>';return;}
-            list.innerHTML=analysisHistory.map(h=>`<div class="history-item"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="history-item-title"><span class="history-badge ${h.type==='compare'?'compare':'single'}">${h.type==='compare'?'对比':'单视频'}</span>${h.name}</div><div style="display:flex;gap:8px;"><button onclick="viewHistory(${h.id})" class="tw-bg-blue-500 hover:tw-bg-blue-600 text-white px-3 py-1 rounded text-sm">查看</button><button onclick="delHistory(${h.id})" class="tw-bg-red-500 hover:tw-bg-red-600 text-white px-3 py-1 rounded text-sm">删除</button></div></div><div class="history-item-time">${h.timestamp}</div></div>`).join('');
+            list.innerHTML=analysisHistory.map(h=>`<div class="history-item"><div class="history-item-header"><div class="history-item-title"><span class="history-badge ${h.type==='compare'?'compare':'single'}">${h.type==='compare'?'对比':'单视频'}</span>${h.name}</div><div class="history-actions"><button onclick="viewHistory(${h.id})" class="btn btn-sm btn-primary">查看</button><button onclick="delHistory(${h.id})" class="btn btn-sm btn-danger">删除</button></div></div><div class="history-item-time">${h.timestamp}</div></div>`).join('');
         }
 
         function viewHistory(id){
