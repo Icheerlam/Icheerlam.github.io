@@ -6,26 +6,24 @@
     <title>Video Analysis // Rhodes Island</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --ak-bg-main:#0A0A0E; --ak-bg-panel:rgba(18,20,25,0.85); --ak-bg-panel-light:rgba(30,30,35,0.6); --ak-text-main:#e0e6ed; --ak-text-muted:#828a9a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#1f232b; --ak-scan-line:rgba(0,216,255,0.04); }
-        body.light-mode { --ak-bg-main:#e5e7eb; --ak-bg-panel:rgba(255,255,255,0.95); --ak-bg-panel-light:rgba(240,242,245,0.8); --ak-text-main:#111; --ak-text-muted:#64748b; --ak-accent-info:#0284c7; --ak-accent-warn:#ea580c; --ak-border:#ccc; }
+        :root { --ak-bg-main:#0A0A0E; --ak-bg-panel:rgba(18,20,25,0.85); --ak-text-main:#e0e6ed; --ak-text-muted:#828a9a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#1f232b; }
         * { box-sizing:border-box; margin:0; padding:0; }
-        html { scroll-behavior: smooth; }
-        body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; transition:background 0.4s ease,color 0.4s ease; }
+        html { scroll-behavior:smooth; }
+        body { font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; }
 
-        @keyframes fadeUp { 0%{opacity:0;transform:translateY(25px);} 100%{opacity:1;transform:translateY(0);} }
+        @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
+        @keyframes spin { to{transform:rotate(360deg);} }
         @keyframes scan-drop { 0%{top:-10%;opacity:0;} 5%{opacity:0.4;} 45%{opacity:0.4;} 50%,100%{top:110%;opacity:0;} }
-        @keyframes blink { 50%{opacity:0;} }
 
-        .tech-bg { position:fixed; inset:0; z-index:-10; background-color:var(--ak-bg-main); background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center; opacity:0.15; filter:grayscale(100%); transition:0.4s; }
-        body.light-mode .tech-bg { opacity:0.06; filter:none; }
-        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:radial-gradient(circle at 50% 50%,transparent 20%,rgba(10,10,14,0.85) 100%),linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:100% 100%,40px 40px,40px 40px; }
-        body.light-mode .tech-overlay { background:radial-gradient(circle at 50% 50%,transparent 20%,rgba(240,242,245,0.85) 100%),linear-gradient(rgba(2,132,199,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(2,132,199,0.05) 1px,transparent 1px); background-size:100% 100%,40px 40px,40px 40px; }
+        .tech-bg { position:fixed; inset:0; z-index:-10; background-color:var(--ak-bg-main); background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center; opacity:0.15; filter:grayscale(100%); }
+        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:radial-gradient(circle at 50% 50%,transparent 20%,rgba(10,10,14,0.85) 100%),linear-gradient(rgba(0,216,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,216,255,0.04) 1px,transparent 1px); background-size:100% 100%,40px 40px,40px 40px; }
         .prts-scanline { position:fixed; top:0; left:0; width:100vw; height:4px; z-index:-8; background:var(--ak-accent-info); box-shadow:0 0 15px var(--ak-accent-info),0 0 30px var(--ak-accent-info); opacity:0.4; pointer-events:none; animation:scan-drop 6s cubic-bezier(0.4,0,0.2,1) infinite; }
         .prts-hud { position:fixed; inset:20px; z-index:-8; border:1px solid rgba(0,216,255,0.08); pointer-events:none; background:linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; }
 
-        /* ================= PRTS 导航栏 ================= */
-        nav { position:fixed; top:0; width:100%; padding:15px 5vw; display:flex; justify-content:space-between; align-items:center; background:var(--ak-bg-panel); border-bottom:1px solid var(--ak-border); z-index:1000; backdrop-filter:blur(10px); transition:0.4s; }
+        /* PRTS 导航 */
+        nav { position:fixed; top:0; width:100%; padding:15px 5vw; display:flex; justify-content:space-between; align-items:center; background:var(--ak-bg-panel); border-bottom:1px solid var(--ak-border); z-index:1000; backdrop-filter:blur(10px); }
         .nav-logo { font:800 1rem 'Space Mono'; letter-spacing:2px; color:var(--ak-text-main); text-decoration:none; border:1px solid var(--ak-accent-info); padding:5px 12px; cursor:pointer; transition:0.3s; }
         .nav-logo:hover { background:var(--ak-accent-info); color:#000; }
         .nav-right { display:flex; align-items:center; gap:30px; }
@@ -35,19 +33,17 @@
         .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono'; text-decoration:none; transition:0.3s; cursor:pointer; }
         .nav-home-btn:hover { background:var(--ak-accent-warn); color:#000; }
 
-        /* ================= 主题切换按钮 ================= */
+        /* 主题切换 */
         .theme-toggle-btn { position:fixed; bottom:30px; right:30px; background:var(--ak-bg-panel); color:var(--ak-text-muted); border:1px solid var(--ak-border); padding:12px 16px; font-family:'Space Mono',monospace; font-size:0.8rem; font-weight:700; cursor:pointer; z-index:1500; transition:0.3s; box-shadow:0 4px 10px rgba(0,0,0,0.5); }
         .theme-toggle-btn:hover { border-color:var(--ak-accent-info); color:var(--ak-accent-info); transform:translateY(-3px); }
 
-        /* ================= 页面头部 ================= */
-        .page-header { text-align:center; margin:120px auto 40px; animation:fadeUp 0.6s forwards; position:relative; z-index:10; padding:0 20px; }
+        /* PRTS 风格内容面板 */
+        .page-header { text-align:center; margin:120px auto 40px; padding:0 20px; position:relative; z-index:10; }
         .page-header h1 { font:800 2.2rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:10px; }
         .page-header p { color:var(--ak-text-muted); font-family:'Space Mono',monospace; }
 
-        /* ================= 应用容器 ================= */
         .app-container { max-width:900px; margin:0 auto 80px; padding:0 5vw; position:relative; z-index:10; }
 
-        /* PRTS 风格区块 */
         .ak-panel { background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:28px 32px; margin-bottom:28px; opacity:0; animation:fadeUp 0.6s forwards; transition:0.4s; }
         .ak-panel:hover { border-color:var(--ak-accent-info); box-shadow:0 5px 25px rgba(0,216,255,0.08); }
         .panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; cursor:pointer; }
@@ -59,87 +55,79 @@
         .panel-body { overflow:hidden; transition:max-height 0.4s ease,opacity 0.3s ease; }
         .ak-panel.collapsed .panel-body { max-height:0; opacity:0; pointer-events:none; }
 
-        /* 输入框 / 选择器 */
-        .ak-form-group { margin-bottom:16px; }
-        .ak-form-group label { display:block; font-size:0.75rem; font-family:'Space Mono',monospace; color:var(--ak-accent-info); margin-bottom:8px; font-weight:700; text-transform:uppercase; }
-        .ak-form-group select, .ak-form-group input[type="password"], .ak-form-group input[type="text"] { width:100%; padding:10px 14px; border:1px solid var(--ak-border); background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Mono',monospace; font-size:0.9rem; outline:none; transition:0.3s; border-radius:0; }
-        .ak-form-group select:focus, .ak-form-group input:focus { border-color:var(--ak-accent-info); box-shadow:0 0 8px rgba(0,216,255,0.2); }
-        .ak-form-group select option { background:var(--ak-bg-main); }
+        /* Tailwind 内部样式适配 */
+        .tw-bg-white { background-color:var(--ak-bg-panel) !important; border-color:var(--ak-border) !important; box-shadow:0 10px 40px rgba(0,0,0,0.3) !important; }
+        .tw-text-gray-800 { color:var(--ak-text-main) !important; }
+        .tw-text-gray-700 { color:var(--ak-text-muted) !important; }
+        .tw-text-gray-600 { color:var(--ak-text-muted) !important; }
+        .tw-text-gray-500 { color:var(--ak-text-muted) !important; }
+        .tw-text-gray-400 { color:var(--ak-text-muted) !important; }
+        .tw-text-gray-200 { color:var(--ak-border) !important; }
+        .tw-border-gray-300 { border-color:var(--ak-border) !important; }
+        .tw-border-gray-200 { border-color:var(--ak-border) !important; }
+        .tw-border-purple-500 { border-color:#667eea !important; }
+        .tw-text-purple-600 { color:#667eea !important; }
+        .tw-bg-purple-600 { background:#667eea !important; }
+        .tw-bg-purple-700 { background:#5a6fd6 !important; }
+        .tw-bg-blue-500 { background:#3b82f6 !important; }
+        .tw-bg-blue-600 { background:#2563eb !important; }
+        .tw-bg-red-500 { background:#ef4444 !important; }
+        .tw-bg-red-600 { background:#dc2626 !important; }
+        .tw-bg-orange-500 { background:#f97316 !important; }
+        .tw-bg-orange-600 { background:#ea580c !important; }
+        .tw-bg-blue-50 { background:rgba(59,130,246,0.1) !important; }
+        .tw-border-blue-400 { border-color:#60a5fa !important; }
+        .tw-text-blue-700 { color:#60a5fa !important; }
+        .tw-bg-gray-50 { background:var(--ak-bg-main) !important; }
+        .tw-border-gray-400 { border-color:var(--ak-border) !important; }
+        .tw-ring-purple-500 { --tw-ring-color:#667eea !important; }
+        .tw-placeholder-gray-400::placeholder { color:var(--ak-text-muted) !important; }
 
-        /* 按钮 */
-        .ak-btn { display:inline-flex; align-items:center; gap:8px; padding:10px 20px; border:1px solid var(--ak-border); background:transparent; color:var(--ak-text-main); font:700 0.85rem 'Space Mono'; cursor:pointer; transition:0.3s; text-transform:uppercase; }
-        .ak-btn:hover { border-color:var(--ak-accent-info); color:var(--ak-accent-info); }
-        .ak-btn.primary { border-color:var(--ak-accent-info); color:var(--ak-accent-info); }
-        .ak-btn.primary:hover { background:var(--ak-accent-info); color:#000; }
-        .ak-btn.warn { border-color:var(--ak-accent-warn); color:var(--ak-accent-warn); }
-        .ak-btn.warn:hover { background:var(--ak-accent-warn); color:#000; }
-        .ak-btn:disabled { opacity:0.3; cursor:not-allowed; }
+        /* 覆盖层叠问题 */
+        .ak-panel .tw-bg-white { background:var(--ak-bg-panel) !important; }
+        .ak-panel input, .ak-panel select { background:var(--ak-bg-main) !important; color:var(--ak-text-main) !important; border-color:var(--ak-border) !important; }
+        .ak-panel select option { background:var(--ak-bg-main) !important; color:var(--ak-text-main) !important; }
 
-        /* 提示框 */
-        .ak-hint { border-left:3px solid var(--ak-accent-info); padding:12px 16px; background:var(--ak-bg-panel-light); margin-top:16px; }
-        .ak-hint p { font-size:0.8rem; color:var(--ak-text-muted); line-height:1.7; }
-        .ak-hint a { color:var(--ak-accent-info); text-decoration:underline; }
-        .ak-hint ul { padding-left:20px; margin-top:8px; list-style:disc; }
-        .ak-hint li { font-size:0.8rem; color:var(--ak-text-muted); margin-bottom:4px; }
+        /* 上传区 */
+        .upload-zone { border:2px dashed var(--ak-border) !important; transition:all 0.3s ease; }
+        .upload-zone:hover { border-color:#667eea !important; background-color:rgba(102,126,234,0.05) !important; }
+        .upload-zone.dragover { border-color:#667eea !important; background-color:rgba(102,126,234,0.08) !important; }
+        .upload-zone.has-file { border-color:#667eea !important; border-style:solid !important; }
 
-        /* 视频上传区 */
-        .upload-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-        .upload-slot { border:1px solid var(--ak-border); padding:16px; transition:0.3s; }
-        .upload-slot:hover { border-color:var(--ak-accent-info); }
-        .slot-label { font:bold 0.75rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:12px; letter-spacing:1px; }
-        .upload-zone { border:2px dashed var(--ak-border); padding:24px; text-align:center; cursor:pointer; transition:0.3s; position:relative; }
-        .upload-zone:hover { border-color:var(--ak-accent-info); }
-        .upload-zone.dragover { border-color:var(--ak-accent-info); background:rgba(0,216,255,0.05); }
-        .upload-zone.has-file { border-color:var(--ak-accent-info); border-style:solid; }
-        .upload-icon { font-size:2rem; color:var(--ak-text-muted); margin-bottom:8px; display:block; }
-        .upload-zone p { font-size:0.8rem; color:var(--ak-text-muted); }
-        .upload-zone p small { font-size:0.7rem; color:var(--ak-border); }
-        .upload-zone input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; width:100%; height:100%; }
-        .video-preview { margin-top:12px; display:none; }
-        .video-preview.active { display:block; }
-        .video-preview video { width:100%; max-height:200px; border:1px solid var(--ak-border); display:block; background:#000; }
-        .video-meta { font-size:0.75rem; font-family:'Space Mono',monospace; color:var(--ak-text-muted); margin-top:8px; line-height:1.8; }
+        /* 加载动画 */
+        .loader { border:4px solid var(--ak-border); border-top-color:#667eea; border-radius:50%; width:40px; height:40px; animation:spin 1s linear infinite; margin:0 auto 16px; }
 
-        /* 操作按钮区 */
-        .action-row { display:flex; justify-content:center; gap:16px; margin-top:20px; flex-wrap:wrap; }
-
-        /* 分析结果 */
-        .result-panel { display:none; margin-top:0; }
+        /* 结果面板 */
+        .result-panel { display:none; }
         .result-panel.active { display:block; }
         .result-content { color:var(--ak-text-muted); font-size:0.9rem; line-height:1.9; }
-        .result-content h1 { font:800 1.2rem 'Space Mono'; color:var(--ak-accent-info); margin:20px 0 10px; text-transform:uppercase; }
+        .result-content h1 { font:800 1.2rem 'Space Mono'; color:#667eea; margin:20px 0 10px; text-transform:uppercase; }
         .result-content h2 { font:700 1rem 'Space Mono'; color:var(--ak-text-main); margin:16px 0 8px; border-bottom:1px dashed var(--ak-border); padding-bottom:6px; }
         .result-content h3 { font:700 0.9rem 'Space Mono'; color:var(--ak-text-main); margin:14px 0 6px; }
         .result-content table { width:100%; border-collapse:collapse; margin:12px 0; font-family:'Space Mono',monospace; font-size:0.8rem; }
         .result-content th, .result-content td { border:1px solid var(--ak-border); padding:8px 12px; text-align:left; }
-        .result-content th { color:var(--ak-accent-info); background:var(--ak-bg-panel-light); }
+        .result-content th { color:#667eea; background:rgba(102,126,234,0.1); }
         .result-content td { color:var(--ak-text-muted); }
-        .result-content strong { color:var(--ak-accent-info); }
-        .result-content a { color:var(--ak-accent-warn); }
-        .result-content li { margin-left:20px; margin-bottom:4px; }
-        .result-content p { margin-bottom:8px; }
-
-        /* 加载状态 */
-        .loading-panel { display:none; text-align:center; padding:40px; }
-        .loading-panel.active { display:block; }
-        .spinner { width:40px; height:40px; border:3px solid var(--ak-border); border-top-color:var(--ak-accent-info); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 16px; }
-        @keyframes spin { to{transform:rotate(360deg);} }
-        .loading-panel p { font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--ak-text-muted); }
-        .loading-panel p small { display:block; margin-top:6px; color:var(--ak-border); font-size:0.75rem; }
+        .result-content strong { color:#667eea; }
+        .result-content li { margin-left:20px; margin-bottom:4px; color:var(--ak-text-muted); }
 
         /* 历史记录 */
         .history-panel { display:none; }
         .history-panel.active { display:block; }
         .history-item { border:1px solid var(--ak-border); padding:16px; margin-bottom:12px; transition:0.3s; }
-        .history-item:hover { border-color:var(--ak-accent-info); }
-        .history-item-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; flex-wrap:wrap; gap:8px; }
+        .history-item:hover { border-color:#667eea; }
         .history-item-title { font:bold 0.85rem 'Space Mono'; color:var(--ak-text-main); display:flex; align-items:center; gap:8px; }
         .history-badge { padding:2px 8px; font-size:0.65rem; border:1px solid; }
-        .history-badge.single { color:var(--ak-accent-info); border-color:var(--ak-accent-info); }
-        .history-badge.compare { color:var(--ak-accent-warn); border-color:var(--ak-accent-warn); }
+        .history-badge.single { color:#667eea; border-color:#667eea; }
+        .history-badge.compare { color:#f97316; border-color:#f97316; }
         .history-item-time { font-size:0.75rem; font-family:'Space Mono'; color:var(--ak-text-muted); }
-        .history-item-actions { display:flex; gap:8px; }
-        .history-empty { text-align:center; padding:40px; color:var(--ak-text-muted); font-family:'Space Mono',monospace; font-size:0.85rem; }
+        .history-empty { text-align:center; padding:40px; color:var(--ak-text-muted); font-family:'Space Mono'; font-size:0.85rem; }
+
+        /* 加载状态 */
+        .loading-panel { display:none; text-align:center; padding:40px; }
+        .loading-panel.active { display:block; }
+        .loading-panel p { font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--ak-text-muted); }
+        .loading-panel small { display:block; margin-top:6px; color:var(--ak-text-muted); font-size:0.75rem; opacity:0.6; }
 
         .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10; }
         .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; }
@@ -150,26 +138,18 @@
         footer::before { left:0; }
         footer::after { right:0; }
 
-        /* 亮色模式适配 */
-        body.light-mode .upload-zone { border-color:var(--ak-border); }
-        body.light-mode .upload-zone:hover { border-color:var(--ak-accent-info); }
-        body.light-mode .ak-hint { background:rgba(0,0,0,0.04); }
-        body.light-mode .result-content th { background:rgba(0,0,0,0.05); }
-        body.light-mode .spinner { border-color:var(--ak-border); }
-        body.light-mode .nav-links a.active { color:var(--ak-accent-info); text-shadow:none; }
-
         @media (max-width:900px) { .nav-links { display:none; } }
-        @media (max-width:600px) { .upload-grid { grid-template-columns:1fr; } }
         @media (max-width:768px) { .theme-toggle-btn { bottom:20px; right:20px; } }
     </style>
 </head>
-<body class="dark-mode">
+<body>
 
     <div class="tech-bg"></div>
     <div class="tech-overlay"></div>
     <div class="prts-scanline"></div>
     <div class="prts-hud"></div>
 
+    <!-- PRTS 导航栏 -->
     <nav>
         <a href="https://icheerlam.github.io/" class="nav-logo interactable">PRTS // CLARENCE YE</a>
         <div class="nav-right">
@@ -199,21 +179,21 @@
                 <div class="panel-toggle interactable">&#8595;</div>
             </div>
             <div class="panel-body">
-                <div class="ak-form-group">
-                    <label>AI Service</label>
-                    <select id="aiService" onchange="updateApiKeyPlaceholder()">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">选择 AI 服务</label>
+                    <select id="aiService" onchange="updateApiKeyPlaceholder()" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 tw-ring-purple-500">
                         <option value="qwen">通义千问（阿里云）</option>
                         <option value="claude">Claude API</option>
                         <option value="openai">OpenAI API</option>
                     </select>
                 </div>
-                <div class="ak-form-group">
-                    <label>API Key</label>
-                    <input type="password" id="apiKey" placeholder="请输入 API Key">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">API Key</label>
+                    <input type="password" id="apiKey" placeholder="请输入 API Key" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 tw-ring-purple-500">
                 </div>
-                <div class="ak-form-group">
-                    <label>目标平台</label>
-                    <select id="platform">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">视频平台（用于分析）</label>
+                    <select id="platform" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 tw-ring-purple-500">
                         <option value="douyin">抖音</option>
                         <option value="xiaohongshu">小红书</option>
                         <option value="shipinhao">视频号</option>
@@ -222,15 +202,19 @@
                         <option value="tiktok">TikTok（海外）</option>
                     </select>
                 </div>
-                <div class="ak-hint">
-                    <p><strong>如何获取 API Key：</strong></p>
-                    <ul>
-                        <li><strong>通义千问：</strong><a href="https://dashscope.console.aliyun.com/" target="_blank">阿里云控制台</a>，开通 DashScope 服务</li>
-                        <li><strong>Claude：</strong><a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a>（需科学上网）</li>
-                        <li><strong>OpenAI：</strong><a href="https://platform.openai.com/" target="_blank">OpenAI Platform</a>（需科学上网）</li>
+                <div class="tw-bg-blue-50 tw-border-blue-400 border-l-4 p-4 rounded">
+                    <p class="text-sm tw-text-blue-700">
+                        <strong>如何获取 API Key：</strong>
+                    </p>
+                    <ul class="text-sm tw-text-blue-700 mt-2 list-disc list-inside">
+                        <li><strong>通义千问：</strong><a href="https://dashscope.console.aliyun.com/" target="_blank" class="underline">阿里云控制台</a>，开通 DashScope 服务</li>
+                        <li><strong>Claude：</strong><a href="https://console.anthropic.com/" target="_blank" class="underline">Anthropic Console</a>（需科学上网）</li>
+                        <li><strong>OpenAI：</strong><a href="https://platform.openai.com/" target="_blank" class="underline">OpenAI Platform</a>（需科学上网）</li>
                     </ul>
                 </div>
-                <button class="ak-btn primary" onclick="saveApiKey()" style="margin-top:16px;">SAVE CONFIG</button>
+                <button onclick="saveApiKey()" class="tw-bg-purple-600 hover:tw-bg-purple-700 text-white px-6 py-2 rounded-lg transition mt-4">
+                    <i class="fa fa-save mr-2"></i>保存配置
+                </button>
             </div>
         </div>
 
@@ -241,55 +225,64 @@
                 <div class="panel-toggle interactable">&#8595;</div>
             </div>
             <div class="panel-body">
-                <div class="upload-grid">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- 视频 A -->
-                    <div class="upload-slot">
-                        <div class="slot-label">// VIDEO_A</div>
-                        <div class="upload-zone" id="uploadZone1">
-                            <span class="upload-icon">&#9650;</span>
-                            <p>拖拽或点击上传 <small>MP4, MOV, AVI</small></p>
-                            <input type="file" id="videoInput1" accept="video/*">
+                    <div class="tw-border tw-border-gray-200 rounded-lg p-4">
+                        <p class="text-sm font-bold tw-text-purple-600 mb-3"><i class="fa fa-video-camera mr-1"></i>视频 A</p>
+                        <div class="upload-zone rounded-lg p-8 text-center cursor-pointer" id="uploadZone1">
+                            <i class="fa fa-cloud-upload text-4xl tw-text-gray-400 mb-2"></i>
+                            <p class="tw-text-gray-600 text-sm mb-1">拖拽或点击上传</p>
+                            <p class="text-xs tw-text-gray-400">MP4, MOV, AVI</p>
+                            <input type="file" id="videoInput1" accept="video/*" class="hidden">
                         </div>
-                        <div class="video-preview" id="videoPreview1">
-                            <video id="videoPlayer1" controls></video>
-                            <div class="video-meta">
-                                <div>文件：<span id="fileName1"></span></div>
-                                <div>大小：<span id="fileSize1"></span></div>
-                                <div>时长：<span id="videoDuration1"></span></div>
+                        <div class="video-preview hidden mt-3" id="videoPreview1">
+                            <video id="videoPlayer1" controls class="w-full max-h-64 rounded-lg"></video>
+                            <div class="mt-2 text-sm tw-text-gray-600 space-y-1">
+                                <p><strong>文件：</strong><span id="fileName1"></span></p>
+                                <p><strong>大小：</strong><span id="fileSize1"></span></p>
+                                <p><strong>时长：</strong><span id="videoDuration1"></span></p>
                             </div>
                         </div>
                     </div>
                     <!-- 视频 B -->
-                    <div class="upload-slot">
-                        <div class="slot-label">// VIDEO_B</div>
-                        <div class="upload-zone" id="uploadZone2">
-                            <span class="upload-icon">&#9650;</span>
-                            <p>拖拽或点击上传 <small>MP4, MOV, AVI</small></p>
-                            <input type="file" id="videoInput2" accept="video/*">
+                    <div class="tw-border tw-border-gray-200 rounded-lg p-4">
+                        <p class="text-sm font-bold tw-text-blue-500 mb-3"><i class="fa fa-video-camera mr-1"></i>视频 B</p>
+                        <div class="upload-zone rounded-lg p-8 text-center cursor-pointer" id="uploadZone2">
+                            <i class="fa fa-cloud-upload text-4xl tw-text-gray-400 mb-2"></i>
+                            <p class="tw-text-gray-600 text-sm mb-1">拖拽或点击上传</p>
+                            <p class="text-xs tw-text-gray-400">MP4, MOV, AVI</p>
+                            <input type="file" id="videoInput2" accept="video/*" class="hidden">
                         </div>
-                        <div class="video-preview" id="videoPreview2">
-                            <video id="videoPlayer2" controls></video>
-                            <div class="video-meta">
-                                <div>文件：<span id="fileName2"></span></div>
-                                <div>大小：<span id="fileSize2"></span></div>
-                                <div>时长：<span id="videoDuration2"></span></div>
+                        <div class="video-preview hidden mt-3" id="videoPreview2">
+                            <video id="videoPlayer2" controls class="w-full max-h-64 rounded-lg"></video>
+                            <div class="mt-2 text-sm tw-text-gray-600 space-y-1">
+                                <p><strong>文件：</strong><span id="fileName2"></span></p>
+                                <p><strong>大小：</strong><span id="fileSize2"></span></p>
+                                <p><strong>时长：</strong><span id="videoDuration2"></span></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="action-row">
-                    <button class="ak-btn primary" onclick="analyzeVideo(1)" id="btnAnalyze1" disabled>ANALYZE A</button>
-                    <button class="ak-btn primary" onclick="analyzeVideo(2)" id="btnAnalyze2" disabled>ANALYZE B</button>
-                    <button class="ak-btn warn" onclick="compareVideos()" id="btnCompare" disabled>COMPARE A/B</button>
-                    <button class="ak-btn" onclick="togglePanel('historyPanel')" style="margin-left:auto;">HISTORY</button>
+                <!-- 操作按钮 -->
+                <div class="mt-4 flex items-center justify-center gap-4 flex-wrap">
+                    <button onclick="analyzeVideo(1)" id="btnAnalyze1" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-3 rounded-lg font-medium transition transform hover:scale-105 disabled:opacity-40 disabled:transform-none disabled:cursor-not-allowed" disabled>
+                        <i class="fa fa-magic mr-2"></i>分析视频 A
+                    </button>
+                    <button onclick="analyzeVideo(2)" id="btnAnalyze2" class="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-3 rounded-lg font-medium transition transform hover:scale-105 disabled:opacity-40 disabled:transform-none disabled:cursor-not-allowed" disabled>
+                        <i class="fa fa-magic mr-2"></i>分析视频 B
+                    </button>
+                    <button onclick="compareVideos()" id="btnCompare" class="bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white px-6 py-3 rounded-lg font-medium transition transform hover:scale-105 disabled:opacity-40 disabled:transform-none disabled:cursor-not-allowed" disabled>
+                        <i class="fa fa-columns mr-2"></i>对比分析
+                    </button>
+                    <button onclick="togglePanel('historyPanel')" class="tw-bg-blue-500 hover:tw-bg-blue-600 text-white px-4 py-2 rounded-lg text-sm transition">历史记录</button>
                 </div>
             </div>
         </div>
 
         <!-- 加载状态 -->
         <div class="loading-panel" id="loadingState">
-            <div class="spinner"></div>
-            <p>正在分析视频，请稍候...<small id="loadingDetail">提取视频关键帧中...</small></p>
+            <div class="loader"></div>
+            <p>正在分析视频内容，请稍候...<small id="loadingDetail">提取视频关键帧中...</small></p>
         </div>
 
         <!-- 分析结果 -->
@@ -331,8 +324,6 @@
             setupUploadZone(1);
             setupUploadZone(2);
             renderHistory();
-
-            // Theme toggle
             document.getElementById('themeBtn').addEventListener('click', () => {
                 document.body.classList.toggle('light-mode');
                 document.getElementById('themeBtn').textContent = document.body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
@@ -340,116 +331,69 @@
         });
 
         function togglePanel(id) {
-            const panel = document.getElementById(id);
-            panel.classList.toggle('collapsed');
-            panel.classList.toggle('open');
+            const p = document.getElementById(id);
+            p.classList.toggle('collapsed');
+            p.classList.toggle('open');
         }
 
         function loadSavedConfig() {
-            const saved = localStorage.getItem('aiConfig');
-            if (saved) {
-                const c = JSON.parse(saved);
-                document.getElementById('aiService').value = c.service || 'qwen';
-                document.getElementById('apiKey').value = c.apiKey || '';
-                document.getElementById('platform').value = c.platform || 'douyin';
-            }
+            const s = localStorage.getItem('aiConfig');
+            if (s) { const c=JSON.parse(s); document.getElementById('aiService').value=c.service||'qwen'; document.getElementById('apiKey').value=c.apiKey||''; document.getElementById('platform').value=c.platform||'douyin'; }
             updateApiKeyPlaceholder();
         }
 
         function updateApiKeyPlaceholder() {
-            const map = { qwen:'请输入通义千问 API Key（sk-...）', claude:'请输入 Claude API Key（sk-ant-...）', openai:'请输入 OpenAI API Key（sk-...）' };
-            document.getElementById('apiKey').placeholder = map[document.getElementById('aiService').value] || '';
+            const m={qwen:'请输入通义千问 API Key（sk-...）',claude:'请输入 Claude API Key（sk-ant-...）',openai:'请输入 OpenAI API Key（sk-...）'};
+            document.getElementById('apiKey').placeholder=m[document.getElementById('aiService').value]||'';
         }
 
         function saveApiKey() {
-            const cfg = { service:document.getElementById('aiService').value, apiKey:document.getElementById('apiKey').value.trim(), platform:document.getElementById('platform').value };
-            if (!cfg.apiKey) { alert('请输入 API Key'); return; }
-            localStorage.setItem('aiConfig', JSON.stringify(cfg));
-            alert('配置已保存！');
+            const cfg={service:document.getElementById('aiService').value,apiKey:document.getElementById('apiKey').value.trim(),platform:document.getElementById('platform').value};
+            if(!cfg.apiKey){alert('请输入 API Key');return;}
+            localStorage.setItem('aiConfig',JSON.stringify(cfg)); alert('配置已保存！');
         }
 
         function setupUploadZone(slot) {
-            const zone = document.getElementById('uploadZone' + slot);
-            const input = document.getElementById('videoInput' + slot);
-            zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
-            zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-            zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); if(e.dataTransfer.files[0]) handleFile(slot, e.dataTransfer.files[0]); });
-            input.addEventListener('change', e => { if(e.target.files[0]) handleFile(slot, e.target.files[0]); });
+            const zone=document.getElementById('uploadZone'+slot), input=document.getElementById('videoInput'+slot);
+            zone.addEventListener('dragover',e=>{e.preventDefault();zone.classList.add('dragover');});
+            zone.addEventListener('dragleave',()=>zone.classList.remove('dragover'));
+            zone.addEventListener('drop',e=>{e.preventDefault();zone.classList.remove('dragover');if(e.dataTransfer.files[0])handleFile(slot,e.dataTransfer.files[0]);});
+            input.addEventListener('change',e=>{if(e.target.files[0])handleFile(slot,e.target.files[0]);});
         }
 
-        function handleFile(slot, file) {
-            if (slot === 1) currentVideoFile1 = file; else currentVideoFile2 = file;
-            const player = document.getElementById('videoPlayer' + slot);
-            const preview = document.getElementById('videoPreview' + slot);
-            const zone = document.getElementById('uploadZone' + slot);
-            player.src = URL.createObjectURL(file);
-            preview.classList.add('active');
-            zone.classList.add('has-file');
-            document.getElementById('fileName' + slot).textContent = file.name;
-            document.getElementById('fileSize' + slot).textContent = formatSize(file.size);
-            player.onloadedmetadata = () => { document.getElementById('videoDuration' + slot).textContent = formatDur(player.duration); updateButtons(); };
+        function handleFile(slot,file) {
+            if(slot===1)currentVideoFile1=file;else currentVideoFile2=file;
+            const player=document.getElementById('videoPlayer'+slot), preview=document.getElementById('videoPreview'+slot), zone=document.getElementById('uploadZone'+slot);
+            player.src=URL.createObjectURL(file); preview.classList.remove('hidden'); preview.classList.add('active'); zone.classList.add('has-file');
+            document.getElementById('fileName'+slot).textContent=file.name;
+            document.getElementById('fileSize'+slot).textContent=formatSize(file.size);
+            player.onloadedmetadata=()=>{document.getElementById('videoDuration'+slot).textContent=formatDur(player.duration);updateButtons();};
         }
 
-        function formatSize(b) { const s=['Bytes','KB','MB','GB']; return (b/Math.pow(1024,Math.floor(Math.log(b)/Math.log(1024)))).toFixed(2)+' '+s[Math.floor(Math.log(b)/Math.log(1024))]; }
-        function formatDur(s) { return Math.floor(s/60)+'分'+Math.floor(s%60)+'秒'; }
+        function formatSize(b){const s=['Bytes','KB','MB','GB'];const i=Math.floor(Math.log(b)/Math.log(1024));return(b/Math.pow(1024,i)).toFixed(2)+' '+s[i];}
+        function formatDur(s){return Math.floor(s/60)+'分'+Math.floor(s%60)+'秒';}
 
-        function updateButtons() {
-            document.getElementById('btnAnalyze1').disabled = !currentVideoFile1;
-            document.getElementById('btnAnalyze2').disabled = !currentVideoFile2;
-            document.getElementById('btnCompare').disabled = !(currentVideoFile1 && currentVideoFile2);
+        function updateButtons(){
+            document.getElementById('btnAnalyze1').disabled=!currentVideoFile1;
+            document.getElementById('btnAnalyze2').disabled=!currentVideoFile2;
+            document.getElementById('btnCompare').disabled=!(currentVideoFile1&&currentVideoFile2);
         }
 
-        async function extractFrames(video) {
-            return new Promise(resolve => {
-                const c = document.createElement('canvas');
-                const ctx = c.getContext('2d');
-                const max = 512, sc = Math.min(max/video.videoWidth, max/video.videoHeight);
-                c.width = video.videoWidth*sc; c.height = video.videoHeight*sc;
-                const frames = [], dur = video.duration, cnt = 3;
-                let cur = 0;
-                const cap = () => {
-                    if (cur >= cnt) { resolve(frames); return; }
-                    video.currentTime = (dur/(cnt+1))*(cur+1);
-                };
-                video.onseeked = () => { ctx.drawImage(video,0,0,c.width,c.height); frames.push(c.toDataURL('image/jpeg',0.6)); cur++; cap(); };
+        async function extractFrames(video){
+            return new Promise(resolve=>{
+                const c=document.createElement('canvas'),ctx=c.getContext('2d');
+                const max=512,sc=Math.min(max/video.videoWidth,max/video.videoHeight);
+                c.width=video.videoWidth*sc;c.height=video.videoHeight*sc;
+                const frames=[],dur=video.duration,cnt=3;let cur=0;
+                const cap=()=>{if(cur>=cnt){resolve(frames);return;}video.currentTime=(dur/(cnt+1))*(cur+1);};
+                video.onseeked=()=>{ctx.drawImage(video,0,0,c.width,c.height);frames.push(c.toDataURL('image/jpeg',0.6));cur++;cap();};
                 cap();
             });
         }
 
-        async function analyzeVideo(slot) {
-            const cfg = JSON.parse(localStorage.getItem('aiConfig') || '{}');
-            if (!cfg.apiKey) { alert('请先配置 API Key'); togglePanel('apiPanel'); return; }
-            const file = slot===1 ? currentVideoFile1 : currentVideoFile2;
-            if (!file) { alert('请先上传视频'); return; }
-            document.getElementById('loadingState').classList.add('active');
-            document.getElementById('analysisResult').classList.remove('active');
-            try {
-                document.getElementById('loadingDetail').textContent = '提取视频关键帧中...';
-                const frames = await extractFrames(document.getElementById('videoPlayer'+slot));
-                document.getElementById('loadingDetail').textContent = 'AI 分析中，预计 10-20 秒...';
-                const result = await callAI(frames, cfg);
-                showResult(result, file.name, slot===1?'single':'single');
-            } catch(e) { alert('分析失败: '+e.message); }
-            document.getElementById('loadingState').classList.remove('active');
-        }
+        const PLAT_NAMES={douyin:'抖音',xiaohongshu:'小红书',shipinhao:'视频号',bilibili:'B站',kuaishou:'快手',tiktok:'TikTok'};
 
-        async function compareVideos() {
-            const cfg = JSON.parse(localStorage.getItem('aiConfig') || '{}');
-            if (!cfg.apiKey) { alert('请先配置 API Key'); togglePanel('apiPanel'); return; }
-            if (!currentVideoFile1 || !currentVideoFile2) { alert('请先上传两个视频'); return; }
-            document.getElementById('loadingState').classList.add('active');
-            document.getElementById('analysisResult').classList.remove('active');
-            try {
-                document.getElementById('loadingDetail').textContent = '提取两个视频关键帧中...';
-                const [f1,f2] = await Promise.all([extractFrames(document.getElementById('videoPlayer1')), extractFrames(document.getElementById('videoPlayer2'))]);
-                document.getElementById('loadingDetail').textContent = 'AI 对比分析中，预计 15-30 秒...';
-                const result = await callCompare(f1, f2, cfg);
-                showResult(result, currentVideoFile1.name+' vs '+currentVideoFile2.name, 'compare');
-            } catch(e) { alert('对比分析失败: '+e.message); }
-            document.getElementById('loadingState').classList.remove('active');
-        }
-
-        const PROMPT_SINGLE = `你是资深视频运营专家，精通{{platform}}平台的算法推荐机制和内容运营策略。请仔细观察视频每一帧，根据实际内容深度分析。所有数据必须给出具体数字，不要含糊其辞。
+        const PROMPT_SINGLE=`你是资深视频运营专家，精通${PLAT_NAMES[douyin]}平台的算法推荐机制和内容运营策略。请仔细观察视频每一帧，根据实际内容深度分析。所有数据必须给出具体数字。
 
 ## 1. 内容概述
 - 人物、场景、物品（穿着/动作/表情/背景）
@@ -457,159 +401,135 @@
 - 核心卖点和看点
 
 ## 2. 目标用户画像
-- 性别比例：男X%/女X%
-- 核心年龄段：XX-XX岁
-- 地域分布、兴趣标签（5个）
-- 消费能力：低/中/高，客单价约XX元
+- 性别比例、年龄段、地域分布、兴趣标签（5个）、消费能力
 
 ## 3. 数据预测（给出具体数字）
-- 预计播放量：XX万
-- 完播率：XX%（附理由）
-- 点赞率/评论率/转发率/收藏率：XX%
-- 预计涨粉：XX人
-- 爆款概率：XX%
+- 预计播放量/完播率/点赞率/评论率/转发率/收藏率
+- 预计涨粉、爆款概率
 
-## 4. 竞品对标
-- 3个类似账号类型
-- 同类视频典型数据
-
-## 5. 推荐标题（5个）
-每个标题标注：字数、核心钩子类型、预测点击率
-
-## 6. 封面优化建议
-- 推荐截取第X秒
-- 封面文字建议（具体文案）
-- 构图建议
-
-## 7. 发布策略
-- 最佳发布时间（2-3个时间段）
-- 是否适合投流及日预算
-- 话题标签（5个）
-- 评论区引导话术
-
-## 8. 优化建议
-- 前3秒优化
-- 节奏调整建议
-- BGM建议
-- 字幕/贴纸建议
-
-## 9. A/B测试方案
-- 方案A/B具体描述
-- 预计胜出方案及原因
-
-## 10. 海外投放建议
-- 适合市场（2-3个）
-- 本地化调整
-- 预估海外数据
-
-所有数据必须根据视频实际内容给出，不要用"XX"占位符。`;
-
-        const PROMPT_COMPARE = `你是资深视频运营专家，精通{{platform}}平台。请对比分析两个视频的关键帧，所有数据必须给出具体数字。
-
-第一个视频=视频A，第二个=视频B。
-
-## 1. 内容对比
-- 视频A/B内容描述（画面/人物/场景/风格）
-- 两者核心差异
-
-## 2. 目标受众对比
-- 性别比例/年龄段/兴趣标签/消费能力
-- 受众重合度：X%
-- 哪个受众更广
-
-## 3. 数据预测对比（表格）
-| 指标 | 视频A | 视频B |
-|------|-------|-------|
-| 预计播放量 | X万 | X万 |
-| 完播率 | X% | X% |
-| 点赞率 | X% | X% |
-| 互动率 | X% | X% |
-| 爆款概率 | X% | X% |
-
-## 4. 算法推荐优势
-- 哪个更容易被推荐
-- 原因分析
-- 推荐权重得分：视频A X分/视频B X分
-
-## 5. 标题优化对比
-- 视频A推荐标题（3个）
-- 视频B推荐标题（3个）
-
-## 6. 综合评分与结论
-- 视频A/B综合评分（X/100）
-- 胜出视频：X
-- 投流建议
-- 配合发布策略
+## 4. 竞品对标（3个账号类型及典型数据）
+## 5. 推荐标题（5个，含钩子类型和点击率）
+## 6. 封面优化（截取时间、文字建议、构图）
+## 7. 发布策略（时间/投流/话题标签/评论区话术）
+## 8. 优化建议（前3秒/节奏/BGM/字幕贴纸）
+## 9. A/B测试方案（两方案具体描述）
+## 10. 海外投放（市场/本地化/海外数据预测）
 
 所有数据必须给出具体数字，不要含糊其辞。`;
 
-        const PLAT_NAMES = { douyin:'抖音', xiaohongshu:'小红书', shipinhao:'视频号', bilibili:'B站', kuaishou:'快手', tiktok:'TikTok' };
+        const PROMPT_COMPARE=`你是资深视频运营专家，精通平台算法。请对比分析两个视频的关键帧，所有数据必须给出具体数字。
 
-        async function callAI(frames, cfg) {
-            const plat = PLAT_NAMES[cfg.platform] || cfg.platform;
-            const prompt = PROMPT_SINGLE.replace('{{platform}}', plat);
-            if (cfg.service==='qwen') {
-                const r = await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation', { method:'POST', headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'}, body:JSON.stringify({ model:'qwen-vl-plus', input:{ messages:[{ role:'user', content:[{image:frames[0]},{text:prompt}] }] } }) });
-                if (!r.ok) throw new Error((await r.json()).message||'API失败');
-                const d = await r.json(), c = d.output.choices[0].message.content;
-                return typeof c==='string' ? c : (Array.isArray(c)?c.map(x=>typeof x==='string'?x:(x.text||'')).join(''):String(c));
-            } else if (cfg.service==='claude') {
-                const r = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}, body:JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:8192, messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:frames[0].split(',')[1]}},{type:'text',text:prompt}]}]}) });
-                if (!r.ok) throw new Error((await r.json()).error?.message||'API失败');
-                return (await r.json()).content[0].text;
-            } else {
-                const r = await fetch('https://api.openai.com/v1/chat/completions', { method:'POST', headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'}, body:JSON.stringify({ model:'gpt-4o', messages:[{role:'user',content:[{type:'image_url',image_url:{url:frames[0]}},{type:'text',text:prompt}]}]}) });
-                if (!r.ok) throw new Error('API失败');
-                return (await r.json()).choices[0].message.content;
-            }
-        }
+## 1. 内容对比（画面/人物/场景/风格/核心差异）
+## 2. 目标受众对比（性别/年龄/兴趣/消费能力/重合度）
+## 3. 数据预测对比表格（播放量/完播率/点赞率/互动率/爆款概率）
+## 4. 算法推荐优势（哪个更容易推荐，权重得分X/100）
+## 5. 标题优化对比（各3个推荐标题）
+## 6. 综合评分与结论（各X/100，胜出视频，投流建议）
 
-        async function callCompare(f1, f2, cfg) {
-            const plat = PLAT_NAMES[cfg.platform] || cfg.platform;
-            const prompt = PROMPT_COMPARE.replace('{{platform}}', plat);
-            if (cfg.service==='qwen') {
-                const r = await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation', { method:'POST', headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'}, body:JSON.stringify({ model:'qwen-vl-plus', input:{ messages:[{role:'user',content:[{text:'视频A关键帧：'},{image:f1[0]},{text:'视频B关键帧：'},{image:f2[0]},{text:prompt}]}] } }) });
-                if (!r.ok) throw new Error((await r.json()).message||'API失败');
-                const d = await r.json(), c = d.output.choices[0].message.content;
+所有数据必须给出具体数字，不要含糊其辞。`;
+
+        async function callAI(frames,cfg){
+            const plat=PLAT_NAMES[cfg.platform]||cfg.platform;
+            const prompt=PROMPT_SINGLE.replace('${PLAT_NAMES[douyin]}',plat);
+            if(cfg.service==='qwen'){
+                const r=await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-plus',input:{messages:[{role:'user',content:[{image:frames[0]},{text:prompt}]}]}})});
+                if(!r.ok)throw new Error((await r.json()).message||'API失败');
+                const d=await r.json(),c=d.output.choices[0].message.content;
                 return typeof c==='string'?c:(Array.isArray(c)?c.map(x=>typeof x==='string'?x:(x.text||'')).join(''):String(c));
-            } else if (cfg.service==='claude') {
-                const r = await fetch('https://api.anthropic.com/v1/messages', { method:'POST', headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'}, body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:[{type:'text',text:'视频A关键帧：'},{type:'image',source:{type:'base64',media_type:'image/jpeg',data:f1[0].split(',')[1]}},{type:'text',text:'视频B关键帧：'},{type:'image',source:{type:'base64',media_type:'image/jpeg',data:f2[0].split(',')[1]}},{type:'text',text:prompt}]}]})});
-                if (!r.ok) throw new Error((await r.json()).error?.message||'API失败');
+            }else if(cfg.service==='claude'){
+                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:frames[0].split(',')[1]}},{type:'text',text:prompt}]}]})});
+                if(!r.ok)throw new Error((await r.json()).error?.message||'API失败');
                 return (await r.json()).content[0].text;
-            } else {
-                const r = await fetch('https://api.openai.com/v1/chat/completions', { method:'POST', headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'}, body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:[{type:'text',text:'视频A：'},{type:'image_url',image_url:{url:f1[0]}},{type:'text',text:'视频B：'},{type:'image_url',image_url:{url:f2[0]}},{type:'text',text:prompt}]}]})});
-                if (!r.ok) throw new Error('API失败');
+            }else{
+                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:[{type:'image_url',image_url:{url:frames[0]}},{type:'text',text:prompt}]}]})});
+                if(!r.ok)throw new Error('API失败');
                 return (await r.json()).choices[0].message.content;
             }
         }
 
-        function showResult(text, name, type) {
-            let html = text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
-            document.getElementById('resultContent').innerHTML = html;
+        async function callCompare(f1,f2,cfg){
+            const plat=PLAT_NAMES[cfg.platform]||cfg.platform;
+            const prompt=PROMPT_COMPARE.replace('${PLAT_NAMES[douyin]}',plat);
+            if(cfg.service==='qwen'){
+                const r=await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-plus',input:{messages:[{role:'user',content:[{text:'视频A关键帧：'},{image:f1[0]},{text:'视频B关键帧：'},{image:f2[0]},{text:prompt}]}]}})});
+                if(!r.ok)throw new Error((await r.json()).message||'API失败');
+                const d=await r.json(),c=d.output.choices[0].message.content;
+                return typeof c==='string'?c:(Array.isArray(c)?c.map(x=>typeof x==='string'?x:(x.text||'')).join(''):String(c));
+            }else if(cfg.service==='claude'){
+                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:[{type:'text',text:'视频A关键帧：'},{type:'image',source:{type:'base64',media_type:'image/jpeg',data:f1[0].split(',')[1]}},{type:'text',text:'视频B关键帧：'},{type:'image',source:{type:'base64',media_type:'image/jpeg',data:f2[0].split(',')[1]}},{type:'text',text:prompt}]}]})});
+                if(!r.ok)throw new Error((await r.json()).error?.message||'API失败');
+                return (await r.json()).content[0].text;
+            }else{
+                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:[{type:'text',text:'视频A：'},{type:'image_url',image_url:{url:f1[0]}},{type:'text',text:'视频B：'},{type:'image_url',image_url:{url:f2[0]}},{type:'text',text:prompt}]}]})});
+                if(!r.ok)throw new Error('API失败');
+                return (await r.json()).choices[0].message.content;
+            }
+        }
+
+        async function analyzeVideo(slot){
+            const cfg=JSON.parse(localStorage.getItem('aiConfig')||'{}');
+            if(!cfg.apiKey){alert('请先配置 API Key');togglePanel('apiPanel');return;}
+            const file=slot===1?currentVideoFile1:currentVideoFile2;
+            if(!file){alert('请先上传视频');return;}
+            document.getElementById('loadingState').classList.add('active');
+            document.getElementById('analysisResult').classList.remove('active');
+            try{
+                document.getElementById('loadingDetail').textContent='提取视频关键帧中...';
+                const frames=await extractFrames(document.getElementById('videoPlayer'+slot));
+                document.getElementById('loadingDetail').textContent='AI 分析中，预计 10-20 秒...';
+                const result=await callAI(frames,cfg);
+                showResult(result,file.name,'single');
+            }catch(e){alert('分析失败: '+e.message);}
+            document.getElementById('loadingState').classList.remove('active');
+        }
+
+        async function compareVideos(){
+            const cfg=JSON.parse(localStorage.getItem('aiConfig')||'{}');
+            if(!cfg.apiKey){alert('请先配置 API Key');togglePanel('apiPanel');return;}
+            if(!currentVideoFile1||!currentVideoFile2){alert('请先上传两个视频');return;}
+            document.getElementById('loadingState').classList.add('active');
+            document.getElementById('analysisResult').classList.remove('active');
+            try{
+                document.getElementById('loadingDetail').textContent='提取两个视频关键帧中...';
+                const [f1,f2]=await Promise.all([extractFrames(document.getElementById('videoPlayer1')),extractFrames(document.getElementById('videoPlayer2'))]);
+                document.getElementById('loadingDetail').textContent='AI 对比分析中，预计 15-30 秒...';
+                const result=await callCompare(f1,f2,cfg);
+                showResult(result,currentVideoFile1.name+' vs '+currentVideoFile2.name,'compare');
+            }catch(e){alert('对比分析失败: '+e.message);}
+            document.getElementById('loadingState').classList.remove('active');
+        }
+
+        function showResult(text,name,type){
+            let html=text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
+            document.getElementById('resultContent').innerHTML=html;
             document.getElementById('analysisResult').classList.add('active');
-            saveHistory(text, name, type);
+            saveHistory(text,name,type);
             document.getElementById('analysisResult').scrollIntoView({behavior:'smooth'});
         }
 
-        function saveHistory(text, name, type) {
+        function saveHistory(text,name,type){
             analysisHistory.unshift({id:Date.now(),name,type,platform:document.getElementById('platform').value,text,timestamp:new Date().toLocaleString('zh-CN')});
-            if (analysisHistory.length>20) analysisHistory = analysisHistory.slice(0,20);
+            if(analysisHistory.length>20)analysisHistory=analysisHistory.slice(0,20);
             localStorage.setItem('videoAnalysisHistory',JSON.stringify(analysisHistory));
             renderHistory();
         }
 
-        function renderHistory() {
-            const list = document.getElementById('historyList');
-            if (!analysisHistory.length) { list.innerHTML='<div class="history-empty">> NO HISTORY FOUND</div>'; return; }
-            list.innerHTML = analysisHistory.map(h => `<div class="history-item"><div class="history-item-header"><div class="history-item-title"><span class="history-badge ${h.type==='compare'?'compare':'single'}">${h.type==='compare'?'对比':'单视频'}</span>${h.name}</div><div class="history-item-actions"><button class="ak-btn primary" style="padding:6px 12px;font-size:0.7rem;" onclick="viewHistory(${h.id})">VIEW</button><button class="ak-btn" style="padding:6px 12px;font-size:0.7rem;" onclick="delHistory(${h.id})">DEL</button></div></div><div class="history-item-time">${h.timestamp}</div></div>`).join('');
+        function renderHistory(){
+            const list=document.getElementById('historyList');
+            if(!analysisHistory.length){list.innerHTML='<div class="history-empty">> NO HISTORY FOUND</div>';return;}
+            list.innerHTML=analysisHistory.map(h=>`<div class="history-item"><div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:8px;"><div class="history-item-title"><span class="history-badge ${h.type==='compare'?'compare':'single'}">${h.type==='compare'?'对比':'单视频'}</span>${h.name}</div><div style="display:flex;gap:8px;"><button onclick="viewHistory(${h.id})" class="tw-bg-blue-500 hover:tw-bg-blue-600 text-white px-3 py-1 rounded text-sm">查看</button><button onclick="delHistory(${h.id})" class="tw-bg-red-500 hover:tw-bg-red-600 text-white px-3 py-1 rounded text-sm">删除</button></div></div><div class="history-item-time">${h.timestamp}</div></div>`).join('');
         }
 
-        function viewHistory(id) {
-            const h = analysisHistory.find(x=>x.id===id);
-            if (h) { document.getElementById('resultContent').innerHTML = h.text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>'); document.getElementById('analysisResult').classList.add('active'); document.getElementById('analysisResult').scrollIntoView({behavior:'smooth'}); }
+        function viewHistory(id){
+            const h=analysisHistory.find(x=>x.id===id);
+            if(h){
+                document.getElementById('resultContent').innerHTML=h.text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
+                document.getElementById('analysisResult').classList.add('active');
+                document.getElementById('analysisResult').scrollIntoView({behavior:'smooth'});
+            }
         }
 
-        function delHistory(id) { analysisHistory=analysisHistory.filter(x=>x.id!==id); localStorage.setItem('videoAnalysisHistory',JSON.stringify(analysisHistory)); renderHistory(); }
+        function delHistory(id){analysisHistory=analysisHistory.filter(x=>x.id!==id);localStorage.setItem('videoAnalysisHistory',JSON.stringify(analysisHistory));renderHistory();}
     </script>
 </body>
 </html>
