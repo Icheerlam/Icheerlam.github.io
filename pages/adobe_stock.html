@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Stock 图片识别工具 // Rhodes Island</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --ak-bg-main:#050505; --ak-bg-panel:rgba(18,18,20,0.92); --ak-text-main:#ffffff; --ak-text-muted:#7a7a7a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#2a2a2a; --ak-scan-line:rgba(0,216,255,0.03); }
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; }
+        @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
+
+        .tech-bg { position:fixed; inset:0; z-index:-10; background-color:var(--ak-bg-main); background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center; opacity:0.15; filter:grayscale(100%); }
+        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:40px 40px; }
+        .prts-hud { position:fixed; inset:20px; z-index:-8; border:1px solid rgba(0,216,255,0.05); pointer-events:none; background:linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; }
+
+        nav { position:fixed; top:0; width:100%; padding:15px 5vw; display:flex; justify-content:space-between; align-items:center; background:var(--ak-bg-panel); border-bottom:1px solid var(--ak-border); z-index:1000; backdrop-filter:blur(10px); }
+        .nav-logo { font:800 1rem 'Space Mono'; letter-spacing:2px; color:var(--ak-text-main); text-decoration:none; border:1px solid var(--ak-accent-info); padding:5px 12px; transition:0.3s; }
+        .nav-logo:hover { background:var(--ak-accent-info); color:#000; }
+        .nav-right { display:flex; align-items:center; gap:30px; }
+        .nav-links { display:flex; gap:25px; font:0.85rem 'Space Mono'; }
+        .nav-links a { color:var(--ak-text-main); text-decoration:none; font-weight:700; text-transform:uppercase; transition:0.3s; }
+        .nav-links a:hover, .nav-links a.active { color:var(--ak-accent-info); text-shadow:0 0 8px var(--ak-accent-info); }
+        .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono'; text-decoration:none; transition:0.3s; }
+        .nav-home-btn:hover { background:var(--ak-accent-warn); color:#000; }
+
+        .page-header { text-align:center; margin:120px auto 40px; animation:fadeUp 0.6s forwards; position:relative; z-index:10; }
+        .page-header h1 { font:800 2.2rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:10px; }
+        .page-header p { color:var(--ak-text-muted); font-family:'Space Mono',monospace; font-size:0.9rem; }
+
+        .container { max-width:900px; margin:0 auto 80px; padding:0 5vw; position:relative; z-index:10; }
+
+        .panel { background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:28px 32px; margin-bottom:24px; opacity:0; animation:fadeUp 0.6s forwards; transition:0.3s; }
+        .panel:hover { border-color:var(--ak-accent-info); box-shadow:0 5px 25px rgba(0,216,255,0.08); }
+        .panel-title { font:800 1rem 'Space Mono'; color:var(--ak-text-main); display:flex; align-items:center; gap:10px; text-transform:uppercase; margin-bottom:20px; }
+        .panel-title::before { content:'/>'; color:var(--ak-accent-info); }
+
+        .desc { color:var(--ak-text-muted); font-size:0.9rem; line-height:1.8; margin-bottom:16px; }
+        .desc strong { color:var(--ak-accent-info); }
+
+        .feature-list { list-style:none; padding:0; margin:16px 0; }
+        .feature-list li { padding:10px 0 10px 20px; position:relative; color:var(--ak-text-muted); font-size:0.9rem; border-bottom:1px dashed var(--ak-border); }
+        .feature-list li:last-child { border-bottom:none; }
+        .feature-list li::before { content:'>'; position:absolute; left:0; color:var(--ak-accent-info); font-weight:bold; font-family:'Space Mono'; }
+        .feature-list li strong { color:var(--ak-text-main); }
+
+        .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:16px 0; }
+        .info-card { background:var(--ak-bg-main); border:1px solid var(--ak-border); padding:16px; }
+        .info-card h4 { font:700 0.75rem 'Space Mono'; color:var(--ak-accent-info); text-transform:uppercase; margin-bottom:8px; }
+        .info-card p { font-size:0.85rem; color:var(--ak-text-muted); }
+
+        .code-block { background:#000; border:1px solid var(--ak-border); padding:16px 20px; font-family:'Space Mono',monospace; font-size:0.8rem; color:var(--ak-accent-warn); margin:12px 0; }
+        .code-block code { color:var(--ak-accent-info); }
+
+        .warn-box { border-left:3px solid var(--ak-accent-warn); background:rgba(245,166,35,0.05); padding:16px 20px; margin:16px 0; }
+        .warn-box p { font-size:0.85rem; color:var(--ak-accent-warn); font-family:'Space Mono',monospace; }
+
+        .steps { counter-reset:step-counter; }
+        .step { display:flex; gap:16px; margin-bottom:20px; opacity:0; animation:fadeUp 0.5s forwards; }
+        .step-num { counter-increment:step-counter; flex-shrink:0; width:36px; height:36px; border:1px solid var(--ak-accent-info); display:flex; align-items:center; justify-content:center; font:bold 0.85rem 'Space Mono'; color:var(--ak-accent-info); background:rgba(0,216,255,0.05); }
+        .step::before { content:counter(step-counter); }
+        .step-content { flex:1; padding-top:6px; }
+        .step-content h4 { font:800 0.9rem 'Space Mono'; color:var(--ak-text-main); margin-bottom:6px; }
+        .step-content p { font-size:0.85rem; color:var(--ak-text-muted); }
+
+        .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10; }
+        .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; }
+        .btn-back:hover { background:var(--ak-accent-info); color:#000; border-color:var(--ak-accent-info); }
+
+        footer { position:relative; text-align:center; padding:40px; color:var(--ak-text-muted); font-family:'Space Mono',monospace; font-size:0.75rem; text-transform:uppercase; border-top:1px solid var(--ak-border); z-index:10; }
+        footer::before,footer::after { content:''; position:absolute; top:-1px; width:20px; height:4px; background:var(--ak-accent-info); }
+        footer::before { left:0; }
+        footer::after { right:0; }
+
+        @media (max-width:768px) { .nav-links{display:none;} .info-grid{grid-template-columns:1fr;} }
+    </style>
+</head>
+<body>
+
+    <div class="tech-bg"></div>
+    <div class="tech-overlay"></div>
+    <div class="prts-hud"></div>
+
+    <nav>
+        <a href="https://icheerlam.github.io/" class="nav-logo">PRTS // CLARENCE YE</a>
+        <div class="nav-right">
+            <div class="nav-links">
+                <a href="data.html">Data Analysis</a>
+                <a href="graphic.html">Graphic</a>
+                <a href="3d.html">3D Art</a>
+                <a href="video.html">Video</a>
+                <a href="vibecoding.html" class="active">Vibecoding</a>
+                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank">Gallery</a>
+            </div>
+            <a href="vibecoding.html" class="nav-home-btn">[ &lt; VIBECODING ]</a>
+        </div>
+    </nav>
+
+    <header class="page-header">
+        <h1>[ ADOBE STOCK // IMAGE RECOGNIZER ]</h1>
+        <p>本地 AI 程序，批量生成 Adobe Stock 关键词和标签</p>
+    </header>
+
+    <main class="container">
+
+        <div class="panel" style="animation-delay:0.1s;">
+            <div class="panel-title">Program Overview // 功能概览</div>
+            <p class="desc">Adobe Stock 图片识别工具是一款本地 AI 程序，批量处理图片文件夹，自动为每张图片生成符合 <strong>Adobe Stock 上传标准</strong>的标题、关键词和分类目录，支持 CSV 批量导出。</p>
+            <ul class="feature-list">
+                <li><strong>AI 图片识别</strong> — 调用阿里云通义千问 VL 模型，分析图片内容</li>
+                <li><strong>关键词生成</strong> — 自动提取最多 49 个英文关键词（对象、场景、动作、色彩、情绪等）</li>
+                <li><strong>标题生成</strong> — 生成简洁精准的英文图片描述标题</li>
+                <li><strong>分类映射</strong> — 匹配 21 个 Adobe Stock 标准分类目录</li>
+                <li><strong>并发处理</strong> — 支持多线程批量处理，默认 5 并发</li>
+                <li><strong>CSV 导出</strong> — 输出符合 Adobe Stock 上传格式的 CSV 文件</li>
+            </ul>
+        </div>
+
+        <div class="panel" style="animation-delay:0.2s;">
+            <div class="panel-title">Setup Instructions // 使用说明</div>
+            <div class="info-grid">
+                <div class="info-card"><h4>Program Location</h4><p>Adobe_Stock_图片识别程序文件夹</p></div>
+                <div class="info-card"><h4>Input Folder</h4><p>待识别图片文件夹，放入图片等待处理</p></div>
+                <div class="info-card"><h4>Output Folder</h4><p>识别结果文件夹，CSV 自动保存至此</p></div>
+                <div class="info-card"><h4>Config File</h4><p>config.json — 配置 API Key 和路径</p></div>
+            </div>
+            <div class="steps">
+                <div class="step" style="--n:1">
+                    <div class="step-num"></div>
+                    <div class="step-content"><h4>配置 API Key</h4><p>打开 <strong>config.json</strong>，填入阿里云 DashScope API Key（sk-...），或查看 <strong>阿里云使用指南.md</strong> 获取配置说明。</p></div>
+                </div>
+                <div class="step" style="--n:2">
+                    <div class="step-num"></div>
+                    <div class="step-content"><h4>放入待识别图片</h4><p>将图片放入 <strong>待识别图片</strong> 文件夹，支持 JPG, JPEG, PNG, GIF, BMP, WEBP 格式。</p></div>
+                </div>
+                <div class="step" style="--n:3">
+                    <div class="step-num"></div>
+                    <div class="step-content"><h4>运���程序</h4><p>双击 <strong>运行.bat</strong>，浏览器自动打开 http://localhost:5000</p></div>
+                </div>
+            </div>
+            <div class="code-block"><code>py web_ui.py</code>&nbsp;&nbsp;// 或双击 运行.bat，浏览器自动打开 Web 界面</div>
+        </div>
+
+        <div class="panel" style="animation-delay:0.3s;">
+            <div class="panel-title">API Configuration // API 配置</div>
+            <p class="desc">程序使用阿里云 <strong>DashScope</strong> 服务，支持通义千问 VL 模型。首次使用需配置 API Key。</p>
+            <div class="warn-box"><p>> 请勿将 API Key 上传至公开仓库，config.json 已在 .gitignore 中排除</p></div>
+            <ul class="feature-list">
+                <li><strong>模型：</strong>qwen-vl-max（图片识别）/ qwen-max（提示词生成）</li>
+                <li><strong>并发：</strong>默认 5 线程，可在 Web 界面调整</li>
+                <li><strong>图片压缩：</strong>最大边长 800px，JPEG 质量 75%，加快处理速度</li>
+                <li><strong>超时：</strong>API 请求超时时间 30 秒</li>
+            </ul>
+        </div>
+
+    </main>
+
+    <div class="back-nav"><a href="vibecoding.html" class="btn-back">[ &lt; VIBECODING ]</a></div>
+    <footer><p>> Rhodes Island Archive // Adobe Stock Tool // System.2026</p></footer>
+
+</body>
+</html>
