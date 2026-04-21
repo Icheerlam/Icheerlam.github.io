@@ -3,155 +3,105 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vide Codingz // Rhodes Island</title>
+    <title>Vibecoding // Rhodes Island</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --ak-bg-main:#050505; --ak-bg-panel:rgba(18,18,20,0.92); --ak-text-main:#ffffff; --ak-text-muted:#7a7a7a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#2a2a2a; --ak-scan-line:rgba(0,216,255,0.03); }
-        body.light-mode { --ak-bg-main:#e5e7eb; --ak-bg-panel:rgba(255,255,255,0.95); --ak-text-main:#111; --ak-border:#ccc; }
+        :root { --ak-bg-main:#0A0A0E; --ak-bg-panel:rgba(18,20,25,0.85); --ak-bg-panel-light:rgba(30,30,35,0.6); --ak-text-main:#e0e6ed; --ak-text-muted:#828a9a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#1f232b; --ak-scan-line:rgba(0,216,255,0.04); }
+        body.light-mode { --ak-bg-main:#e5e7eb; --ak-bg-panel:rgba(255,255,255,0.95); --ak-bg-panel-light:rgba(240,242,245,0.8); --ak-text-main:#111; --ak-text-muted:#64748b; --ak-accent-info:#0284c7; --ak-accent-warn:#ea580c; --ak-border:#ccc; }
         * { box-sizing:border-box; margin:0; padding:0; }
-        
-        /* ✨ 开启平滑滚动与主题平滑切换 */
         html { scroll-behavior: smooth; }
-        body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; counter-reset:gallery-counter; transition: background 0.4s ease, color 0.4s ease; }
-        
-        @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
+        body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; transition:background 0.4s ease,color 0.4s ease; }
+        @keyframes fadeUp { 0%{opacity:0;transform:translateY(25px);} 100%{opacity:1;transform:translateY(0);} }
 
-        /* 战术背景 */
         .tech-bg { position:fixed; inset:0; z-index:-10; background-color:var(--ak-bg-main); background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center; opacity:0.15; filter:grayscale(100%); transition:0.4s; }
-        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:40px 40px; }
-        
-        body.light-mode .tech-overlay { 
-            background: 
-                radial-gradient(circle at 50% 50%, transparent 20%, rgba(240,242,245,0.85) 100%),
-                linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
-        }
+        body.light-mode .tech-bg { opacity:0.06; filter:none; }
+        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:radial-gradient(circle at 50% 50%,transparent 20%,rgba(10,10,14,0.85) 100%),linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:100% 100%,40px 40px,40px 40px; }
+        body.light-mode .tech-overlay { background:radial-gradient(circle at 50% 50%,transparent 20%,rgba(240,242,245,0.85) 100%),linear-gradient(rgba(2,132,199,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(2,132,199,0.05) 1px,transparent 1px); background-size:100% 100%,40px 40px,40px 40px; }
+        .prts-hud { position:fixed; inset:20px; z-index:-8; border:1px solid rgba(0,216,255,0.08); pointer-events:none; background:linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; transition:0.4s; }
 
-        .prts-hud { position:fixed; inset:20px; z-index:-8; border:1px solid rgba(0,216,255,0.05); pointer-events:none; background:linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; transition: 0.4s; }
-
-        /* 导航与标题 */
-        nav { position:fixed; top:0; width:100%; padding:15px 5vw; display:flex; justify-content:space-between; align-items:center; background:var(--ak-bg-panel); border-bottom:1px solid var(--ak-border); z-index:1000; backdrop-filter:blur(10px); transition: 0.4s; }
-        .nav-logo { font:800 1rem 'Space Mono'; letter-spacing:2px; color:var(--ak-text-main); text-decoration:none; border:1px solid var(--ak-accent-info); padding:5px 12px; cursor: pointer; }
+        nav { position:fixed; top:0; width:100%; padding:15px 5vw; display:flex; justify-content:space-between; align-items:center; background:var(--ak-bg-panel); border-bottom:1px solid var(--ak-border); z-index:1000; backdrop-filter:blur(10px); transition:0.4s; }
+        .nav-logo { font:800 1rem 'Space Mono'; letter-spacing:2px; color:var(--ak-text-main); text-decoration:none; border:1px solid var(--ak-accent-info); padding:5px 12px; cursor:pointer; transition:0.3s; }
+        .nav-logo:hover { background:var(--ak-accent-info); color:#000; }
         .nav-right { display:flex; align-items:center; gap:30px; }
         .nav-links { display:flex; gap:25px; font:0.85rem 'Space Mono'; }
-        .nav-links a { color:var(--ak-text-main); text-decoration:none; font-weight:700; text-transform:uppercase; transition:0.3s; cursor: pointer; }
+        .nav-links a { color:var(--ak-text-main); text-decoration:none; font-weight:700; text-transform:uppercase; transition:0.3s; cursor:pointer; }
         .nav-links a:hover, .nav-links a.active { color:var(--ak-accent-info); text-shadow:0 0 8px var(--ak-accent-info); }
-        .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono'; text-decoration:none; transition:0.3s; cursor: pointer; }
+        .nav-home-btn { padding:6px 14px; background:transparent; color:var(--ak-accent-warn); border:1px solid var(--ak-accent-warn); font:700 0.85rem 'Space Mono'; text-decoration:none; transition:0.3s; cursor:pointer; }
         .nav-home-btn:hover { background:var(--ak-accent-warn); color:#000; }
-        
-        .page-header { text-align:center; margin:140px auto 40px; animation:fadeUp 0.6s forwards; position:relative; z-index:10;}
+
+        .audio-toggle-btn { position:fixed; top:80px; left:5vw; background:rgba(18,20,25,0.8); backdrop-filter:blur(5px); color:var(--ak-accent-info); border:1px solid var(--ak-accent-info); padding:6px 12px; font-family:'Space Mono',monospace; font-size:0.75rem; font-weight:bold; cursor:pointer; z-index:999; transition:0.3s; border-radius:2px; width:170px; text-align:center; letter-spacing:1px; }
+        .audio-toggle-btn:hover { background:var(--ak-accent-info); color:#000; box-shadow:0 0 10px var(--ak-accent-info); }
+        .audio-toggle-btn.muted { color:var(--ak-text-muted); border-color:var(--ak-text-muted); }
+        .audio-toggle-btn.muted:hover { background:var(--ak-text-muted); color:#000; }
+
+        .volume-panel { position:fixed; top:125px; left:5vw; background:var(--ak-bg-panel); backdrop-filter:blur(5px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:15px; width:170px; z-index:998; display:flex; flex-direction:column; gap:12px; transition:0.3s opacity,0.3s border-color; opacity:0.5; overflow:hidden; }
+        .volume-panel:hover { opacity:1; border-color:var(--ak-accent-info); box-shadow:0 0 15px rgba(0,216,255,0.1); }
+        .vol-header { font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--ak-accent-info); font-weight:bold; padding-bottom:5px; text-transform:uppercase; cursor:pointer; display:flex; justify-content:space-between; align-items:center; border-bottom:1px dashed var(--ak-border); transition:0.2s color; }
+        .vol-header:hover { color:var(--ak-text-main); }
+        .vol-content { display:flex; flex-direction:column; gap:12px; transition:max-height 0.3s ease,opacity 0.3s ease,margin-top 0.3s ease; max-height:200px; opacity:1; margin-top:10px; }
+        .volume-panel.collapsed .vol-content { max-height:0; opacity:0; margin-top:0; pointer-events:none; }
+        .volume-panel.collapsed .vol-header { border-bottom:none; padding-bottom:0; }
+        .vol-row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+        .vol-row label { font-family:'Space Mono',monospace; font-size:0.65rem; color:var(--ak-text-muted); width:40px; text-align:left; }
+        .vol-slider { -webkit-appearance:none; width:100%; height:3px; background:var(--ak-border); outline:none; border-radius:2px; }
+        .vol-slider::-webkit-slider-thumb { -webkit-appearance:none; width:8px; height:12px; background:var(--ak-accent-info); cursor:pointer; border-radius:1px; }
+        .vol-slider::-webkit-slider-thumb:hover { background:var(--ak-accent-warn); }
+
+        .theme-toggle-btn { position:fixed; bottom:30px; right:30px; background:var(--ak-bg-panel); color:var(--ak-text-muted); border:1px solid var(--ak-border); padding:12px 16px; font-family:'Space Mono',monospace; font-size:0.8rem; font-weight:700; cursor:pointer; z-index:1500; transition:0.3s; box-shadow:0 4px 10px rgba(0,0,0,0.5); }
+        .theme-toggle-btn:hover { border-color:var(--ak-accent-info); color:var(--ak-accent-info); transform:translateY(-3px); }
+
+        .page-header { text-align:center; margin:140px auto 50px; animation:fadeUp 0.6s forwards; position:relative; z-index:10; }
         .page-header h1 { font:800 2.2rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:10px; }
+        .page-header p { color:var(--ak-text-muted); font-family:'Space Mono',monospace; }
 
-        /* ================= 音频控制区 (左侧) ================= */
-        .audio-toggle-btn {
-            position: fixed; top: 80px; left: 5vw; 
-            background: rgba(10, 10, 12, 0.8); backdrop-filter: blur(5px);
-            color: var(--ak-accent-info); border: 1px solid var(--ak-accent-info); 
-            padding: 6px 12px; font-family: 'Space Mono', monospace; font-size: 0.75rem; font-weight: bold;
-            cursor: pointer; z-index: 999; transition: 0.3s; border-radius: 2px;
-            width: 170px; text-align: center; letter-spacing: 1px;
+        .container { max-width:1200px; margin:0 auto; padding:0 5vw 80px; position:relative; z-index:10; }
+
+        /* 功能卡片网格 */
+        .feature-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:24px; margin-bottom:60px; }
+
+        .feature-card {
+            background:var(--ak-bg-panel); backdrop-filter:blur(10px);
+            border:1px solid var(--ak-border); border-top:3px solid var(--ak-border);
+            padding:32px; opacity:0; animation:fadeUp 0.6s forwards; transition:0.4s;
+            position:relative; overflow:hidden;
         }
-        .audio-toggle-btn:hover { background: var(--ak-accent-info); color: #000; box-shadow: 0 0 10px var(--ak-accent-info);}
-        .audio-toggle-btn.muted { color: var(--ak-text-muted); border-color: var(--ak-text-muted); }
-        .audio-toggle-btn.muted:hover { background: var(--ak-text-muted); color: #000; }
+        .feature-card:hover { border-color:var(--ak-accent-info); transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,216,255,0.1); }
+        .feature-card::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(-45deg,transparent,transparent 4px,rgba(0,216,255,0.03) 4px,rgba(0,216,255,0.03) 8px); opacity:0; transition:0.4s; }
+        .feature-card:hover::before { opacity:1; }
 
-        /* ✨ 战术混音台 (支持折叠收放) ✨ */
-        .volume-panel {
-            position: fixed; top: 125px; left: 5vw; 
-            background: rgba(10, 10, 12, 0.85); backdrop-filter: blur(5px);
-            border: 1px solid var(--ak-border); border-top: 3px solid var(--ak-border);
-            padding: 15px; width: 170px; z-index: 998; 
-            transition: 0.3s opacity, 0.3s border-color;
-            opacity: 0.5; overflow: hidden;
-        }
-        .volume-panel:hover { opacity: 1; border-color: var(--ak-accent-info); box-shadow: 0 0 15px rgba(0, 216, 255, 0.1); }
-        
-        .vol-header {
-            font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-accent-info);
-            font-weight: bold; padding-bottom: 5px; text-transform: uppercase;
-            cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px dashed var(--ak-border); transition: 0.2s color;
-        }
-        .vol-header:hover { color: var(--ak-text-main); }
-        
-        .vol-content {
-            display: flex; flex-direction: column; gap: 12px;
-            transition: max-height 0.3s ease, opacity 0.3s ease, margin-top 0.3s ease;
-            max-height: 200px; opacity: 1; margin-top: 10px;
-        }
-        .volume-panel.collapsed .vol-content { max-height: 0; opacity: 0; margin-top: 0; pointer-events: none; }
-        .volume-panel.collapsed .vol-header { border-bottom: none; padding-bottom: 0; }
+        /* 视频分析功能 - 主卡片（特效更强） */
+        .feature-card-main { border-top-color:var(--ak-accent-info); border-color:rgba(0,216,255,0.3); background:linear-gradient(135deg,rgba(0,216,255,0.08) 0%,rgba(0,0,0,0) 100%); }
+        .feature-card-main:hover { border-color:var(--ak-accent-info); box-shadow:0 10px 40px rgba(0,216,255,0.2); }
+        .feature-card-main::before { background:repeating-linear-gradient(-45deg,transparent,transparent 4px,rgba(0,216,255,0.08) 4px,rgba(0,216,255,0.08) 8px); }
 
-        .vol-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-        .vol-row label { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--ak-text-muted); width: 40px; text-align: left; }
-        .vol-slider { -webkit-appearance: none; width: 100%; height: 3px; background: var(--ak-border); outline: none; border-radius: 2px; }
-        .vol-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 8px; height: 12px; background: var(--ak-accent-info); cursor: pointer; border-radius: 1px; }
-        .vol-slider::-webkit-slider-thumb:hover { background: var(--ak-accent-warn); }
+        .card-icon { width:48px; height:48px; border:1px solid var(--ak-accent-info); display:flex; align-items:center; justify-content:center; margin-bottom:20px; font-size:1.4rem; }
+        .feature-card-main .card-icon { border-color:var(--ak-accent-info); background:rgba(0,216,255,0.1); }
+        .card-title { font:800 1.1rem 'Space Mono'; color:var(--ak-text-main); margin-bottom:10px; text-transform:uppercase; }
+        .card-desc { font-size:0.9rem; color:var(--ak-text-muted); line-height:1.7; margin-bottom:24px; }
 
-        /* ================= 主题切换悬浮键 ================= */
-        .theme-toggle-btn { 
-            position: fixed; bottom: 30px; right: 30px; background: var(--ak-bg-main); 
-            color: var(--ak-text-muted); border: 1px solid var(--ak-border); 
-            padding: 12px 16px; font-family: 'Space Mono', monospace; font-size: 0.8rem; 
-            font-weight: 700; cursor: pointer; z-index: 1500; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-        .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); transform: translateY(-3px);}
+        .block-btn { display:inline-flex; align-items:center; gap:8px; padding:12px 24px; background:transparent; border:1px solid var(--ak-accent-info); color:var(--ak-accent-info); font:700 0.85rem 'Space Mono'; text-decoration:none; transition:0.3s; text-transform:uppercase; cursor:pointer; }
+        .block-btn:hover { background:var(--ak-accent-info); color:#000; box-shadow:0 0 15px rgba(0,216,255,0.3); }
+        .block-btn.orange { border-color:var(--ak-accent-warn); color:var(--ak-accent-warn); }
+        .block-btn.orange:hover { background:var(--ak-accent-warn); color:#000; box-shadow:0 0 15px rgba(245,166,35,0.3); }
 
-        /* ✨ 瀑布流卡片与图片 ✨ */
-        .masonry-gallery { max-width:1600px; margin:0 auto; padding:0 5vw 80px; column-count:4; column-gap:24px; position:relative; z-index:10;}
-        .masonry-item { break-inside:avoid; margin-bottom:24px; background:var(--ak-bg-panel); backdrop-filter:blur(10px); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:10px; opacity:0; animation:fadeUp 0.6s forwards; transition:0.4s; position:relative; cursor: pointer; }
-        
-        /* 强制覆盖 content 的数值内容，解决数字顺序跳跃的问题 */
-        .masonry-item::before { counter-increment:gallery-counter; content:"[IMG-0" counter(gallery-counter) "]"; position:absolute; top:20px; left:20px; font:bold 0.65rem 'Space Mono'; color:#000; background:var(--ak-text-muted); padding:2px 8px; z-index:10; transition:0.3s; opacity:0;}
-        
-        .masonry-item:hover { border-color:var(--ak-accent-info); transform:translateY(-4px); box-shadow:0 10px 30px rgba(0,216,255,0.1); }
-        .masonry-item:hover::before { opacity:1; background:var(--ak-accent-info); }
-        
-        .masonry-item img { width:100%; display:block; transition:0.4s; cursor:zoom-in; }
-        .masonry-item:hover img { transform: scale(1.02); }
+        .coming-badge { display:inline-block; padding:3px 10px; border:1px solid var(--ak-border); color:var(--ak-text-muted); font:bold 0.7rem 'Space Mono'; letter-spacing:1px; margin-bottom:16px; }
+        .coming-badge:hover { border-color:var(--ak-accent-warn); color:var(--ak-accent-warn); }
 
-        /* 灯箱与底部 */
-        .lightbox { position:fixed; inset:0; background:rgba(0,0,0,0.95); z-index:3000; display:none; justify-content:center; align-items:center; }
-        .lightbox.active { display:flex; }
-        .lightbox img { max-width:90vw; max-height:90vh; border:2px solid var(--ak-accent-info); object-fit:contain; }
-        .lightbox-close { position:absolute; top:25px; right:40px; color:#fff; cursor:pointer; font:bold 1.2rem 'Space Mono'; border:1px solid #fff; padding:6px 12px; transition: 0.3s; }
-        .lightbox-close:hover { background: #fff; color: #000; }
-        
-        .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10;}
-        .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; cursor: pointer; }
+        .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10; }
+        .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; }
         .btn-back:hover { background:var(--ak-accent-info); color:#000; border-color:var(--ak-accent-info); }
-        footer {
-            position: relative;
-            text-align: center;
-            padding: 40px;
-            color: var(--ak-text-muted);
-            font-family: 'Space Mono', monospace;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            border-top: 1px solid var(--ak-border);
-            z-index: 10;
+
+        footer { position:relative; text-align:center; padding:40px; color:var(--ak-text-muted); font-family:'Space Mono',monospace; font-size:0.75rem; text-transform:uppercase; border-top:1px solid var(--ak-border); z-index:10; }
+        footer::before,footer::after { content:''; position:absolute; top:-1px; width:20px; height:4px; background:var(--ak-accent-info); }
+        footer::before { left:0; }
+        footer::after { right:0; }
+
+        @media (max-width:900px) { .nav-links { display:none; } }
+        @media (max-width:768px) {
+            .audio-toggle-btn { top:auto; bottom:20px; left:20px; z-index:2000; width:120px; padding:10px; }
+            .volume-panel { top:auto; bottom:70px; left:20px; transform:scale(0.85); transform-origin:bottom left; z-index:1999; }
+            .theme-toggle-btn { bottom:20px; right:20px; z-index:2000; }
         }
-        footer::before, footer::after {
-            content: '';
-            position: absolute;
-            top: -1px;
-            width: 20px;
-            height: 4px;
-            background: var(--ak-accent-info);
-        }
-        footer::before { left: 0; }
-        footer::after { right: 0; }
-        
-        /* 移动端适配 (按钮防遮挡) */
-        @media (max-width:1200px) { .masonry-gallery { column-count:3; } }
-        @media (max-width:900px) { .masonry-gallery { column-count:2; } .nav-links { display:none; } }
-        @media (max-width:768px) { 
-            .audio-toggle-btn { top: auto; bottom: 20px; left: 20px; z-index: 2000; width: 120px; padding: 10px;} 
-            .volume-panel { top: auto; bottom: 70px; left: 20px; transform: scale(0.85); transform-origin: bottom left; z-index: 1999; }
-            .theme-toggle-btn { bottom: 20px; right: 20px; z-index: 2000;}
-        }
-        @media (max-width:600px) { .masonry-gallery { column-count:1; } }
     </style>
 </head>
 <body class="dark-mode">
@@ -162,7 +112,7 @@
     <audio id="specialSound" preload="auto"><source src="../assets/audio/点击头像.mp3" type="audio/mpeg"></audio>
 
     <button id="audioToggle" class="audio-toggle-btn muted interactable">[ AUDIO: OFF ]</button>
-    
+
     <div class="volume-panel" id="volumePanel">
         <div class="vol-header interactable" id="volHeader">
             <span>AUDIO_MIXER</span>
@@ -190,7 +140,9 @@
 
     <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
-    <div class="tech-bg"></div><div class="tech-overlay"></div><div class="prts-hud"></div>
+    <div class="tech-bg"></div>
+    <div class="tech-overlay"></div>
+    <div class="prts-hud"></div>
 
     <nav>
         <a href="https://icheerlam.github.io/" class="nav-logo interactable">PRTS // CLARENCE YE</a>
@@ -208,124 +160,89 @@
     </nav>
 
     <header class="page-header">
-        <h1>[ GRAPHIC // UI DESIGN ]</h1><p style="color:var(--ak-text-muted);">海报、包装、图形设计与排版艺术</p>
+        <h1>[ VIBECODING // VIDEO AI TOOLS ]</h1>
+        <p>视频 AI 分析工具集</p>
     </header>
 
-    <main class="masonry-gallery" id="galleryBox">
-        <div class="masonry-item interactable" style="animation-delay:0.03s"><img src="../works/graphic/11.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.06s"><img src="../works/graphic/21.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.09s"><img src="../works/graphic/31.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.12s"><img src="../works/graphic/41.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.15s"><img src="../works/graphic/51.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.18s"><img src="../works/graphic/61.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.21s"><img src="../works/graphic/71.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.24s"><img src="../works/graphic/81.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.27s"><img src="../works/graphic/91.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.30s"><img src="../works/graphic/101.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.33s"><img src="../works/graphic/111.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.36s"><img src="../works/graphic/121.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.39s"><img src="../works/graphic/131.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.42s"><img src="../works/graphic/141.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.45s"><img src="../works/graphic/151.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.48s"><img src="../works/graphic/161.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.51s"><img src="../works/graphic/171.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.54s"><img src="../works/graphic/181.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.57s"><img src="../works/graphic/191.jpg" loading="lazy" class="img-clicker"></div>
+    <main class="container">
+        <div class="feature-grid">
 
-        <div class="masonry-item interactable" style="animation-delay:0.60s">
-            <div style="display: flex; flex-direction: column;">
-                <div style="color: #48E5B6; font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif; font-weight: 900; font-size: 0.85rem; margin-bottom: 12px; letter-spacing: 1px; line-height: 1; text-transform: none; text-shadow: none;">
-                    企业活动gif
-                </div>
-                <div style="display: flex; gap: 12px; width: 100%; height: 220px;">
-                    <div style="flex: 1.2; overflow: hidden; border-radius: 2px;">
-                        <img src="1024_ae_1.gif" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;" class="img-clicker">
-                    </div>
-                    <div style="flex: 1; overflow: hidden; border-radius: 2px;">
-                        <img src="M星巡游_5.gif" loading="lazy" style="width: 100%; height: 100%; object-fit: cover; display: block;" class="img-clicker">
-                    </div>
-                </div>
+            <!-- 视频分析功能 - 主卡片 -->
+            <div class="feature-card feature-card-main interactable" style="animation-delay:0.1s;">
+                <div class="card-icon">&#9654;</div>
+                <h3 class="card-title">视频运营分析助手</h3>
+                <p class="card-desc">
+                    上传视频，AI 自动提取关键帧，从内容概述、用户画像、数据预测、竞品对标、标题优化、发布策略等多维度输出专业分析报告。支持单视频分析与 A/B 对比分析。
+                </p>
+                <a href="视频分析功能.html" class="block-btn interactable">LAUNCH &gt;</a>
             </div>
-        </div>
 
-        <div class="masonry-item interactable" style="animation-delay:0.63s"><img src="../works/graphic/201.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.66s"><img src="../works/graphic/211.jpg" loading="lazy" class="img-clicker"></div>
-        
-        <div class="masonry-item interactable" style="animation-delay:0.69s"><img src="../works/graphic/emo1.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.72s"><img src="../works/graphic/emo2.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.75s"><img src="../works/graphic/emo3.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.78s"><img src="../works/graphic/emo4.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.81s"><img src="../works/graphic/emo5.jpg" loading="lazy" class="img-clicker"></div>
-        
-     <!--   <div class="masonry-item interactable" style="animation-delay:0.84s"><img src="../works/graphic/271.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.87s"><img src="../works/graphic/281.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.90s"><img src="../works/graphic/291.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.93s"><img src="../works/graphic/301.jpg" loading="lazy" class="img-clicker"></div>  !-->
-        <div class="masonry-item interactable" style="animation-delay:0.96s"><img src="../works/graphic/311.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.99s"><img src="../works/graphic/321.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.02s"><img src="../works/graphic/331.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.05s"><img src="../works/graphic/341.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.08s"><img src="../works/graphic/351.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.11s"><img src="../works/graphic/361.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.14s"><img src="../works/graphic/371.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:1.17s"><img src="../works/graphic/381.jpg" loading="lazy" class="img-clicker"></div>
+            <!-- 更多功能 - 敬请期待 -->
+            <div class="feature-card interactable" style="animation-delay:0.2s;">
+                <div class="card-icon">&#9632;</div>
+                <span class="coming-badge interactable">COMING SOON</span>
+                <h3 class="card-title">视频批量剪辑助手</h3>
+                <p class="card-desc">
+                    支持批量导入视频素材，AI 分析画面内容，自动识别高光片段，一键生成多个版本的短视频。适用信息流广告批量生产。
+                </p>
+                <span class="block-btn" style="opacity:0.4; cursor:default;">STANDBY &gt;</span>
+            </div>
+
+            <div class="feature-card interactable" style="animation-delay:0.3s;">
+                <div class="card-icon">&#9632;</div>
+                <span class="coming-badge interactable">COMING SOON</span>
+                <h3 class="card-title">脚本生成器</h3>
+                <p class="card-desc">
+                    输入产品信息与目标平台，AI 自动生成多种风格的视频脚本，包含开头钩子、正文节奏、结尾 CTA，覆盖口播、图文、混剪等多种形式。
+                </p>
+                <span class="block-btn" style="opacity:0.4; cursor:default;">STANDBY &gt;</span>
+            </div>
+
+            <div class="feature-card interactable" style="animation-delay:0.4s;">
+                <div class="card-icon">&#9632;</div>
+                <span class="coming-badge interactable">COMING SOON</span>
+                <h3 class="card-title">封面 A/B 测试生成</h3>
+                <p class="card-desc">
+                    基于原视频内容，AI 自动生成多种封面方案，标注推荐截取时间点、文字建议与构图方案，一键导出用于 A/B 测试验证。
+                </p>
+                <span class="block-btn" style="opacity:0.4; cursor:default;">STANDBY &gt;</span>
+            </div>
+
+        </div>
     </main>
 
     <div class="back-nav"><a href="https://icheerlam.github.io/" class="btn-back interactable">[ RETURN ]</a></div>
-    <footer><p>> Rhodes Island Archive // System.2026</p></footer>
 
-    <div class="lightbox" id="lightbox"><span class="lightbox-close interactable">[ X ]</span><img src="" id="lightbox-img"></div>
+    <footer><p>> Rhodes Island Archive // System.2026</p></footer>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const lb = document.getElementById('lightbox');
-            const lbImg = document.getElementById('lightbox-img');
-            const toggleLB = (src = '') => { 
-                lbImg.src = src; 
-                lb.classList.toggle('active'); 
-                document.body.style.overflow = src ? 'hidden' : ''; 
-            };
-            
-            lb.onclick = e => { if (e.target !== lbImg) toggleLB(); };
-
-            /* --- ✨ 全局系统：音效与交互 ✨ --- */
             const bgmAudio = document.getElementById('bgmAudio');
             const hoverSound = document.getElementById('hoverSound');
             const clickSound = document.getElementById('clickSound');
-            const specialSound = document.getElementById('specialSound'); 
+            const specialSound = document.getElementById('specialSound');
             const audioToggle = document.getElementById('audioToggle');
-            
             const bgmVol = document.getElementById('bgmVol');
             const hoverVol = document.getElementById('hoverVol');
             const clickVol = document.getElementById('clickVol');
             const specialVol = document.getElementById('specialVol');
-
             const volHeader = document.getElementById('volHeader');
             const volumePanel = document.getElementById('volumePanel');
             const volIcon = document.getElementById('volIcon');
-            
-            let isAudioEnabled = false; 
+            let isAudioEnabled = false;
 
-            // 暴露到全局，让绑定的 onclick 能够直接读取状态
-            window.isAudioEnabled = false; 
-            window.clickSound = clickSound;
-            window.clickVol = clickVol;
-
-            // BGM 实时音量调节
             bgmVol.addEventListener('input', (e) => {
-                if(isAudioEnabled) { bgmAudio.volume = e.target.value; }
+                if(isAudioEnabled) bgmAudio.volume = e.target.value;
             });
 
-            // 总开关
             audioToggle.addEventListener('click', () => {
                 isAudioEnabled = !isAudioEnabled;
-                window.isAudioEnabled = isAudioEnabled;
                 if(isAudioEnabled) {
                     audioToggle.innerHTML = '[ AUDIO: ON ]';
                     audioToggle.classList.remove('muted');
-                    bgmAudio.volume = bgmVol.value; 
-                    bgmAudio.play().catch(e => console.log("BGM autoplay prevented"));
-                    playSound(clickSound, clickVol); 
+                    bgmAudio.volume = bgmVol.value;
+                    bgmAudio.play().catch(() => {});
+                    playSound(clickSound, clickVol);
                 } else {
                     audioToggle.innerHTML = '[ AUDIO: OFF ]';
                     audioToggle.classList.add('muted');
@@ -333,7 +250,6 @@
                 }
             });
 
-            // 混音台折叠/展开逻辑
             volHeader.addEventListener('click', () => {
                 volumePanel.classList.toggle('collapsed');
                 volIcon.textContent = volumePanel.classList.contains('collapsed') ? '[+]' : '[-]';
@@ -344,34 +260,16 @@
                 if(!isAudioEnabled) return;
                 audioElement.currentTime = 0;
                 audioElement.volume = volInputRef.value;
-                let playPromise = audioElement.play();
-                if (playPromise !== undefined) { playPromise.catch(error => {}); }
+                audioElement.play().catch(() => {});
             }
 
-            // 1. 为静态写死的图片绑定灯箱与点击音效
-            document.querySelectorAll('.img-clicker').forEach(img => {
-                img.onclick = () => {
-                    toggleLB(img.src);
-                    if(window.isAudioEnabled) {
-                        window.clickSound.currentTime = 0;
-                        window.clickSound.volume = window.clickVol.value;
-                        window.clickSound.play().catch(e=>{});
-                    }
-                };
-            });
-
-            // 2. 为其他按钮、卡片绑定悬停和点击
-            const interactables = document.querySelectorAll('.interactable, button, a, .masonry-item, .lightbox-close');
+            const interactables = document.querySelectorAll('.interactable');
             interactables.forEach(el => {
                 el.addEventListener('mouseenter', () => playSound(hoverSound, hoverVol));
-                
-                if (el.tagName.toLowerCase() === 'button' || el.tagName.toLowerCase() === 'a' || el.classList.contains('lightbox-close')) {
+                if (el.tagName.toLowerCase() === 'a' || el.tagName.toLowerCase() === 'button') {
                     if(!el.classList.contains('vol-slider') && el.id !== 'volHeader') {
                         if(el.classList.contains('nav-logo')) {
-                            el.addEventListener('click', (e) => {
-                                e.preventDefault(); 
-                                playSound(specialSound, specialVol);
-                            });
+                            el.addEventListener('click', (e) => { e.preventDefault(); playSound(specialSound, specialVol); });
                         } else {
                             el.addEventListener('click', () => playSound(clickSound, clickVol));
                         }
@@ -379,10 +277,8 @@
                 }
             });
 
-            /* --- 主题切换 --- */
             const themeBtn = document.getElementById('themeBtn');
             const body = document.body;
-
             themeBtn.addEventListener('click', () => {
                 body.classList.toggle('light-mode');
                 themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
