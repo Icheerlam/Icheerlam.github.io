@@ -403,16 +403,19 @@
             const plat=PLAT_NAMES[cfg.platform]||cfg.platform;
             const prompt=PROMPT_SINGLE.replace(PLAT_NAMES.douyin,plat);
             if(cfg.service==='qwen'){
-                const r=await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-plus',input:{messages:[{role:'user',content:[{image:frames[0]},{text:prompt}]}]}})});
+                const bodyObj={model:'qwen-vl-plus',input:{messages:[{role:'user',content:[{image:frames[0]},{text:prompt}]}]}};
+                const bodyStr=JSON.stringify(bodyObj);
+                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:bodyStr});
                 if(!r.ok)throw new Error((await r.json()).message||'API失败');
-                const d=await r.json(),c=d.output.choices[0].message.content;
+                const d=await r.json(),c=d.output?.choices?.[0]?.message?.content||d.choices?.[0]?.message?.content||'';
                 return typeof c==='string'?c:(Array.isArray(c)?c.map(x=>typeof x==='string'?x:(x.text||'')).join(''):String(c));
             }else if(cfg.service==='claude'){
-                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:frames[0].split(',')[1]}},{type:'text',text:prompt}]}]})});
+                const bodyObj={model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:frames[0].split(',')[1]}},{type:'text',text:prompt}]}]};
+                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify(bodyObj)});
                 if(!r.ok)throw new Error((await r.json()).error?.message||'API失败');
                 return (await r.json()).content[0].text;
             }else{
-                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:[{type:'image_url',image_url:{url:frames[0]}},{type:'text',text:prompt}]}]})});
+                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:[{type:'image_url',image_url:{url:frames[0]}},{type:'text',text:prompt}]}]})});
                 if(!r.ok)throw new Error('API失败');
                 return (await r.json()).choices[0].message.content;
             }
@@ -422,16 +425,19 @@
             const plat=PLAT_NAMES[cfg.platform]||cfg.platform;
             const prompt=PROMPT_COMPARE.replace(PLAT_NAMES.douyin,plat);
             if(cfg.service==='qwen'){
-                const r=await fetch('https://dashscope.aliyuncs.com/api/v1/services/aigc/multimodal-generation/generation',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-plus',input:{messages:[{role:'user',content:[{text:'视频A关键帧：'},{image:f1[0]},{text:'视频B关键帧：'},{image:f2[0]},{text:prompt}]}]}})});
+                const bodyObj={model:'qwen-vl-plus',input:{messages:[{role:'user',content:[{text:'视频A关键帧：'},{image:f1[0]},{text:'视频B关键帧：'},{image:f2[0]},{text:prompt}]}]}};
+                const bodyStr=JSON.stringify(bodyObj);
+                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:bodyStr});
                 if(!r.ok)throw new Error((await r.json()).message||'API失败');
-                const d=await r.json(),c=d.output.choices[0].message.content;
+                const d=await r.json(),c=d.output?.choices?.[0]?.message?.content||d.choices?.[0]?.message?.content||'';
                 return typeof c==='string'?c:(Array.isArray(c)?c.map(x=>typeof x==='string'?x:(x.text||'')).join(''):String(c));
             }else if(cfg.service==='claude'){
-                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:[{type:'text',text:'视频A关键帧：'},{type:'image',source:{type:'base64',media_type:'image/jpeg',data:f1[0].split(',')[1]}},{type:'text',text:'视频B关键帧：'},{type:'image',source:{type:'base64',media_type:'image/jpeg',data:f2[0].split(',')[1]}},{type:'text',text:prompt}]}]})});
+                const bodyObj={model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:[{type:'text',text:'视频A关键帧：'},{type:'image',source:{type:'base64',media_type:'image/jpeg',data:f1[0].split(',')[1]}},{type:'text',text:'视频B关键帧：'},{type:'image',source:{type:'base64',media_type:'image/jpeg',data:f2[0].split(',')[1]}},{type:'text',text:prompt}]}]};
+                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify(bodyObj)});
                 if(!r.ok)throw new Error((await r.json()).error?.message||'API失败');
                 return (await r.json()).content[0].text;
             }else{
-                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':'Bearer '+cfg.apiKey,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:[{type:'text',text:'视频A：'},{type:'image_url',image_url:{url:f1[0]}},{type:'text',text:'视频B：'},{type:'image_url',image_url:{url:f2[0]}},{type:'text',text:prompt}]}]})});
+                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:[{type:'text',text:'视频A：'},{type:'image_url',image_url:{url:f1[0]}},{type:'text',text:'视频B：'},{type:'image_url',image_url:{url:f2[0]}},{type:'text',text:prompt}]}]})});
                 if(!r.ok)throw new Error('API失败');
                 return (await r.json()).choices[0].message.content;
             }
