@@ -462,8 +462,7 @@ Return only valid JSON.`;
             allFiles.forEach(f => {
                 const r = batchResults.find(x => x.name === f.name);
                 if (!r) return;
-                const catName = CATEGORIES[r.category] || '';
-                rows.push([f.name, r.ok ? r.title : '', r.ok ? r.keywords.slice(0,49).join(', ') : '', r.ok ? `${r.category} (${catName})` : '', r.ok ? 'OK' : 'FAIL']);
+                rows.push([f.name, r.ok ? r.title : '', r.ok ? r.keywords.slice(0,49).join(', ') : '', r.ok ? r.category : '', r.ok ? 'OK' : 'FAIL']);
             });
             downloadCSVFile(rows, 'adobe_stock_all.csv');
         }
@@ -471,8 +470,7 @@ Return only valid JSON.`;
         function downloadOKCSV() {
             const rows = [['Filename', 'Title', 'Keywords', 'Category', 'Publish']];
             batchResults.filter(r => r.ok).forEach(r => {
-                const catName = CATEGORIES[r.category] || '';
-                rows.push([r.name, r.title, r.keywords.slice(0,49).join(', '), `${r.category} (${catName})`, '']);
+                rows.push([r.name, r.title, r.keywords.slice(0,49).join(', '), r.category, '']);
             });
             downloadCSVFile(rows, 'adobe_stock_ok.csv');
         }
