@@ -51,56 +51,57 @@
         .btn-primary:hover { background:var(--ak-accent-info); color:#000; }
         .btn-success { border-color:#00ff88; color:#00ff88; }
         .btn-success:hover { background:#00ff88; color:#000; }
+        .btn-danger { border-color:#ff3366; color:#ff3366; }
+        .btn-danger:hover { background:#ff3366; color:#fff; }
+        .btn-sm { padding:5px 12px; font-size:0.7rem; }
 
         .warn-box { border-left:3px solid var(--ak-accent-warn); background:rgba(245,166,35,0.05); padding:16px 20px; margin:16px 0; }
         .warn-box p { font-size:0.85rem; color:var(--ak-accent-warn); font-family:'Space Mono',monospace; }
 
-        .upload-area { border:2px dashed var(--ak-border); padding:40px 20px; text-align:center; cursor:pointer; transition:0.3s; position:relative; margin-bottom:20px; }
+        /* 上传区 */
+        .upload-row { display:flex; gap:16px; margin-bottom:16px; flex-wrap:wrap; }
+        .upload-area { flex:1; min-width:200px; border:2px dashed var(--ak-border); padding:30px 20px; text-align:center; cursor:pointer; transition:0.3s; position:relative; }
         .upload-area:hover { border-color:var(--ak-accent-info); background:rgba(0,216,255,0.03); }
         .upload-area.dragover { border-color:var(--ak-accent-info); background:rgba(0,216,255,0.06); }
-        .upload-area.has-file { border-color:var(--ak-accent-info); border-style:solid; }
-        .upload-icon { font-size:2rem; color:var(--ak-text-muted); margin-bottom:10px; font-family:'Space Mono'; }
-        .upload-area p { color:var(--ak-text-muted); font-size:0.9rem; font-family:'Space Mono'; }
-        .upload-area small { color:var(--ak-text-muted); opacity:0.5; font-size:0.75rem; }
-        .upload-area input[type="file"] { position:absolute; inset:0; opacity:0; cursor:pointer; }
+        .upload-icon { font-size:1.5rem; color:var(--ak-text-muted); margin-bottom:8px; font-family:'Space Mono'; }
+        .upload-area p { color:var(--ak-text-muted); font-size:0.85rem; font-family:'Space Mono'; margin-bottom:4px; }
+        .upload-area small { color:var(--ak-text-muted); opacity:0.5; font-size:0.7rem; }
+        .upload-area input { position:absolute; inset:0; opacity:0; cursor:pointer; }
 
-        .preview-box { display:none; margin-bottom:20px; background:#000; border:1px solid var(--ak-border); padding:16px; text-align:center; }
-        .preview-box.active { display:block; }
-        .preview-box img { max-width:100%; max-height:400px; display:block; margin:0 auto 12px; }
-        .preview-meta { font:0.75rem 'Space Mono'; color:var(--ak-text-muted); text-align:left; }
-        .preview-meta p { margin-bottom:4px; }
-        .preview-meta strong { color:var(--ak-text-main); }
+        /* 文件列表 */
+        .file-list-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+        .file-list-header span { font:0.75rem 'Space Mono'; color:var(--ak-accent-info); }
+        .file-list { max-height:300px; overflow-y:auto; border:1px solid var(--ak-border); }
+        .file-item { display:flex; align-items:center; gap:10px; padding:10px 14px; border-bottom:1px solid var(--ak-border); font:0.75rem 'Space Mono'; }
+        .file-item:last-child { border-bottom:none; }
+        .file-item.ok { color:#00ff88; }
+        .file-item.fail { color:#ff3366; }
+        .file-item.processing { color:var(--ak-accent-warn); animation:pulse 1s infinite; }
+        .file-item .idx { color:var(--ak-text-muted); width:30px; flex-shrink:0; }
+        .file-item .name { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .file-item .status { flex-shrink:0; }
 
-        .loading-panel { display:none; text-align:center; padding:40px; }
-        .loading-panel.active { display:block; }
-        .loader { border:4px solid var(--ak-border); border-top-color:var(--ak-accent-info); border-radius:50%; width:40px; height:40px; animation:spin 1s linear infinite; margin:0 auto 16px; }
-        .loading-panel p { font-family:'Space Mono',monospace; font-size:0.85rem; color:var(--ak-text-muted); }
-        .loading-panel small { display:block; margin-top:6px; color:var(--ak-text-muted); font-size:0.75rem; opacity:0.6; }
+        /* 进度条 */
+        .progress-bar-wrap { margin:16px 0; }
+        .progress-bar-label { display:flex; justify-content:space-between; font:0.75rem 'Space Mono'; color:var(--ak-text-muted); margin-bottom:6px; }
+        .progress-bar { height:4px; background:var(--ak-border); border-radius:2px; overflow:hidden; }
+        .progress-bar-fill { height:100%; background:var(--ak-accent-info); transition:width 0.3s; box-shadow:0 0 8px var(--ak-accent-info); }
 
-        .result-panel { display:none; margin-bottom:24px; }
-        .result-panel.active { display:block; }
-        .result-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px; }
-        .result-status { display:flex; align-items:center; gap:8px; font:0.75rem 'Space Mono'; color:var(--ak-accent-info); }
-        .result-status.dot { animation:pulse 1.5s infinite; }
+        /* 结果表格 */
+        .result-table-wrap { overflow-x:auto; border:1px solid var(--ak-border); max-height:400px; overflow-y:auto; }
+        .result-table { width:100%; border-collapse:collapse; font-family:'Space Mono',monospace; font-size:0.75rem; }
+        .result-table th { background:rgba(0,216,255,0.05); color:var(--ak-accent-info); padding:10px 12px; text-align:left; border-bottom:1px solid var(--ak-border); position:sticky; top:0; }
+        .result-table td { padding:8px 12px; border-bottom:1px solid var(--ak-border); color:var(--ak-text-muted); }
+        .result-table tr:hover td { background:rgba(0,216,255,0.03); }
+        .result-table tr.fail td { opacity:0.4; }
+        .result-table .kw-cell { max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .result-table .kw-wrap { display:flex; flex-wrap:wrap; gap:3px; }
+        .result-table .kw-tag { padding:1px 5px; border:1px solid var(--ak-accent-info); color:var(--ak-accent-info); font-size:0.65rem; flex-shrink:0; }
+        .result-table .cat-badge { padding:2px 8px; border:1px solid var(--ak-accent-warn); color:var(--ak-accent-warn); }
 
-        .result-field { margin-bottom:16px; }
-        .result-field label { display:block; font:700 0.75rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
-        .result-field textarea { width:100%; min-height:80px; background:var(--ak-bg-main); border:1px solid var(--ak-border); color:var(--ak-text-main); font-family:'Space Mono',monospace; font-size:0.8rem; padding:12px; outline:none; resize:vertical; transition:0.3s; }
-        .result-field textarea:focus { border-color:var(--ak-accent-info); }
-        .result-field .copy-row { display:flex; align-items:center; gap:8px; margin-top:6px; flex-wrap:wrap; }
-        .result-field .copy-row span { font-size:0.75rem; color:var(--ak-text-muted); font-family:'Space Mono'; }
-        .result-field .copy-row .btn { padding:4px 12px; font-size:0.7rem; }
-
-        .keywords-wrap { display:flex; flex-wrap:wrap; gap:6px; }
-        .keyword-tag { padding:3px 10px; border:1px solid var(--ak-accent-info); color:var(--ak-accent-info); font:0.75rem 'Space Mono'; font-size:0.75rem; transition:0.2s; cursor:pointer; }
-        .keyword-tag:hover { background:var(--ak-accent-info); color:#000; }
-
-        .category-badge { display:inline-block; padding:4px 12px; border:1px solid var(--ak-accent-warn); color:var(--ak-accent-warn); font:0.8rem 'Space Mono'; font-weight:700; }
-
-        .result-actions { display:flex; gap:10px; flex-wrap:wrap; margin-top:20px; padding-top:16px; border-top:1px dashed var(--ak-border); }
-
-        .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--ak-bg-panel); border:1px solid var(--ak-accent-info); color:var(--ak-accent-info); font:0.85rem 'Space Mono'; padding:12px 24px; z-index:9999; opacity:0; transition:0.3s; pointer-events:none; }
+        .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--ak-bg-panel); border:1px solid var(--ak-accent-info); color:var(--ak-accent-info); font:0.85rem 'Space Mono'; padding:12px 24px; z-index:9999; opacity:0; transition:0.3s; pointer-events:none; white-space:nowrap; }
         .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+        .toast.err { border-color:#ff3366; color:#ff3366; }
 
         .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10; }
         .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; }
@@ -111,7 +112,7 @@
         footer::before { left:0; }
         footer::after { right:0; }
 
-        @media (max-width:768px) { .nav-links{display:none;} }
+        @media (max-width:768px) { .nav-links{display:none;} .upload-row{flex-direction:column;} }
     </style>
 </head>
 <body>
@@ -137,80 +138,86 @@
 
     <header class="page-header">
         <h1>[ ADOBE STOCK // IMAGE RECOGNIZER ]</h1>
-        <p>上传图片，AI 自动生成符合 Adobe Stock 标准的标题、关键词和分类</p>
+        <p>上传图片或文件夹，AI 批量生成 Adobe Stock 标准的标题、关键词和分类</p>
     </header>
 
     <main class="container">
 
         <!-- API 配置 -->
-        <div class="panel" id="configPanel" style="animation-delay:0.1s;">
+        <div class="panel" style="animation-delay:0.1s;">
             <div class="panel-title">API Config // 配置</div>
             <div class="form-group">
                 <label>API Key (阿里云 DashScope)</label>
                 <input type="password" id="apiKeyInput" placeholder="请输入 API Key（sk-...）">
             </div>
-            <div class="warn-box"><p>> 请确保 API Key 有效，qwen-vl-max 模型需已开通 DashScope 服务</p></div>
+            <div class="warn-box"><p>> 请确�� API Key 有效，qwen-vl-max 模型需已开通 DashScope 服务</p></div>
             <button onclick="saveConfig()" class="btn btn-primary">&#9656; 保存配置</button>
         </div>
 
-        <!-- 图片上传 -->
-        <div class="panel" id="uploadPanel" style="animation-delay:0.2s;">
-            <div class="panel-title">Upload Image // 上传图片</div>
-            <div class="upload-area" id="uploadZone">
-                <div class="upload-icon">&#9653;</div>
-                <p>拖拽图片或点击上传</p>
-                <small>支持 JPG, PNG, WEBP 等格式</small>
-                <input type="file" id="fileInput" accept="image/*">
-            </div>
-            <div class="preview-box" id="previewBox">
-                <img id="previewImg" src="" alt="preview">
-                <div class="preview-meta">
-                    <p><strong>文件名：</strong><span id="fileName"></span></p>
-                    <p><strong>大小：</strong><span id="fileSize"></span></p>
-                    <p><strong>尺寸：</strong><span id="imgSize"></span></p>
+        <!-- 上传 -->
+        <div class="panel" style="animation-delay:0.2s;">
+            <div class="panel-title">Upload Images // 上传图片或文件夹</div>
+            <div class="upload-row">
+                <div class="upload-area">
+                    <div class="upload-icon">&#9653;</div>
+                    <p>上传单张图片</p>
+                    <small>JPG, PNG, WEBP</small>
+                    <input type="file" id="singleFileInput" accept="image/*">
+                </div>
+                <div class="upload-area">
+                    <div class="upload-icon">&#9650;</div>
+                    <p>上传文件夹</p>
+                    <small>自动识别所有图片</small>
+                    <input type="file" id="folderInput" webkitdirectory multiple>
                 </div>
             </div>
-            <button onclick="recognizeImage()" id="btnRecognize" class="btn btn-primary" disabled>&#9656; 开始识别</button>
+            <div class="file-list-header">
+                <span>&#9656; 待处理文件（共 <strong id="fileCount">0</strong> 个）</span>
+                <button onclick="clearFiles()" class="btn btn-sm btn-danger">清空列表</button>
+            </div>
+            <div class="file-list" id="fileList"></div>
+            <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <button onclick="startBatch()" id="btnStart" class="btn btn-primary" disabled>&#9656; 开始批量识别</button>
+                <button onclick="stopBatch()" id="btnStop" class="btn btn-danger" style="display:none;">&#9632; 停止</button>
+                <span style="font:0.75rem 'Space Mono'; color:var(--ak-text-muted); margin-left:10px;">并发数：</span>
+                <input type="number" id="workersInput" value="3" min="1" max="5" style="width:60px; padding:6px; text-align:center;">
+            </div>
         </div>
 
-        <!-- 加载状态 -->
-        <div class="loading-panel" id="loadingPanel">
-            <div class="loader"></div>
-            <p>正在识别图片，请稍候...<small id="loadingDetail">AI 分析中，预计 10-20 秒</small></p>
+        <!-- 进度 -->
+        <div class="panel" id="progressPanel" style="display:none;">
+            <div class="panel-title">Processing // 处理进度</div>
+            <div class="progress-bar-wrap">
+                <div class="progress-bar-label">
+                    <span id="progressText">准备中...</span>
+                    <span id="progressCount">0 / 0</span>
+                </div>
+                <div class="progress-bar"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
+            </div>
+            <div class="file-list" id="batchFileList"></div>
         </div>
 
-        <!-- 识别结果 -->
-        <div class="result-panel" id="resultPanel">
-            <div class="panel" style="animation-delay:0s;">
-                <div class="panel-title">Recognition Result // 识别结果</div>
-
-                <div class="result-field">
-                    <label>Title // 标题</label>
-                    <textarea id="resultTitle" rows="2" readonly></textarea>
-                    <div class="copy-row">
-                        <button onclick="copyText('resultTitle')" class="btn">复制</button>
-                    </div>
-                </div>
-
-                <div class="result-field">
-                    <label>Keywords // 关键词（最多49个）</label>
-                    <div class="keywords-wrap" id="keywordsWrap"></div>
-                    <div class="copy-row" style="margin-top:10px;">
-                        <button onclick="copyKeywords()" class="btn">复制全部关键词</button>
-                        <span id="keywordCount"></span>
-                    </div>
-                </div>
-
-                <div class="result-field">
-                    <label>Category // 分类</label>
-                    <div id="categoryDisplay"></div>
-                </div>
-
-                <div class="result-actions">
-                    <button onclick="copyAll()" class="btn btn-success">复制完整结果</button>
-                    <button onclick="downloadCSV()" class="btn">下载 CSV</button>
-                    <button onclick="resetPage()" class="btn">继续识别</button>
-                </div>
+        <!-- 结果 -->
+        <div class="panel" id="resultPanel" style="display:none;">
+            <div class="panel-title">Recognition Results // 识别结果</div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
+                <button onclick="downloadAllCSV()" class="btn btn-success">下载 CSV（全部）</button>
+                <button onclick="downloadOKCSV()" class="btn">下载 CSV（仅成功）</button>
+                <button onclick="clearResults()" class="btn btn-danger">清空结果</button>
+            </div>
+            <div class="result-table-wrap">
+                <table class="result-table" id="resultTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Filename</th>
+                            <th>Title</th>
+                            <th>Keywords</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultBody"></tbody>
+                </table>
             </div>
         </div>
 
@@ -229,15 +236,17 @@
             "13":"People","14":"Plants and Flowers","15":"Culture and Religion","16":"Science",
             "17":"Social Issues","18":"Sports","19":"Technology","20":"Transport","21":"Travel"
         };
-
-        let currentFile = null;
-        let currentResult = null;
-
         const CATEGORY_LIST = Object.entries(CATEGORIES).map(([k,v]) => `${k}. ${v}`).join('\n');
+
+        let allFiles = [];
+        let batchResults = [];
+        let isRunning = false;
+        let shouldStop = false;
+        let pendingFiles = [];
 
         document.addEventListener('DOMContentLoaded', () => {
             loadConfig();
-            setupUpload();
+            setupInputs();
         });
 
         function loadConfig() {
@@ -247,66 +256,95 @@
 
         function saveConfig() {
             const key = document.getElementById('apiKeyInput').value.trim();
-            if (!key) { showToast('请输入 API Key'); return; }
+            if (!key) { showToast('请输入 API Key', true); return; }
             localStorage.setItem('adobeStockApiKey', key);
             showToast('配置已保存');
         }
 
-        function setupUpload() {
-            const zone = document.getElementById('uploadZone');
-            const input = document.getElementById('fileInput');
-
-            zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
-            zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-            zone.addEventListener('drop', e => {
-                e.preventDefault();
-                zone.classList.remove('dragover');
-                if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+        function setupInputs() {
+            document.getElementById('singleFileInput').addEventListener('change', e => {
+                addFiles(Array.from(e.target.files));
             });
-            input.addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+            document.getElementById('folderInput').addEventListener('change', e => {
+                const imgs = Array.from(e.target.files).filter(f => f.type.startsWith('image/'));
+                addFiles(imgs);
+            });
         }
 
-        function handleFile(file) {
-            if (!file.type.startsWith('image/')) { showToast('请上传图片文件'); return; }
-            currentFile = file;
-
-            const reader = new FileReader();
-            reader.onload = e => {
-                document.getElementById('previewImg').src = e.target.result;
-                document.getElementById('fileName').textContent = file.name;
-                document.getElementById('fileSize').textContent = formatSize(file.size);
-                document.getElementById('previewBox').classList.add('active');
-                document.getElementById('uploadZone').classList.add('has-file');
-
-                const img = new Image();
-                img.onload = () => {
-                    document.getElementById('imgSize').textContent = img.width + ' x ' + img.height + ' px';
-                };
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-            document.getElementById('btnRecognize').disabled = false;
+        function addFiles(files) {
+            const seen = new Set(allFiles.map(f => f.name));
+            const newFiles = files.filter(f => !seen.has(f.name));
+            allFiles = [...allFiles, ...newFiles];
+            renderFileList();
+            document.getElementById('btnStart').disabled = allFiles.length === 0;
         }
 
-        function formatSize(b) {
-            const s = ['Bytes','KB','MB','GB'];
-            const i = Math.floor(Math.log(b)/Math.log(1024));
-            return (b/Math.pow(1024,i)).toFixed(2) + ' ' + s[i];
+        function clearFiles() {
+            allFiles = [];
+            renderFileList();
+            document.getElementById('btnStart').disabled = true;
+            document.getElementById('singleFileInput').value = '';
+            document.getElementById('folderInput').value = '';
         }
 
-        async function recognizeImage() {
+        function renderFileList() {
+            document.getElementById('fileCount').textContent = allFiles.length;
+            const list = document.getElementById('fileList');
+            if (!allFiles.length) { list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--ak-text-muted); font:0.8rem Space Mono;">暂无待处理文件</div>'; return; }
+            list.innerHTML = allFiles.map((f, i) => {
+                const existing = batchResults.find(r => r.name === f.name);
+                if (existing) {
+                    const cls = existing.ok ? 'ok' : 'fail';
+                    const status = existing.ok ? '[OK]' : '[FAIL]';
+                    return `<div class="file-item ${cls}"><span class="idx">${i+1}</span><span class="name">${f.name}</span><span class="status">${status}</span></div>`;
+                }
+                return `<div class="file-item"><span class="idx">${i+1}</span><span class="name">${f.name}</span><span class="status">...</span></div>`;
+            }).join('');
+        }
+
+        async function startBatch() {
             const apiKey = document.getElementById('apiKeyInput').value.trim();
-            if (!apiKey) { showToast('请先配置 API Key'); return; }
-            if (!currentFile) { showToast('请先上传图片'); return; }
+            if (!apiKey) { showToast('请先配置 API Key', true); return; }
+            if (!allFiles.length) return;
 
-            document.getElementById('loadingPanel').classList.add('active');
-            document.getElementById('resultPanel').classList.remove('active');
+            isRunning = true;
+            shouldStop = false;
+            pendingFiles = [...allFiles.filter(f => !batchResults.find(r => r.name === f.name))];
+            batchResults = batchResults.filter(r => r.ok);
 
+            document.getElementById('progressPanel').style.display = 'block';
+            document.getElementById('resultPanel').style.display = 'none';
+            document.getElementById('btnStart').style.display = 'none';
+            document.getElementById('btnStop').style.display = 'inline-flex';
+
+            const workers = parseInt(document.getElementById('workersInput').value) || 3;
+
+            document.getElementById('progressText').textContent = `开始处理 ${pendingFiles.length} 个文件，并发 ${workers} ...`;
+
+            while (pendingFiles.length > 0 && !shouldStop) {
+                const batch = pendingFiles.splice(0, workers);
+                const tasks = batch.map(f => recognizeFile(f, apiKey));
+                await Promise.allSettled(tasks);
+                updateProgress();
+                renderFileList();
+            }
+
+            isRunning = false;
+            document.getElementById('btnStart').style.display = 'inline-flex';
+            document.getElementById('btnStop').style.display = 'none';
+            document.getElementById('progressText').textContent = '处理完成';
+            showResults();
+        }
+
+        function stopBatch() {
+            shouldStop = true;
+            pendingFiles = [];
+        }
+
+        async function recognizeFile(file, apiKey) {
+            const idx = allFiles.indexOf(file);
             try {
-                document.getElementById('loadingDetail').textContent = '正在压缩图片...';
-                const base64 = await fileToBase64(currentFile);
-
-                document.getElementById('loadingDetail').textContent = 'AI 分析中（10-20秒）...';
+                const base64 = await fileToBase64(file);
                 const prompt = `Please carefully observe this image and accurately describe what you see.
 
 Important:
@@ -324,23 +362,16 @@ ${CATEGORY_LIST}
 Return only valid JSON.`;
 
                 const data = await callQwenAPI(base64, prompt, apiKey);
-
-                if (!data.title && !data.Keywords) throw new Error('识别结果为空');
-
-                currentResult = {
-                    Filename: currentFile.name,
-                    Title: data.title || '',
-                    Keywords: Array.isArray(data.keywords) ? data.keywords : [],
-                    Category: String(data.category || '')
-                };
-
-                showResult();
-
+                batchResults.push({
+                    name: file.name,
+                    ok: true,
+                    title: data.title || '',
+                    keywords: Array.isArray(data.keywords) ? data.keywords : [],
+                    category: String(data.category || '')
+                });
             } catch(e) {
-                showToast('识别失败: ' + e.message);
+                batchResults.push({ name: file.name, ok: false, error: e.message });
             }
-
-            document.getElementById('loadingPanel').classList.remove('active');
         }
 
         function fileToBase64(file) {
@@ -380,102 +411,99 @@ Return only valid JSON.`;
                 }),
                 signal: AbortSignal.timeout(40000)
             });
-
             if (!resp.ok) {
                 const err = await resp.json().catch(()=>({}));
                 throw new Error(err.message || 'API 请求失败');
             }
-
             const result = await resp.json();
             const content = result.choices?.[0]?.message?.content || '';
-
-            // Extract JSON
             const start = content.indexOf('{');
             const end = content.lastIndexOf('}') + 1;
             if (start === -1) throw new Error('AI 返回格式异常');
-
             return JSON.parse(content.substring(start, end));
         }
 
-        function showResult() {
-            if (!currentResult) return;
+        function updateProgress() {
+            const done = batchResults.length;
+            const total = allFiles.length;
+            const pct = total > 0 ? Math.round(done / total * 100) : 0;
+            const ok = batchResults.filter(r => r.ok).length;
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('progressCount').textContent = `${done} / ${total}（成功 ${ok}）`;
+            document.getElementById('progressText').textContent = `处理中... ${pct}%`;
+        }
 
-            document.getElementById('resultTitle').value = currentResult.Title;
+        function showResults() {
+            document.getElementById('progressPanel').style.display = 'none';
+            document.getElementById('resultPanel').style.display = 'block';
+            const ok = batchResults.filter(r => r.ok);
+            document.getElementById('resultPanel').querySelector('.panel-title').textContent =
+                `Recognition Results // 识别结果（共 ${ok.length}/${allFiles.length} 成功）`;
 
-            const wrap = document.getElementById('keywordsWrap');
-            wrap.innerHTML = '';
-            currentResult.Keywords.slice(0, 49).forEach(kw => {
-                const tag = document.createElement('span');
-                tag.className = 'keyword-tag';
-                tag.textContent = kw;
-                tag.title = '点击复制';
-                tag.onclick = () => { navigator.clipboard.writeText(kw); showToast('已复制: ' + kw); };
-                wrap.appendChild(tag);
+            document.getElementById('resultBody').innerHTML = allFiles.map((f, i) => {
+                const r = batchResults.find(x => x.name === f.name);
+                if (!r) return `<tr><td>${i+1}</td><td>${f.name}</td><td colspan="3" style="color:var(--ak-text-muted);">待处理</td></tr>`;
+                if (!r.ok) return `<tr class="fail"><td>${i+1}</td><td>${r.name}</td><td colspan="3" style="color:#ff3366;">失败: ${r.error}</td></tr>`;
+                const catName = CATEGORIES[r.category] || r.category;
+                const kws = r.keywords.slice(0, 15).map(k => `<span class="kw-tag">${k}</span>`).join('');
+                if (r.keywords.length > 15) kws += `<span class="kw-tag" style="opacity:0.5;">+${r.keywords.length-15}</span>`;
+                return `<tr>
+                    <td>${i+1}</td>
+                    <td style="max-width:120px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${r.name}</td>
+                    <td style="max-width:150px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${r.title}</td>
+                    <td class="kw-cell"><div class="kw-wrap">${kws}</div></td>
+                    <td>${r.category ? `<span class="cat-badge">${r.category}. ${catName}</span>` : '-'}</td>
+                </tr>`;
+            }).join('');
+        }
+
+        function downloadAllCSV() {
+            const rows = [['Filename', 'Title', 'Keywords', 'Category', 'Status']];
+            allFiles.forEach(f => {
+                const r = batchResults.find(x => x.name === f.name);
+                if (!r) return;
+                const catName = CATEGORIES[r.category] || '';
+                rows.push([f.name, r.ok ? r.title : '', r.ok ? r.keywords.slice(0,49).join(', ') : '', r.ok ? `${r.category} (${catName})` : '', r.ok ? 'OK' : 'FAIL']);
             });
-
-            document.getElementById('keywordCount').textContent =
-                `已提取 ${Math.min(currentResult.Keywords.length, 49)} / 49 个关键词`;
-
-            const catNum = currentResult.Category;
-            const catName = CATEGORIES[catNum] || catNum;
-            document.getElementById('categoryDisplay').innerHTML =
-                `<span class="category-badge">${catNum}. ${catName}</span>`;
-
-            document.getElementById('resultPanel').classList.add('active');
-            document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth' });
+            downloadCSVFile(rows, 'adobe_stock_all.csv');
         }
 
-        function copyText(id) {
-            const el = document.getElementById(id);
-            navigator.clipboard.writeText(el.value);
-            showToast('已复制到剪贴板');
+        function downloadOKCSV() {
+            const rows = [['Filename', 'Title', 'Keywords', 'Category', 'Publish']];
+            batchResults.filter(r => r.ok).forEach(r => {
+                const catName = CATEGORIES[r.category] || '';
+                rows.push([r.name, r.title, r.keywords.slice(0,49).join(', '), `${r.category} (${catName})`, '']);
+            });
+            downloadCSVFile(rows, 'adobe_stock_ok.csv');
         }
 
-        function copyKeywords() {
-            if (!currentResult) return;
-            const text = currentResult.Keywords.slice(0, 49).join(', ');
-            navigator.clipboard.writeText(text);
-            showToast('已复制 ' + Math.min(currentResult.Keywords.length, 49) + ' 个关键词');
-        }
-
-        function copyAll() {
-            if (!currentResult) return;
-            const text = `Filename: ${currentResult.Filename}\nTitle: ${currentResult.Title}\nKeywords: ${currentResult.Keywords.slice(0,49).join(', ')}\nCategory: ${currentResult.Category} (${CATEGORIES[currentResult.Category]||''})`;
-            navigator.clipboard.writeText(text);
-            showToast('完整结果已复制');
-        }
-
-        function downloadCSV() {
-            if (!currentResult) return;
-            const catName = CATEGORIES[currentResult.Category] || '';
-            const csv = `Filename,Title,Keywords,Category,Publish\n"${currentResult.Filename}","${currentResult.Title}","${currentResult.Keywords.slice(0,49).join(', ')}","${currentResult.Category} (${catName})",""`;
+        function downloadCSVFile(rows, filename) {
+            const csv = rows.map(row => row.map(c => `"${String(c||'').replace(/"/g,'""')}"`).join(',')).join('\n');
             const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8-sig' });
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
-            a.download = 'adobe_stock_result.csv';
+            a.download = filename;
             a.click();
             showToast('CSV 已下载');
         }
 
-        function resetPage() {
-            currentFile = null;
-            currentResult = null;
-            document.getElementById('fileInput').value = '';
-            document.getElementById('previewBox').classList.remove('active');
-            document.getElementById('uploadZone').classList.remove('has-file');
-            document.getElementById('btnRecognize').disabled = true;
-            document.getElementById('resultPanel').classList.remove('active');
-            document.getElementById('resultTitle').value = '';
-            document.getElementById('keywordsWrap').innerHTML = '';
-            document.getElementById('categoryDisplay').innerHTML = '';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+        function clearResults() {
+            batchResults = [];
+            allFiles = [];
+            renderFileList();
+            document.getElementById('resultPanel').style.display = 'none';
+            document.getElementById('progressPanel').style.display = 'none';
+            document.getElementById('btnStart').disabled = true;
+            document.getElementById('btnStart').style.display = 'inline-flex';
+            document.getElementById('btnStop').style.display = 'none';
         }
 
-        function showToast(msg) {
+        function showToast(msg, isErr) {
             const t = document.getElementById('toast');
             t.textContent = '> ' + msg;
+            t.className = 'toast' + (isErr ? ' err' : '');
             t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2000);
+            setTimeout(() => t.classList.remove('show'), 2500);
         }
     </script>
 </body>
