@@ -605,7 +605,7 @@ Return only valid JSON.`;
 
             list.innerHTML = results.map((item, i) => {
                 const catName = CATEGORIES[item.category] || '';
-                const kws = item.keywords.map(k => `<span class="kw-tag">${k}</span>`).join('');
+                const kws = item.keywords.map(k => `<span class="kw-tag">${k}</span>`).join('<br>');
                 return `
                     <div class="keyword-item" style="border:1px solid var(--ak-border); padding:16px; margin-bottom:12px; transition:0.3s;">
                         <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
@@ -637,7 +637,7 @@ Return only valid JSON.`;
             if (!window.keywordResults || !window.keywordResults[index]) return;
             const item = window.keywordResults[index];
             const catName = CATEGORIES[item.category] || '';
-            const text = `标题: ${item.title}\n关键词: ${item.keywords.join(', ')}\n分类: ${item.category} (${catName})\n市场需求: ${item.reason}\n视觉建议: ${item.visualTips}`;
+            const text = `标题: ${item.title}\n关键词:\n${item.keywords.map(k => '- ' + k).join('\n')}\n分类: ${item.category} (${catName})\n市场需求: ${item.reason}\n视觉建议: ${item.visualTips}`;
             navigator.clipboard.writeText(text).then(() => showToast('已复制到剪贴板'));
         }
 
@@ -645,7 +645,7 @@ Return only valid JSON.`;
             if (!window.keywordResults || !window.keywordResults.length) return;
             const allText = window.keywordResults.map((item, i) => {
                 const catName = CATEGORIES[item.category] || '';
-                return `【主题 ${i+1}】\n标题: ${item.title}\n关键词: ${item.keywords.join(', ')}\n分类: ${item.category} (${catName})\n市场需求: ${item.reason}\n视觉建议: ${item.visualTips}\n`;
+                return `【主题 ${i+1}】\n标题: ${item.title}\n关键词:\n${item.keywords.map(k => '- ' + k).join('\n')}\n分类: ${item.category} (${catName})\n市场需求: ${item.reason}\n视觉建议: ${item.visualTips}\n`;
             }).join('\n---\n\n');
             navigator.clipboard.writeText(allText).then(() => showToast('已复制全部 ' + window.keywordResults.length + ' 组关键词'));
         }
