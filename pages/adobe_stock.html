@@ -178,7 +178,10 @@
             <button onclick="generateTrendKeywords()" id="btnGenerateKeywords" class="btn btn-primary">&#9656; 生成热点关键词</button>
 
             <div id="keywordsResultPanel" style="display:none; margin-top:20px;">
-                <div class="info-box" style="margin-bottom:12px;"><p>AI 分析当前市场趋势，生成易售图片主题建议</p></div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <div class="info-box" style="margin:0;"><p>AI 分析当前市场趋势，生成易售图片主题建议</p></div>
+                    <button onclick="copyAllKeywords()" class="btn btn-success btn-sm">批量复制全部</button>
+                </div>
                 <div id="keywordsResultList"></div>
             </div>
         </div>
@@ -636,6 +639,15 @@ Return only valid JSON.`;
             const catName = CATEGORIES[item.category] || '';
             const text = `标题: ${item.title}\n关键词: ${item.keywords.join(', ')}\n分类: ${item.category} (${catName})\n市场需求: ${item.reason}\n视觉建议: ${item.visualTips}`;
             navigator.clipboard.writeText(text).then(() => showToast('已复制到剪贴板'));
+        }
+
+        function copyAllKeywords() {
+            if (!window.keywordResults || !window.keywordResults.length) return;
+            const allText = window.keywordResults.map((item, i) => {
+                const catName = CATEGORIES[item.category] || '';
+                return `【主题 ${i+1}】\n标题: ${item.title}\n关键词: ${item.keywords.join(', ')}\n分类: ${item.category} (${catName})\n市场需求: ${item.reason}\n视觉建议: ${item.visualTips}\n`;
+            }).join('\n---\n\n');
+            navigator.clipboard.writeText(allText).then(() => showToast('已复制全部 ' + window.keywordResults.length + ' 组关键词'));
         }
 
         function showToast(msg, isErr) {
