@@ -127,6 +127,39 @@
         .history-item-time { font-size:0.75rem; font-family:'Space Mono'; color:var(--ak-text-muted); }
         .history-empty { text-align:center; padding:40px; color:var(--ak-text-muted); font-family:'Space Mono'; font-size:0.85rem; }
 
+        /* 模块化输出样式 */
+        .gen-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--ak-border); }
+        .gen-header-title { font:800 0.9rem 'Space Mono'; color:var(--ak-text-main); }
+        .gen-modules { display:flex; flex-direction:column; gap:16px; }
+        .gen-module { border:1px solid var(--ak-border); background:rgba(10,10,12,0.8); transition:0.3s; }
+        .gen-module:hover { border-color:var(--ak-accent-info); box-shadow:0 0 20px rgba(0,216,255,0.06); }
+        .gen-module-top { display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--ak-border); cursor:pointer; }
+        .gen-module-title { font:700 0.9rem 'Space Mono'; color:var(--ak-accent-info); }
+        .gen-module-meta { font:0.75rem 'Space Mono'; color:var(--ak-text-muted); padding:4px 10px; border:1px solid var(--ak-border); margin-left:10px; }
+        .gen-module-toggle { color:var(--ak-text-muted); font-size:0.8rem; transition:0.3s; }
+        .gen-module.open .gen-module-toggle { transform:rotate(180deg); color:var(--ak-accent-info); }
+        .gen-module-body { padding:16px 18px; display:none; }
+        .gen-module.open .gen-module-body { display:block; }
+        .gen-module-section { margin-bottom:16px; }
+        .gen-module-section:last-child { margin-bottom:0; }
+        .gen-module-section-label { font:700 0.7rem 'Space Mono'; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+        .gen-module-section-label .label-icon { font-size:0.7rem; }
+        .gen-section-title .label-icon { color:var(--ak-accent-warn); }
+        .gen-section-keywords .label-icon { color:var(--ak-accent-info); }
+        .gen-section-market .label-icon { color:var(--ak-accent-warn); }
+        .gen-section-visual .label-icon { color:var(--ak-accent-info); }
+        .gen-section-title .label-text { color:var(--ak-accent-warn); }
+        .gen-section-keywords .label-text { color:var(--ak-accent-info); }
+        .gen-section-market .label-text { color:var(--ak-accent-warn); }
+        .gen-section-visual .label-text { color:var(--ak-accent-info); }
+        .gen-keywords-list { display:flex; flex-direction:column; gap:4px; }
+        .gen-kw-item { font-family:'Space Grotesk',sans-serif; font-size:0.85rem; color:var(--ak-text-main); padding-left:12px; position:relative; }
+        .gen-kw-item::before { content:'▸'; position:absolute; left:0; color:var(--ak-accent-info); font-size:0.7rem; top:2px; }
+        .gen-desc-text { font-family:'Space Grotesk',sans-serif; font-size:0.85rem; color:var(--ak-text-muted); line-height:1.7; }
+        .gen-module-actions { display:flex; justify-content:flex-end; margin-top:14px; padding-top:12px; border-top:1px dashed var(--ak-border); }
+        .gen-module-image { width:100%; max-height:200px; object-fit:cover; background:#000; margin-bottom:14px; display:block; border:1px solid var(--ak-border); }
+        @media (max-width:768px) { .gen-module-top { flex-wrap:wrap; gap:8px; } }
+
         .back-nav { text-align:center; margin-bottom:80px; position:relative; z-index:10; }
         .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; }
         .btn-back:hover { background:var(--ak-accent-info); color:#000; border-color:var(--ak-accent-info); }
@@ -364,29 +397,17 @@
 
         const PLAT_NAMES={douyin:'抖音',xiaohongshu:'小红书',shipinhao:'视频号',bilibili:'B站',kuaishou:'快手',tiktok:'TikTok'};
 
-        const PROMPT_SINGLE=`你是资深视频运营专家，精通${PLAT_NAMES.douyin}平台的算法推荐机制和内容运营策略。请仔细观察视频每一帧，根据实际内容深度分析。所有数据必须给出具体数字。
+        const PROMPT_SINGLE=`请为每张图片生成一句完整的画面描述提示词（用于 AI 生图）。
 
-## 1. 内容概述
-- 人物、场景、物品（穿着/动作/表情/背景）
-- 整体风格调性（搞笑/治愈/知识/种草/情感等）
-- 核心卖点和看点
+要求：
+- 每张图片输出一行，不要编号、不要分段、不要关键词列表
+- 必须是一句完整连贯的句子，描述画面中的主体、场景、光线、色调等
+- 不要输出任何 JSON 格式或结构化数据
 
-## 2. 目标用户画像
-- 性别比例、年龄段、地域分布、兴趣标签（5���）、消费能力
+示例输出格式：
+一位穿着白色连衣裙的少女站在樱花树下，阳光透过花瓣洒落，背景是蓝天白云，整体色调温暖柔和
+赛博朋克风格的霓虹街道，一位穿着金属质感服装的青年走在雨夜中，周围是高楼和全息广告牌，蓝紫色冷光氛围`;
 
-## 3. 数据预测（给出具体数字）
-- 预计播放量/完播率/点赞率/评论率/转发率/收藏率
-- 预计涨粉、爆款概率
-
-## 4. 竞品对标（3个账号类型及典型数据）
-## 5. 推荐标题（5个，含钩子类型和点击率）
-## 6. 封面优化（截取时间、文字建议、构图）
-## 7. 发布策略（时间/投流/话题标签/评论区话术）
-## 8. 优化建议（前3秒/节奏/BGM/字幕贴纸）
-## 9. A/B测试方案（两方案具体描述）
-## 10. 海外投放（市场/本地化/海外数据预测）
-
-所有数据必须给出具体数字，不要含糊其辞。`;
 
         const PROMPT_COMPARE=`你是资深视频运营专家，精通平台算法。请对比分析两个视频的关键帧，所有数据必须给出具体数字。
 
@@ -400,34 +421,28 @@
 所有数据必须给出具体数字，不要含糊其辞。`;
 
         async function callAI(frames,cfg){
-            const plat=PLAT_NAMES[cfg.platform]||cfg.platform;
-            const prompt=PROMPT_SINGLE.replace(PLAT_NAMES.douyin,plat);
+            const prompt=PROMPT_SINGLE;
+            const allFrameContent=[];
+            frames.forEach((f,i)=>{
+                allFrameContent.push({type:'text',text:`帧${i+1}：`});
+                if(cfg.service==='claude'){
+                    allFrameContent.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:f.split(',')[1]}});
+                }else{
+                    allFrameContent.push({type:'image_url',image_url:{url:f}});
+                }
+            });
+            allFrameContent.push({type:'text',text:prompt});
             if(cfg.service==='qwen'){
-                const bodyObj={
-                    model:'qwen-vl-max',
-                    messages:[{
-                        role:'user',
-                        content:[
-                            {type:'image_url',image_url:{url:frames[0]}},
-                            {type:'text',text:prompt}
-                        ]
-                    }]
-                };
-                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{
-                    method:'POST',
-                    headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},
-                    body:JSON.stringify(bodyObj)
-                });
+                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-max',messages:[{role:'user',content:allFrameContent}]})});
                 if(!r.ok)throw new Error((await r.json()).message||'API失败');
                 const d=await r.json();
                 return d.choices?.[0]?.message?.content||'';
             }else if(cfg.service==='claude'){
-                const bodyObj={model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:frames[0].split(',')[1]}},{type:'text',text:prompt}]}]};
-                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify(bodyObj)});
+                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:allFrameContent}]})});
                 if(!r.ok)throw new Error((await r.json()).error?.message||'API失败');
                 return (await r.json()).content[0].text;
             }else{
-                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:[{type:'image_url',image_url:{url:frames[0]}},{type:'text',text:prompt}]}]})});
+                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:allFrameContent}]})});
                 if(!r.ok)throw new Error('API失败');
                 return (await r.json()).choices[0].message.content;
             }
@@ -482,7 +497,7 @@
                 const frames=await extractFrames(document.getElementById('videoPlayer'+slot));
                 document.getElementById('loadingDetail').textContent='AI 分析中，预计 10-20 秒...';
                 const result=await callAI(frames,cfg);
-                showResult(result,file.name,'single');
+                showResult(result,file.name,'single',frames);
             }catch(e){alert('分析失败: '+e.message);}
             document.getElementById('loadingState').classList.remove('active');
         }
@@ -503,19 +518,51 @@
             document.getElementById('loadingState').classList.remove('active');
         }
 
-        function showResult(text,name,type){
-            let html=text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
-            document.getElementById('resultContent').innerHTML=html;
+        function showResult(text,name,type,frames){
+            if(type==='single'&&frames&&frames.length){
+                const modules=parseGenResult(text,frames);
+                const html=renderGenModules(modules);
+                document.getElementById('resultContent').innerHTML=html;
+                window._genModules=modules;
+                saveHistory(text,name,type,modules);
+            }else{
+                let html=text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
+                document.getElementById('resultContent').innerHTML=html;
+            }
             document.getElementById('analysisResult').classList.add('active');
-            saveHistory(text,name,type);
             document.getElementById('analysisResult').scrollIntoView({behavior:'smooth'});
         }
 
-        function saveHistory(text,name,type){
-            analysisHistory.unshift({id:Date.now(),name,type,platform:document.getElementById('platform').value,text,timestamp:new Date().toLocaleString('zh-CN')});
+        function saveHistory(text,name,type,modules){
+            analysisHistory.unshift({id:Date.now(),name,type,platform:document.getElementById('platform').value,text,timestamp:new Date().toLocaleString('zh-CN'),modules:modules||null});
             if(analysisHistory.length>20)analysisHistory=analysisHistory.slice(0,20);
             localStorage.setItem('videoAnalysisHistory',JSON.stringify(analysisHistory));
             renderHistory();
+        }
+
+        function renderGenModules(modules){
+            let html='<div class="gen-header"><span class="gen-header-title">GENERATED // AI PAINTING PROMPTS</span><button onclick="batchCopyAll()" class="btn btn-sm btn-primary">&#9656; 批量复制全部</button></div>';
+            html+='<div class="gen-modules">';
+            modules.forEach((m,i)=>{
+                html+=`<div class="gen-module${i===0?' open':''}" data-index="${i}">
+                    <div class="gen-module-top" onclick="toggleModule(this)">
+                        <span class="gen-module-title">#${i+1}</span>
+                        <span class="gen-module-toggle">&#8595;</span>
+                    </div>
+                    <div class="gen-module-body">
+                        ${m.img?`<img class="gen-module-image" src="${m.img}" alt="帧${i+1}">`:''}
+                        <div class="gen-module-section">
+                            <div class="gen-module-section-label gen-section-keywords"><span class="label-icon">&#9670;</span><span class="label-text">画面描述</span></div>
+                            <div class="gen-desc-text">${m.prompt}</div>
+                        </div>
+                        <div class="gen-module-actions">
+                            <button onclick="copyModule(${i})" class="btn btn-sm btn-warn">&#9656; 复制</button>
+                        </div>
+                    </div>
+                </div>`;
+            });
+            html+='</div>';
+            return html;
         }
 
         function renderHistory(){
@@ -527,13 +574,52 @@
         function viewHistory(id){
             const h=analysisHistory.find(x=>x.id===id);
             if(h){
-                document.getElementById('resultContent').innerHTML=h.text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
+                if(h.type==='single'&&h.modules&&h.modules.length){
+                    const html=renderGenModules(h.modules);
+                    document.getElementById('resultContent').innerHTML=html;
+                    window._genModules=h.modules;
+                }else{
+                    document.getElementById('resultContent').innerHTML=h.text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
+                }
                 document.getElementById('analysisResult').classList.add('active');
                 document.getElementById('analysisResult').scrollIntoView({behavior:'smooth'});
             }
         }
 
         function delHistory(id){analysisHistory=analysisHistory.filter(x=>x.id!==id);localStorage.setItem('videoAnalysisHistory',JSON.stringify(analysisHistory));renderHistory();}
+
+        function parseGenResult(text,frames){
+            const results=[];
+            const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            const lines=text.split('\n').filter(l=>l.trim());
+            frames.forEach((img,i)=>{
+                const line=lines[i]||'';
+                results.push({prompt:esc(line.trim()||'（无内容）'),img});
+            });
+            return results;
+        }
+
+        function toggleModule(el){
+            el.closest('.gen-module').classList.toggle('open');
+        }
+
+        function copyModule(idx){
+            const m=window._genModules[idx];
+            if(!m)return;
+            navigator.clipboard.writeText(m.prompt).then(()=>{
+                const btn=document.querySelector(`.gen-module[data-index="${idx}"] .gen-module-actions .btn`);
+                if(btn){const orig=btn.innerHTML;btn.innerHTML='✓ 已复制';setTimeout(()=>btn.innerHTML=orig,1500);}
+            });
+        }
+
+        function batchCopyAll(){
+            if(!window._genModules||!window._genModules.length)return;
+            const text=window._genModules.map(m=>m.prompt).join('\n');
+            navigator.clipboard.writeText(text).then(()=>{
+                const btn=document.querySelector('.gen-header .btn');
+                if(btn){const orig=btn.innerHTML;btn.innerHTML='✓ 已复制全部';setTimeout(()=>btn.innerHTML='&#9656; 批量复制全部',1500);}
+            });
+        }
     </script>
 </body>
 </html>

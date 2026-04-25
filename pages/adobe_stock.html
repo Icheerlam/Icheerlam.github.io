@@ -162,18 +162,12 @@
                 <input type="number" id="keywordCount" value="5" min="1" max="20" style="width:80px;">
             </div>
             <div class="form-group">
-                <label>热点领域（可选）</label>
-                <select id="trendDomain">
-                    <option value="">自动分析当下热点</option>
-                    <option value="technology">科技/AI/数字化</option>
-                    <option value="business">商业/职场/金融</option>
-                    <option value="lifestyle">生活方式/健康/居家</option>
-                    <option value="travel">旅行/户外/自然</option>
-                    <option value="food">美食/餐饮/烹饪</option>
-                    <option value="festival">节日/庆典/文化</option>
-                    <option value="people">人物/情感/家庭</option>
-                    <option value="environment">环保/可持续/绿色</option>
-                </select>
+                <label>热点领域（可选，支持手动输入）</label>
+                <input type="text" id="trendDomain" placeholder="例如：科技/AI、美食、旅行..." style="width:100%; max-width:300px;">
+            </div>
+            <div class="form-group">
+                <label>自定义条件提示词（可选）</label>
+                <textarea id="customPrompt" rows="3" placeholder="例如：&#10;- 只生成横构图场景&#10;- 色调偏暖，适合夏季&#10;- 主体必须包含人物" style="width:100%;resize:vertical;"></textarea>
             </div>
             <button onclick="generateTrendKeywords()" id="btnGenerateKeywords" class="btn btn-primary">&#9656; 生成热点关键词</button>
 
@@ -528,126 +522,107 @@ Return only valid JSON.`;
             document.getElementById('btnStop').style.display = 'none';
         }
 
-        function generateTrendKeywords() {
+        async function generateTrendKeywords() {
             const apiKey = document.getElementById('apiKeyInput').value.trim();
             if (!apiKey) { showToast('请先配置 API Key', true); return; }
 
             const count = parseInt(document.getElementById('keywordCount').value) || 5;
             const domain = document.getElementById('trendDomain').value;
+            const customPrompt = document.getElementById('customPrompt').value.trim();
 
             const btn = document.getElementById('btnGenerateKeywords');
             btn.disabled = true;
             btn.textContent = '生成中...';
 
-            const prompt = `你是 Adobe Stock 图片市场分析师。基于2026年当下社会热点和视觉趋势，生成 ${count} 个在 Adobe Stock 上易销售的图片主题建议。
+            const batchSize = 20;
+            const totalBatches = Math.ceil(count / batchSize);
+            const batchCounts = [];
+            for (let i = 0; i < totalBatches; i++) {
+                batchCounts.push(Math.min(batchSize, count - i * batchSize));
+            }
+
+            const batchPromises = batchCounts.map((batchCount) => {
+                const prompt = `你是 Adobe Stock 图片市场分析师。基于2026年当下社会热点和视觉趋势，生成 ${batchCount} 个在 Adobe Stock 上易销售的图片拍摄主题建议。
 
 领域提示：${domain ? `重点关注 ${domain} 领域` : '自动分析各领域热点'}
+${customPrompt ? `\n用户自定义条件：\n${customPrompt}\n` : ''}
 
-每个主题必须包含：
-1. 图片标题建议（简洁描述，20-40字符）
-2. 10-15个英文关键词（对象、场景、风格、情绪、用途）
-3. 建议分类编号（1-21）
-4. 市场需求原因（为什么这个主题现在好卖，2-3句话）
-5. 视觉建议（配色、构图、风格提示）
+重要：必须恰好生成 ${batchCount} 行，每行一个主题，不能多也不能少。
+
+要求：
+- 每个主题输出一行完整的画面描述句子
+- 不要编号、不要关键词列表、不要 JSON 格式
+- 必须是一句完整连贯的句子，描述画面中的主体、场景、光线、色调等
+- 句子要具体可执行，摄影师能直接按描述拍摄
 
 热点趋势参考：
 - 2026年科技热点：AI应用、智能家居、新能源、元宇宙
-- ��会话题：环保可持续、健康生活、远程工作、心理健康
+- 社会话题：环保可持续、健康生活、远程工作、心理健康
 - 节日季节：当前月份相关节日或季节活动
-- 视觉风格：极简主义、自然材质、渐变色、3D渲染
+- 视觉风格：极简主义、自然材质、渐变色、3D渲染`;
 
-请严格按以下 JSON 数组格式返回，不要其他文字：
-[
-  {
-    "title": "英文标题",
-    "keywords": ["keyword1", "keyword2", ...],
-    "category": "数字",
-    "reason": "市场需求原因",
-    "visualTips": "视觉建议"
-  },
-  ...
-]`;
-
-            fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    model: 'qwen-max',
-                    messages: [{ role: 'user', content: prompt }]
-                })
-            })
-            .then(r => r.json())
-            .then(data => {
-                const content = data.choices?.[0]?.message?.content || '';
-                const start = content.indexOf('[');
-                const end = content.lastIndexOf(']') + 1;
-                if (start === -1) throw new Error('解析失败');
-
-                const results = JSON.parse(content.substring(start, end));
-                renderKeywordsResults(results);
-                btn.disabled = false;
-                btn.textContent = '▸ 生成热点关键词';
-            })
-            .catch(e => {
-                showToast('生成失败: ' + e.message, true);
-                btn.disabled = false;
-                btn.textContent = '▸ 生成热点关键词';
+                return fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'qwen-max',
+                        messages: [{ role: 'user', content: prompt }],
+                        max_tokens: 4000
+                    })
+                }).then(r => r.json()).then(data => {
+                    const content = data.choices?.[0]?.message?.content || '';
+                    return content.split('\n').map(l => l.replace(/^\d+[.、)\s]*/, '').trim()).filter(l => l.length > 10).slice(0, batchCount);
+                });
             });
+
+            try {
+                const batchResults = await Promise.all(batchPromises);
+                const allResults = batchResults.flat().slice(0, count);
+                renderKeywordsResults(allResults);
+            } catch (e) {
+                showToast('生成失败: ' + e.message, true);
+            }
+            btn.disabled = false;
+            btn.textContent = '▸ 生成热点关键词';
         }
 
-        function renderKeywordsResults(results) {
+        function renderKeywordsResults(resultLines) {
             const panel = document.getElementById('keywordsResultPanel');
             const list = document.getElementById('keywordsResultList');
             panel.style.display = 'block';
+            window.keywordResults = resultLines;
 
-            list.innerHTML = results.map((item, i) => {
-                const catName = CATEGORIES[item.category] || '';
-                const kws = item.keywords.map(k => `<span class="kw-tag">${k}</span>`).join('<br>');
-                return `
-                    <div class="keyword-item" style="border:1px solid var(--ak-border); padding:16px; margin-bottom:12px; transition:0.3s;">
-                        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+            list.innerHTML = resultLines.map((line, i) => {
+                const escLine = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                return `                    <div class="keyword-item" style="border:1px solid var(--ak-border); padding:16px; margin-bottom:12px; transition:0.3s;">
+                        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
                             <div style="flex:1;">
-                                <div style="font:bold 0.85rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:4px;">
-                                    #${i+1} // ${item.title}
+                                <div style="font:bold 0.85rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:8px;">
+                                    #${i+1}
                                 </div>
-                                <div style="font:0.7rem 'Space Mono'; color:var(--ak-text-muted);">
-                                    分类: ${item.category} (${catName})
+                                <div style="font-size:0.85rem; color:var(--ak-text-main); line-height:1.6;">
+                                    ${escLine}
                                 </div>
                             </div>
-                            <button onclick="copyKeywordItem(${i})" class="btn btn-sm">复制</button>
+                            <button onclick="copyKeywordItem(${i})" class="btn btn-sm btn-warn">复制</button>
                         </div>
-                        <div class="kw-wrap" style="margin-bottom:10px;">${kws}</div>
-                        <div style="font-size:0.8rem; color:var(--ak-text-muted); margin-bottom:6px;">
-                            <strong style="color:var(--ak-accent-warn);">市场需求:</strong> ${item.reason}
-                        </div>
-                        <div style="font-size:0.8rem; color:var(--ak-text-muted);">
-                            <strong style="color:var(--ak-accent-info);">视觉建议:</strong> ${item.visualTips}
-                        </div>
-                    </div>
-                `;
+                    </div>`;
             }).join('');
-
-            window.keywordResults = results;
         }
+
 
         function copyKeywordItem(index) {
             if (!window.keywordResults || !window.keywordResults[index]) return;
-            const item = window.keywordResults[index];
-            const catName = CATEGORIES[item.category] || '';
-            const text = `标题: ${item.title}\n关键词:\n${item.keywords.map(k => '- ' + k).join('\n')}\n分类: ${item.category} (${catName})\n市场需求: ${item.reason}\n视觉建议: ${item.visualTips}`;
-            navigator.clipboard.writeText(text).then(() => showToast('已复制到剪贴板'));
+            navigator.clipboard.writeText(window.keywordResults[index]).then(() => showToast('已复制到剪贴板'));
         }
 
         function copyAllKeywords() {
             if (!window.keywordResults || !window.keywordResults.length) return;
-            const allText = window.keywordResults.map((item, i) => {
-                const catName = CATEGORIES[item.category] || '';
-                return `【主题 ${i+1}】\n标题: ${item.title}\n关键词:\n${item.keywords.map(k => '- ' + k).join('\n')}\n分类: ${item.category} (${catName})\n市场需求: ${item.reason}\n视觉建议: ${item.visualTips}\n`;
-            }).join('\n---\n\n');
-            navigator.clipboard.writeText(allText).then(() => showToast('已复制全部 ' + window.keywordResults.length + ' 组关键词'));
+            const allText = window.keywordResults.join('\n');
+            navigator.clipboard.writeText(allText).then(() => showToast('已复制全部 ' + window.keywordResults.length + ' 条描述'));
         }
 
         function showToast(msg, isErr) {
