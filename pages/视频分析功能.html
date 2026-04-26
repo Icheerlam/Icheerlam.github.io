@@ -535,26 +535,33 @@
         }
 
         async function callAIFrame(frame,cfg){
-            const prompt=`请为这个画面生成一句完整的描述提示词（用于 AI 生图）。
+            const prompt='请为这个画面生成一句完整的描述提示词（用于AI生图）。输出一行完整连贯的句子，描述主体、场景、光线、色调、氛围等，不要编号不要列表。';
 
-要求：
-- 输出一行完整连贯的句子
-- 描述画面中的主体、场景、光线、色调、氛围等
-- 不要编号、不要关键词列表、不要 JSON 格式`;
-
-            const allContent=[
-                {type:'text',text:'画面内容：'},
-                cfg.service==='claude'?{type:'image',source:{type:'base64',media_type:'image/jpeg',data:frame.split(',')[1]}}:{type:'image_url',image_url:{url:frame}},
-                {type:'text',text:prompt}
-            ];
+            let allContent;
+            if(cfg.service==='claude'){
+                allContent=[
+                    {type:'image',source:{type:'base64',media_type:'image/jpeg',data:frame.split(',')[1]}},
+                    {type:'text',text:prompt}
+                ];
+            }else if(cfg.service==='qwen'){
+                allContent=[
+                    {type:'image_url',image_url:{url:frame}},
+                    {type:'text',text:prompt}
+                ];
+            }else{
+                allContent=[
+                    {type:'image_url',image_url:{url:frame}},
+                    {type:'text',text:prompt}
+                ];
+            }
 
             if(cfg.service==='qwen'){
                 const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-max',messages:[{role:'user',content:allContent}]})});
-                if(!r.ok)throw new Error((await r.json()).message||'API失败');
+                if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||'API失败');}
                 return (await r.json()).choices?.[0]?.message?.content||'';
             }else if(cfg.service==='claude'){
                 const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:allContent}]})});
-                if(!r.ok)throw new Error((await r.json()).error?.message||'API失败');
+                if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.error?.message||'API失败');}
                 return (await r.json()).content[0].text;
             }else{
                 const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:allContent}]})});
