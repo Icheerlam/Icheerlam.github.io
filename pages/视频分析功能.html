@@ -308,7 +308,15 @@
 
         <div class="result-panel" id="analysisResult">
             <div class="ak-panel" style="animation-delay:0s;">
-                <div class="panel-title">Analysis Report</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+                    <div class="panel-title">Analysis Report</div>
+                    <div style="display:flex;gap:8px;">
+                        <button onclick="exportReport('txt')" class="btn btn-sm">&#9656; 导出 TXT</button>
+                        <button onclick="exportReport('md')" class="btn btn-sm btn-primary">&#9656; 导出 MD</button>
+                        <button onclick="exportReport('html')" class="btn btn-sm btn-warn">&#9656; 导出 HTML</button>
+                        <button onclick="openReportHTML()" class="btn btn-sm btn-danger">&#9656; 预览 HTML</button>
+                    </div>
+                </div>
                 <div class="result-content" id="resultContent"></div>
             </div>
         </div>
@@ -423,7 +431,7 @@
         const PROMPT_COMPARE=`你是资深视频运营专家，精通平台算法。请对比分析两个视频的关键帧，所有数据必须给出具体数字。
 
 ## 1. 内容对比（画面/人物/场景/风格/核心差异）
-## 2. 目标受众对���（性别/年龄/兴趣/消费能力/重合度）
+## 2. 目标受众对比（性别/年龄/兴趣/消费能力/重合度）
 ## 3. 数据预测对比表格（播放量/完播率/点赞率/互动率/爆款概率）
 ## 4. 算法推荐优势（哪个更容易推荐，权重得分X/100）
 ## 5. 标题优化对比（各3个推荐标题）
@@ -441,15 +449,6 @@
 - core_hook 分析前3秒画面中能留住用户的元素
 - optimization 给出具体可执行的优化建议
 - expected 给出预期数据范围和具体提升方法`;
-
-## 1. 内容对比（画面/人物/场景/风格/核心差异）
-## 2. 目标受众对比（性别/年龄/兴趣/消费能力/重合度）
-## 3. 数据预测对比表格（播放量/完播率/点赞率/互动率/爆款概率）
-## 4. 算法推荐优势（哪个更容易推荐，权重得分X/100）
-## 5. 标题优化对比（各3个推荐标题）
-## 6. 综合评分与结论（各X/100，胜出视频，投流建议）
-
-所有数据必须给出具体数字，不要含糊其辞。`;
 
         async function callAI(frames,cfg){
             const prompt=PROMPT_SINGLE;
@@ -605,9 +604,12 @@
             html+='</div>';
             document.getElementById('resultContent').innerHTML=html;
             document.getElementById('analysisResult').classList.add('active');
+            lastReportData={type:'operate',name,text,opData:data};
             saveHistory(text,name,'operate');
             document.getElementById('analysisResult').scrollIntoView({behavior:'smooth'});
         }
+
+        async function compareVideos(){
             const cfg=JSON.parse(localStorage.getItem('aiConfig')||'{}');
             if(!cfg.apiKey){alert('请先配置 API Key');togglePanel('apiPanel');return;}
             if(!currentVideoFile1||!currentVideoFile2){alert('请先上传两个视频');return;}
@@ -629,11 +631,13 @@
                 const html=renderGenModules(modules);
                 document.getElementById('resultContent').innerHTML=html;
                 window._genModules=modules;
+                lastReportData={type:'single',name,modules};
                 saveHistory(text,name,type,modules);
             }else{
                 let html=text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
                 document.getElementById('resultContent').innerHTML=html;
             }
+            lastReportData={type,name,text};
             document.getElementById('analysisResult').classList.add('active');
             document.getElementById('analysisResult').scrollIntoView({behavior:'smooth'});
         }
@@ -724,6 +728,125 @@
                 const btn=document.querySelector('.gen-header .btn');
                 if(btn){const orig=btn.innerHTML;btn.innerHTML='✓ 已复制全部';setTimeout(()=>btn.innerHTML='&#9656; 批量复制全部',1500);}
             });
+        }
+
+        let lastReportData = null;
+
+        function exportReport(format) {
+            if (!lastReportData) { alert('暂无分析报告可导出'); return; }
+            const { type, name, text, modules, opData } = lastReportData;
+            let content = '';
+            const header = `# 视频分析报告\n## ${name}\n日期：${new Date().toLocaleString('zh-CN')}\n\n`;
+
+            if (type === 'single' && modules) {
+                content = header + modules.map((m, i) => `## #${i + 1}\n${m.prompt}`).join('\n\n');
+            } else if (type === 'operate' && opData) {
+                content = header;
+                content += `## 视频类型\n${opData.video_type || ''}\n\n`;
+                content += `## 目标用户\n${opData.target_user || ''}\n\n`;
+                content += `## 核心Hook\n${opData.core_hook || ''}\n\n`;
+                if (opData.optimization) {
+                    content += `## 优化建议\n- 节奏：${opData.optimization.pacing || ''}\n- 内容：${opData.optimization.content || ''}\n- 结构：${opData.optimization.structure || ''}\n\n`;
+                }
+                if (opData.expected) {
+                    content += `## 预期效果\n- 点击：${opData.expected.click || ''}\n- 留存：${opData.expected.retention || ''}\n- 转化：${opData.expected.conversion || ''}\n`;
+                }
+            } else {
+                content = header + text;
+            }
+
+            if (format === 'html') {
+                const htmlContent = buildExportHTML(content, name);
+                downloadFile(htmlContent, `分析报告_${name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_')}.html`, 'text/html;charset=utf-8');
+            } else {
+                const ext = format === 'md' ? 'md' : 'txt';
+                downloadFile(content, `分析报告_${name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_')}.${ext}`, 'text/plain;charset=utf-8');
+            }
+        }
+
+        function buildExportHTML(md, name) {
+            const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            const { type, modules, opData, text } = lastReportData;
+            const C = {bg:'#0a0a0f',card:'#111118',border:'#2a2a2a',accent:'#00d8ff',warn:'#f5a623',text:'#cccccc',head:'#ffffff'};
+            const th = (label,color) => `<th style="text-align:left;padding:10px 14px;color:${color||C.accent};font-weight:700;font-size:0.85rem;white-space:nowrap;width:120px;vertical-align:top;border-bottom:1px solid ${C.border};">${label}</th>`;
+            const td = (val) => `<td style="padding:10px 14px;color:${C.text};font-size:0.9rem;line-height:1.7;border-bottom:1px solid ${C.border};">${esc(val)}</td>`;
+            const section = (title,color,rows) => `<tr><td colspan="2" style="padding:12px 14px;font-weight:700;font-size:0.9rem;color:${color||C.accent};background:rgba(0,216,255,0.05);border-bottom:1px solid ${C.border};">${title}</td></tr>${rows}`;
+
+            let body = `<h1 style="font:bold 1.6rem monospace;color:${C.accent};margin:0 0 6px;">视频分析报告</h1>
+<p style="color:#666;font-size:0.85rem;margin:0 0 24px;">${esc(name)} &nbsp;|&nbsp; ${new Date().toLocaleString('zh-CN')}</p>
+<table style="width:100%;border-collapse:collapse;border:1px solid ${C.border};">`;
+
+            if (type === 'operate' && opData) {
+                body += section('基本信息', C.accent,
+                    `<tr>${th('视频类型',C.accent)}${td(opData.video_type||'')}</tr>
+<tr>${th('目标用户',C.accent)}${td(opData.target_user||'')}</tr>
+<tr>${th('核心Hook',C.accent)}${td(opData.core_hook||'')}</tr>`);
+                if (opData.optimization) {
+                    body += section('优化建议', C.warn,
+                        `<tr>${th('节奏',C.warn)}${td(opData.optimization.pacing||'')}</tr>
+<tr>${th('内容',C.warn)}${td(opData.optimization.content||'')}</tr>
+<tr>${th('结构',C.warn)}${td(opData.optimization.structure||'')}</tr>`);
+                }
+                if (opData.expected) {
+                    body += section('预期效果', C.warn,
+                        `<tr>${th('点击',C.warn)}${td(opData.expected.click||'')}</tr>
+<tr>${th('留存',C.warn)}${td(opData.expected.retention||'')}</tr>
+<tr>${th('转化',C.warn)}${td(opData.expected.conversion||'')}</tr>`);
+                }
+            } else if (type === 'single' && modules) {
+                body += section('AI 生图提示词', C.accent,
+                    modules.map((m,i) => `<tr>${th('#'+(i+1),C.accent)}${td(m.prompt)}</tr>`).join(''));
+            } else {
+                // 对比分析 - 解析 markdown 表格和普通文本
+                const lines = text.split('\n');
+                let inTable = false;
+                let tableRows = '';
+                lines.forEach(line => {
+                    if (line.match(/^\|.*\|$/)) {
+                        const cells = line.split('|').filter(c => c.trim());
+                        if (cells.every(c => /^[\s:-]+$/.test(c))) return;
+                        const isHeader = !inTable;
+                        inTable = true;
+                        const tag = isHeader ? 'th' : 'td';
+                        const style = isHeader ? `color:${C.accent};font-weight:700;background:rgba(0,216,255,0.05);` : `color:${C.text};`;
+                        tableRows += `<tr>${cells.map(c => `<${tag} style="padding:8px 14px;font-size:0.85rem;${style}border:1px solid ${C.border};">${esc(c.trim())}</${tag}>`).join('')}</tr>`;
+                    } else {
+                        if (inTable) { body += tableRows; tableRows = ''; inTable = false; }
+                        const t = line.trim();
+                        if (!t) return;
+                        if (t.startsWith('## ')) {
+                            body += section(t.replace(/^##\s*/, ''), C.accent, '');
+                        } else if (t.startsWith('# ')) {
+                            // skip main title
+                        } else if (t.startsWith('- ') || t.match(/^\d+\./)) {
+                            body += `<tr><td colspan="2" style="padding:8px 14px;color:${C.text};font-size:0.9rem;border-bottom:1px solid ${C.border};padding-left:28px;">${esc(t.replace(/^[-\d.]+\s*/,''))}</td></tr>`;
+                        } else {
+                            body += `<tr>${th('',C.accent)}${td(t)}</tr>`;
+                        }
+                    }
+                });
+                if (inTable) body += tableRows;
+            }
+
+            body += '</table>';
+            return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>${esc(name)} - 分析报告</title></head><body style="background:${C.bg};color:${C.head};font-family:-apple-system,sans-serif;max-width:900px;margin:0 auto;padding:40px 24px;">${body}</body></html>`;
+        }
+
+        function downloadFile(content, filename, mime) {
+            const blob = new Blob([content], { type: mime });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        function openReportHTML() {
+            if (!lastReportData) { alert('暂无分析报告'); return; }
+            const { name } = lastReportData;
+            const html = buildExportHTML('', name);
+            const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+            window.open(URL.createObjectURL(blob), '_blank');
         }
     </script>
 </body>
