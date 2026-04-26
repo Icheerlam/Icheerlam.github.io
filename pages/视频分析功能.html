@@ -291,8 +291,8 @@
                     </div>
                 </div>
                 <div class="action-row">
-                    <button onclick="analyzeVideo(1)" id="btnAnalyze1" class="btn btn-primary" disabled>&#9656; 生图提示词 A</button>
-                    <button onclick="analyzeVideo(2)" id="btnAnalyze2" class="btn btn-primary" disabled>&#9656; 生图提示词 B</button>
+                    <button onclick="analyzeFrame(1)" id="btnAnalyze1" class="btn btn-primary" disabled>&#9656; 分析当前帧 A</button>
+                    <button onclick="analyzeFrame(2)" id="btnAnalyze2" class="btn btn-primary" disabled>&#9656; 分析当前帧 B</button>
                     <button onclick="analyzeVideoOp(1)" id="btnOp1" class="btn" disabled>&#9656; 运营分析 A</button>
                     <button onclick="analyzeVideoOp(2)" id="btnOp2" class="btn" disabled>&#9656; 运营分析 B</button>
                     <button onclick="compareVideos()" id="btnCompare" class="btn btn-warn" disabled>&#8646; 对比分析</button>
@@ -416,18 +416,6 @@
 
         const PLAT_NAMES={douyin:'抖音',xiaohongshu:'小红书',shipinhao:'视频号',bilibili:'B站',kuaishou:'快手',tiktok:'TikTok'};
 
-        const PROMPT_SINGLE=`请为每张图片生成一句完整的画面描述提示词（用于 AI 生图）。
-
-要求：
-- 每张图片输出一行，不要编号、不要分段、不要关键词列表
-- 必须是一句完整连贯的句子，描述画面中的主体、场景、光线、色调等
-- 不要输出任何 JSON 格式或结构化数据
-
-示例输出格式：
-一位穿着白色连衣裙的少女站在樱花树下，阳光透过花瓣洒落，背景是蓝天白云，整体色调温暖柔和
-赛博朋克风格的霓虹街道，一位穿着金属质感服装的青年走在雨夜中，周围是高楼和全息广告牌，蓝紫色冷光氛围`;
-
-
         const PROMPT_COMPARE=`你是资深视频运营专家，精通平台算法。请对比分析两个视频的关键帧，所有数据必须给出具体数字。
 
 ## 1. 内容对比（画面/人物/场景/风格/核心差异）
@@ -515,21 +503,64 @@
             }
         }
 
-        async function analyzeVideo(slot){
+        async function analyzeFrame(slot){
             const cfg=JSON.parse(localStorage.getItem('aiConfig')||'{}');
             if(!cfg.apiKey){alert('请先配置 API Key');togglePanel('apiPanel');return;}
             const file=slot===1?currentVideoFile1:currentVideoFile2;
             if(!file){alert('请先上传视频');return;}
+            const player=document.getElementById('videoPlayer'+slot);
+            const currentTime=player.currentTime;
             document.getElementById('loadingState').classList.add('active');
             document.getElementById('analysisResult').classList.remove('active');
             try{
-                document.getElementById('loadingDetail').textContent='提取视频关键帧中...';
-                const frames=await extractFrames(document.getElementById('videoPlayer'+slot));
+                document.getElementById('loadingDetail').textContent=`截取第 ${Math.floor(currentTime)} 秒帧...`;
+                const frame=await captureFrame(player);
                 document.getElementById('loadingDetail').textContent='AI 分析中，预计 10-20 秒...';
-                const result=await callAI(frames,cfg);
-                showResult(result,file.name,'single',frames);
+                const result=await callAIFrame(frame,cfg);
+                showResult(result,`${file.name} @ ${Math.floor(currentTime)}s`,'single',[frame]);
             }catch(e){alert('分析失败: '+e.message);}
             document.getElementById('loadingState').classList.remove('active');
+        }
+
+        function captureFrame(video){
+            return new Promise((resolve,reject)=>{
+                const c=document.createElement('canvas');
+                const max=512,sc=Math.min(max/video.videoWidth,max/video.videoHeight);
+                c.width=video.videoWidth*sc;
+                c.height=video.videoHeight*sc;
+                const ctx=c.getContext('2d');
+                ctx.drawImage(video,0,0,c.width,c.height);
+                resolve(c.toDataURL('image/jpeg',0.8));
+            });
+        }
+
+        async function callAIFrame(frame,cfg){
+            const prompt=`请为这个画面生成一句完整的描述提示词（用于 AI 生图）。
+
+要求：
+- 输出一行完整连贯的句子
+- 描述画面中的主体、场景、光线、色调、氛围等
+- 不要编号、不要关键词列表、不要 JSON 格式`;
+
+            const allContent=[
+                {type:'text',text:'画面内容：'},
+                cfg.service==='claude'?{type:'image',source:{type:'base64',media_type:'image/jpeg',data:frame.split(',')[1]}}:{type:'image_url',image_url:{url:frame}},
+                {type:'text',text:prompt}
+            ];
+
+            if(cfg.service==='qwen'){
+                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-max',messages:[{role:'user',content:allContent}]})});
+                if(!r.ok)throw new Error((await r.json()).message||'API失败');
+                return (await r.json()).choices?.[0]?.message?.content||'';
+            }else if(cfg.service==='claude'){
+                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8192,messages:[{role:'user',content:allContent}]})});
+                if(!r.ok)throw new Error((await r.json()).error?.message||'API失败');
+                return (await r.json()).content[0].text;
+            }else{
+                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:allContent}]})});
+                if(!r.ok)throw new Error('API失败');
+                return (await r.json()).choices[0].message.content;
+            }
         }
 
         async function analyzeVideoOp(slot){
