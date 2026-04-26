@@ -164,6 +164,13 @@
         .btn-back { display:inline-block; padding:12px 30px; border:1px solid var(--ak-border); color:var(--ak-text-main); font:700 1rem 'Space Mono'; text-decoration:none; transition:0.3s; }
         .btn-back:hover { background:var(--ak-accent-info); color:#000; border-color:var(--ak-accent-info); }
 
+        .op-report { display:flex; flex-direction:column; gap:18px; }
+        .op-section { border:1px solid var(--ak-border); padding:18px; background:rgba(10,10,12,0.8); }
+        .op-label { font:700 0.85rem 'Space Mono'; margin-bottom:10px; letter-spacing:1px; }
+        .op-value { font-size:0.9rem; color:var(--ak-text-main); line-height:1.7; }
+        .op-sub { font-size:0.85rem; color:var(--ak-text-muted); line-height:1.7; margin-bottom:6px; padding-left:14px; }
+        .op-sub-label { color:var(--ak-accent-warn); font-weight:700; font-family:'Space Mono',monospace; font-size:0.75rem; }
+
         footer { position:relative; text-align:center; padding:40px; color:var(--ak-text-muted); font-family:'Space Mono',monospace; font-size:0.75rem; text-transform:uppercase; border-top:1px solid var(--ak-border); z-index:10; }
         footer::before,footer::after { content:''; position:absolute; top:-1px; width:20px; height:4px; background:var(--ak-accent-info); }
         footer::before { left:0; }
@@ -284,8 +291,10 @@
                     </div>
                 </div>
                 <div class="action-row">
-                    <button onclick="analyzeVideo(1)" id="btnAnalyze1" class="btn btn-primary" disabled>&#9656; 分析视频 A</button>
-                    <button onclick="analyzeVideo(2)" id="btnAnalyze2" class="btn btn-primary" disabled>&#9656; 分析视频 B</button>
+                    <button onclick="analyzeVideo(1)" id="btnAnalyze1" class="btn btn-primary" disabled>&#9656; 生图提示词 A</button>
+                    <button onclick="analyzeVideo(2)" id="btnAnalyze2" class="btn btn-primary" disabled>&#9656; 生图提示词 B</button>
+                    <button onclick="analyzeVideoOp(1)" id="btnOp1" class="btn" disabled>&#9656; 运营分析 A</button>
+                    <button onclick="analyzeVideoOp(2)" id="btnOp2" class="btn" disabled>&#9656; 运营分析 B</button>
                     <button onclick="compareVideos()" id="btnCompare" class="btn btn-warn" disabled>&#8646; 对比分析</button>
                     <button onclick="document.getElementById('historyPanel').classList.toggle('active')" class="btn btn-sm">&#8635; 历史记录</button>
                 </div>
@@ -380,6 +389,8 @@
         function updateButtons(){
             document.getElementById('btnAnalyze1').disabled=!currentVideoFile1;
             document.getElementById('btnAnalyze2').disabled=!currentVideoFile2;
+            document.getElementById('btnOp1').disabled=!currentVideoFile1;
+            document.getElementById('btnOp2').disabled=!currentVideoFile2;
             document.getElementById('btnCompare').disabled=!(currentVideoFile1&&currentVideoFile2);
         }
 
@@ -410,6 +421,26 @@
 
 
         const PROMPT_COMPARE=`你是资深视频运营专家，精通平台算法。请对比分析两个视频的关键帧，所有数据必须给出具体数字。
+
+## 1. 内容对比（画面/人物/场景/风格/核心差异）
+## 2. 目标受众对���（性别/年龄/兴趣/消费能力/重合度）
+## 3. 数据预测对比表格（播放量/完播率/点赞率/互动率/爆款概率）
+## 4. 算法推荐优势（哪个更容易推荐，权重得分X/100）
+## 5. 标题优化对比（各3个推荐标题）
+## 6. 综合评分与结论（各X/100，胜出视频，投流建议）
+
+所有数据必须给出具体数字，不要含糊其辞。`;
+
+        const PROMPT_OPERATE=`你是资深短视频运营专家，请根据视频关键帧分析以下维度，严格按 JSON 格式返回（不要其他文字）：
+
+{"video_type":"视频类型判断（游戏/app/达人/其他，选一个）","target_user":"目标用户画像描述（谁会看这个视频）","core_hook":"前3秒核心吸引点分析","optimization":{"pacing":"节奏优化建议","content":"内容优化建议","structure":"结构优化建议"},"expected":{"click":"点击率预期和提升建议","retention":"留存率预期和提升建议","conversion":"转化率预期和提升建议"}}
+
+要求：
+- video_type 只能是：游戏、app、达人、其他 之一
+- target_user 描述具体人群（年龄、性别、兴趣、消费特征）
+- core_hook 分析前3秒画面中能留住用户的元素
+- optimization 给出具体可执行的优化建议
+- expected 给出预期数据范围和具体提升方法`;
 
 ## 1. 内容对比（画面/人物/场景/风格/核心差异）
 ## 2. 目标受众对比（性别/年龄/兴趣/消费能力/重合度）
@@ -502,7 +533,81 @@
             document.getElementById('loadingState').classList.remove('active');
         }
 
-        async function compareVideos(){
+        async function analyzeVideoOp(slot){
+            const cfg=JSON.parse(localStorage.getItem('aiConfig')||'{}');
+            if(!cfg.apiKey){alert('请先配置 API Key');togglePanel('apiPanel');return;}
+            const file=slot===1?currentVideoFile1:currentVideoFile2;
+            if(!file){alert('请先上传视频');return;}
+            document.getElementById('loadingState').classList.add('active');
+            document.getElementById('analysisResult').classList.remove('active');
+            try{
+                document.getElementById('loadingDetail').textContent='提取视频关键帧中...';
+                const frames=await extractFrames(document.getElementById('videoPlayer'+slot));
+                document.getElementById('loadingDetail').textContent='AI 运营分析中，预计 10-20 秒...';
+                const result=await callAIOp(frames,cfg);
+                showOpResult(result,file.name);
+            }catch(e){alert('分析失败: '+e.message);}
+            document.getElementById('loadingState').classList.remove('active');
+        }
+
+        async function callAIOp(frames,cfg){
+            const allFrameContent=[];
+            frames.forEach((f,i)=>{
+                allFrameContent.push({type:'text',text:`帧${i+1}：`});
+                if(cfg.service==='claude'){
+                    allFrameContent.push({type:'image',source:{type:'base64',media_type:'image/jpeg',data:f.split(',')[1]}});
+                }else{
+                    allFrameContent.push({type:'image_url',image_url:{url:f}});
+                }
+            });
+            allFrameContent.push({type:'text',text:PROMPT_OPERATE});
+            if(cfg.service==='qwen'){
+                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-max',messages:[{role:'user',content:allFrameContent}]})});
+                if(!r.ok)throw new Error((await r.json()).message||'API失败');
+                return (await r.json()).choices?.[0]?.message?.content||'';
+            }else if(cfg.service==='claude'){
+                const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'x-api-key':cfg.apiKey,'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4096,messages:[{role:'user',content:allFrameContent}]})});
+                if(!r.ok)throw new Error((await r.json()).error?.message||'API失败');
+                return (await r.json()).content[0].text;
+            }else{
+                const r=await fetch('https://api.openai.com/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'gpt-4o',messages:[{role:'user',content:allFrameContent}]})});
+                if(!r.ok)throw new Error('API失败');
+                return (await r.json()).choices[0].message.content;
+            }
+        }
+
+        function showOpResult(text,name){
+            let data={};
+            try{
+                const jsonMatch=text.match(/\{[\s\S]*\}/);
+                if(jsonMatch) data=JSON.parse(jsonMatch[0]);
+            }catch(e){}
+            const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            let html='<div class="op-report">';
+            html+=`<div class="gen-header"><span class="gen-header-title">OPERATION ANALYSIS // ${esc(name)}</span></div>`;
+            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);">&#9670; 视频类型</div><div class="op-value">${esc(data.video_type||'无法判断')}</div></div>`;
+            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);">&#9670; 目标用户</div><div class="op-value">${esc(data.target_user||'无法判断')}</div></div>`;
+            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);">&#9670; 核心Hook</div><div class="op-value">${esc(data.core_hook||'无法判断')}</div></div>`;
+            if(data.optimization){
+                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);">&#9670; 优化建议</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label">节奏：</span>${esc(data.optimization.pacing||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label">内容：</span>${esc(data.optimization.content||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label">结构：</span>${esc(data.optimization.structure||'')}</div>`;
+                html+=`</div>`;
+            }
+            if(data.expected){
+                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);">&#9670; 预期效果</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label">点击：</span>${esc(data.expected.click||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label">留存：</span>${esc(data.expected.retention||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label">转化：</span>${esc(data.expected.conversion||'')}</div>`;
+                html+=`</div>`;
+            }
+            html+='</div>';
+            document.getElementById('resultContent').innerHTML=html;
+            document.getElementById('analysisResult').classList.add('active');
+            saveHistory(text,name,'operate');
+            document.getElementById('analysisResult').scrollIntoView({behavior:'smooth'});
+        }
             const cfg=JSON.parse(localStorage.getItem('aiConfig')||'{}');
             if(!cfg.apiKey){alert('请先配置 API Key');togglePanel('apiPanel');return;}
             if(!currentVideoFile1||!currentVideoFile2){alert('请先上传两个视频');return;}
