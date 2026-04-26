@@ -5,12 +5,18 @@
 # Git
 .git/
 
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
 # Node modules (if any)
 node_modules/
 
 # OS files
 .DS_Store
 Thumbs.db
+desktop.ini
 
 # IDE
 .vscode/
