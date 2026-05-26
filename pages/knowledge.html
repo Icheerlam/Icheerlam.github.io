@@ -256,7 +256,10 @@
     <footer><p>> Rhodes Island Archive // System.2026</p></footer>
 
     <script>
-        const STORAGE_KEY = 'prts_knowledge_base';
+        const STORAGE_USER = 'prts_kb_user';
+        const STORAGE_DELETED = 'prts_kb_deleted';
+        const PRESET_MIN_ID = 1;
+        const USER_MIN_ID = 10000;
 
         const defaultData = [
             { id:1, cat:'github', title:'Claude Code', link:'https://github.com/anthropics/claude-code', desc:'Anthropic 官方 CLI 工具，在终端中与 Claude 交互，支持代码生成、重构、调试、Git 操作等完整开发工作流。', tags:['Anthropic','CLI','AI编程'], date:'2026-05-20' },
@@ -267,23 +270,46 @@
             { id:6, cat:'skill', title:'Adobe Stock 批量上传 Skill', desc:'本地 AI 程序，批量处理图片生成 Adobe Stock 标准的标题、关键词和分类目录，输出 CSV 批量上传文件。', tags:['Adobe Stock','图片处理','CSV'], date:'2026-04-28' },
             { id:7, cat:'github', title:'FFmpeg', link:'https://github.com/FFmpeg/FFmpeg', desc:'跨平台音视频处理工具集，支持几乎所有格式的编解码、转码、复用、流化，视频工作流的核心依赖。', tags:['视频处理','编解码','CLI'], date:'2026-04-20' },
             { id:8, cat:'skill', title:'数据分析自动化 Skill', desc:'Python 脚本集成的 Skill，自动抓取视频播放数据、关键帧提取、色彩分析、音频波形可视化，一键生成分析图表。', tags:['Python','自动化','可视化'], date:'2026-04-15' },
+            { id:9, cat:'skill', title:'Video to AE Footage Skill', desc:'将视频项目导出为 After Effects 工程文件（AEP），保留真实图片素材引用而非扁平截图。自动生成 JSX 脚本，在 AE 中一键构建场景预合成、可编辑文字层、素材层及 MP4 参考。支持 9:16 竖屏、多镜头分镜、含完整 manifest 清单。', tags:['After Effects','JSX','视频导出','AE脚本'], date:'2026-05-25' },
         ];
 
-        function loadData() {
+        function loadUserEntries() {
             try {
-                const raw = localStorage.getItem(STORAGE_KEY);
+                const raw = localStorage.getItem(STORAGE_USER);
                 if(raw) return JSON.parse(raw);
             } catch(e) {}
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultData));
-            return defaultData.slice();
+            return [];
         }
 
-        function saveData(data) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        function saveUserEntries(entries) {
+            localStorage.setItem(STORAGE_USER, JSON.stringify(entries));
         }
 
-        let knowledgeData = loadData();
-        let nextId = knowledgeData.reduce((max, d) => Math.max(max, d.id), 0) + 1;
+        function loadDeletedIds() {
+            try {
+                const raw = localStorage.getItem(STORAGE_DELETED);
+                if(raw) return new Set(JSON.parse(raw));
+            } catch(e) {}
+            return new Set();
+        }
+
+        function saveDeletedIds(ids) {
+            localStorage.setItem(STORAGE_DELETED, JSON.stringify([...ids]));
+        }
+
+        function getAllEntries() {
+            const deletedIds = loadDeletedIds();
+            const presets = defaultData.filter(d => !deletedIds.has(d.id));
+            const userEntries = loadUserEntries();
+            return [...presets, ...userEntries];
+        }
+
+        let deletedIds = loadDeletedIds();
+        let userEntries = loadUserEntries();
+        let knowledgeData = getAllEntries();
+        let nextUserIds = userEntries.reduce((max, d) => {
+            return (d.id >= USER_MIN_ID && d.id > max) ? d.id : max;
+        }, USER_MIN_ID - 1);
 
         const grid = document.getElementById('knowledgeGrid');
         const searchInput = document.getElementById('searchInput');
@@ -335,11 +361,17 @@
                 btn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     const id = parseInt(btn.dataset.id);
-                    if(confirm('确认删除该条目？')) {
-                        knowledgeData = knowledgeData.filter(d => d.id !== id);
-                        saveData(knowledgeData);
-                        filterData();
+                    if(id < USER_MIN_ID) {
+                        if(!confirm('删除该预设条目？（可通过清除浏览器站点数据恢复）')) return;
+                        deletedIds.add(id);
+                        saveDeletedIds(deletedIds);
+                    } else {
+                        if(!confirm('确认删除该条目？')) return;
+                        userEntries = userEntries.filter(d => d.id !== id);
+                        saveUserEntries(userEntries);
                     }
+                    knowledgeData = getAllEntries();
+                    filterData();
                 });
             });
         }
@@ -352,8 +384,9 @@
         }
 
         function filterData() {
+            const all = getAllEntries();
             const query = searchInput.value.toLowerCase().trim();
-            let filtered = activeCat === 'all' ? knowledgeData.slice() : knowledgeData.filter(d => d.cat === activeCat);
+            let filtered = activeCat === 'all' ? all : all.filter(d => d.cat === activeCat);
             if(query) {
                 filtered = filtered.filter(d =>
                     d.title.toLowerCase().includes(query) ||
@@ -361,6 +394,7 @@
                     (d.tags && d.tags.some(t => t.toLowerCase().includes(query)))
                 );
             }
+            knowledgeData = all;
             renderCards(filtered);
         }
 
@@ -422,8 +456,9 @@
                 String(now.getMonth()+1).padStart(2,'0') + '-' +
                 String(now.getDate()).padStart(2,'0');
 
+            nextUserIds++;
             const entry = {
-                id: nextId++,
+                id: nextUserIds,
                 cat: formCat.value,
                 title: title,
                 link: formLink.value.trim(),
@@ -432,8 +467,9 @@
                 date: dateStr
             };
 
-            knowledgeData.unshift(entry);
-            saveData(knowledgeData);
+            userEntries.unshift(entry);
+            saveUserEntries(userEntries);
+            knowledgeData = getAllEntries();
             closeModal();
             filterData();
         });

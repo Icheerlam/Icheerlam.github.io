@@ -1,0 +1,4 @@
+interface:
+  display_name: "Video to AE Footage"
+  short_description: "Export videos to linked AE projects."
+  default_prompt: "Create a video and export an After Effects project with real referenced image footage, editable text layers, scene precomps, and an MP4 reference."
