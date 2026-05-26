@@ -93,6 +93,8 @@
         .k-card-meta { display:flex; justify-content:space-between; align-items:center; font:0.7rem 'Space Mono'; color:var(--ak-text-muted); border-top:1px dashed var(--ak-border); padding-top:14px; }
         .k-card-link { color:var(--ak-accent-info); text-decoration:none; font-weight:700; transition:0.2s; }
         .k-card-link:hover { text-shadow:0 0 8px var(--ak-accent-info); }
+        .k-card-dl { color:#34d399; text-decoration:none; font-weight:700; transition:0.2s; margin-left:12px; }
+        .k-card-dl:hover { text-shadow:0 0 8px #34d399; }
 
         .no-result { text-align:center; padding:80px 20px; color:var(--ak-text-muted); font-family:'Space Mono',monospace; display:none; }
         .no-result .icon { font-size:3rem; margin-bottom:16px; }
@@ -236,6 +238,10 @@
                 <input type="url" id="formLink" placeholder="https://github.com/... 或相关链接">
             </div>
             <div class="form-group">
+                <label>下载链接</label>
+                <input type="url" id="formDl" placeholder="文件下载地址或相对路径">
+            </div>
+            <div class="form-group">
                 <label>描述 *</label>
                 <textarea id="formDesc" placeholder="简要描述这个项目或技能的用途..."></textarea>
             </div>
@@ -270,7 +276,7 @@
             { id:6, cat:'skill', title:'Adobe Stock 批量上传 Skill', desc:'本地 AI 程序，批量处理图片生成 Adobe Stock 标准的标题、关键词和分类目录，输出 CSV 批量上传文件。', tags:['Adobe Stock','图片处理','CSV'], date:'2026-04-28' },
             { id:7, cat:'github', title:'FFmpeg', link:'https://github.com/FFmpeg/FFmpeg', desc:'跨平台音视频处理工具集，支持几乎所有格式的编解码、转码、复用、流化，视频工作流的核心依赖。', tags:['视频处理','编解码','CLI'], date:'2026-04-20' },
             { id:8, cat:'skill', title:'数据分析自动化 Skill', desc:'Python 脚本集成的 Skill，自动抓取视频播放数据、关键帧提取、色彩分析、音频波形可视化，一键生成分析图表。', tags:['Python','自动化','可视化'], date:'2026-04-15' },
-            { id:9, cat:'skill', title:'Video to AE Footage Skill', desc:'将视频项目导出为 After Effects 工程文件（AEP），保留真实图片素材引用而非扁平截图。自动生成 JSX 脚本，在 AE 中一键构建场景预合成、可编辑文字层、素材层及 MP4 参考。支持 9:16 竖屏、多镜头分镜、含完整 manifest 清单。', tags:['After Effects','JSX','视频导出','AE脚本'], date:'2026-05-25' },
+            { id:9, cat:'skill', title:'Video to AE Footage Skill', download:'video-to-ae-footage-skill/', desc:'将视频项目导出为 After Effects 工程文件（AEP），保留真实图片素材引用而非扁平截图。自动生成 JSX 脚本，在 AE 中一键构建场景预合成、可编辑文字层、素材层及 MP4 参考。支持 9:16 竖屏、多镜头分镜、含完整 manifest 清单。', tags:['After Effects','JSX','视频导出','AE脚本'], date:'2026-05-25' },
         ];
 
         function loadUserEntries() {
@@ -340,6 +346,9 @@
                 const linkHtml = item.link
                     ? `<a href="${item.link}" target="_blank" class="k-card-link interactable" onclick="event.stopPropagation()">OPEN &#8599;</a>`
                     : '';
+                const dlHtml = item.download
+                    ? `<a href="${item.download}" class="k-card-dl interactable" onclick="event.stopPropagation()">&#128229; 下载</a>`
+                    : '';
                 const dateHtml = item.date || '';
                 card.innerHTML = `
                     <div class="k-card-header">
@@ -351,7 +360,7 @@
                     ${tagsHtml}
                     <div class="k-card-meta">
                         <span class="date">${dateHtml}</span>
-                        ${linkHtml}
+                        <span>${linkHtml}${dlHtml}</span>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -417,6 +426,7 @@
         const formCat = document.getElementById('formCat');
         const formTitle = document.getElementById('formTitle');
         const formLink = document.getElementById('formLink');
+        const formDl = document.getElementById('formDl');
         const formDesc = document.getElementById('formDesc');
         const formTags = document.getElementById('formTags');
 
@@ -430,6 +440,7 @@
             formCat.value = 'github';
             formTitle.value = '';
             formLink.value = '';
+            formDl.value = '';
             formDesc.value = '';
             formTags.value = '';
         }
@@ -462,6 +473,7 @@
                 cat: formCat.value,
                 title: title,
                 link: formLink.value.trim(),
+                download: formDl.value.trim(),
                 desc: desc,
                 tags: tags,
                 date: dateStr
