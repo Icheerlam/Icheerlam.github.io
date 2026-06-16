@@ -1,0 +1,4 @@
+interface:
+  display_name: "Adobe Stock Portfolio Optimizer"
+  short_description: "提取 Adobe Stock 图库并生成避重关键词"
+  default_prompt: "使用 Adobe Stock Portfolio Optimizer 帮我基于旧图库生成不相似的标题、提示词和关键词。"

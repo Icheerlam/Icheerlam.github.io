@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rhodes Island Terminal // Clarence Ye</title>
+    <title>Clarence Ye // Personal Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/common.css">
     <style>
         /* ================= 罗德岛制式终端 核心变量 ================= */
         :root {
@@ -289,6 +290,22 @@
         .cursor { display: inline-block; width: 8px; height: 1.2em; background: var(--ak-accent-info); vertical-align: middle; animation: blink 1s step-end infinite; margin-left: 4px;}
         @keyframes blink { 50% { opacity: 0; } }
 
+        /* 官网入口按钮（Hero 区醒目位） */
+        .hero-site-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: 18px; padding: 12px 26px;
+            background: linear-gradient(135deg, var(--ak-accent-warn), #ff7a18);
+            color: #0A0A0E; border: none;
+            font-family: 'Space Mono', monospace; font-weight: 800; font-size: 0.85rem; letter-spacing: 1px;
+            text-decoration: none; text-transform: uppercase;
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 20px rgba(245,166,35,0.4);
+            transition: transform var(--dur-base) var(--ease-out-expo), box-shadow var(--dur-base);
+        }
+        .hero-site-btn:hover { box-shadow: 0 0 30px rgba(245,166,35,0.7); }
+        .hero-site-btn::before { content: ''; position: absolute; top: 0; left: -120%; width: 100%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255,255,255,0.35), transparent); transition: left 0.6s var(--ease-out-expo); }
+        .hero-site-btn:hover::before { left: 120%; }
+
         /* --- 信息面板 --- */
         .card-info { grid-column: span 2; display: flex; flex-direction: column; justify-content: space-between;}
         .card-title { font-size: 1.1rem; font-weight: 800; font-family: 'Space Mono', monospace; margin-bottom: 20px; color: var(--ak-text-main); display: flex; align-items: center; gap: 10px; text-transform: uppercase;}
@@ -536,6 +553,20 @@
 </head>
 <body class="dark-mode">
 
+    <!-- 加载动画 -->
+    <div class="preloader">
+        <div class="preloader-logo">PRTS // CLARENCE YE</div>
+        <div class="preloader-boot">INITIALIZING <span class="blink">_</span></div>
+        <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
+        <div class="preloader-pct">0%</div>
+    </div>
+
+    <!-- 自定义光标 + 滚动进度条 -->
+    <div class="scroll-progress"></div>
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-dot"></div>
+    <button class="back-to-top" aria-label="返回顶部">&#9650;</button>
+
     <audio id="bgmAudio" loop preload="auto">
         <source src="assets/audio/背景音乐.mp3" type="audio/mpeg"> 
     </audio>
@@ -602,7 +633,7 @@
     <div class="container">
         <main class="bento-grid" id="mainContent">
             
-            <div class="bento-card card-hero interactable">
+            <div class="bento-card card-hero interactable tilt">
                 <span class="elite-tag">ELITE 2 // VISUAL DESIGNER</span><br>
                 
                 <div class="avatar-container" title="System Override Trigger">
@@ -613,6 +644,7 @@
 
                 <h1 class="hero-title">历飞雨</h1>
                 <p class="hero-subtitle" id="ai-prompt-text"></p>
+                <a href="https://icheerlam.lk888.ai/home" target="_blank" rel="noopener noreferrer" class="hero-site-btn magnetic interactable" data-magnetic="0.4">&#9889; ENTER OFFICIAL SITE &#8599;</a>
             </div>
 
             <div class="bento-card card-info interactable">
@@ -626,7 +658,7 @@
                     <div class="info-item"><strong>Signal_Beta</strong><span>+86 13719113230</span></div>
                 </div>
                 
-                <button class="resume-btn interactable" id="viewResumeBtn">> ACCESS ENCRYPTED RESUME</button>
+                <button class="resume-btn interactable magnetic" id="viewResumeBtn" data-magnetic="0.5">&gt; ACCESS ENCRYPTED RESUME</button>
             </div>
 
             <div class="bento-card card-skills interactable">
@@ -794,7 +826,7 @@
     </div>
 
     <footer id="footer">
-        <p>> Rhodes Island Archive // Clarence Ye // System.2026</p>
+        <p>> Archive // Clarence Ye // System.2026</p>
     </footer>
 
     <div class="lightbox" id="lightbox">
@@ -818,93 +850,21 @@
     <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
     <script>
+        // 首页扩展 interactable 选择器（顶层声明，确保在 common.js 绑定前就绪）
+        window.AK_EXTRA_INTERACTABLE = '.bento-card, .card-timeline, .resume-btn';
+
         document.addEventListener('DOMContentLoaded', () => {
-            
-            /* --- 0. 音频系统控制 --- */
-            const bgmAudio = document.getElementById('bgmAudio');
-            const hoverSound = document.getElementById('hoverSound');
-            const clickSound = document.getElementById('clickSound');
-            const avatarSound = document.getElementById('avatarSound'); 
-            const audioToggle = document.getElementById('audioToggle');
-            
-            // 获取四个音量滑块
-            const bgmVol = document.getElementById('bgmVol');
-            const hoverVol = document.getElementById('hoverVol');
-            const clickVol = document.getElementById('clickVol');
+
+            /* --- 音频系统 / 主题切换 / interactable 音效 / 平滑滚动 / 光标 / 进度条 ---
+               已迁移至 assets/js/common.js（通过 window.AK 暴露） */
+
+            /* --- 0b. 首页专属：彩蛋音效引用 --- */
+            const avatarSound = document.getElementById('avatarSound');
             const avatarVol = document.getElementById('avatarVol');
-            
-            let isAudioEnabled = false; 
 
-            // 监听 BGM 滑块实时改变音量
-            bgmVol.addEventListener('input', (e) => {
-                if(isAudioEnabled) {
-                    bgmAudio.volume = e.target.value;
-                }
-            });
-
-            audioToggle.addEventListener('click', () => {
-                isAudioEnabled = !isAudioEnabled;
-                if(isAudioEnabled) {
-                    audioToggle.innerHTML = '[ AUDIO: ON ]';
-                    audioToggle.classList.remove('muted');
-                    bgmAudio.volume = bgmVol.value; // 使用滑块的设定值
-                    bgmAudio.play().catch(e => console.log("BGM autoplay prevented"));
-                    playSound(clickSound, clickVol); // 播放开启提示音
-                } else {
-                    audioToggle.innerHTML = '[ AUDIO: OFF ]';
-                    audioToggle.classList.add('muted');
-                    bgmAudio.pause();
-                }
-            });
-
-            // 不使用克隆，直接重播音频
-            function playSound(audioElement, volInputRef) {
-                if(!isAudioEnabled) return;
-                
-                audioElement.currentTime = 0; 
-                audioElement.volume = volInputRef.value; // 动态读取滑块的值
-                
-                let playPromise = audioElement.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {});
-                }
-            }
-
-            const interactables = document.querySelectorAll('.interactable, button, a, .bento-card, .card-timeline');
-            
-            interactables.forEach(el => {
-                // 鼠标悬停事件，传入 hover 的音量滑块
-                el.addEventListener('mouseenter', () => playSound(hoverSound, hoverVol));
-                
-                // 鼠标点击事件，传入 click 的音量滑块
-                if (el.tagName.toLowerCase() === 'button' || el.tagName.toLowerCase() === 'a') {
-                    // 排除掉音量滑块自身的点击音效，避免拖动时狂响
-                    if(!el.classList.contains('vol-slider')) {
-                        
-                        // 彩蛋：点击左上角 Logo 触发纯粹的音效
-                        if(el.classList.contains('nav-logo')) {
-                            el.addEventListener('click', () => {
-                                playSound(specialSound, specialVol);
-                            });
-                        } else {
-                            el.addEventListener('click', () => playSound(clickSound, clickVol));
-                        }
-                    }
-                }
-            });
-
-            /* --- 1. 主题切换 --- */
-            const themeBtn = document.getElementById('themeBtn');
-            const body = document.body;
-
-            themeBtn.addEventListener('click', () => {
-                body.classList.toggle('light-mode');
-                themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
-            });
-
-            /* --- 2. 档案跳转系统 (原灯箱系统) --- */
+            /* --- 1. 档案跳转系统 (原灯箱系统) --- */
             const viewResumeBtn = document.getElementById('viewResumeBtn');
-            
+
             // 原来的灯箱相关 DOM 获取保留，以防页面其它交互报错
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
@@ -937,7 +897,7 @@
             
             avatarTrigger.addEventListener('click', () => {
                 triggerRandomDrop();
-                playSound(avatarSound, avatarVol); // 传入彩蛋的音量滑块
+                window.AK.playSound(avatarSound, avatarVol); // 传入彩蛋的音量滑块
             });
 
             function triggerRandomDrop() {
@@ -1180,5 +1140,12 @@
 
         window.onload = updateUI;
     </script>
+
+    <!-- 动画库 + 共享交互（jsDelivr） -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/animations.js"></script>
 </body>
 </html>

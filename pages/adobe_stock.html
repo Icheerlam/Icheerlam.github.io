@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adobe Stock 图片识别工具 // Rhodes Island</title>
+    <title>Adobe Stock 图片识别工具</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --ak-bg-main:#050505; --ak-bg-panel:rgba(18,18,20,0.92); --ak-text-main:#ffffff; --ak-text-muted:#7a7a7a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#2a2a2a; --ak-scan-line:rgba(0,216,255,0.03); }
@@ -144,6 +144,120 @@
         </p>
     </header>
 
+    <!-- 系统全景可视化 -->
+    <section class="container overview-wrap" style="max-width:1000px;">
+        <style>
+            .ov-title { text-align:center; margin-bottom:28px; animation:fadeUp 0.6s forwards; }
+            .ov-title h2 { font:800 1.1rem 'Space Mono'; color:var(--ak-accent-info); text-transform:uppercase; letter-spacing:2px; }
+            .ov-title p { color:var(--ak-text-muted); font-family:'Space Mono',monospace; font-size:0.78rem; margin-top:6px; }
+
+            /* 闭环流程图 */
+            .ov-flow { display:flex; flex-wrap:wrap; align-items:stretch; gap:10px; justify-content:center; margin-bottom:32px; animation:fadeUp 0.6s 0.1s forwards; }
+            .ov-node { flex:1; min-width:130px; background:var(--ak-bg-main); border:1px solid var(--ak-border); border-top:3px solid var(--ak-border); padding:16px 14px; text-align:center; transition:0.3s; }
+            .ov-node:hover { transform:translateY(-3px); border-top-color:var(--ak-accent-info); border-color:var(--ak-accent-info); box-shadow:0 6px 20px rgba(0,216,255,0.1); }
+            .ov-node.b { border-top-color:#a78bfa; } .ov-node.b:hover { border-color:#a78bfa; box-shadow:0 6px 20px rgba(167,139,250,0.15); }
+            .ov-node.a { border-top-color:#34d399; } .ov-node.a:hover { border-color:#34d399; box-shadow:0 6px 20px rgba(52,211,153,0.15); }
+            .ov-node .ic { font-size:1.4rem; margin-bottom:6px; }
+            .ov-node .nm { font:700 0.78rem 'Space Mono'; color:var(--ak-text-main); text-transform:uppercase; }
+            .ov-node .ds { font-size:0.68rem; color:var(--ak-text-muted); margin-top:4px; line-height:1.5; }
+            .ov-arrow { display:flex; align-items:center; color:var(--ak-accent-info); font-size:1.2rem; opacity:0.6; }
+            .ov-loop { text-align:center; margin-top:-18px; margin-bottom:24px; font:0.7rem 'Space Mono'; color:var(--ak-accent-warn); }
+            .ov-loop span { border:1px dashed var(--ak-accent-warn); padding:4px 14px; }
+
+            /* 模块卡片 */
+            .ov-modules { display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:24px; }
+            .ov-module { background:var(--ak-bg-panel); border:1px solid var(--ak-border); padding:22px; opacity:0; animation:fadeUp 0.6s forwards; transition:0.3s; }
+            .ov-module:hover { border-color:var(--ak-accent-info); }
+            .ov-module.b { animation-delay:0.2s; } .ov-module.a { animation-delay:0.3s; }
+            .ov-tag { display:inline-block; padding:3px 10px; font:700 0.62rem 'Space Mono'; letter-spacing:1px; margin-bottom:12px; }
+            .ov-tag.b { border:1px solid #a78bfa; color:#a78bfa; } .ov-tag.a { border:1px solid #34d399; color:#34d399; }
+            .ov-module h3 { font:800 1rem 'Space Mono'; color:var(--ak-text-main); margin-bottom:10px; }
+            .ov-module p { font-size:0.8rem; color:var(--ak-text-muted); line-height:1.7; margin-bottom:12px; }
+            .ov-feats { display:flex; flex-wrap:wrap; gap:6px; }
+            .ov-feat { font:0.65rem 'Space Mono'; padding:3px 8px; border:1px solid var(--ak-border); color:var(--ak-text-muted); }
+
+            /* 技术栈 */
+            .ov-stack { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; padding-top:20px; border-top:1px solid var(--ak-border); }
+            .ov-chip { font:0.68rem 'Space Mono'; padding:5px 12px; background:var(--ak-bg-main); border:1px solid var(--ak-border); color:var(--ak-accent-info); }
+
+            @media (max-width:768px) {
+                .ov-modules { grid-template-columns:1fr; }
+                .ov-arrow { transform:rotate(90deg); width:100%; justify-content:center; }
+                .ov-node { min-width:100%; }
+            }
+        </style>
+
+        <div class="ov-title">
+            <h2>&gt; SYSTEM OVERVIEW // 图库识别全景</h2>
+            <p>从「看到一张图」到「安全上架一批不重复的图」全链路自动化</p>
+        </div>
+
+        <!-- 闭环流程 -->
+        <div class="ov-flow">
+            <div class="ov-node b">
+                <div class="ic">&#128270;</div>
+                <div class="nm">模块B · 生成方向</div>
+                <div class="ds">抓图库建避重库<br>生成不撞车关键词</div>
+            </div>
+            <div class="ov-arrow">&#8594;</div>
+            <div class="ov-node">
+                <div class="ic">&#127912;</div>
+                <div class="nm">出图 / 挑图</div>
+                <div class="ds">按提示词产出<br>待识别素材</div>
+            </div>
+            <div class="ov-arrow">&#8594;</div>
+            <div class="ov-node a">
+                <div class="ic">&#129504;</div>
+                <div class="nm">模块A · 图片识别</div>
+                <div class="ds">视觉模型生成<br>标题/关键词/分类</div>
+            </div>
+            <div class="ov-arrow">&#8594;</div>
+            <div class="ov-node">
+                <div class="ic">&#128230;</div>
+                <div class="nm">上传 Adobe Stock</div>
+                <div class="ds">导出 CSV<br>批量上架</div>
+            </div>
+        </div>
+        <div class="ov-loop"><span>&#8635; 上架后重新抓取图库 → 更新避重库 → 下一轮继续避重（闭环）</span></div>
+
+        <!-- 两模块详情 -->
+        <div class="ov-modules">
+            <div class="ov-module b">
+                <span class="ov-tag b">MODULE B</span>
+                <h3>图片识别引擎</h3>
+                <p>通义千问 qwen-vl-max 视觉模型批量识别，自动压缩（≤800px），多线程并发，输出符合 Adobe Stock 标准的 Title / Keywords(≤49) / Category(1-21)，另内置 qwen-max 趋势分析生成可销售提示词。</p>
+                <div class="ov-feats">
+                    <span class="ov-feat">qwen-vl-max</span>
+                    <span class="ov-feat">多线程并发</span>
+                    <span class="ov-feat">CSV 导出</span>
+                    <span class="ov-feat">趋势提示词</span>
+                </div>
+            </div>
+            <div class="ov-module a">
+                <span class="ov-tag a">MODULE A</span>
+                <h3>图库避重优化器</h3>
+                <p>Chrome CDP 抓取 Contributor 已上图库（不碰账号密码），建立本地避重数据库；审计候选批次的关键词重叠（前10词≥5=高风险），修订至零风险后复制到剪贴板。</p>
+                <div class="ov-feats">
+                    <span class="ov-feat">CDP 抓取</span>
+                    <span class="ov-feat">关键词去重</span>
+                    <span class="ov-feat">风险审计</span>
+                    <span class="ov-feat">Obsidian 同步</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 技术栈 -->
+        <div class="ov-stack">
+            <span class="ov-chip">通义千问 VL</span>
+            <span class="ov-chip">qwen-max</span>
+            <span class="ov-chip">Python / Flask</span>
+            <span class="ov-chip">Pillow</span>
+            <span class="ov-chip">Tailwind</span>
+            <span class="ov-chip">Node.js + CDP</span>
+            <span class="ov-chip">Obsidian</span>
+        </div>
+    </section>
+
     <main class="container">
 
         <!-- API 配置 -->
@@ -253,7 +367,7 @@
     </main>
 
     <div class="back-nav"><a href="vibecoding.html" class="btn-back">[ &lt; VIBECODING ]</a></div>
-    <footer><p>> Rhodes Island Archive // Adobe Stock Tool // System.2026</p></footer>
+    <footer><p>> Archive // Adobe Stock Tool // System.2026</p></footer>
 
     <div class="toast" id="toast"></div>
 
