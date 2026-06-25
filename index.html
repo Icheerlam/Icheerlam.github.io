@@ -554,12 +554,31 @@
 <body class="dark-mode">
 
     <!-- 加载动画 -->
-    <div class="preloader">
+    <div class="preloader" id="preloader">
         <div class="preloader-logo">PRTS // CLARENCE YE</div>
         <div class="preloader-boot">INITIALIZING <span class="blink">_</span></div>
-        <div class="preloader-bar"><div class="preloader-bar-fill"></div></div>
-        <div class="preloader-pct">0%</div>
+        <div class="preloader-bar"><div class="preloader-bar-fill" id="preloaderBarFill"></div></div>
+        <div class="preloader-pct" id="preloaderPct">0%</div>
     </div>
+    <script>
+        /* 内联预加载器：不依赖任何外部脚本，确保页面不会被卡住 */
+        (function(){
+            var p = document.getElementById('preloader');
+            var bar = document.getElementById('preloaderBarFill');
+            var pctEl = document.getElementById('preloaderPct');
+            if (!p) return;
+            var val = 0;
+            var iv = setInterval(function(){
+                val += Math.random() * 18 + 8;
+                if (val >= 100) { val = 100; clearInterval(iv); }
+                if (bar) bar.style.width = val + '%';
+                if (pctEl) pctEl.textContent = Math.floor(val) + '%';
+                if (val >= 100) setTimeout(function(){ p.classList.add('hidden'); }, 400);
+            }, 120);
+            // 绝对兜底：3 秒后强制隐藏
+            setTimeout(function(){ p.classList.add('hidden'); }, 3000);
+        })();
+    </script>
 
     <!-- 自定义光标 + 滚动进度条 -->
     <div class="scroll-progress"></div>
@@ -603,9 +622,10 @@
         </div>
     </div>
 
-    <video class="tech-bg-video" autoplay loop muted playsinline poster="宇宙列车_封面.jpg">
+    <video class="tech-bg-video parallax-bg" autoplay loop muted playsinline poster="assets/audio/宇宙列车.jpg">
         <source src="works/video/宇宙列车.mp4" type="video/mp4">
     </video>
+    <div class="cinema-scrim"></div>
     <div class="tech-overlay"></div>
 
     <div class="prts-scanline"></div>
@@ -620,132 +640,715 @@
         <div class="nav-right">
             <div class="nav-links">
                 <a href="pages/video.html" class="interactable">Video</a>
-                <a href="pages/graphic.html" class="interactable">Graphic</a>
-                <a href="pages/3d.html" class="interactable">3D Art</a>
+                <a href="pages/graphic.html" class="interactable">Graphic / 3D</a>
                 <a href="pages/vibecoding.html" class="interactable">Vibecoding</a>
                 <a href="pages/data.html" class="interactable">Data Analysis</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="interactable">Gallery</a>
             </div>
             <a class="nav-secret interactable" onclick="openPasswordModal()" title="Secure Access">[ DECRYPT_SYSTEM ]</a>
         </div>
     </nav>
 
-    <div class="container">
-        <main class="bento-grid" id="mainContent">
-            
-            <div class="bento-card card-hero interactable tilt">
-                <span class="elite-tag">ELITE 2 // VISUAL DESIGNER</span><br>
-                
-                <div class="avatar-container" title="System Override Trigger">
-                    <div class="avatar-pulse"></div>
-                    <img src="assets/common/绿色头像.jpeg" alt="Clarence Ye Avatar" class="hero-avatar interactable" id="avatarTrigger" loading="lazy">
-                </div>
-                <div class="click-hint">> CLICK_AVATAR</div>
+    <!-- 首页编辑式布局样式 -->
+    <style>
+        .cinema-scrim{
+            position:fixed;inset:0;z-index:-9;pointer-events:none;
+            background:
+                linear-gradient(180deg, rgba(7,8,12,.9) 0%, rgba(9,12,18,.58) 42%, rgba(7,8,12,.94) 100%),
+                radial-gradient(circle at 75% 12%, rgba(0,216,255,.16), transparent 32%),
+                radial-gradient(circle at 20% 85%, rgba(245,166,35,.14), transparent 28%);
+        }
+        .cinema-scrim::before{
+            content:none;
+        }
+        .cinema-scrim::after{
+            content:'';
+            position:absolute;
+            inset:0;
+            background:
+                radial-gradient(circle at 50% 28%, transparent 0 18%, rgba(0,0,0,.22) 44%, rgba(0,0,0,.72) 100%),
+                linear-gradient(90deg, rgba(0,0,0,.42), transparent 28%, transparent 72%, rgba(0,0,0,.5));
+        }
+        body.light-mode .cinema-scrim{
+            background:
+                linear-gradient(180deg, rgba(235,238,244,.9), rgba(246,248,252,.62), rgba(232,235,242,.92)),
+                radial-gradient(circle at 75% 12%, rgba(2,132,199,.13), transparent 32%),
+                radial-gradient(circle at 20% 85%, rgba(234,88,12,.1), transparent 28%);
+        }
 
-                <h1 class="hero-title">历飞雨</h1>
-                <p class="hero-subtitle" id="ai-prompt-text"></p>
-                <a href="https://icheerlam.lk888.ai/home" target="_blank" rel="noopener noreferrer" class="hero-site-btn magnetic interactable" data-magnetic="0.4">&#9889; ENTER OFFICIAL SITE &#8599;</a>
+        nav{padding:14px min(5vw,64px);}
+        .nav-logo{white-space:nowrap;}
+        .nav-links{gap:18px;}
+        .nav-secret{white-space:nowrap;}
+
+        .hero-block{
+            width:min(1220px,90vw);
+            min-height:calc(100svh - 110px);
+            margin:104px auto 72px;
+            display:grid;
+            grid-template-columns:minmax(240px,34%) minmax(0,1fr);
+            align-items:center;
+            gap:clamp(34px,7vw,108px);
+            text-align:left;
+            position:relative;
+            z-index:10;
+            perspective:1200px;
+        }
+        .hero-block::before{
+            content:'';
+            position:absolute;
+            left:3%;
+            right:7%;
+            bottom:10%;
+            height:38%;
+            border:1px solid rgba(0,216,255,.12);
+            border-left:0;
+            clip-path:polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+            opacity:.7;
+        }
+        .hero-block::after{
+            content:'PORTFOLIO / 2026';
+            position:absolute;
+            right:0;
+            top:18%;
+            writing-mode:vertical-rl;
+            font:800 .64rem 'Space Mono';
+            letter-spacing:.18em;
+            color:rgba(224,230,237,.28);
+        }
+        .hero-portrait{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:12px;
+            position:relative;
+            padding:28px;
+            z-index:2;
+        }
+        .hero-portrait::before{
+            content:'';
+            position:absolute;
+            inset:0;
+            border:1px solid rgba(245,166,35,.24);
+            background:linear-gradient(145deg, rgba(245,166,35,.1), transparent 48%);
+            clip-path:polygon(0 16%, 82% 0, 100% 84%, 18% 100%);
+            transform:rotate(-2deg);
+            z-index:-1;
+        }
+        .hero-portrait::after{
+            content:'';
+            position:absolute;
+            width:42%;
+            height:3px;
+            left:8%;
+            bottom:18px;
+            background:var(--ak-accent-warn);
+            box-shadow:0 0 18px rgba(245,166,35,.45);
+        }
+        .hero-copy{display:flex;flex-direction:column;align-items:flex-start;gap:16px;max-width:720px;position:relative;}
+        .hero-copy::before{
+            content:'VISUAL';
+            position:absolute;
+            left:-12px;
+            top:-84px;
+            font:800 clamp(4.4rem,12vw,9.5rem) 'Space Grotesk';
+            color:transparent;
+            -webkit-text-stroke:1px rgba(224,230,237,.1);
+            letter-spacing:.08em;
+            z-index:-1;
+            pointer-events:none;
+        }
+        .hero-kicker{
+            font:800 .78rem 'Space Mono';
+            color:var(--ak-accent-info);
+            letter-spacing:.08em;
+            text-transform:uppercase;
+            border:1px solid rgba(0,216,255,.22);
+            background:rgba(0,216,255,.06);
+            padding:6px 10px;
+        }
+        .hero-title{
+            font-size:clamp(2.7rem,6.4vw,5.6rem) !important;
+            line-height:.92;
+            letter-spacing:.08em !important;
+            margin:0 !important;
+            text-shadow:0 0 24px rgba(0,216,255,.16), 8px 10px 0 rgba(0,216,255,.04);
+            transform:translateZ(32px);
+        }
+        .hero-lede{
+            max-width:640px;
+            color:var(--ak-text-main);
+            font-size:clamp(1rem,1.5vw,1.18rem);
+            line-height:1.75;
+        }
+        .hero-subtitle{
+            min-height:104px;
+            max-width:640px;
+            padding:16px 18px !important;
+            border-left:2px solid var(--ak-accent-info);
+            background:linear-gradient(90deg, rgba(0,216,255,.08), transparent);
+            color:var(--ak-text-main) !important;
+            text-align:left;
+            box-shadow:inset 0 1px 0 rgba(255,255,255,.08), 0 18px 42px rgba(0,0,0,.18);
+            overflow-wrap:anywhere;
+        }
+        .hero-avatar{
+            width:clamp(128px,16vw,188px);
+            height:clamp(128px,16vw,188px);
+            border-radius:50%;
+            box-shadow:0 0 0 7px rgba(0,216,255,.06), 0 18px 54px rgba(0,0,0,.34), -20px 20px 0 rgba(245,166,35,.1);
+            filter:hue-rotate(42deg) saturate(.82) contrast(1.08) brightness(.96);
+        }
+        .hero-avatar:hover{filter:hue-rotate(42deg) saturate(.95) contrast(1.12) brightness(1);}
+        .avatar-container{margin-bottom:0;}
+        .elite-tag{margin-bottom:0;}
+        .click-hint{margin:0;}
+        .hero-actions{display:flex;flex-wrap:wrap;gap:12px;align-items:center;}
+        .hero-site-btn{margin-top:4px;border-radius:2px;}
+        .hero-secondary-btn{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            margin-top:4px;
+            padding:12px 20px;
+            border:1px solid rgba(0,216,255,.42);
+            color:var(--ak-accent-info);
+            background:rgba(0,216,255,.04);
+            font:800 .8rem 'Space Mono';
+            text-decoration:none;
+            text-transform:uppercase;
+            transition:.25s;
+        }
+        .hero-secondary-btn:hover{background:var(--ak-accent-info);color:#000;box-shadow:0 0 22px rgba(0,216,255,.22);}
+
+        .official-entry{
+            width:min(1180px,90vw);
+            margin:0 auto 38px;
+            padding:34px;
+            position:relative;
+            z-index:10;
+            display:grid;
+            grid-template-columns:minmax(0,1fr) auto;
+            gap:24px;
+            align-items:center;
+            background:linear-gradient(135deg, rgba(245,166,35,.16), rgba(0,216,255,.05) 58%, rgba(0,0,0,.22));
+            border:1px solid rgba(245,166,35,.28);
+            border-left:4px solid var(--ak-accent-warn);
+            clip-path:polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+            box-shadow:0 24px 62px rgba(0,0,0,.24), inset 0 1px 0 rgba(255,255,255,.06);
+        }
+        .official-entry::before{
+            content:'OFFICIAL NODE';
+            position:absolute;
+            right:24px;
+            top:16px;
+            font:800 .62rem 'Space Mono';
+            letter-spacing:.12em;
+            color:rgba(245,166,35,.5);
+        }
+        .official-entry h2{
+            margin-bottom:8px;
+            font:800 clamp(1.05rem,2vw,1.45rem) 'Space Mono';
+            color:var(--ak-text-main);
+            text-transform:uppercase;
+        }
+        .official-entry p{
+            max-width:720px;
+            color:var(--ak-text-muted);
+            font-size:.94rem;
+            line-height:1.7;
+        }
+
+        .edit-grid{
+            width:min(1180px,90vw);
+            display:grid;
+            grid-template-columns:repeat(12,minmax(0,1fr));
+            gap:26px;
+            margin:0 auto;
+            padding:8px 0 112px;
+            position:relative;
+            z-index:10;
+            counter-reset: section-card;
+            perspective:1400px;
+        }
+        .edit-grid::before{
+            content:'';
+            grid-column:1 / -1;
+            height:1px;
+            margin-bottom:10px;
+            background:linear-gradient(90deg, var(--ak-accent-info), transparent 32%, rgba(245,166,35,.8) 60%, transparent);
+        }
+        .edit-card{
+            min-width:0;
+            background:linear-gradient(180deg, rgba(22,25,32,.9), rgba(13,15,20,.78));
+            backdrop-filter:blur(14px);
+            border:1px solid rgba(255,255,255,.08);
+            border-top:3px solid var(--ak-border);
+            padding:clamp(28px,3.6vw,44px);
+            position:relative;
+            overflow:hidden;
+            transition:border-color .28s ease, transform .28s ease, box-shadow .28s ease;
+            isolation:isolate;
+            clip-path:polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+            box-shadow:0 1px 0 rgba(255,255,255,.06) inset, 0 18px 50px rgba(0,0,0,.18);
+        }
+        body.light-mode .edit-card{background:rgba(255,255,255,.9);border-color:rgba(0,0,0,.08);}
+        .edit-card::after{
+            content:'';
+            position:absolute;inset:0;
+            background:linear-gradient(135deg, rgba(255,255,255,.08), transparent 32%);
+            opacity:.35;
+            pointer-events:none;
+            z-index:-1;
+        }
+        .edit-card .sec-title::after{
+            content:'';
+            flex:1;
+            height:1px;
+            min-width:38px;
+            background:linear-gradient(90deg, rgba(0,216,255,.45), transparent);
+        }
+        .edit-card::before{
+            counter-increment:section-card;
+            content:'0' counter(section-card);
+            position:absolute;
+            right:18px;
+            top:14px;
+            font:800 .68rem 'Space Mono';
+            color:rgba(224,230,237,.22);
+            letter-spacing:.08em;
+        }
+        .edit-card:hover::before{color:rgba(0,216,255,.45);}
+        .edit-card > *{position:relative;z-index:1;}
+        .edit-card:hover{border-color:var(--ak-accent-info);transform:translateY(-6px);box-shadow:0 28px 70px rgba(0,0,0,.34), 0 0 38px rgba(0,216,255,.1), 0 1px 0 rgba(255,255,255,.08) inset;}
+        .edit-card.wide{grid-column:1 / -1;}
+        .edit-card.accent{border-top-color:var(--ak-accent-warn);}
+        .edit-card.accent:hover{border-color:var(--ak-accent-warn);}
+        #about{grid-column:1 / span 5;min-height:340px;z-index:3;}
+        #skills{grid-column:6 / span 7;min-height:258px;z-index:2;}
+        #impact{grid-column:1 / span 12;margin-top:0;z-index:4;}
+        #projects{grid-column:1 / span 12;z-index:3;}
+        #timeline{grid-column:1 / span 12;z-index:2;}
+        #impact::after,#projects::after{
+            opacity:.55;
+            background:
+                linear-gradient(135deg, rgba(255,255,255,.1), transparent 28%),
+                radial-gradient(circle at 78% 0%, rgba(0,216,255,.12), transparent 34%);
+        }
+
+        .sec-title{
+            font:800 clamp(.95rem,1.6vw,1.2rem) 'Space Mono';
+            color:var(--ak-text-main);
+            margin-bottom:18px;
+            text-transform:uppercase;
+            display:flex;
+            align-items:center;
+            gap:10px;
+            letter-spacing:0;
+        }
+        .sec-title::before{content:'/>';color:var(--ak-accent-info);font-size:.85rem;}
+        .edit-card.accent .sec-title::before{color:var(--ak-accent-warn);}
+
+        .edit-grid .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
+        .info-item{min-width:0;padding:16px;border:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.12);}
+        body.light-mode .info-item{background:rgba(2,132,199,.04);border-color:rgba(2,132,199,.12);}
+        .info-item strong{display:block;font:.68rem 'Space Mono';color:var(--ak-accent-info);text-transform:uppercase;margin-bottom:5px;}
+        .info-item span{display:block;font:.9rem 'Space Mono';font-weight:700;line-height:1.45;overflow-wrap:anywhere;}
+        .resume-btn{margin-top:16px;width:100%;padding:13px;background:rgba(0,216,255,.04);border:1px solid var(--ak-accent-info);color:var(--ak-accent-info);font:800 .82rem 'Space Mono';cursor:pointer;transition:.25s;text-transform:uppercase;letter-spacing:1px;}
+        .resume-btn:hover{background:var(--ak-accent-info);color:#000;box-shadow:0 0 24px rgba(0,216,255,.25);}
+
+        .impact-strip{display:grid;grid-template-columns:1.25fr .9fr .9fr 1fr;gap:18px;align-items:stretch;}
+        .impact-item{
+            min-height:108px;
+            padding:22px;
+            border:1px solid rgba(255,255,255,.08);
+            background:rgba(0,0,0,.16);
+            position:relative;
+            display:flex;
+            flex-direction:column;
+            justify-content:space-between;
+            clip-path:polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+            box-shadow:0 18px 40px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.06);
+        }
+        .impact-item::before{
+            content:'';
+            position:absolute;
+            left:0;top:0;bottom:0;width:3px;
+            background:var(--ak-accent-warn);
+        }
+        .impact-item:first-child{
+            min-height:148px;
+            background:linear-gradient(135deg, rgba(245,166,35,.18), rgba(0,0,0,.18));
+            box-shadow:0 30px 70px rgba(0,0,0,.28), 0 0 34px rgba(245,166,35,.08);
+        }
+        .impact-item:first-child .impact-value{font-size:clamp(2.2rem,5vw,4rem);}
+        .impact-value{display:block;font:800 clamp(1.55rem,3vw,2.2rem) 'Space Mono';color:var(--ak-accent-warn);line-height:1;}
+        .impact-label{display:block;margin-top:10px;font:.72rem 'Space Mono';color:var(--ak-text-muted);line-height:1.45;text-transform:uppercase;}
+
+        .tag-cloud{display:flex;flex-wrap:wrap;gap:12px;}
+        .tag{background:rgba(0,0,0,.32);border:1px solid rgba(0,216,255,.22);padding:8px 14px;font:.76rem 'Space Mono';color:var(--ak-accent-info);transition:.2s;cursor:crosshair;}
+        body.light-mode .tag{background:#fff;}
+        .tag:hover{background:var(--ak-accent-info);color:#000;transform:translateY(-2px);}
+
+        .portfolio-links{
+            display:grid;
+            grid-template-columns:repeat(12,minmax(0,1fr));
+            grid-auto-rows:minmax(128px,auto);
+            gap:20px;
+        }
+        .portfolio-links .link-card{
+            min-height:128px;
+            background:rgba(0,0,0,.18);
+            border:1px solid rgba(255,255,255,.08);
+            padding:26px 24px;
+            text-decoration:none;color:inherit;
+            transition:.28s;
+            cursor:pointer;
+            position:relative;
+            overflow:hidden;
+            display:flex;
+            flex-direction:column;
+            justify-content:flex-start;
+            clip-path:polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+            box-shadow:0 16px 38px rgba(0,0,0,.16), inset 0 1px 0 rgba(255,255,255,.05);
+        }
+        .portfolio-links .link-card::before{content:'';position:absolute;left:0;top:0;height:100%;width:3px;background:var(--ak-accent-info);opacity:.55;transition:.3s;}
+        .portfolio-links .link-card::after{content:'OPEN';position:absolute;right:14px;bottom:12px;font:700 .62rem 'Space Mono';color:var(--ak-text-muted);opacity:.7;}
+        .portfolio-links .link-card:hover::before{opacity:1;width:5px;}
+        .portfolio-links .link-card:hover{border-color:var(--ak-accent-info);transform:translateY(-3px);box-shadow:0 12px 26px rgba(0,216,255,.11);}
+        .portfolio-links .link-card h3{font:800 1rem 'Space Mono';margin-bottom:8px;}
+        .portfolio-links .link-card p{font:.76rem 'Space Grotesk';color:var(--ak-text-muted);line-height:1.55;text-transform:none;}
+        .portfolio-links .link-card:nth-child(1){grid-column:1 / span 3;}
+        .portfolio-links .link-card:nth-child(2){grid-column:4 / span 3;}
+        .portfolio-links .link-card:nth-child(3){grid-column:7 / span 6;grid-row:span 2;padding:34px;justify-content:flex-end;background:linear-gradient(145deg, rgba(245,166,35,.14), rgba(0,0,0,.22));}
+        .portfolio-links .link-card:nth-child(4){grid-column:1 / span 6;}
+        .portfolio-links .link-card:nth-child(3)::after{
+            content:'FEATURED';
+            top:22px;
+            right:24px;
+            bottom:auto;
+            color:var(--ak-accent-warn);
+            opacity:1;
+        }
+        .portfolio-links .link-card:nth-child(3) h3{font-size:clamp(1.4rem,3vw,2.35rem);}
+        .portfolio-links .link-card:nth-child(3) p{max-width:420px;font-size:.92rem;color:var(--ak-text-main);}
+        .portfolio-links .link-card:nth-child(3){
+            box-shadow:0 34px 80px rgba(0,0,0,.32), 0 0 46px rgba(245,166,35,.1), inset 0 1px 0 rgba(255,255,255,.08);
+            z-index:2;
+        }
+        .portfolio-links .link-card:hover{z-index:5;}
+        .link-card-video{border-color:rgba(245,166,35,.34)!important;}
+        .link-card-video::before{background:var(--ak-accent-warn)!important;opacity:1!important;}
+        .link-card-video{
+            min-height:250px;
+            border-left:5px solid var(--ak-accent-warn)!important;
+            background:
+                radial-gradient(circle at 82% 28%, rgba(245,166,35,.2), transparent 28%),
+                linear-gradient(145deg, rgba(245,166,35,.16), rgba(0,216,255,.05) 45%, rgba(0,0,0,.22))!important;
+        }
+        .link-card-video::after{
+            content:'FEATURED VIDEO'!important;
+            top:22px!important;
+            right:24px!important;
+            bottom:auto!important;
+            color:var(--ak-accent-warn)!important;
+            opacity:1!important;
+        }
+        .link-card-video h3{
+            display:flex;
+            align-items:center;
+            gap:12px;
+        }
+        .link-card-video h3::before{
+            content:'▶';
+            width:42px;
+            height:42px;
+            display:inline-grid;
+            place-items:center;
+            border:1px solid rgba(245,166,35,.58);
+            background:rgba(245,166,35,.14);
+            color:var(--ak-accent-warn);
+            font-size:1rem;
+            box-shadow:0 0 24px rgba(245,166,35,.16);
+            clip-path:polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+        }
+        .link-card-video h3::after{
+            content:'';
+            flex:1;
+            height:1px;
+            min-width:36px;
+            background:linear-gradient(90deg, rgba(245,166,35,.5), transparent);
+        }
+        .link-card-video p{padding-left:54px;}
+        .link-card-video:hover{
+            border-color:var(--ak-accent-warn)!important;
+            box-shadow:0 38px 88px rgba(0,0,0,.36), 0 0 54px rgba(245,166,35,.18), inset 0 1px 0 rgba(255,255,255,.1)!important;
+        }
+        .link-card-video:hover h3::before{background:var(--ak-accent-warn);color:#0A0A0E;transform:scale(1.04);}
+        .video-rec-dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#ff3366;margin-left:8px;vertical-align:middle;box-shadow:0 0 8px #ff3366;animation:rec-blink 1.5s infinite;}
+        @keyframes rec-blink{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+        .timeline-item{border-left:2px solid rgba(0,216,255,.18);padding-left:28px;margin-bottom:42px;position:relative;}
+        .timeline-item:last-child{margin-bottom:0;}
+        .timeline-item::before{content:'';position:absolute;left:-6px;top:7px;width:10px;height:10px;background:var(--ak-accent-info);transform:rotate(45deg);box-shadow:0 0 10px var(--ak-accent-info);}
+        .timeline-item::after{
+            content:'';
+            position:absolute;
+            left:-2px;
+            top:20px;
+            bottom:-20px;
+            width:1px;
+            background:linear-gradient(180deg, rgba(0,216,255,.38), transparent);
+        }
+        .tl-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px;}
+        .tl-title{font:800 1rem 'Space Mono';color:var(--ak-text-main);line-height:1.45;}
+        .tl-role{display:inline-block;color:var(--ak-accent-info);font:.82rem 'Space Mono';margin-left:8px;}
+        .tl-date{flex:0 0 auto;color:var(--ak-accent-warn);font:.78rem 'Space Mono';padding:4px 10px;border:1px solid rgba(245,166,35,.25);background:rgba(245,166,35,.07);}
+        .tl-body{font:.92rem;color:var(--ak-text-muted);line-height:1.8;}
+        .tl-body ul{list-style:none;padding:0;margin-top:8px;}
+        .tl-body li{position:relative;padding-left:18px;margin-bottom:12px;}
+        .tl-body li::before{content:'>';position:absolute;left:0;color:var(--ak-accent-warn);font-weight:bold;font-family:'Space Mono';}
+        .tl-body strong{color:var(--ak-text-main);}
+        .highlight{color:var(--ak-accent-info);font-weight:800;background:rgba(0,216,255,.07);padding:0 4px;border-bottom:1px dashed rgba(0,216,255,.45);}
+
+        .footer-cta{
+            width:min(1180px,90vw);
+            margin:0 auto 38px;
+            padding:34px;
+            border:1px solid rgba(245,166,35,.24);
+            border-left:4px solid var(--ak-accent-warn);
+            background:linear-gradient(90deg, rgba(245,166,35,.1), rgba(0,216,255,.04));
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:20px;
+            position:relative;
+            z-index:10;
+        }
+        .footer-cta::before{
+            content:'';
+            position:absolute;
+            left:28px;
+            right:28px;
+            top:-1px;
+            height:1px;
+            background:linear-gradient(90deg, var(--ak-accent-warn), transparent);
+        }
+        .footer-cta h2{font:800 1.1rem 'Space Mono';margin-bottom:6px;}
+        .footer-cta p{color:var(--ak-text-muted);font-size:.92rem;}
+        .footer-cta a{
+            flex:0 0 auto;
+            color:#000;
+            background:var(--ak-accent-warn);
+            padding:12px 18px;
+            text-decoration:none;
+            font:800 .78rem 'Space Mono';
+            text-transform:uppercase;
+        }
+
+        #privateSection{width:min(1180px,90vw);margin:0 auto 80px;}
+
+        @media (max-width:960px){
+            nav{align-items:flex-start;gap:12px;}
+            .nav-right{gap:12px;flex-wrap:wrap;justify-content:flex-end;}
+            .nav-links{display:flex;gap:12px;flex-wrap:wrap;justify-content:flex-end;font-size:.74rem;}
+            .hero-block{grid-template-columns:1fr;min-height:auto;margin-top:112px;text-align:center;}
+            .hero-block::after{display:none;}
+            .hero-portrait{transform:none;}
+            .hero-copy::before{left:50%;top:-62px;transform:translateX(-50%);font-size:clamp(4rem,18vw,7rem);}
+            .hero-copy{align-items:center;margin:0 auto;}
+            .hero-lede{text-align:center;}
+            .hero-subtitle{text-align:left;}
+            .edit-grid{grid-template-columns:1fr;gap:22px;padding-bottom:96px;}
+            .edit-card.wide,#about,#skills,#impact,#projects,#timeline{grid-column:1;margin-top:0;transform:none;}
+            .impact-strip{grid-template-columns:repeat(2,minmax(0,1fr));}
+            .impact-item:nth-child(n){transform:none;}
+            .portfolio-links{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto;}
+            .portfolio-links .link-card:nth-child(n){grid-column:auto;grid-row:auto;transform:none;}
+            .portfolio-links .link-card:nth-child(3){grid-column:1 / -1;min-height:180px;}
+            .timeline-item:nth-of-type(n){transform:none;}
+            .footer-cta{flex-direction:column;align-items:flex-start;}
+            .official-entry{grid-template-columns:1fr;align-items:flex-start;}
+        }
+
+        @media (max-width:640px){
+            nav{padding:12px 16px;}
+            .nav-logo{font-size:.78rem;letter-spacing:1px;}
+            .nav-secret{font-size:.7rem;padding:5px 8px;}
+            .nav-links{display:none;}
+            .hero-block{width:min(100% - 32px,520px);margin-top:104px;margin-bottom:48px;gap:26px;}
+            .hero-block::before{display:none;}
+            .hero-portrait{padding:18px;}
+            .hero-portrait::before{transform:rotate(-2deg);}
+            .hero-copy::before{opacity:.7;}
+            .hero-title{font-size:clamp(2.35rem,13vw,3.6rem) !important;}
+            .hero-actions{width:100%;}
+            .hero-site-btn,.hero-secondary-btn{width:100%;justify-content:center;}
+            .hero-subtitle{font-size:.78rem;min-height:132px;padding:14px !important;}
+            .edit-grid{width:min(100% - 32px,520px);gap:18px;padding-bottom:86px;}
+            .edit-grid .info-grid{grid-template-columns:1fr;}
+            .info-item:nth-child(n){transform:none;}
+            .impact-strip{grid-template-columns:1fr;}
+            .portfolio-links{grid-template-columns:1fr;}
+            .portfolio-links .link-card{min-height:112px;}
+            .tl-title{font-size:.9rem;}
+            .tl-role{display:block;margin-left:0;margin-top:4px;}
+            .tl-date{width:fit-content;}
+            .footer-cta{width:min(100% - 32px,520px);padding:24px;margin-bottom:28px;}
+            .footer-cta a{width:100%;text-align:center;}
+            .official-entry{width:min(100% - 32px,520px);padding:24px;margin-bottom:28px;}
+            #privateSection{width:min(100% - 32px,520px);padding:20px;}
+        }
+
+        .parallax-bg { will-change: transform; }
+        .parallax-deep  { will-change: transform; }
+        .parallax-mid   { will-change: transform; }
+        .parallax-near  { will-change: transform; }
+        .parallax-hero-avatar { will-change: transform; }
+        @media (max-width:768px) {
+            .parallax-deep, .parallax-mid, .parallax-near, .parallax-hero-avatar { transform: none !important; }
+        }
+    </style>
+
+    <!-- HERO -->
+    <div class="hero-block" id="hero">
+        <div class="hero-portrait">
+            <span class="elite-tag parallax-mid">ELITE 2 // VISUAL DESIGNER</span>
+            <div class="avatar-container parallax-hero-avatar" title="System Override Trigger">
+                <div class="avatar-pulse"></div>
+                <img src="assets/common/绿色头像.jpeg" alt="Avatar" class="hero-avatar interactable" id="avatarTrigger" loading="lazy">
             </div>
-
-            <div class="bento-card card-info interactable">
-                <h2 class="card-title">Operator Profile</h2>
-                
-                <div class="info-grid">
-                    <div class="info-item"><strong>Current_Location</strong><span>广州市海珠区</span></div>
-                    <div class="info-item"><strong>Education_Node</strong><span>广东工业大学 // 动画系<br>2020.09 - 2024.07</span></div>
-                    <div class="info-item"><strong>Languages</strong><span>粤语 / 英语 (CET-6)</span></div>
-                    <div class="info-item"><strong>Signal_Alpha</strong><span>Clrenceye1@gmail.com</span></div>
-                    <div class="info-item"><strong>Signal_Beta</strong><span>+86 13719113230</span></div>
-                </div>
-                
-                <button class="resume-btn interactable magnetic" id="viewResumeBtn" data-magnetic="0.5">&gt; ACCESS ENCRYPTED RESUME</button>
+            <div class="click-hint parallax-mid">&gt; CLICK_AVATAR</div>
+        </div>
+        <div class="hero-copy">
+            <span class="hero-kicker">Motion / Growth / Visual System</span>
+            <h1 class="hero-title parallax-deep">历飞雨</h1>
+            <p class="hero-lede">面向增长、广告投放和品牌传播的视觉设计师，把视频动效、数据洞察与 AI 工作流整合成可持续迭代的内容系统。</p>
+            <p class="hero-subtitle" id="ai-prompt-text"></p>
+            <div class="hero-actions">
+                <a href="#projects" class="hero-secondary-btn interactable">VIEW WORKS ↓</a>
             </div>
+        </div>
+    </div>
 
-            <div class="bento-card card-skills interactable">
-                <h2 class="card-title">Technical Protocols</h2>
-                <div class="tag-cloud">
-                    <span class="tag interactable">PS/ILLUSTRATOR</span>
-                    <span class="tag interactable">After Effects</span>
-                    <span class="tag interactable">Blender_3D</span>
-                    <span class="tag interactable">ComfyUI</span>
-                    <span class="tag interactable">Jimeng / Kling</span>
-                    <span class="tag interactable">Video_Ads</span>
-                    <span class="tag interactable">Growth_Mechanics</span>
-                </div>
+    <main class="edit-grid" id="mainContent">
+
+        <!-- 左列：ABOUT -->
+        <div class="edit-card accent" id="about">
+            <h2 class="sec-title">Operator Profile</h2>
+            <div class="info-grid">
+                <div class="info-item"><strong>Education</strong><span>广东工业大学 // 动画系<br>2020.09 - 2024.07</span></div>
+                <div class="info-item"><strong>Languages</strong><span>粤语 / 英语 (CET-6)</span></div>
+                <div class="info-item"><strong>Email</strong><span>Clrenceye1@gmail.com</span></div>
+                <div class="info-item"><strong>Phone</strong><span>+86 13719113230</span></div>
             </div>
+        </div>
 
+        <!-- 右列：SKILLS -->
+        <div class="edit-card cyan" id="skills">
+            <h2 class="sec-title">Technical Protocols</h2>
+            <div class="tag-cloud">
+                <span class="tag interactable">Figma</span>
+                <span class="tag interactable">PS / Illustrator</span>
+                <span class="tag interactable">Obsidian</span>
+                <span class="tag interactable">VS Code</span>
+                <span class="tag interactable">Claude Code</span>
+                <span class="tag interactable">Codex</span>
+                <span class="tag interactable">After Effects</span>
+                <span class="tag interactable">CapCut / 剪映</span>
+                <span class="tag interactable">LibuTV</span>
+                <span class="tag interactable">Blender 3D</span>
+                <span class="tag interactable">Jimeng / Kling</span>
+                <span class="tag interactable">Video Ads</span>
+                <span class="tag interactable">Growth Mechanics</span>
+            </div>
+        </div>
+
+        <div class="edit-card wide accent" id="impact">
+            <h2 class="sec-title">Impact Snapshot // 关键成果</h2>
+            <div class="impact-strip">
+                <div class="impact-item"><span class="impact-value">153万</span><span class="impact-label">年度主导短视频累计消耗</span></div>
+                <div class="impact-item"><span class="impact-value">24.5万+</span><span class="impact-label">海外广告账户美元消耗</span></div>
+                <div class="impact-item"><span class="impact-value">16.7万+</span><span class="impact-label">新增装机量</span></div>
+                <div class="impact-item"><span class="impact-value">20%</span><span class="impact-label">年度投放效率提升</span></div>
+            </div>
+        </div>
+
+        <!-- 全宽：PROJECTS -->
+        <div class="edit-card wide cyan" id="projects">
+            <h2 class="sec-title">Selected Works // 作品入口</h2>
             <div class="portfolio-links">
-                <a href="pages/data.html" class="link-card interactable"><h3>Data</h3><p>Logistical Analytics</p></a>
-                <a href="pages/graphic.html" class="link-card interactable"><h3>Graphic</h3><p>Visual Arts</p></a>
-                <a href="pages/3d.html" class="link-card interactable"><h3>3D Art</h3><p>Modeling</p></a>
-                <a href="pages/video.html" class="link-card link-card-video interactable">
-                    <h3>Video<span class="video-rec-dot"></span></h3>
-                    <p>Video design</p>
-                </a>
-                <a href="pages/vibecoding.html" class="link-card interactable"><h3>Vibecoding</h3><p>PRODUCT</p></a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="link-card interactable"><h3>Photo</h3><p>500px Gallery</p></a>
+                <a href="pages/data.html" class="link-card interactable"><h3>Data</h3><p>投放复盘、素材表现与增长分析，用数据解释创意迭代。</p></a>
+                <a href="pages/graphic.html" class="link-card interactable"><h3>Graphic / 3D</h3><p>平面视觉、三维实验、广告素材与品牌画面输出。</p></a>
+                <a href="pages/video.html" class="link-card link-card-video interactable"><h3>Video<span class="video-rec-dot"></span></h3><p>动态广告、买量视频、Showreel 与节奏型动效合集。</p></a>
+                <a href="pages/vibecoding.html" class="link-card interactable"><h3>Vibecoding</h3><p>AI 辅助开发、工具原型、自动化与创意工作流探索。</p></a>
             </div>
+        </div>
 
-            <div class="bento-card card-timeline interactable">
-                <h2 class="card-title">Deployment History // 实战履历</h2>
-                
-                <div class="timeline-item">
-                    <div class="tl-header">
-                        <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">// 内容运营 / 视频营销</span></div>
-                        <div class="tl-date">2024年7月 - 2026年7月</div>
-                    </div>
-                    <div class="tl-body">
-                        <ul>
-                            <li><strong>国内爆款打造：</strong>基于国内 App (加画框) 漏斗转化模型与用户停留时长分析，主导产出年度 Top1 爆款视频，单条消耗超 <span class="highlight">22 万元</span>，付费贡献占比达 <span class="highlight">26.9%</span>。建立“素材裂变迭代机制”，通过抽帧去重、重组开头 Hook 与 BGM，衍生出消耗 9.5 万、8.5 万的头部视频，年度主导短视频累计消耗达 <span class="highlight">153 万元</span>。</li>
-                            <li><strong>海外买量运营：</strong>统筹海外 App (Frameit) 跨终端广告素材投放，搭建完整的素材效果评估体系，1年内助力7个海外账户实现 <span class="highlight">24.5 万+美元消耗</span>，获取 <span class="highlight">16.7 万+</span>新增装机量及 <span class="highlight">5700+</span>付费转化。策划高互动性视频内容，推动官方 Instagram 账号 <span class="highlight">3.2 万涨粉至 4.8 万</span>。</li>
-                            <li><strong>增长模型调优：</strong>建立视频淘汰与优化机制，缩减低效素材预算，将 <span class="highlight">70%资源</span>向高转化(1.2%)核心品类倾斜；针对“高点击率(2.54%)、低转化”素材优化结尾 CTA，实现单点 ROI 提升 15%，整体年度投放效率提升 <span class="highlight">20%</span>。</li>
-                        </ul>
-                    </div>
+        <!-- 全宽：TIMELINE -->
+        <div class="edit-card wide accent" id="timeline">
+            <h2 class="sec-title">Deployment History // 实战履历</h2>
+
+            <div class="timeline-item">
+                <div class="tl-header">
+                    <div class="tl-title">广州家画信息技术有限公司 <span class="tl-role">// 内容运营 / 视频营销</span></div>
+                    <div class="tl-date">2024.07 - 2026.07</div>
                 </div>
-
-                <div class="timeline-item">
-                    <div class="tl-header">
-                        <div class="tl-title">广州天游网络 / 博冠信息科技 <span class="tl-role">// 内容运营 / 视频营销 (实习)</span></div>
-                        <div class="tl-date">2023年12月 - 2024年6月</div>
-                    </div>
-                    <div class="tl-body">
-                        <ul>
-                            <li><strong>广告素材制作：</strong>熟练使用 AE、PR、剪映工具，基于脚本与已有素材完成游戏内录、素材剪辑，产出《率土之滨》《射雕》《轮回双生》《三国云梦录》等国内及海外投放素材。精准匹配各平台用户偏好，为《率土之滨》定制竖版动态战报短视频，单条 CTR 达 <span class="highlight">3.1%</span>；其中7条进入平台推荐池，平均复用周期延长至 <span class="highlight">11.6 天</span>。主导《轮回双生》海外素材本地化，结合东南亚用户偏好优化节奏与视觉符号，单条 CPI 降低 <span class="highlight">18%</span>。</li>
-                            <li><strong>素材迭代优化：</strong>调研韩国和东南亚用户的视频习惯，定期生成针对性的报告，对该地区用户进行广告设计，广告的转化率达到 <span class="highlight">1.8%</span>，结合素材测试数据与用户反馈，通过 A/B 测试持续迭代广告视频结构，提升 CTR 与转化率，为项目提供高表现素材支持，核心素材投放周期较均值延长 <span class="highlight">20%</span>。</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="timeline-item">
-                    <div class="tl-header">
-                        <div class="tl-title">Mobvista <span class="tl-role">// 品牌视觉运营 (实习)</span></div>
-                        <div class="tl-date">2023年9月 - 2023年12月</div>
-                    </div>
-                    <div class="tl-body">
-                        <ul>
-                            <li><strong>品牌内容产出：</strong>负责品牌视觉内容策划与输出，产出海报、KV，banner 素材 23 套，助力品牌曝光量提升 <span class="highlight">15%</span>。</li>
-                            <li><strong>物料优化落地：</strong>优化品牌宣传物料的排版与视觉呈现，提升内容转化率 <span class="highlight">2.4%</span>，支持 3 场营销活动顺利落地；调研用户习惯挖掘核心痛点，结合产品调性产出平面设计物料，适配全渠道传播需求。</li>
-                            <li><strong>视频制作：</strong>制作一个企业活动宣传视频，一个营销方法介绍视频制作，使信息密度提升 <span class="highlight">30%</span> 的同时保持观看舒适度。</li>
-                        </ul>
-                    </div>
+                <div class="tl-body">
+                    <ul>
+                        <li><strong>国内爆款打造：</strong>基于国内 App (加画框) 漏斗转化模型与用户停留时长分析，主导产出年度 Top1 爆款视频，单条消耗超 <span class="highlight">22 万元</span>，付费贡献占比达 <span class="highlight">26.9%</span>。建立"素材裂变迭代机制"，通过抽帧去重、重组开头 Hook 与 BGM，衍生出消耗 9.5 万、8.5 万的头部视频，年度主导短视频累计消耗达 <span class="highlight">153 万元</span>。</li>
+                        <li><strong>海外买量运营：</strong>统筹海外 App (Frameit) 跨终端广告素材投放，搭建完整的素材效果评估体系，1年内助力7个海外账户实现 <span class="highlight">24.5 万+美元消耗</span>，获取 <span class="highlight">16.7 万+</span>新增装机量及 <span class="highlight">5700+</span>付费转化。策划高互动性视频内容，推动官方 Instagram 账号 <span class="highlight">3.2 万涨粉至 4.8 万</span>。</li>
+                        <li><strong>增长模型调优：</strong>建立视频淘汰与优化机制，缩减低效素材预算，将 <span class="highlight">70%资源</span>向高转化(1.2%)核心品类倾斜；针对"高点击率(2.54%)、低转化"素材优化结尾 CTA，实现单点 ROI 提升 15%，整体年度投放效率提升 <span class="highlight">20%</span>。</li>
+                    </ul>
                 </div>
             </div>
 
-         <!--   <div class="bento-card card-log interactable">
-                <h2 class="card-title">Terminal Record // 2026</h2>
-                <div class="log-content">
-                    <p>现在回看以前的设计作品，很多的确不尽如人意，但也有一些是做得好的，包括我以前的作品集和里面的产物。一些内容，看起来让人觉得太学生气了，于商业，很多东西其实只要做得简单美观，表达清晰效果要比胡乱摆弄好得多。不过几年前的我的确没有足够的认知想明白自己在做什么，为了什么。也没有意识去清晰地“展现自己”，在AI快速迭代的当下，人讲故事的能力会变得越加重要。</p>
-                    <p>在社会工作两年，我明白了要把人当做产品不断迭代，要持续发展的，要被动收益的，要变现，最重要自洽的。如果说垂直的工作经历是为了生存，那拓宽思路是为了生活。如何在生存和生活中找到绝佳的平衡点，不断进步，找到财富和生活的平衡呢? 如何不用时间来换钱? 或者提高单位时间换得的钱? 我问过自己诸多问题，一直在寻找答案，于是我又想去试错了，庆幸的是我相信自己有足够的心气和能力，还不算太老。</p>
+            <div class="timeline-item">
+                <div class="tl-header">
+                    <div class="tl-title">广州天游网络 / 博冠信息科技 <span class="tl-role">// 内容运营 / 视频营销 (实习)</span></div>
+                    <div class="tl-date">2023.12 - 2024.06</div>
                 </div>
-                <div class="log-signature">
-                    > LOG_AUTHOR: CLARENCE YE<br>
-                    > STATUS: ITERATING...
+                <div class="tl-body">
+                    <ul>
+                        <li><strong>广告素材制作：</strong>熟练使用 AE、PR、剪映工具，基于脚本与已有素材完成游戏内录、素材剪辑，产出《率土之滨》《射雕》《轮回双生》《三国云梦录》等国内及海外投放素材。精准匹配各平台用户偏好，为《率土之滨》定制竖版动态战报短视频，单条 CTR 达 <span class="highlight">3.1%</span>；其中7条进入平台推荐池，平均复用周期延长至 <span class="highlight">11.6 天</span>。主导《轮回双生》海外素材本地化，结合东南亚用户偏好优化节奏与视觉符号，单条 CPI 降低 <span class="highlight">18%</span>。</li>
+                        <li><strong>素材迭代优化：</strong>调研韩国和东南亚用户的视频习惯，定期生成针对性的报告，对该地区用户进行广告设计，广告的转化率达到 <span class="highlight">1.8%</span>，结合素材测试数据与用户反馈，通过 A/B 测试持续迭代广告视频结构，提升 CTR 与转化率，为项目提供高表现素材支持，核心素材投放周期较均值延长 <span class="highlight">20%</span>。</li>
+                    </ul>
                 </div>
-            </div> !-->
+            </div>
 
-        </main>
+            <div class="timeline-item">
+                <div class="tl-header">
+                    <div class="tl-title">Mobvista <span class="tl-role">// 品牌视觉运营 (实习)</span></div>
+                    <div class="tl-date">2023.09 - 2023.12</div>
+                </div>
+                <div class="tl-body">
+                    <ul>
+                        <li><strong>品牌内容产出：</strong>负责品牌视觉内容策划与输出，产出海报、KV，banner 素材 23 套，助力品牌曝光量提升 <span class="highlight">15%</span>。</li>
+                        <li><strong>物料优化落地：</strong>优化品牌宣传物料的排版与视觉呈现，提升内容转化率 <span class="highlight">2.4%</span>，支持 3 场营销活动顺利落地；调研用户习惯挖掘核心痛点，结合产品调性产出平面设计物料，适配全渠道传播需求。</li>
+                        <li><strong>视频制作：</strong>制作一个企业活动宣传视频，一个营销方法介绍视频制作，使信息密度提升 <span class="highlight">30%</span> 的同时保持观看舒适度。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-        <section id="privateSection">
+    </main>
+
+    <section class="footer-cta">
+        <div>
+            <h2>Ready for the next visual mission?</h2>
+            <p>如果你想快速了解我的履历、作品方向和增长型视觉经验，可以直接进入简历页。</p>
+        </div>
+        <a href="pages/resume.html" class="interactable">ACCESS RESUME</a>
+    </section>
+
+    <section class="official-entry">
+        <div>
+            <h2>AI Model Hub // 一站式 AI 模型平台</h2>
+            <p>官网入口指向 AI Model Hub，聚合 500+ AI 模型能力，覆盖 Sora 2、Veo 3.1、Kling 等视频生成，GPT-5.5、Claude、Gemini 3、DeepSeek 等对话模型，以及图像生成、音乐、语音、Agent 自动化工作流与统一 API。</p>
+        </div>
+        <a href="https://icheerlam.lk888.ai/home" target="_blank" rel="noopener noreferrer" class="hero-site-btn magnetic interactable" data-magnetic="0.4">&#9889; ENTER OFFICIAL SITE &#8599;</a>
+    </section>
+
+    <section id="privateSection">
             <div class="secret-header">
                 <h2>[ LOGISTICAL_DATA_VAULT ]</h2>
                 <div class="data-actions">
@@ -823,8 +1426,6 @@
                 </table>
             </div>
         </section>
-    </div>
-
     <footer id="footer">
         <p>> Archive // Clarence Ye // System.2026</p>
     </footer>
@@ -851,7 +1452,7 @@
 
     <script>
         // 首页扩展 interactable 选择器（顶层声明，确保在 common.js 绑定前就绪）
-        window.AK_EXTRA_INTERACTABLE = '.bento-card, .card-timeline, .resume-btn';
+        window.AK_EXTRA_INTERACTABLE = '.edit-card, .link-card, .resume-btn';
 
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -871,13 +1472,15 @@
             const lightboxClose = document.getElementById('lightbox-close');
 
             // ✅ 将原本开启灯箱的事件，直接改为页面跳转
-            viewResumeBtn.addEventListener('click', () => {
-                window.location.href = 'pages/resume.html';
-            });
+            if (viewResumeBtn) {
+                viewResumeBtn.addEventListener('click', () => {
+                    window.location.href = 'pages/resume.html';
+                });
+            }
 
             /* --- 3. AI 打字机终端特效 --- */
             // 💡 简化过的开头引导文案
-            const promptText = "> 网页主要用Gemini3 Pro设计生成，适配手机和web。左侧提供环境混音控制，右下角切换昼夜模式，点击干员头像可执行交互指令。 _";
+            const promptText = "> 网页主要用 Gemini 3.1 Pro + Claude code + Codex 制作，持续优化迭代。 _";
             const subtitleElement = document.getElementById('ai-prompt-text');
             let typingIndex = 0;
             
@@ -1147,5 +1750,80 @@
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
     <script src="assets/js/common.js"></script>
     <script src="assets/js/animations.js"></script>
+    <script>
+        /* ============ 视差深度滚动 ============ */
+        (function(){
+            if (!window.gsap || !window.ScrollTrigger) return;
+            gsap.registerPlugin(ScrollTrigger);
+
+            // 背景视频：轻微缩放，制造深度感
+            gsap.to('.parallax-bg', {
+                scale: 1.08,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: document.body,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.8
+                }
+            });
+
+            // 远景层（标题等）：移动最慢
+            document.querySelectorAll('.parallax-deep').forEach(el => {
+                gsap.fromTo(el, { y: 0 }, {
+                    y: -40,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 0.6
+                    }
+                });
+            });
+
+            // 中景层：轻微移动
+            document.querySelectorAll('.parallax-mid').forEach(el => {
+                gsap.fromTo(el, { y: 0 }, {
+                    y: -20,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: el,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 0.5
+                    }
+                });
+            });
+
+            // 头像特殊视差
+            document.querySelectorAll('.parallax-hero-avatar').forEach(el => {
+                gsap.fromTo(el, { y: 0 }, {
+                    y: 60,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '#hero',
+                        start: 'top top',
+                        end: 'bottom top',
+                        scrub: 0.7
+                    }
+                });
+            });
+
+            // prts-watermark 随滚动微移
+            gsap.to('.prts-watermark', {
+                y: 30,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: document.body,
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 0.4
+                }
+            });
+
+            ScrollTrigger.refresh();
+        });
+    </script>
 </body>
 </html>

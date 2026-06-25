@@ -416,11 +416,9 @@
         <div class="nav-right">
             <div class="nav-links">
                 <a href="video.html" class="interactable">Video</a>
-                <a href="graphic.html" class="interactable">Graphic</a>
-                <a href="3d.html" class="interactable">3D Art</a>
+                <a href="graphic.html" class="interactable">Graphic / 3D</a>
                 <a href="vibecoding.html" class="interactable">Vibecoding</a>
                 <a href="data.html" class="active interactable">Data Analysis</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" rel="noopener noreferrer" class="interactable">Gallery</a>
             </div>
             <a href="https://icheerlam.github.io/" class="nav-home-btn interactable">[ RETURN_HOME ]</a>
         </div>
@@ -867,7 +865,7 @@
     </main>
 
     <div class="back-nav">
-        <a href="https://icheerlam.github.io/" class="btn-back interactable">[ RETURN ]</a>
+        <a href="../index.html" class="btn-back interactable">[ RETURN ]</a>
     </div>
 
     <footer>
@@ -882,6 +880,14 @@
     <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
 
     <script>
+        /* RETURN 按钮环境适配：服务器跳转服务器主页，本地跳转 index.html */
+        (function(){
+            const homeUrl = window.location.hostname === '106.53.112.240' ? 'http://106.53.112.240/' : '../index.html';
+            document.querySelectorAll('.nav-home-btn, .btn-back').forEach(el => {
+                if (/\[ RETURN \]/.test(el.textContent)) el.href = homeUrl;
+            });
+        })();
+
         document.addEventListener('DOMContentLoaded', () => {
             
             /* ================== 音频控制系统集成 ================== */

@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Video Wall Sample</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        :root {
+            --bg: #05060c;
+            --ink: #f7f8ff;
+            --muted: #8c93a7;
+            --cyan: #00d8ff;
+            --amber: #f5a623;
+            --line: rgba(255,255,255,.13);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 50% 10%, rgba(0,216,255,.13), transparent 34%),
+                linear-gradient(180deg, #080a13 0%, #03040a 100%);
+            color: var(--ink);
+            font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+        .scene {
+            min-height: 100vh;
+            perspective: 1200px;
+            position: relative;
+            padding: 38px clamp(18px, 5vw, 72px) 80px;
+        }
+        .scene::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: radial-gradient(circle at center, #000, transparent 78%);
+        }
+        .hero {
+            position: sticky;
+            top: 28px;
+            z-index: 4;
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+            align-items: flex-start;
+            pointer-events: none;
+        }
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(44px, 8vw, 126px);
+            line-height: .82;
+            letter-spacing: 0;
+        }
+        .hero p {
+            max-width: 430px;
+            margin: 8px 0 0;
+            color: var(--muted);
+            font: 13px/1.8 "Space Mono", monospace;
+        }
+        .badge {
+            width: fit-content;
+            margin-bottom: 14px;
+            color: var(--amber);
+            font: 900 11px "Space Mono", monospace;
+            letter-spacing: 3px;
+        }
+        .wall {
+            width: min(1180px, 100%);
+            margin: 24vh auto 10vh;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: clamp(16px, 2vw, 28px);
+            transform-style: preserve-3d;
+            transform: rotateX(9deg) rotateY(-12deg);
+        }
+        .tile {
+            position: relative;
+            aspect-ratio: 16 / 10;
+            border: 1px solid var(--line);
+            background: #000;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            box-shadow:
+                0 34px 90px -44px rgba(0,0,0,.95),
+                0 0 0 1px rgba(0,216,255,.05);
+            transition: transform .45s cubic-bezier(.16,1,.3,1), border-color .45s, box-shadow .45s, filter .45s;
+        }
+        .tile:nth-child(1) { transform: translateZ(80px) translateY(22px); }
+        .tile:nth-child(2) { transform: translateZ(170px) translateY(-44px); }
+        .tile:nth-child(3) { transform: translateZ(60px) translateY(34px); }
+        .tile:nth-child(4) { transform: translateZ(120px) translateY(-12px); }
+        .tile:nth-child(5) { transform: translateZ(230px) translateY(-74px); }
+        .tile:nth-child(6) { transform: translateZ(90px) translateY(18px); }
+        .tile:hover {
+            z-index: 5;
+            transform: translateZ(280px) scale(1.04) !important;
+            border-color: rgba(0,216,255,.78);
+            box-shadow:
+                0 50px 110px -38px rgba(0,0,0,.98),
+                0 0 72px rgba(0,216,255,.2);
+            filter: saturate(1.15);
+        }
+        .tile video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .tile::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(120deg, rgba(255,255,255,.16), transparent 22%, transparent 76%, rgba(0,216,255,.16)),
+                linear-gradient(180deg, transparent 52%, rgba(0,0,0,.8));
+        }
+        .tile-label {
+            position: absolute;
+            z-index: 2;
+            left: 14px;
+            right: 14px;
+            bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 12px;
+            font-family: "Space Mono", monospace;
+            text-shadow: 0 0 14px #000;
+        }
+        .tile-label b {
+            color: rgba(0,216,255,.58);
+            font-size: 44px;
+            line-height: .72;
+        }
+        .tile-label span {
+            text-align: right;
+            font-size: 10px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+        .caption-panel {
+            width: min(980px, 100%);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            transform: translateY(-6vh);
+        }
+        .caption-card {
+            border: 1px solid rgba(255,255,255,.12);
+            background: rgba(8,10,18,.58);
+            backdrop-filter: blur(16px);
+            padding: 22px;
+            color: var(--muted);
+            font: 13px/1.8 "Space Mono", monospace;
+        }
+        .caption-card strong {
+            display: block;
+            color: var(--ink);
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        @media (max-width: 860px) {
+            .hero {
+                position: relative;
+                top: auto;
+                display: block;
+            }
+            .wall {
+                margin-top: 52px;
+                grid-template-columns: 1fr;
+                transform: none;
+            }
+            .tile,
+            .tile:nth-child(n) {
+                transform: none;
+            }
+            .tile:hover {
+                transform: translateY(-6px) scale(1.01) !important;
+            }
+            .caption-panel {
+                grid-template-columns: 1fr;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="scene" id="scene">
+        <header class="hero">
+            <div>
+                <div class="badge"><i class="fa fa-th-large"></i> 3D WALL SAMPLE</div>
+                <h1>Depth<br>Video<br>Wall</h1>
+            </div>
+            <p>视频像漂浮在不同深度的展厅墙面上。鼠标移入时单个作品向前浮出，适合做你的正式视频页首屏。</p>
+        </header>
+
+        <section class="wall" aria-label="3D video wall">
+            <article class="tile">
+                <video src="../works/video/2024_showreel.mp4" muted autoplay loop playsinline></video>
+                <div class="tile-label"><b>01</b><span>SHOWREEL<br>MAIN</span></div>
+            </article>
+            <article class="tile">
+                <video src="../works/video/mobvista十二生序1.mp4#t=29" muted autoplay loop playsinline></video>
+                <div class="tile-label"><b>02</b><span>MOBVISTA<br>BRAND</span></div>
+            </article>
+            <article class="tile">
+                <video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video>
+                <div class="tile-label"><b>03</b><span>VFX<br>BEFORE AFTER</span></div>
+            </article>
+            <article class="tile">
+                <video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video>
+                <div class="tile-label"><b>04</b><span>APP<br>SHOWCASE</span></div>
+            </article>
+            <article class="tile">
+                <video src="../works/video/Frameit_10K粉.mp4" muted autoplay loop playsinline></video>
+                <div class="tile-label"><b>05</b><span>SOCIAL<br>CAMPAIGN</span></div>
+            </article>
+            <article class="tile">
+                <video src="../works/video/飞船转动.mp4" muted autoplay loop playsinline></video>
+                <div class="tile-label"><b>06</b><span>3D<br>MOTION</span></div>
+            </article>
+        </section>
+
+        <section class="caption-panel">
+            <div class="caption-card">
+                <strong>适合用途</strong>
+                作为正式页首屏或精选作品区。比环形旋转更稳重，作品可读性更高，艺术感来自空间深度和展墙排列。
+            </div>
+            <div class="caption-card">
+                <strong>交互方式</strong>
+                Hover 浮出当前作品。正式版可以增加鼠标视差、滚动推进镜头、点击进入详情页。
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -156,7 +156,7 @@
     const preloader = document.querySelector('.preloader');
     if (preloader) {
         // 安全兜底：无论是否出错，8 秒后强制隐藏，避免页面被锁死
-        setTimeout(function () { preloader.classList.add('hidden'); }, 8000);
+        setTimeout(function () { preloader.classList.add('hidden'); }, 6000);
         const bootText = preloader.querySelector('.preloader-boot');
         const barFill = preloader.querySelector('.preloader-bar-fill');
         const pctEl = preloader.querySelector('.preloader-pct');

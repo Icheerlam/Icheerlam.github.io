@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video 艺术方向 Demo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700;900&family=Noto+Sans+SC:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cyan: #00d8ff;
+            --amber: #f5a623;
+            --red: #ff3366;
+            --bg: #050508;
+            --panel: rgba(14, 16, 22, 0.9);
+            --border: rgba(255,255,255,0.08);
+            --muted: #7a7a7a;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: #fff;
+            font-family: 'Space Grotesk', 'Noto Sans SC', sans-serif;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background:
+                radial-gradient(circle at 20% 10%, rgba(0,216,255,0.06), transparent 40%),
+                radial-gradient(circle at 80% 5%, rgba(245,166,35,0.04), transparent 35%),
+                linear-gradient(rgba(0,216,255,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,216,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+        }
+
+        /* ====== SECTION HEADER ====== */
+        .section-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 11px;
+            letter-spacing: 4px;
+            color: var(--amber);
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-family: 'Space Mono', monospace;
+            font-weight: 900;
+            font-size: clamp(28px, 4vw, 56px);
+            color: var(--cyan);
+            line-height: 1.05;
+            margin-bottom: 12px;
+        }
+        .section-desc {
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            color: var(--muted);
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        /* ====== DIRECTION 1: CYBER CURATION WALL ====== */
+        .curation-stage {
+            position: relative;
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 5vw;
+        }
+        .curation-container {
+            position: relative;
+            width: 100%;
+            max-width: 1300px;
+            height: 600px;
+        }
+        .cw-feature {
+            position: absolute;
+            left: 0;
+            top: 5%;
+            width: 52%;
+            aspect-ratio: 16/9;
+            border: 1px solid rgba(0,216,255,0.3);
+            box-shadow: 0 0 60px rgba(0,216,255,0.12), 0 0 120px rgba(0,216,255,0.04);
+            overflow: hidden;
+            background: #000;
+            z-index: 3;
+            transition: transform 0.5s cubic-bezier(0.16,1,0.3,1), box-shadow 0.5s;
+        }
+        .cw-feature:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 80px rgba(0,216,255,0.2), 0 0 160px rgba(0,216,255,0.08);
+        }
+        .cw-feature video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .cw-label {
+            position: absolute; left: 20px; bottom: 20px; z-index: 2;
+            font: 900 20px 'Space Mono', monospace; color: #fff;
+            text-shadow: 0 0 20px rgba(0,0,0,0.9);
+        }
+        .cw-label::before {
+            content: '▶ '; color: var(--cyan); font-size: 14px;
+        }
+        .cw-tile {
+            position: absolute;
+            border: 1px solid rgba(255,255,255,0.15);
+            overflow: hidden;
+            background: #000;
+            z-index: 2;
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+            cursor: pointer;
+        }
+        .cw-tile:hover {
+            border-color: var(--cyan);
+            z-index: 5;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+        }
+        .cw-tile video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .cw-tile .cw-label {
+            font-size: 13px; left: 12px; bottom: 10px;
+        }
+        .cw-t1 { right: 6%; top: 5%; width: 28%; aspect-ratio: 16/9; }
+        .cw-t2 { right: 18%; bottom: 7%; width: 30%; aspect-ratio: 16/9; }
+        .cw-t3 { left: 14%; bottom: 7%; width: 26%; aspect-ratio: 16/9; }
+
+        .cw-scan-card {
+            position: absolute;
+            right: 3%;
+            top: 38%;
+            width: 260px;
+            padding: 20px;
+            border: 1px solid rgba(245,166,35,0.5);
+            background: rgba(6,8,12,0.85);
+            backdrop-filter: blur(12px);
+            font: 12px/1.9 'Space Mono', monospace;
+            color: var(--muted);
+            z-index: 4;
+            animation: cardFloat 5s ease-in-out infinite;
+        }
+        @keyframes cardFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .cw-scan-card b { color: var(--amber); display: block; margin-bottom: 6px; font-size: 13px; }
+        .cw-scan-line {
+            position: absolute; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+            animation: scanSweep 4s ease-in-out infinite;
+            z-index: 2; pointer-events: none;
+        }
+        @keyframes scanSweep {
+            0% { top: -2%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 102%; opacity: 0; }
+        }
+
+        /* ====== DIRECTION 2: STORYBOARD DESK ====== */
+        .desk-stage {
+            min-height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 5vw;
+        }
+        .desk-container {
+            width: 100%;
+            max-width: 1300px;
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+            gap: 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: linear-gradient(135deg, rgba(255,255,255,0.02), rgba(0,0,0,0.5));
+            min-height: 550px;
+            box-shadow: 0 40px 100px -50px rgba(0,216,255,0.15);
+        }
+        .desk-main {
+            padding: 30px;
+            border-right: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+        }
+        .desk-screen {
+            position: relative;
+            aspect-ratio: 16/9;
+            border: 1px solid rgba(0,216,255,0.35);
+            background: #000;
+            overflow: hidden;
+            box-shadow: 0 20px 60px -30px rgba(0,216,255,0.2);
+        }
+        .desk-screen::after {
+            content: '● REC // MOTION DESIGN';
+            position: absolute; left: 16px; top: 14px;
+            color: var(--red); font: 800 10px 'Space Mono', monospace;
+            letter-spacing: 2px; z-index: 2;
+            animation: recBlink 1.5s infinite;
+        }
+        @keyframes recBlink { 50% { opacity: 0.3; } }
+        .desk-screen video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .desk-film-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 18px;
+        }
+        .desk-frame {
+            aspect-ratio: 16/10;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: #111;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        .desk-frame::before, .desk-frame::after {
+            content: ''; position: absolute; left: 0; right: 0; height: 5px; z-index: 2;
+            background: repeating-linear-gradient(90deg, #000 0 6px, rgba(255,255,255,0.15) 6px 10px);
+        }
+        .desk-frame::before { top: 0; }
+        .desk-frame::after { bottom: 0; }
+        .desk-frame:hover {
+            border-color: var(--cyan);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,216,255,0.2);
+        }
+        .desk-frame video {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .desk-frame.active {
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0,216,255,0.3);
+        }
+        .desk-panel {
+            padding: 30px 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(0,216,255,0.03), rgba(0,0,0,0.3));
+        }
+        .desk-panel h3 {
+            font: 900 26px 'Space Mono', monospace;
+            line-height: 1.15;
+            margin-bottom: 14px;
+        }
+        .desk-panel .desk-info {
+            font: 13px/1.9 'Space Mono', monospace;
+            color: var(--muted);
+        }
+        .desk-meters {
+            display: grid;
+            gap: 10px;
+            margin-top: 24px;
+        }
+        .desk-meter {
+            height: 7px;
+            background: #161616;
+            border: 1px solid rgba(255,255,255,0.06);
+            position: relative;
+        }
+        .desk-meter-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--cyan), var(--amber));
+            transition: width 0.8s cubic-bezier(0.16,1,0.3,1);
+        }
+        .desk-meter-label {
+            display: flex; justify-content: space-between;
+            font: 10px 'Space Mono', monospace;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+        .desk-btns {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px;
+        }
+        .desk-btn {
+            border: 1px solid rgba(0,216,255,0.4);
+            padding: 8px 14px;
+            font: 800 10px 'Space Mono', monospace;
+            color: var(--cyan);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+        .desk-btn:hover {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 15px rgba(0,216,255,0.4);
+        }
+
+        /* ====== DIRECTION 3: KINETIC CARD GALLERY ====== */
+        .kinetic-stage {
+            min-height: 85vh;
+            padding: 60px 5vw;
+        }
+        .kinetic-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+        .k-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+        }
+        /* GSAP 入场前隐藏，加载后若 GSAP 未就绪会通过兜底脚本显示 */
+        .k-card.pre-animate {
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .k-card:nth-child(even) { direction: rtl; }
+        .k-card:nth-child(even) .k-content { direction: ltr; }
+
+        .k-visual {
+            position: relative;
+            aspect-ratio: 16/10;
+            border: 1px solid rgba(255,255,255,0.12);
+            overflow: hidden;
+            background: #000;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+        .k-visual:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 30px 70px -30px rgba(0,216,255,0.25);
+        }
+        .k-visual video {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .k-visual:hover video {
+            transform: scale(1.04);
+        }
+        .k-visual::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.7));
+            pointer-events: none; z-index: 1;
+        }
+        .k-visual-label {
+            position: absolute; bottom: 20px; left: 20px;
+            z-index: 2; pointer-events: none;
+        }
+        .k-visual-label .k-num {
+            font: 900 60px 'Space Mono', monospace;
+            color: rgba(0,216,255,0.25);
+            line-height: 0.7;
+            display: block;
+        }
+        .k-visual-label .k-name {
+            font: 800 15px 'Space Mono', monospace;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(0,0,0,0.8);
+        }
+        .k-content h3 {
+            font: 900 clamp(20px, 3vw, 36px) 'Space Mono', monospace;
+            color: var(--cyan);
+            margin-bottom: 12px;
+            line-height: 1.1;
+        }
+        .k-content .k-type {
+            display: inline-block;
+            padding: 3px 10px;
+            border: 1px solid var(--amber);
+            color: var(--amber);
+            font: 700 10px 'Space Mono', monospace;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+        .k-content p {
+            font: 13px/1.9 'Space Mono', monospace;
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+        .k-link {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 20px;
+            border: 1px solid rgba(0,216,255,0.5);
+            color: var(--cyan);
+            font: 800 11px 'Space Mono', monospace;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+        }
+        .k-link:hover {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 20px rgba(0,216,255,0.3);
+        }
+        .k-link .fa { font-size: 10px; }
+
+        /* ====== NAVIGATION TABS ====== */
+        .demo-nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            display: flex;
+            gap: 6px;
+            background: rgba(10,12,18,0.85);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 40px;
+            padding: 5px;
+        }
+        .demo-nav-btn {
+            padding: 10px 22px;
+            border-radius: 36px;
+            border: none;
+            background: transparent;
+            color: var(--muted);
+            font: 700 12px 'Space Mono', monospace;
+            cursor: pointer;
+            transition: all 0.35s;
+            white-space: nowrap;
+            letter-spacing: 1px;
+        }
+        .demo-nav-btn.active {
+            background: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 16px rgba(0,216,255,0.3);
+        }
+        .demo-nav-btn:hover:not(.active) {
+            color: #fff;
+            background: rgba(255,255,255,0.06);
+        }
+
+        /* ====== BADGE ====== */
+        .demo-badge {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            display: flex; align-items: center; gap: 8px;
+            padding: 6px 14px;
+            background: rgba(245,166,35,0.1);
+            border: 1px solid rgba(245,166,35,0.3);
+            border-radius: 20px;
+            font: 10px 'Space Mono', monospace;
+            color: var(--amber);
+            letter-spacing: 2px;
+            pointer-events: none;
+        }
+        .demo-badge .fa { font-size: 10px; animation: pulse 2s infinite; }
+        @keyframes pulse { 50% { opacity: 0.4; } }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 900px) {
+            .curation-container {
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+            }
+            .cw-feature, .cw-tile, .cw-scan-card {
+                position: relative !important;
+                left: auto !important; right: auto !important;
+                top: auto !important; bottom: auto !important;
+                width: 100% !important;
+            }
+            .cw-scan-card { margin-top: 12px; animation: none; }
+            .desk-container {
+                grid-template-columns: 1fr;
+            }
+            .desk-main {
+                border-right: none;
+                border-bottom: 1px solid rgba(255,255,255,0.08);
+            }
+            .desk-film-strip {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .k-card {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                direction: ltr !important;
+            }
+            .demo-nav {
+                flex-wrap: wrap;
+                justify-content: center;
+                border-radius: 16px;
+                padding: 6px;
+            }
+            .demo-nav-btn {
+                padding: 8px 14px;
+                font-size: 10px;
+            }
+            .demo-badge {
+                top: 130px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav class="demo-nav" id="demoNav">
+        <button class="demo-nav-btn active" data-target="dir1">01 · 赛博策展墙</button>
+        <button class="demo-nav-btn" data-target="dir2">02 · 电影分镜台</button>
+        <button class="demo-nav-btn" data-target="dir3">03 · 动态卡片画廊</button>
+    </nav>
+    <div class="demo-badge" id="demoBadge">
+        <i class="fa fa-circle"></i> VIDEO ART DIRECTION DEMO — 3 种艺术方向对比
+    </div>
+
+    <!-- ==================== DIRECTION 1: 赛博策展墙 ==================== -->
+    <section class="curation-stage" id="dir1">
+        <div style="text-align:center; margin-bottom: 20px; position: relative; z-index: 1;">
+            <div class="section-label">Direction 01</div>
+            <div class="section-title">赛博策展墙</div>
+            <p class="section-desc" style="margin: 0 auto;">
+                错落画幅 · 悬浮扫描卡 · 像数字展览空间。主视频占据 C 位，其他作品如展品般散布四周。
+                艺术感最强，鼠标悬停时卡片升起，扫描线周期性掠过画面。
+            </p>
+        </div>
+
+        <div class="curation-container">
+            <div class="cw-scan-line"></div>
+
+            <!-- 主视频 -->
+            <div class="cw-feature">
+                <video src="../works/video/24showreel.mp4" muted autoplay loop playsinline></video>
+                <div class="cw-label">24-25 SHOWREEL</div>
+            </div>
+
+            <!-- 浮动缩略图 -->
+            <div class="cw-tile cw-t1">
+                <video src="../works/video/mobvista十二生序1.mp4" muted autoplay loop playsinline></video>
+                <div class="cw-label">MOBVISTA 十二生序</div>
+            </div>
+            <div class="cw-tile cw-t2">
+                <video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video>
+                <div class="cw-label">2B 套地洞刷怪 · 包装后</div>
+            </div>
+            <div class="cw-tile cw-t3">
+                <video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video>
+                <div class="cw-label">APP 产品展示</div>
+            </div>
+
+            <!-- 扫描信息卡 -->
+            <div class="cw-scan-card">
+                <b>◈ SCAN_RESULT // 策展档案</b>
+                共 7 组作品 · 跨越 2024-2025<br>
+                类型涵盖 游戏买量 / 品牌宣传 / 产品展示<br>
+                <span style="color:var(--cyan);">▸ 点击卡片查看完整作品</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== DIRECTION 2: 电影分镜台 ==================== -->
+    <section class="desk-stage" id="dir2">
+        <div style="text-align:center; margin-bottom: 20px; position: relative; z-index: 1;">
+            <div class="section-label">Direction 02 — 最推荐</div>
+            <div class="section-title">电影分镜台</div>
+            <p class="section-desc" style="margin: 0 auto;">
+                主屏幕 + 胶片帧 + 参数面板 · 模拟 motion designer 的剪辑工作台。
+                下方胶片条可点击切换主屏内容，右侧面板展示项目元数据与技能参数。
+                艺术与专业感最平衡。
+            </p>
+        </div>
+
+        <div class="desk-container" id="deskContainer">
+            <div class="desk-main">
+                <div class="desk-screen" id="deskMainScreen">
+                    <video id="deskMainVideo" src="../works/video/24showreel.mp4" muted autoplay loop playsinline></video>
+                </div>
+                <div class="desk-film-strip" id="deskFilmStrip">
+                    <div class="desk-frame active" data-video="../works/video/24showreel.mp4" data-title="24-25 SHOWREEL" data-type="DEMO REEL" data-desc="2024-2025 年度视频设计/剪辑合集，含实习、工作和个人练习产出。">
+                        <video src="../works/video/24showreel.mp4" muted autoplay loop playsinline></video>
+                    </div>
+                    <div class="desk-frame" data-video="../works/video/mobvista十二生序2.mp4" data-title="MOBVISTA 十二生序" data-type="VIDEO DESIGN / BRANDING" data-desc="年会大屏投屏视频，两个版本并行制作，外包项目。">
+                        <video src="../works/video/mobvista十二生序2.mp4" muted autoplay loop playsinline></video>
+                    </div>
+                    <div class="desk-frame" data-video="../works/video/2B套地洞刷怪包装.mp4" data-title="2B 套地洞刷怪 · 包装后" data-type="POST-PROCESSING / VFX" data-desc="游戏买量素材包装前后对比，视觉增强完整流程。">
+                        <video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video>
+                    </div>
+                    <div class="desk-frame" data-video="../works/video/产品展示类（卡片内容2）.mp4" data-title="APP 产品展示系列" data-type="APP SHOWCASE" data-desc="横版产品展示视频，适合 App Store / Google Play 预览。">
+                        <video src="../works/video/产品展示类（卡片内容2）.mp4" muted autoplay loop playsinline></video>
+                    </div>
+                </div>
+            </div>
+            <aside class="desk-panel" id="deskPanel">
+                <div>
+                    <h3 id="deskPanelTitle">24-25<br>SHOWREEL</h3>
+                    <span style="display:inline-block;padding:3px 10px;border:1px solid var(--amber);color:var(--amber);font:700 10px 'Space Mono',monospace;letter-spacing:1px;" id="deskPanelType">DEMO REEL</span>
+                    <p class="desk-info" style="margin-top:14px;" id="deskPanelDesc">2024-2025 年度视频设计/剪辑合集，含实习、工作和个人练习产出。</p>
+                    <div class="desk-meters">
+                        <div>
+                            <div class="desk-meter-label"><span>MOTION</span><span>92%</span></div>
+                            <div class="desk-meter"><div class="desk-meter-fill" style="width:92%"></div></div>
+                        </div>
+                        <div>
+                            <div class="desk-meter-label"><span>EDITING</span><span>88%</span></div>
+                            <div class="desk-meter"><div class="desk-meter-fill" style="width:88%"></div></div>
+                        </div>
+                        <div>
+                            <div class="desk-meter-label"><span>VFX</span><span>75%</span></div>
+                            <div class="desk-meter"><div class="desk-meter-fill" style="width:75%"></div></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="desk-btns">
+                    <button class="desk-btn">▸ PLAY_FOCUS</button>
+                    <button class="desk-btn">◈ REPORT</button>
+                    <button class="desk-btn">⬚ ARCHIVE</button>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <!-- ==================== DIRECTION 3: 动态卡片画廊 ==================== -->
+    <section class="kinetic-stage" id="dir3">
+        <div style="text-align:center; margin-bottom: 40px; position: relative; z-index: 1;">
+            <div class="section-label">Direction 03</div>
+            <div class="section-title">动态卡片画廊</div>
+            <p class="section-desc" style="margin: 0 auto;">
+                左右交错布局 · 3D 鼠标跟随 · 大号数字水印。
+                每张卡片独立滚动入场，鼠标悬停产生景深感。
+                更适合逐个仔细展示作品。
+            </p>
+        </div>
+
+        <div class="kinetic-container" id="kineticContainer">
+            <!-- Card 1 -->
+            <div class="k-card pre-animate">
+                <div class="k-visual" data-tilt>
+                    <video src="../works/video/24showreel.mp4" muted autoplay loop playsinline></video>
+                    <div class="k-visual-label">
+                        <span class="k-num">01</span>
+                        <span class="k-name">24-25 SHOWREEL</span>
+                    </div>
+                </div>
+                <div class="k-content">
+                    <h3>年度合集<br>Showreel 24-25</h3>
+                    <span class="k-type">DEMO REEL</span>
+                    <p>2024、2025 年视频设计/剪辑合集，包含实习、工作和个人练习的精选产出。Timestamps: 2024 (0:00-1:17) / 2025 (1:17-2:54)</p>
+                    <a href="#" class="k-link"><i class="fa fa-play"></i> 查看完整作品</a>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="k-card pre-animate">
+                <div class="k-visual" data-tilt>
+                    <video src="../works/video/mobvista十二生序1.mp4" muted autoplay loop playsinline></video>
+                    <div class="k-visual-label">
+                        <span class="k-num">02</span>
+                        <span class="k-name">MOBVISTA · 十二生序</span>
+                    </div>
+                </div>
+                <div class="k-content">
+                    <h3>Mobvista<br>十二生序</h3>
+                    <span class="k-type">VIDEO DESIGN / BRANDING</span>
+                    <p>接前 mentor 外包，制作两个版本的年会大屏投屏视频。节奏型剪辑配合十二生肖主题视觉。</p>
+                    <a href="#" class="k-link"><i class="fa fa-bar-chart"></i> 查看对比分析</a>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="k-card pre-animate">
+                <div class="k-visual" data-tilt>
+                    <video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video>
+                    <div class="k-visual-label">
+                        <span class="k-num">03</span>
+                        <span class="k-name">2B 套地洞刷怪 · 成品</span>
+                    </div>
+                </div>
+                <div class="k-content">
+                    <h3>Before & After<br>包装对比</h3>
+                    <span class="k-type">POST-PROCESSING / VFX</span>
+                    <p>游戏买量广告素材的视觉增强前后对比。展示从原始素材到最终成片的完整后期处理流程。</p>
+                    <a href="#" class="k-link"><i class="fa fa-exchange"></i> 查看对比分析</a>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="k-card pre-animate">
+                <div class="k-visual" data-tilt>
+                    <video src="../works/video/产品展示类（卡片内容3）.mp4" muted autoplay loop playsinline></video>
+                    <div class="k-visual-label">
+                        <span class="k-num">04</span>
+                        <span class="k-name">APP 产品展示系列</span>
+                    </div>
+                </div>
+                <div class="k-content">
+                    <h3>App 产品<br>展示系列</h3>
+                    <span class="k-type">APP SHOWCASE / HORIZONTAL</span>
+                    <p>多款 App 产品的横版展示视频，适用于应用商店预览和社交媒体推广。3 个变体适配不同渠道。</p>
+                    <a href="#" class="k-link"><i class="fa fa-eye"></i> 查看全部作品</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer style="text-align:center; padding: 60px 20px; color: var(--muted); font: 11px 'Space Mono',monospace; letter-spacing: 2px;">
+        > DEMO // 3 Art Directions for Video Page — 选择你喜欢的风格，我将替换到正式页面
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script>
+    (function() {
+        /* ====== 1. 导航切换 ====== */
+        const navBtns = document.querySelectorAll('.demo-nav-btn');
+        const sections = { dir1: document.getElementById('dir1'), dir2: document.getElementById('dir2'), dir3: document.getElementById('dir3') };
+
+        navBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                navBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const target = sections[btn.dataset.target];
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        /* ====== 2. 滚动监听 - 自动切换导航 ====== */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    const activeBtn = document.querySelector(`[data-target="${entry.target.id}"]`);
+                    if (activeBtn) activeBtn.classList.add('active');
+                }
+            });
+        }, { threshold: 0.3 });
+
+        Object.values(sections).forEach(s => observer.observe(s));
+
+        /* ====== 3. 分镜台：胶片条点击切换主屏 ====== */
+        const frames = document.querySelectorAll('.desk-frame');
+        const mainVideo = document.getElementById('deskMainVideo');
+        const panelTitle = document.getElementById('deskPanelTitle');
+        const panelType = document.getElementById('deskPanelType');
+        const panelDesc = document.getElementById('deskPanelDesc');
+
+        frames.forEach(frame => {
+            frame.addEventListener('click', () => {
+                frames.forEach(f => f.classList.remove('active'));
+                frame.classList.add('active');
+
+                const newSrc = frame.dataset.video;
+                const newTitle = frame.dataset.title;
+                const newType = frame.dataset.type;
+                const newDesc = frame.dataset.desc;
+
+                // 切换主屏视频
+                if (mainVideo.src !== newSrc) {
+                    mainVideo.src = newSrc;
+                    mainVideo.play();
+                }
+
+                // 更新面板信息（带简单过渡）
+                panelTitle.style.opacity = '0';
+                panelTitle.style.transform = 'translateY(8px)';
+                panelTitle.style.transition = 'all 0.25s ease';
+                setTimeout(() => {
+                    panelTitle.innerHTML = newTitle.replace(' ', '<br>');
+                    panelTitle.style.opacity = '1';
+                    panelTitle.style.transform = 'translateY(0)';
+                }, 200);
+
+                panelType.textContent = newType;
+                panelDesc.textContent = newDesc;
+            });
+        });
+
+        /* ====== 4. Kinetic 卡片：3D 鼠标跟随 ====== */
+        document.querySelectorAll('[data-tilt]').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = (e.clientX - rect.left) / rect.width - 0.5;
+                const y = (e.clientY - rect.top) / rect.height - 0.5;
+                card.style.transform = `perspective(1000px) rotateY(${x * 8}deg) rotateX(${-y * 6}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+                card.style.transition = 'transform 0.5s cubic-bezier(0.16,1,0.3,1)';
+            });
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'transform 0.1s ease-out';
+            });
+        });
+
+        /* ====== 5. GSAP 滚动入场 (Kinetic 卡片) ====== */
+        const kineticCards = document.querySelectorAll('.k-card.pre-animate');
+
+        // 兜底：2 秒后无论如何都显示卡片
+        setTimeout(() => {
+            kineticCards.forEach(c => c.classList.remove('pre-animate'));
+        }, 2000);
+
+        if (window.gsap && window.ScrollTrigger) {
+            gsap.registerPlugin(ScrollTrigger);
+
+            kineticCards.forEach((card, i) => {
+                gsap.fromTo(card,
+                    { opacity: 0, y: 50, filter: 'blur(8px)' },
+                    {
+                        opacity: 1, y: 0, filter: 'blur(0px)',
+                        duration: 0.9,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: card,
+                            start: 'top 85%',
+                            toggleActions: 'play none none reverse'
+                        },
+                        onComplete: () => card.classList.remove('pre-animate'),
+                        onReverseComplete: () => card.classList.add('pre-animate')
+                    }
+                );
+            });
+
+            // 分镜台面板入场动画
+            gsap.fromTo('#deskContainer',
+                { opacity: 0, y: 30 },
+                {
+                    opacity: 1, y: 0,
+                    duration: 0.8,
+                    ease: 'power3.out',
+                    scrollTrigger: {
+                        trigger: '#deskContainer',
+                        start: 'top 85%',
+                        toggleActions: 'play none none reverse'
+                    }
+                }
+            );
+
+            ScrollTrigger.refresh();
+        }
+    })();
+    </script>
+</body>
+</html>

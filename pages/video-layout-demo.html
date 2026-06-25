@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video 布局方向 Demo · 6 种</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050508;
+            --panel: rgba(14, 16, 22, 0.9);
+            --text: #ffffff;
+            --muted: #7a7a7a;
+            --cyan: #00d8ff;
+            --amber: #f5a623;
+            --border: rgba(255,255,255,0.08);
+        }
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { background:var(--bg); color:var(--text); font-family:'Space Grotesk',sans-serif; overflow-x:hidden; }
+        body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+            background: radial-gradient(circle at 20% 10%, rgba(0,216,255,0.05), transparent 40%),
+                        radial-gradient(circle at 80% 5%, rgba(245,166,35,0.03), transparent 35%),
+                        linear-gradient(rgba(0,216,255,0.02) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,216,255,0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px; }
+
+        .demo-wrap { position:relative; z-index:1; max-width:1500px; margin:0 auto; padding:0 3vw 40px; }
+        .demo-section { margin-bottom: 80px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:50px; }
+        .demo-section:last-child { border-bottom:none; }
+
+        .sec-head { margin-bottom:30px; }
+        .sec-num { font:900 11px 'Space Mono',monospace; color:var(--amber); letter-spacing:4px; margin-bottom:6px; }
+        .sec-title { font:900 clamp(24px, 3vw, 42px) 'Space Mono',monospace; color:var(--cyan); margin-bottom:8px; }
+        .sec-desc { font:13px/1.8 'Space Mono',monospace; color:var(--muted); max-width:600px; }
+
+        /* 共用 */
+        .v { background:#000; border:1px solid var(--border); overflow:hidden; position:relative; aspect-ratio:16/9; }
+        .v video, .v iframe { width:100%; height:100%; object-fit:cover; border:0; }
+        .v .lbl { position:absolute; bottom:10px; left:12px; font:800 11px 'Space Mono',monospace; color:#fff; text-shadow:0 0 10px #000; z-index:2; }
+        .v .n { position:absolute; top:10px; right:12px; font:900 10px 'Space Mono',monospace; color:var(--cyan); letter-spacing:2px; z-index:2;
+            border:1px solid rgba(0,216,255,0.3); padding:2px 8px; background:rgba(0,0,0,0.6); }
+        .v::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, transparent 55%, rgba(0,0,0,0.5)); pointer-events:none; }
+
+        /* ──── 01 杂志编辑 ──── */
+        .mag-layout { display:grid; grid-template-columns:1fr 1fr; gap:24px 40px; max-width:1100px; }
+        .mag-hero { grid-column:span 2; }
+        .mag-hero .v { aspect-ratio:21/9; }
+        .mag-hero h2 { font:900 clamp(28px,4vw,48px) 'Space Mono',monospace; margin-top:12px; line-height:1.1; }
+        .mag-hero h2 span { color:var(--cyan); }
+        .mag-item { display:flex; gap:16px; align-items:flex-start; }
+        .mag-item .v { width:160px; flex-shrink:0; aspect-ratio:16/10; }
+        .mag-item .info h4 { font:800 13px 'Space Mono',monospace; color:var(--cyan); margin-bottom:4px; }
+        .mag-item .info p { font:11px/1.7 'Space Mono',monospace; color:var(--muted); }
+        .mag-tag { display:inline-block; padding:2px 8px; border:1px solid var(--amber); color:var(--amber); font:700 9px 'Space Mono',monospace; margin-top:6px; }
+        @media (max-width:700px){ .mag-layout{grid-template-columns:1fr;} .mag-hero{grid-column:span 1;} .mag-item .v{width:120px;} }
+
+        /* ──── 02 胶片横滚 ──── */
+        .film-stage { display:grid; grid-template-rows:auto auto; gap:16px; }
+        .film-main .v { aspect-ratio:16/9; border-color:var(--cyan); box-shadow:0 0 30px rgba(0,216,255,0.15); }
+        .film-strip { display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x mandatory; }
+        .film-strip::-webkit-scrollbar { height:3px; } .film-strip::-webkit-scrollbar-thumb { background:var(--cyan); border-radius:2px; }
+        .film-frame { flex:0 0 200px; scroll-snap-align:start; cursor:pointer; transition:.3s; opacity:.55; }
+        .film-frame:hover, .film-frame.active { opacity:1; border-color:var(--cyan); transform:translateY(-3px); }
+        .film-frame .v { aspect-ratio:16/10; }
+        .film-frame .tt { font:700 9px 'Space Mono',monospace; color:var(--muted); margin-top:6px; text-align:center; }
+        @media (max-width:500px){ .film-frame{flex:0 0 140px;} }
+
+        /* ──── 03 时间轴 ──── */
+        .tl-track { position:relative; padding:0 0 0 60px; }
+        .tl-line { position:absolute; left:28px; top:0; bottom:0; width:2px; background:linear-gradient(transparent, var(--cyan), var(--amber), transparent); box-shadow:0 0 12px rgba(0,216,255,0.3); }
+        .tl-node { position:relative; margin-bottom:40px; display:grid; grid-template-columns:1fr 200px; gap:24px; align-items:center; }
+        .tl-node:nth-child(odd) { grid-template-columns:200px 1fr; }
+        .tl-node:nth-child(odd) .tl-vid { order:-1; }
+        .tl-dot { position:absolute; left:-36px; top:50%; transform:translateY(-50%); width:14px; height:14px; border:2px solid var(--cyan); border-radius:50%; background:#000; box-shadow:0 0 16px var(--cyan); z-index:2; }
+        .tl-vid .v { aspect-ratio:16/10; }
+        .tl-info h4 { font:800 14px 'Space Mono',monospace; color:var(--cyan); margin-bottom:4px; }
+        .tl-info .yr { font:700 10px 'Space Mono',monospace; color:var(--amber); letter-spacing:3px; margin-bottom:6px; }
+        .tl-info p { font:11px/1.7 'Space Mono',monospace; color:var(--muted); }
+        @media (max-width:700px){ .tl-node, .tl-node:nth-child(odd) { grid-template-columns:1fr; } .tl-node:nth-child(odd) .tl-vid{order:0;} .tl-vid{max-width:280px;} }
+
+        /* ──── 04 Bento 网格 ──── */
+        .bento-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; }
+        .bento-card { border-radius:20px; padding:16px; position:relative; overflow:hidden;
+            border:1px solid var(--border); background:linear-gradient(135deg, rgba(255,255,255,0.03), rgba(0,0,0,0.4));
+            transition:.35s; cursor:default; }
+        .bento-card:hover { border-color:var(--cyan); transform:translateY(-3px); box-shadow:0 12px 40px rgba(0,216,255,0.1); }
+        .bento-card .v { border-radius:14px; aspect-ratio:16/10; }
+        .bento-card h4 { font:800 12px 'Space Mono',monospace; color:var(--cyan); margin:10px 0 4px; }
+        .bento-card p { font:10px/1.6 'Space Mono',monospace; color:var(--muted); }
+        .b1{grid-column:span 2;grid-row:span 2;} .b2{grid-column:span 2;}
+        .b3{grid-column:span 2;} .b4{grid-column:span 2;grid-row:span 2;}
+        .b5{grid-column:span 2;}
+        @media (max-width:800px){ .bento-grid{grid-template-columns:1fr 1fr;} .b1,.b2,.b3,.b4,.b5{grid-column:span 2;grid-row:span 1;} }
+        @media (max-width:500px){ .bento-grid{grid-template-columns:1fr;} }
+
+        /* ──── 05 全屏沉浸 ──── */
+        .immerse-list { display:flex; flex-direction:column; gap:8px; }
+        .immerse-card { min-height:80vh; display:grid; grid-template-rows:1fr auto; position:relative;
+            border:1px solid var(--border); overflow:hidden;
+            background:linear-gradient(180deg, rgba(0,0,0,0.3), rgba(0,0,0,0.7)); }
+        .immerse-card .v { aspect-ratio:auto; width:100%; height:100%; position:absolute; inset:0; z-index:-1; }
+        .immerse-card .v::after { background:linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85)); }
+        .immerse-card .immerse-info { padding:30px 40px 40px; z-index:2; display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+        .immerse-card .immerse-info h2 { font:900 clamp(32px,5vw,64px) 'Space Mono',monospace; color:var(--cyan); line-height:1; }
+        .immerse-card .immerse-info .sub { font:12px 'Space Mono',monospace; color:var(--muted); margin-top:8px; }
+        .immerse-card .immerse-info .num { font:900 80px 'Space Mono',monospace; color:rgba(0,216,255,0.08); line-height:1; }
+        @media (max-width:600px){ .immerse-card{min-height:60vh;} .immerse-card .immerse-info{padding:20px;} .immerse-card .immerse-info .num{font-size:50px;} }
+
+        /* ──── 06 双栏对比 ──── */
+        .split-layout { display:grid; grid-template-columns:280px 1fr; gap:0; border:1px solid var(--border); min-height:500px;
+            background:rgba(10,12,18,0.8); }
+        .split-sidebar { border-right:1px solid var(--border); overflow-y:auto; }
+        .split-sidebar::-webkit-scrollbar { width:3px; } .split-sidebar::-webkit-scrollbar-thumb { background:var(--border); }
+        .split-item { padding:14px 18px; border-bottom:1px solid rgba(255,255,255,0.04); cursor:pointer;
+            transition:.25s; display:flex; gap:12px; align-items:center; }
+        .split-item:hover, .split-item.active { background:rgba(0,216,255,0.06); border-left:3px solid var(--cyan); }
+        .split-item .thumb { width:60px; height:34px; background:#000; border:1px solid var(--border); flex-shrink:0; overflow:hidden; }
+        .split-item .thumb video { width:100%; height:100%; object-fit:cover; }
+        .split-item .info h4 { font:800 10px 'Space Mono',monospace; color:var(--text); }
+        .split-item .info span { font:9px 'Space Mono',monospace; color:var(--muted); }
+        .split-main { display:flex; align-items:center; justify-content:center; padding:20px; }
+        .split-main .v { width:100%; max-width:800px; aspect-ratio:16/9; border-color:var(--cyan); }
+        @media (max-width:700px){ .split-layout{grid-template-columns:1fr; grid-template-rows:auto 1fr;} .split-sidebar{display:flex;overflow-x:auto;border-right:none;border-bottom:1px solid var(--border);} .split-item{flex-shrink:0;min-width:150px;} }
+
+        /* Nav */
+        .demo-nav { position:fixed; top:16px; left:50%; transform:translateX(-50%); z-index:100;
+            display:flex; gap:4px; background:rgba(10,12,18,0.9); backdrop-filter:blur(14px);
+            border:1px solid var(--border); border-radius:36px; padding:4px; flex-wrap:wrap; justify-content:center; }
+        .demo-nav a { padding:8px 16px; border-radius:32px; font:700 10px 'Space Mono',monospace; color:var(--muted);
+            text-decoration:none; transition:.3s; white-space:nowrap; }
+        .demo-nav a:hover, .demo-nav a.active { background:var(--cyan); color:#000; }
+    </style>
+</head>
+<body>
+
+<nav class="demo-nav" id="nav">
+    <a href="#d1" class="active">01 杂志编辑</a>
+    <a href="#d2">02 胶片横滚</a>
+    <a href="#d3">03 时间轴</a>
+    <a href="#d4">04 Bento网格</a>
+    <a href="#d5">05 全屏沉浸</a>
+    <a href="#d6">06 双栏对比</a>
+</nav>
+
+<div style="height:70px;"></div>
+
+<div class="demo-wrap">
+
+    <!-- ==================== 01 杂志编辑风 ==================== -->
+    <section class="demo-section" id="d1">
+        <div class="sec-head">
+            <div class="sec-num">Direction 01</div>
+            <div class="sec-title">杂志编辑风 · Editorial Layout</div>
+            <p class="sec-desc">大标题 + Hero 图跨栏 + 大小图混排，像翻阅一本设计杂志。适合有故事要讲的场景。</p>
+        </div>
+        <div class="mag-layout">
+            <div class="mag-hero">
+                <div class="v"><iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe><div class="lbl">24-25 SHOWREEL</div><div class="n">01</div></div>
+                <h2>The <span>Motion</span> Reel that defines <span>2024–2025</span></h2>
+            </div>
+            <div class="mag-item">
+                <div class="v"><video src="../works/video/mobvista十二生序1.mp4#t=29" muted autoplay loop playsinline></video><div class="n">02</div></div>
+                <div class="info"><h4>Mobvista 十二生序</h4><p>年会大屏投屏 · 双版本并行<span class="mag-tag">BRANDING</span></p></div>
+            </div>
+            <div class="mag-item">
+                <div class="v"><video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video><div class="n">03</div></div>
+                <div class="info"><h4>Before & After</h4><p>游戏买量素材包装对比<span class="mag-tag">VFX</span></p></div>
+            </div>
+            <div class="mag-item">
+                <div class="v"><iframe src="https://www.youtube.com/embed/BziFgsUG-y4?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe><div class="n">04</div></div>
+                <div class="info"><h4>Project · Logistical Ad</h4><p>商业广告 · YouTube<span class="mag-tag">COMMERCIAL</span></p></div>
+            </div>
+            <div class="mag-item">
+                <div class="v"><video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video><div class="n">05</div></div>
+                <div class="info"><h4>App 产品展示系列</h4><p>横版 · 3款产品<span class="mag-tag">SHOWCASE</span></p></div>
+            </div>
+            <div class="mag-item">
+                <div class="v"><iframe src="https://www.youtube.com/embed/Pqat0JJ6Dkc?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe><div class="n">06</div></div>
+                <div class="info"><h4>CUHK FMBA · Web3 协会</h4><p>学术品牌视频<span class="mag-tag">EDITING</span></p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 02 胶片横滚 ==================== -->
+    <section class="demo-section" id="d2">
+        <div class="sec-head">
+            <div class="sec-num">Direction 02</div>
+            <div class="sec-title">胶片横滚 · Film Strip</div>
+            <p class="sec-desc">上方主播放器 + 下方胶片条横向滚动。点击缩略图切换主屏内容。</p>
+        </div>
+        <div class="film-stage" id="filmStage">
+            <div class="film-main" id="filmMain">
+                <div class="v"><iframe id="filmIframe" src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe><div class="lbl" id="filmLabel">01 · 24-25 SHOWREEL</div></div>
+            </div>
+            <div class="film-strip" id="filmStrip">
+                <div class="film-frame active" data-vid="0MXfDVhVRNg" data-label="01 · 24-25 SHOWREEL" data-type="yt"><div class="v"><iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=0&modestbranding=1&vq=hd1080" style="pointer-events:none;"></iframe></div><div class="tt">01 SHOWREEL</div></div>
+                <div class="film-frame" data-vid="mobvista十二生序1.mp4#t=29" data-label="02 · Mobvista 十二生序" data-type="local"><div class="v"><video src="../works/video/mobvista十二生序1.mp4#t=29" muted autoplay loop playsinline></video></div><div class="tt">02 MOBVISTA</div></div>
+                <div class="film-frame" data-vid="BziFgsUG-y4" data-label="03 · Project Ad" data-type="yt"><div class="v"><iframe src="https://www.youtube.com/embed/BziFgsUG-y4?rel=0&controls=0&modestbranding=1&vq=hd1080" style="pointer-events:none;"></iframe></div><div class="tt">03 PROJECT AD</div></div>
+                <div class="film-frame" data-vid="2B套地洞刷怪包装.mp4" data-label="04 · Before & After" data-type="local"><div class="v"><video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video></div><div class="tt">04 COMPARISON</div></div>
+                <div class="film-frame" data-vid="Pqat0JJ6Dkc" data-label="05 · CUHK Web3" data-type="yt"><div class="v"><iframe src="https://www.youtube.com/embed/Pqat0JJ6Dkc?rel=0&controls=0&modestbranding=1&vq=hd1080" style="pointer-events:none;"></iframe></div><div class="tt">05 CUHK WEB3</div></div>
+                <div class="film-frame" data-vid="B5hYLCrkV1A" data-label="06 · HK Web3" data-type="yt"><div class="v"><iframe src="https://www.youtube.com/embed/B5hYLCrkV1A?rel=0&controls=0&modestbranding=1&vq=hd1080" style="pointer-events:none;"></iframe></div><div class="tt">06 HK WEB3</div></div>
+                <div class="film-frame" data-vid="产品展示类（卡片内容1）.mp4" data-label="07 · App Showcase" data-type="local"><div class="v"><video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video></div><div class="tt">07 APP SHOW</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 03 时间轴 ==================== -->
+    <section class="demo-section" id="d3">
+        <div class="sec-head">
+            <div class="sec-num">Direction 03</div>
+            <div class="sec-title">时间轴 · Timeline</div>
+            <p class="sec-desc">纵向时间线 + 节点卡片左右交错。适合展示项目推进顺序或成长路径。</p>
+        </div>
+        <div class="tl-track">
+            <div class="tl-line"></div>
+            <div class="tl-node"><div class="tl-dot"></div>
+                <div class="tl-info"><div class="yr">2024 · Q4</div><h4>24-25 Showreel</h4><p>年度视频设计/剪辑合集，涵盖实习与商业项目。</p></div>
+                <div class="tl-vid"><div class="v"><iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe></div></div>
+            </div>
+            <div class="tl-node"><div class="tl-dot"></div>
+                <div class="tl-info"><div class="yr">2025 · Q1</div><h4>Mobvista 十二生序</h4><p>年会大屏投屏视频，外包项目。</p></div>
+                <div class="tl-vid"><div class="v"><video src="../works/video/mobvista十二生序2.mp4#t=27" muted autoplay loop playsinline></video></div></div>
+            </div>
+            <div class="tl-node"><div class="tl-dot"></div>
+                <div class="tl-info"><div class="yr">2025 · Q2</div><h4>CUHK FMBA Web3</h4><p>学术品牌视觉设计与后期。</p></div>
+                <div class="tl-vid"><div class="v"><iframe src="https://www.youtube.com/embed/Pqat0JJ6Dkc?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe></div></div>
+            </div>
+            <div class="tl-node"><div class="tl-dot"></div>
+                <div class="tl-info"><div class="yr">2025 · Q3</div><h4>App 产品展示系列</h4><p>3 款 App 横版展示视频。</p></div>
+                <div class="tl-vid"><div class="v"><video src="../works/video/产品展示类（卡片内容2）.mp4" muted autoplay loop playsinline></video></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 04 Bento 网格 ==================== -->
+    <section class="demo-section" id="d4">
+        <div class="sec-head">
+            <div class="sec-num">Direction 04</div>
+            <div class="sec-title">Bento 网格 · Bento Grid</div>
+            <p class="sec-desc">大小不一的圆角卡片拼合，像 Apple 官网。信息密度高、现代感强。</p>
+        </div>
+        <div class="bento-grid">
+            <div class="bento-card b1">
+                <div class="v"><iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe></div>
+                <h4>24-25 Showreel</h4><p>年度视频合集 · 2024-2025</p>
+            </div>
+            <div class="bento-card b2">
+                <div class="v"><video src="../works/video/mobvista十二生序1.mp4#t=29" muted autoplay loop playsinline></video></div>
+                <h4>Mobvista · 十二生序</h4><p>年会大屏 · 双版本</p>
+            </div>
+            <div class="bento-card b3">
+                <div class="v"><iframe src="https://www.youtube.com/embed/BziFgsUG-y4?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe></div>
+                <h4>Project Ad</h4><p>商业广告</p>
+            </div>
+            <div class="bento-card b4">
+                <div class="v"><video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video></div>
+                <h4>Before & After</h4><p>游戏素材包装对比 · VFX</p>
+            </div>
+            <div class="bento-card b5">
+                <div class="v"><video src="../works/video/产品展示类（卡片内容3）.mp4" muted autoplay loop playsinline></video></div>
+                <h4>App Showcase ×3</h4><p>横版产品展示 · CUHK Web3 · HK Web3</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 05 全屏沉浸 ==================== -->
+    <section class="demo-section" id="d5">
+        <div class="sec-head">
+            <div class="sec-num">Direction 05</div>
+            <div class="sec-title">全屏沉浸 · Immersive</div>
+            <p class="sec-desc">每个作品占一整屏，视频全幅背景 + 大字号叠加。视觉冲击最强，需精简作品数量（建议 4-5 个）。</p>
+        </div>
+        <div class="immerse-list">
+            <div class="immerse-card">
+                <div class="v"><iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=0&modestbranding=1&vq=hd1080&autoplay=1&mute=1" allow="autoplay" allowfullscreen></iframe></div>
+                <div class="immerse-info"><div><h2>SHOWREEL</h2><p class="sub">2024-2025 · 年度合集</p></div><div class="num">01</div></div>
+            </div>
+            <div class="immerse-card">
+                <div class="v"><video src="../works/video/mobvista十二生序2.mp4#t=27" muted autoplay loop playsinline></video></div>
+                <div class="immerse-info"><div><h2>MOBVISTA</h2><p class="sub">十二生序 · 品牌大屏</p></div><div class="num">02</div></div>
+            </div>
+            <div class="immerse-card">
+                <div class="v"><video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video></div>
+                <div class="immerse-info"><div><h2>BEFORE & AFTER</h2><p class="sub">包装对比 · VFX</p></div><div class="num">03</div></div>
+            </div>
+            <div class="immerse-card">
+                <div class="v"><video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video></div>
+                <div class="immerse-info"><div><h2>APP SHOWCASE</h2><p class="sub">产品展示 · ×3</p></div><div class="num">04</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 06 双栏对比 ==================== -->
+    <section class="demo-section" id="d6">
+        <div class="sec-head">
+            <div class="sec-num">Direction 06</div>
+            <div class="sec-title">双栏对比 · Split Pane</div>
+            <p class="sec-desc">左侧缩略图列表 + 右侧大预览区，像 Finder 分栏浏览。适合逐个仔细查看。</p>
+        </div>
+        <div class="split-layout" id="splitLayout">
+            <div class="split-sidebar">
+                <div class="split-item active" data-vid="0MXfDVhVRNg" data-type="yt" data-title="01 · 24-25 SHOWREEL">
+                    <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 34'><rect fill='%23000' width='60' height='34'/><text fill='%2300d8ff' font-size='14' font-family='monospace' x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central'>01</text></svg>"></div>
+                    <div class="info"><h4>24-25 SHOWREEL</h4><span>DEMO REEL</span></div>
+                </div>
+                <div class="split-item" data-vid="mobvista十二生序1.mp4#t=29" data-type="local" data-title="02 · Mobvista 十二生序">
+                    <div class="thumb"><video src="../works/video/mobvista十二生序1.mp4#t=29" muted loop playsinline></video></div>
+                    <div class="info"><h4>Mobvista 十二生序</h4><span>BRANDING</span></div>
+                </div>
+                <div class="split-item" data-vid="BziFgsUG-y4" data-type="yt" data-title="03 · Project Ad">
+                    <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 34'><rect fill='%23000' width='60' height='34'/><text fill='%2300d8ff' font-size='14' font-family='monospace' x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central'>03</text></svg>"></div>
+                    <div class="info"><h4>Project Ad</h4><span>COMMERCIAL</span></div>
+                </div>
+                <div class="split-item" data-vid="2B套地洞刷怪包装.mp4" data-type="local" data-title="04 · Before & After">
+                    <div class="thumb"><video src="../works/video/2B套地洞刷怪包装.mp4" muted loop playsinline></video></div>
+                    <div class="info"><h4>Before & After</h4><span>VFX</span></div>
+                </div>
+                <div class="split-item" data-vid="Pqat0JJ6Dkc" data-type="yt" data-title="05 · CUHK Web3">
+                    <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 34'><rect fill='%23000' width='60' height='34'/><text fill='%2300d8ff' font-size='14' font-family='monospace' x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central'>05</text></svg>"></div>
+                    <div class="info"><h4>CUHK Web3</h4><span>EDITING</span></div>
+                </div>
+                <div class="split-item" data-vid="B5hYLCrkV1A" data-type="yt" data-title="06 · HK Web3">
+                    <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 34'><rect fill='%23000' width='60' height='34'/><text fill='%2300d8ff' font-size='14' font-family='monospace' x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central'>06</text></svg>"></div>
+                    <div class="info"><h4>HK Web3 协会</h4><span>BRANDING</span></div>
+                </div>
+                <div class="split-item" data-vid="产品展示类（卡片内容1）.mp4" data-type="local" data-title="07 · App Showcase">
+                    <div class="thumb"><video src="../works/video/产品展示类（卡片内容1）.mp4" muted loop playsinline></video></div>
+                    <div class="info"><h4>App Showcase</h4><span>×3</span></div>
+                </div>
+            </div>
+            <div class="split-main" id="splitMain">
+                <div class="v"><iframe id="splitIframe" src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe><div class="lbl" id="splitLabel">01 · 24-25 SHOWREEL</div></div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<div style="text-align:center;padding:60px;color:var(--muted);font:11px 'Space Mono',monospace;letter-spacing:2px;">> 6 LAYOUT DIRECTIONS · SELECT ONE TO APPLY</div>
+
+<script>
+// 导航高亮
+const navs = document.querySelectorAll('#nav a');
+const secs = document.querySelectorAll('.demo-section');
+const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+        if(e.isIntersecting) {
+            navs.forEach(a => a.classList.remove('active'));
+            const a = document.querySelector(`#nav a[href="#${e.target.id}"]`);
+            if(a) a.classList.add('active');
+        }
+    });
+}, {threshold:0.25});
+secs.forEach(s => io.observe(s));
+navs.forEach(a => a.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector(a.getAttribute('href')).scrollIntoView({behavior:'smooth'});
+}));
+
+// 胶片横滚
+document.querySelectorAll('#filmStrip .film-frame').forEach(f => {
+    f.addEventListener('click', () => {
+        document.querySelectorAll('#filmStrip .film-frame').forEach(x => x.classList.remove('active'));
+        f.classList.add('active');
+        const main = document.getElementById('filmMain');
+        const vid = f.dataset.vid, label = f.dataset.label, type = f.dataset.type;
+        document.getElementById('filmLabel').textContent = label;
+        if(type === 'yt') {
+            main.innerHTML = `<div class="v"><iframe src="https://www.youtube.com/embed/${vid}?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe><div class="lbl">${label}</div></div>`;
+        } else {
+            main.innerHTML = `<div class="v"><video src="../works/video/${vid}" controls playsinline preload="metadata"></video><div class="lbl">${label}</div></div>`;
+        }
+    });
+});
+
+// 双栏对比
+document.querySelectorAll('#splitLayout .split-item').forEach(item => {
+    item.addEventListener('click', () => {
+        document.querySelectorAll('#splitLayout .split-item').forEach(x => x.classList.remove('active'));
+        item.classList.add('active');
+        const vid = item.dataset.vid, type = item.dataset.type, title = item.dataset.title;
+        document.getElementById('splitLabel').textContent = title;
+        const main = document.getElementById('splitMain');
+        if(type === 'yt') {
+            main.innerHTML = `<div class="v"><iframe src="https://www.youtube.com/embed/${vid}?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe><div class="lbl">${title}</div></div>`;
+        } else {
+            main.innerHTML = `<div class="v"><video src="../works/video/${vid}" controls playsinline preload="metadata"></video><div class="lbl">${title}</div></div>`;
+        }
+    });
+});
+</script>
+</body>
+</html>

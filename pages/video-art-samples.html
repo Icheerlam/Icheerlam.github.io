@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Art Direction Samples</title>
+  <style>
+    :root{
+      --bg:#050505;
+      --panel:rgba(16,18,22,.86);
+      --line:#2a2a2a;
+      --text:#f7f7f7;
+      --muted:#838383;
+      --cyan:#00d8ff;
+      --amber:#f5a623;
+      --red:#ff3366;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      min-height:100vh;background:radial-gradient(circle at 18% 8%,rgba(0,216,255,.12),transparent 28%),radial-gradient(circle at 82% 0,rgba(245,166,35,.1),transparent 24%),var(--bg);
+      color:var(--text);font-family:"Space Grotesk","Arial",sans-serif;overflow-x:hidden;
+    }
+    body::before{
+      content:"";position:fixed;inset:0;pointer-events:none;opacity:.45;
+      background:linear-gradient(rgba(0,216,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,216,255,.035) 1px,transparent 1px);
+      background-size:40px 40px;
+    }
+    header{position:relative;z-index:1;padding:48px 6vw 22px;border-bottom:1px solid rgba(255,255,255,.08)}
+    .eyebrow{font:700 12px "Space Mono",monospace;color:var(--amber);letter-spacing:3px;margin-bottom:10px}
+    h1{font:900 clamp(32px,5vw,72px) "Space Mono",monospace;letter-spacing:0;color:var(--cyan);line-height:1}
+    .sub{margin-top:14px;max-width:720px;color:var(--muted);font:14px/1.9 "Space Mono",monospace}
+    main{position:relative;z-index:1;padding:34px 6vw 70px;display:flex;flex-direction:column;gap:38px}
+    .sample{
+      border:1px solid rgba(255,255,255,.12);background:linear-gradient(135deg,rgba(255,255,255,.035),rgba(0,0,0,.36));
+      min-height:560px;position:relative;overflow:hidden;box-shadow:0 30px 80px -60px var(--cyan);
+    }
+    .sample::before{
+      content:"";position:absolute;inset:0;pointer-events:none;
+      background:linear-gradient(90deg,rgba(0,216,255,.14),transparent 16%,transparent 84%,rgba(245,166,35,.12));
+      opacity:.45;
+    }
+    .sample-head{position:relative;z-index:2;display:flex;justify-content:space-between;gap:18px;align-items:flex-start;padding:22px 24px;border-bottom:1px solid rgba(255,255,255,.1)}
+    .sample-title{font:800 20px "Space Mono",monospace;color:var(--text)}
+    .sample-note{margin-top:6px;color:var(--muted);font:12px/1.7 "Space Mono",monospace;max-width:760px}
+    .sample-code{font:700 12px "Space Mono",monospace;color:var(--amber);white-space:nowrap}
+    video{width:100%;height:100%;object-fit:cover;background:#000;display:block}
+
+    /* 01 Cyber Gallery Wall */
+    .gallery-wall{position:relative;z-index:1;height:490px;padding:26px}
+    .gallery-feature{position:absolute;left:5%;top:11%;width:52%;aspect-ratio:16/9;border:1px solid var(--cyan);box-shadow:0 0 40px rgba(0,216,255,.18);overflow:hidden;background:#000}
+    .gallery-tile{position:absolute;border:1px solid rgba(255,255,255,.18);overflow:hidden;background:#000;filter:saturate(.9);box-shadow:0 18px 42px -34px #000}
+    .gallery-tile.t1{right:9%;top:11%;width:25%;aspect-ratio:16/9}
+    .gallery-tile.t2{right:22%;bottom:12%;width:29%;aspect-ratio:16/9}
+    .gallery-tile.t3{left:16%;bottom:8%;width:23%;aspect-ratio:16/9}
+    .gallery-label{position:absolute;left:18px;bottom:16px;z-index:2;font:800 13px "Space Mono",monospace;color:#fff;text-shadow:0 0 12px #000}
+    .gallery-feature .gallery-label{font-size:22px;color:var(--cyan)}
+    .scan-card{position:absolute;right:5%;top:38%;width:250px;padding:18px;border:1px solid rgba(245,166,35,.65);background:rgba(0,0,0,.62);backdrop-filter:blur(8px);font:12px/1.8 "Space Mono",monospace;color:var(--muted)}
+    .scan-card b{color:var(--amber)}
+
+    /* 02 Timeline */
+    .timeline-stage{position:relative;z-index:1;height:500px;padding:30px 34px}
+    .rail{position:absolute;left:50%;top:72px;bottom:52px;width:2px;background:linear-gradient(transparent,var(--cyan),var(--amber),transparent);box-shadow:0 0 22px rgba(0,216,255,.45)}
+    .node{position:absolute;width:43%;display:grid;grid-template-columns:130px 1fr;gap:16px;align-items:center}
+    .node:nth-child(even){left:6%}
+    .node:nth-child(odd){right:6%;grid-template-columns:1fr 130px}
+    .node.n1{top:58px}.node.n2{top:178px}.node.n3{top:300px}
+    .thumb{aspect-ratio:16/10;border:1px solid rgba(0,216,255,.45);overflow:hidden;background:#000}
+    .node:nth-child(odd) .thumb{order:2}
+    .node-copy{border:1px solid rgba(255,255,255,.12);background:rgba(10,10,12,.7);padding:14px}
+    .node-copy h3{font:800 14px "Space Mono",monospace;color:var(--cyan);margin-bottom:6px}
+    .node-copy p{font:12px/1.7 "Space Mono",monospace;color:var(--muted)}
+    .dot{position:absolute;left:50%;transform:translateX(-50%);width:13px;height:13px;border:2px solid var(--cyan);background:#000;box-shadow:0 0 18px var(--cyan)}
+    .d1{top:104px}.d2{top:224px}.d3{top:346px}
+
+    /* 03 Storyboard Desk */
+    .desk{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(300px,.8fr);gap:0;min-height:500px}
+    .main-screen{padding:28px;border-right:1px solid rgba(255,255,255,.12)}
+    .screen-frame{position:relative;aspect-ratio:16/9;border:1px solid var(--cyan);background:#000;overflow:hidden;box-shadow:0 28px 60px -45px var(--cyan)}
+    .screen-frame::after{content:"REC // MOTION DESIGN";position:absolute;left:14px;top:12px;color:var(--red);font:800 11px "Space Mono",monospace;letter-spacing:2px}
+    .film-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:18px}
+    .framelet{height:78px;border:1px solid rgba(255,255,255,.15);background:#111;overflow:hidden;position:relative}
+    .framelet::before,.framelet::after{content:"";position:absolute;left:0;right:0;height:7px;background:repeating-linear-gradient(90deg,#000 0 8px,rgba(255,255,255,.22) 8px 12px)}
+    .framelet::before{top:0}.framelet::after{bottom:0}
+    .desk-panel{padding:30px 24px;display:flex;flex-direction:column;justify-content:space-between;background:linear-gradient(180deg,rgba(0,216,255,.04),rgba(0,0,0,.25))}
+    .desk-panel h3{font:900 28px "Space Mono",monospace;color:var(--text);line-height:1.15;margin-bottom:16px}
+    .desk-panel p{font:13px/1.9 "Space Mono",monospace;color:var(--muted)}
+    .meters{display:grid;gap:10px;margin-top:24px}
+    .meter{height:9px;background:#161616;border:1px solid rgba(255,255,255,.1);position:relative}
+    .meter span{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--amber))}
+    .desk-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .desk-btn{border:1px solid var(--cyan);padding:9px 13px;font:800 11px "Space Mono",monospace;color:var(--cyan)}
+
+    @media(max-width:880px){
+      .sample{min-height:auto}
+      .gallery-wall,.timeline-stage{height:auto;display:grid;gap:14px}
+      .gallery-feature,.gallery-tile,.scan-card,.node,.rail,.dot{position:relative;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;width:100%;transform:none}
+      .node,.node:nth-child(odd){grid-template-columns:1fr}
+      .node:nth-child(odd) .thumb{order:0}
+      .desk{grid-template-columns:1fr}
+      .main-screen{border-right:0;border-bottom:1px solid rgba(255,255,255,.12)}
+      .show-mobile-note{display:block}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="eyebrow">VIDEO PAGE // ART DIRECTION PREVIEW</div>
+    <h1>[ 3 VISUAL ROUTES ]</h1>
+    <p class="sub">这不是正式页面，只是用于比较艺术方向的视觉样例。三个方向都保留黑底、青色 HUD、橙色警示线和作品集的科技感。</p>
+  </header>
+
+  <main>
+    <section class="sample">
+      <div class="sample-head">
+        <div>
+          <div class="sample-title">01. 赛博策展墙</div>
+          <p class="sample-note">更像数字展览空间：错落画幅、悬浮扫描卡、强主视觉。艺术感最强，但信息会更偏“展览”。</p>
+        </div>
+        <div class="sample-code">CURATION_WALL</div>
+      </div>
+      <div class="gallery-wall">
+        <div class="gallery-feature">
+          <video src="../works/video/24showreel.mp4" muted autoplay loop playsinline></video>
+          <div class="gallery-label">24-25 SHOWREEL</div>
+        </div>
+        <div class="gallery-tile t1"><video src="../works/video/mobvista十二生序1.mp4" muted autoplay loop playsinline></video><div class="gallery-label">MOBVISTA</div></div>
+        <div class="gallery-tile t2"><video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video><div class="gallery-label">VFX PACK</div></div>
+        <div class="gallery-tile t3"><video src="../works/showcase/product-1.mp4" muted autoplay loop playsinline></video><div class="gallery-label">APP SHOW</div></div>
+        <div class="scan-card"><b>SCAN_RESULT</b><br>Selected works arranged as an exhibition wall.<br>Best for stronger atmosphere and visual surprise.</div>
+      </div>
+    </section>
+
+    <section class="sample">
+      <div class="sample-head">
+        <div>
+          <div class="sample-title">02. 轨道时间线</div>
+          <p class="sample-note">把作品做成一条纵向任务轨道，像系统按年份/项目扫描归档。叙事感强，适合展示成长路径。</p>
+        </div>
+        <div class="sample-code">ORBIT_TIMELINE</div>
+      </div>
+      <div class="timeline-stage">
+        <div class="rail"></div><div class="dot d1"></div><div class="dot d2"></div><div class="dot d3"></div>
+        <div class="node n1">
+          <div class="thumb"><video src="../works/video/24showreel.mp4" muted autoplay loop playsinline></video></div>
+          <div class="node-copy"><h3>01 // SHOWREEL</h3><p>年度合集作为起点，串联个人练习、实习和商业项目。</p></div>
+        </div>
+        <div class="node n2">
+          <div class="thumb"><video src="../works/video/mobvista十二生序2.mp4" muted autoplay loop playsinline></video></div>
+          <div class="node-copy"><h3>02 // BRANDING</h3><p>品牌大屏视频节点，以资料卡方式交代项目背景和产出。</p></div>
+        </div>
+        <div class="node n3">
+          <div class="thumb"><video src="../works/showcase/product-2.mp4" muted autoplay loop playsinline></video></div>
+          <div class="node-copy"><h3>03 // PRODUCT</h3><p>产品展示像轨道末端的任务成果，适合加分析报告入口。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sample">
+      <div class="sample-head">
+        <div>
+          <div class="sample-title">03. 电影分镜台</div>
+          <p class="sample-note">像 motion designer 的剪辑工作台：主屏、胶片帧、参数面板。艺术与专业感最平衡，我最推荐这个。</p>
+        </div>
+        <div class="sample-code">STORYBOARD_DESK</div>
+      </div>
+      <div class="desk">
+        <div class="main-screen">
+          <div class="screen-frame"><video src="../works/video/25showreel .mp4" muted autoplay loop playsinline></video></div>
+          <div class="film-strip">
+            <div class="framelet"><video src="../works/video/mobvista十二生序1.mp4" muted autoplay loop playsinline></video></div>
+            <div class="framelet"><video src="../works/video/2B套地洞刷怪.mp4" muted autoplay loop playsinline></video></div>
+            <div class="framelet"><video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video></div>
+            <div class="framelet"><video src="../works/showcase/product-3.mp4" muted autoplay loop playsinline></video></div>
+          </div>
+        </div>
+        <aside class="desk-panel">
+          <div>
+            <h3>24-25<br>SHOWREEL</h3>
+            <p>&gt; 主屏播放重点作品，底部胶片条展示其他项目切片。右侧面板用于放分类、年份、报告入口和项目说明。</p>
+            <div class="meters">
+              <div class="meter"><span style="width:86%"></span></div>
+              <div class="meter"><span style="width:68%"></span></div>
+              <div class="meter"><span style="width:74%"></span></div>
+            </div>
+          </div>
+          <div class="desk-actions">
+            <div class="desk-btn">PLAY_FOCUS</div>
+            <div class="desk-btn">REPORT</div>
+            <div class="desk-btn">ARCHIVE</div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

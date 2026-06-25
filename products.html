@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>产品展示合集 // Clarence Ye</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07080c; --panel:rgba(18,20,28,.9); --text:#e6ecf3; --muted:#7c8696;
+    --info:#00d8ff; --warn:#f5a623; --line:rgba(255,255,255,.08);
+    --ease:cubic-bezier(.16,1,.3,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+  body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;
+    background:radial-gradient(60% 50% at 50% 38%,rgba(0,216,255,.08),transparent 70%),
+    radial-gradient(50% 40% at 80% 80%,rgba(245,166,35,.06),transparent 70%)}
+  body::after{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+    background-image:linear-gradient(rgba(0,216,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(0,216,255,.035) 1px,transparent 1px);background-size:46px 46px;
+    -webkit-mask-image:radial-gradient(circle at 50% 45%,#000 30%,transparent 75%);mask-image:radial-gradient(circle at 50% 45%,#000 30%,transparent 75%)}
+
+  .wrap{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:90px 24px 60px}
+  .kicker{font:700 .72rem/1 'Space Mono',monospace;letter-spacing:5px;color:var(--info);text-transform:uppercase;margin-bottom:14px;opacity:.9}
+  .kicker .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--warn);margin-right:10px;vertical-align:middle;box-shadow:0 0 10px var(--warn);animation:p 1.6s infinite}
+  @keyframes p{50%{opacity:.3}}
+  h1{font:800 clamp(1.6rem,4vw,2.6rem)/1.15 'Space Mono',monospace;letter-spacing:.06em;text-align:center;margin-bottom:10px;background:linear-gradient(90deg,#fff,#9fd9ff 60%,#fff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .sub{color:var(--muted);font-family:'Space Mono',monospace;font-size:.82rem;text-align:center;margin-bottom:46px}
+  .sub b{color:var(--info)}
+
+  /* ── 卡片堆叠舞台 ── */
+  .stage{position:relative;width:min(880px,94vw);height:min(520px,62vw);display:flex;align-items:center;justify-content:center;perspective:1600px}
+  .card{
+    position:absolute;width:min(460px,78vw);aspect-ratio:16/9;border-radius:14px;overflow:hidden;
+    background:#000;border:1px solid var(--line);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,.8),0 0 0 1px rgba(0,216,255,.05);
+    transition:transform .7s var(--ease),box-shadow .7s var(--ease),filter .7s var(--ease),border-color .7s;
+    cursor:pointer;will-change:transform;
+  }
+  .card video{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none}
+  .card .scrim{position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.78) 100%)}
+  .card .meta{position:absolute;left:0;right:0;bottom:0;padding:18px 20px;display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+  .card .meta .t{font:700 1rem 'Space Mono',monospace;letter-spacing:.04em}
+  .card .meta .t small{display:block;font:400 .68rem 'Space Mono',monospace;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+  .card .tag{font:700 .6rem 'Space Mono',monospace;letter-spacing:2px;padding:4px 9px;border:1px solid var(--info);color:var(--info);border-radius:4px;background:rgba(0,216,255,.08)}
+  .card .corner{position:absolute;top:12px;left:12px;font:700 .6rem 'Space Mono',monospace;color:#fff;opacity:.55;letter-spacing:2px}
+  .card .play{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.7rem;background:rgba(0,0,0,.3);backdrop-filter:blur(4px);transition:.4s}
+
+  /* 默认扇形叠放：中-左-右 */
+  .card.c2{transform:translateY(-6px) scale(1);z-index:3}
+  .card.c1{transform:translateX(-38%) rotate(-8deg) scale(.9);z-index:2;filter:brightness(.62) saturate(.85)}
+  .card.c3{transform:translateX(38%) rotate(8deg) scale(.9);z-index:1;filter:brightness(.62) saturate(.85)}
+
+  /* 悬停某张：前置居中放大，其余压低退让 */
+  .stage .card:hover{z-index:10;transform:translateY(-10px) scale(1.06) rotate(0);filter:brightness(1.05);box-shadow:0 40px 80px -20px rgba(0,0,0,.9),0 0 0 1px rgba(0,216,255,.35),0 0 50px rgba(0,216,255,.18)}
+  .stage .card:hover .play{border-color:var(--info);color:var(--info);background:rgba(0,216,255,.15)}
+  .stage:has(.card:hover) .card:not(:hover){transform:translateY(8px) scale(.82);filter:brightness(.4) blur(1px);opacity:.55}
+
+  /* 点亮态（被点开） */
+  .card.focus{z-index:20;transform:translateY(-6px) scale(1.08) rotate(0)!important;filter:none!important;box-shadow:0 40px 80px -20px rgba(0,0,0,.9),0 0 0 1px var(--warn),0 0 60px rgba(245,166,35,.25)!important}
+  .card.focus .tag{border-color:var(--warn);color:var(--warn);background:rgba(245,166,35,.1)}
+
+  .hint{margin-top:34px;font:.72rem 'Space Mono',monospace;color:var(--muted);letter-spacing:2px;text-transform:uppercase;text-align:center}
+  .hint .k{display:inline-block;border:1px solid var(--line);padding:3px 8px;border-radius:4px;margin:0 3px;color:var(--info)}
+
+  footer{position:relative;z-index:2;text-align:center;padding:30px;color:var(--muted);font:.7rem 'Space Mono',monospace;letter-spacing:2px;text-transform:uppercase;border-top:1px solid var(--line);margin-top:30px}
+
+  @media (max-width:560px){
+    .card.c1{transform:translateX(-30%) rotate(-9deg) scale(.84)}
+    .card.c3{transform:translateX(30%) rotate(9deg) scale(.84)}
+    .card{width:84vw}
+  }
+  @media (prefers-reduced-motion:reduce){.card{transition:none}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="kicker"><span class="dot"></span>PRODUCT SHOWCASE</div>
+    <h1>产品展示合集</h1>
+    <p class="sub">三条产品演示 · <b>悬停聚焦</b> · 点击点亮 · 拖拽观感如翻牌</p>
+
+    <div class="stage" id="stage">
+      <div class="card c1" data-i="1">
+        <video src="showcase/product-1.mp4" muted loop playsinline preload="metadata" autoplay></video>
+        <div class="scrim"></div>
+        <span class="corner">[ 01 ]</span>
+        <span class="play">▶</span>
+        <div class="meta"><div class="t">产品演示 一<small>PRODUCT DEMO</small></div><span class="tag">CARD 01</span></div>
+      </div>
+      <div class="card c2" data-i="2">
+        <video src="showcase/product-2.mp4" muted loop playsinline preload="metadata" autoplay></video>
+        <div class="scrim"></div>
+        <span class="corner">[ 02 ]</span>
+        <span class="play">▶</span>
+        <div class="meta"><div class="t">产品演示 二<small>PRODUCT DEMO</small></div><span class="tag">CARD 02</span></div>
+      </div>
+      <div class="card c3" data-i="3">
+        <video src="showcase/product-3.mp4" muted loop playsinline preload="metadata" autoplay></video>
+        <div class="scrim"></div>
+        <span class="corner">[ 03 ]</span>
+        <span class="play">▶</span>
+        <div class="meta"><div class="t">产品演示 三<small>PRODUCT DEMO</small></div><span class="tag">CARD 03</span></div>
+      </div>
+    </div>
+
+    <p class="hint">悬停 <span class="k">HOVER</span> 聚焦 · 点击 <span class="k">CLICK</span> 点亮/取消</p>
+  </div>
+
+  <footer>> Archive // Clarence Ye // Product Showcase</footer>
+
+<script>
+  // 点击切换「点亮」态；视频进入视口才播放（省流）
+  document.querySelectorAll('.card').forEach(card=>{
+    card.addEventListener('click',()=>{
+      const wasFocus=card.classList.contains('focus');
+      document.querySelectorAll('.card.focus').forEach(c=>c.classList.remove('focus'));
+      if(!wasFocus) card.classList.add('focus');
+    });
+  });
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ e.target.play().catch(()=>{}); if(!e.isIntersecting) e.target.pause(); });
+  },{threshold:.25});
+  document.querySelectorAll('video').forEach(v=>io.observe(v));
+</script>
+</body>
+</html>

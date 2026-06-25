@@ -181,13 +181,11 @@
         <div class="nav-right">
             <div class="nav-links">
                 <a href="video.html" class="interactable">Video</a>
-                <a href="graphic.html" class="interactable">Graphic</a>
-                <a href="3d.html" class="interactable">3D Art</a>
+                <a href="graphic.html" class="interactable">Graphic / 3D</a>
                 <a href="vibecoding.html" class="active interactable">Vibecoding</a>
                 <a href="data.html" class="interactable">Data Analysis</a>
-                <a href="https://500px.com.cn/community/user-details/afaa01dec4d8a92773525ab8dbf633449" target="_blank" class="interactable">Gallery</a>
             </div>
-            <a href="https://icheerlam.github.io/" class="nav-home-btn interactable">[ RETURN ]</a>
+            <a href="../index.html" class="nav-home-btn interactable">[ RETURN ]</a>
         </div>
     </nav>
 
@@ -262,6 +260,14 @@
     <footer><p>> Archive // System.2026</p></footer>
 
     <script>
+        /* RETURN 按钮环境适配：服务器跳转服务器主页，本地跳转 index.html */
+        (function(){
+            const homeUrl = window.location.hostname === '106.53.112.240' ? 'http://106.53.112.240/' : '../index.html';
+            document.querySelectorAll('.nav-home-btn, .btn-back').forEach(el => {
+                if (/\[ RETURN \]/.test(el.textContent)) el.href = homeUrl;
+            });
+        })();
+
         const STORAGE_USER = 'prts_kb_user';
         const STORAGE_DELETED = 'prts_kb_deleted';
         const PRESET_MIN_ID = 1;

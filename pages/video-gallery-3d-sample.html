@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Motion Gallery Sample</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        :root {
+            --bg: #03040a;
+            --ink: #f7f8ff;
+            --muted: #8b92a8;
+            --cyan: #00d8ff;
+            --amber: #f5a623;
+        }
+        * { box-sizing: border-box; }
+        html, body { margin: 0; min-height: 100%; background: var(--bg); color: var(--ink); overflow: hidden; }
+        body {
+            font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+            background:
+                radial-gradient(circle at 50% 42%, rgba(0,216,255,.16), transparent 28%),
+                radial-gradient(circle at 16% 10%, rgba(245,166,35,.1), transparent 24%),
+                linear-gradient(180deg, #070914 0%, #02030a 100%);
+        }
+        .stage {
+            position: fixed;
+            inset: 0;
+            perspective: 1400px;
+            cursor: grab;
+            user-select: none;
+        }
+        .stage:active { cursor: grabbing; }
+        .stars {
+            position: absolute;
+            inset: 0;
+            opacity: .34;
+            background:
+                linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+            background-size: 64px 64px;
+            transform: translateZ(-600px) scale(1.8);
+            mask-image: radial-gradient(circle at center, #000 0%, #000 58%, transparent 82%);
+        }
+        .hud {
+            position: fixed;
+            left: clamp(18px, 4vw, 54px);
+            top: clamp(18px, 4vw, 46px);
+            z-index: 10;
+            display: grid;
+            gap: 14px;
+            pointer-events: none;
+        }
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            width: fit-content;
+            color: var(--amber);
+            font: 800 11px "Space Mono", monospace;
+            letter-spacing: 3px;
+        }
+        .hud h1 {
+            margin: 0;
+            max-width: 680px;
+            font-size: clamp(42px, 7vw, 112px);
+            line-height: .84;
+            letter-spacing: 0;
+        }
+        .hud p {
+            margin: 0;
+            max-width: 520px;
+            color: var(--muted);
+            font: 13px/1.8 "Space Mono", monospace;
+        }
+        .control-note {
+            position: fixed;
+            right: clamp(18px, 4vw, 54px);
+            top: clamp(18px, 4vw, 46px);
+            z-index: 10;
+            color: var(--muted);
+            border: 1px solid rgba(255,255,255,.14);
+            background: rgba(5,7,14,.46);
+            padding: 10px 12px;
+            font: 800 10px "Space Mono", monospace;
+            letter-spacing: 1px;
+            backdrop-filter: blur(14px);
+        }
+        .ring {
+            position: absolute;
+            left: 50%;
+            top: 54%;
+            width: min(70vw, 980px);
+            height: min(50vw, 620px);
+            transform-style: preserve-3d;
+            transform: translate(-50%, -50%) rotateX(var(--tilt-x, -8deg)) rotateY(var(--rot, 0deg));
+            transition: transform .12s ease-out;
+        }
+        .screen {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: clamp(220px, 25vw, 390px);
+            aspect-ratio: 16 / 9;
+            transform-style: preserve-3d;
+            transform:
+                translate(-50%, -50%)
+                rotateY(calc(var(--i) * 60deg))
+                translateZ(clamp(390px, 42vw, 620px));
+            border: 1px solid rgba(255,255,255,.18);
+            background: #000;
+            overflow: hidden;
+            box-shadow:
+                0 30px 80px -34px rgba(0,0,0,.92),
+                0 0 0 1px rgba(0,216,255,.08),
+                0 0 48px rgba(0,216,255,.12);
+        }
+        .screen::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            background:
+                linear-gradient(120deg, rgba(255,255,255,.16), transparent 22%, transparent 72%, rgba(0,216,255,.14)),
+                linear-gradient(180deg, transparent 58%, rgba(0,0,0,.74));
+            opacity: .5;
+        }
+        .screen video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: saturate(1.05) contrast(1.06);
+        }
+        .screen .label {
+            position: absolute;
+            z-index: 4;
+            left: 14px;
+            right: 14px;
+            bottom: 12px;
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 12px;
+            font-family: "Space Mono", monospace;
+            text-shadow: 0 0 14px #000;
+        }
+        .screen .num {
+            color: rgba(0,216,255,.52);
+            font-size: 42px;
+            font-weight: 900;
+            line-height: .72;
+        }
+        .screen .name {
+            color: #fff;
+            text-align: right;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+        .plinth {
+            position: absolute;
+            left: 50%;
+            top: 72%;
+            width: min(72vw, 920px);
+            height: 220px;
+            transform: translateX(-50%) rotateX(72deg);
+            border-radius: 50%;
+            background:
+                radial-gradient(ellipse at center, rgba(0,216,255,.2), rgba(0,216,255,.06) 38%, transparent 72%);
+            border: 1px solid rgba(0,216,255,.12);
+            filter: blur(.2px);
+        }
+        .dock {
+            position: fixed;
+            left: 50%;
+            bottom: 28px;
+            z-index: 10;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,.12);
+            background: rgba(5,7,14,.52);
+            backdrop-filter: blur(16px);
+        }
+        .dock button {
+            width: 42px;
+            height: 34px;
+            border: 1px solid rgba(255,255,255,.16);
+            background: rgba(255,255,255,.05);
+            color: var(--ink);
+            cursor: pointer;
+            transition: .25s;
+        }
+        .dock button:hover {
+            color: #000;
+            background: var(--cyan);
+            border-color: var(--cyan);
+        }
+        @media (max-width: 760px) {
+            html, body { overflow-y: auto; overflow-x: hidden; }
+            .stage { position: relative; min-height: 100vh; overflow: hidden; }
+            .hud h1 { font-size: clamp(42px, 14vw, 72px); }
+            .hud p { max-width: calc(100vw - 36px); }
+            .control-note { display: none; }
+            .ring {
+                top: 62%;
+                width: 100vw;
+                height: 62vh;
+            }
+            .screen {
+                width: 260px;
+                transform:
+                    translate(-50%, -50%)
+                    rotateY(calc(var(--i) * 60deg))
+                    translateZ(320px);
+            }
+            .dock { bottom: 16px; }
+        }
+    </style>
+</head>
+<body>
+    <section class="stage" id="stage" aria-label="3D motion gallery demo">
+        <div class="stars"></div>
+        <div class="hud">
+            <div class="eyebrow"><i class="fa fa-cube"></i> 3D INTERACTIVE SAMPLE</div>
+            <h1>Orbit<br>Motion<br>Gallery</h1>
+            <p>一个可拖拽的 3D 影像环：视频作品像漂浮屏幕围绕观众排列。正式版可以把每个屏幕接到作品详情、YouTube 或分析报告。</p>
+        </div>
+        <div class="control-note">DRAG / WHEEL TO ROTATE</div>
+        <div class="plinth"></div>
+        <div class="ring" id="ring">
+            <article class="screen" style="--i:0">
+                <video src="../works/video/2024_showreel.mp4" muted autoplay loop playsinline></video>
+                <div class="label"><span class="num">01</span><span class="name">SHOWREEL<br>MAIN</span></div>
+            </article>
+            <article class="screen" style="--i:1">
+                <video src="../works/video/mobvista十二生序1.mp4#t=29" muted autoplay loop playsinline></video>
+                <div class="label"><span class="num">02</span><span class="name">MOBVISTA<br>BRAND</span></div>
+            </article>
+            <article class="screen" style="--i:2">
+                <video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video>
+                <div class="label"><span class="num">03</span><span class="name">BEFORE AFTER<br>VFX</span></div>
+            </article>
+            <article class="screen" style="--i:3">
+                <video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video>
+                <div class="label"><span class="num">04</span><span class="name">APP<br>SHOWCASE</span></div>
+            </article>
+            <article class="screen" style="--i:4">
+                <video src="../works/video/Frameit_10K粉.mp4" muted autoplay loop playsinline></video>
+                <div class="label"><span class="num">05</span><span class="name">SOCIAL<br>CAMPAIGN</span></div>
+            </article>
+            <article class="screen" style="--i:5">
+                <video src="../works/video/飞船转动.mp4" muted autoplay loop playsinline></video>
+                <div class="label"><span class="num">06</span><span class="name">MOTION<br>OBJECT</span></div>
+            </article>
+        </div>
+        <div class="dock" aria-label="gallery controls">
+            <button type="button" id="prev" aria-label="previous"><i class="fa fa-chevron-left"></i></button>
+            <button type="button" id="next" aria-label="next"><i class="fa fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <script>
+        const stage = document.getElementById('stage');
+        const ring = document.getElementById('ring');
+        let rotation = 0;
+        let tilt = -8;
+        let isDragging = false;
+        let lastX = 0;
+
+        function render() {
+            ring.style.setProperty('--rot', `${rotation}deg`);
+            ring.style.setProperty('--tilt-x', `${tilt}deg`);
+        }
+
+        stage.addEventListener('pointerdown', (event) => {
+            isDragging = true;
+            lastX = event.clientX;
+            stage.setPointerCapture(event.pointerId);
+        });
+
+        stage.addEventListener('pointermove', (event) => {
+            const rect = stage.getBoundingClientRect();
+            const y = (event.clientY - rect.top) / rect.height - .5;
+            tilt = Math.max(-18, Math.min(10, -8 - y * 12));
+
+            if (isDragging) {
+                rotation += (event.clientX - lastX) * .22;
+                lastX = event.clientX;
+            }
+            render();
+        });
+
+        stage.addEventListener('pointerup', () => { isDragging = false; });
+        stage.addEventListener('pointercancel', () => { isDragging = false; });
+
+        stage.addEventListener('wheel', (event) => {
+            event.preventDefault();
+            rotation += event.deltaY * .08;
+            render();
+        }, { passive: false });
+
+        document.getElementById('prev').addEventListener('click', () => {
+            rotation -= 60;
+            render();
+        });
+        document.getElementById('next').addEventListener('click', () => {
+            rotation += 60;
+            render();
+        });
+
+        render();
+    </script>
+</body>
+</html>

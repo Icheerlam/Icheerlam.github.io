@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Gallery Art Sample</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <style>
+        :root {
+            --bg: #050508;
+            --ink: #f6f7fb;
+            --muted: #8c93a5;
+            --cyan: #00d8ff;
+            --amber: #f5a623;
+            --line: rgba(255,255,255,.12);
+        }
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            background:
+                radial-gradient(circle at 20% 8%, rgba(0,216,255,.12), transparent 28%),
+                radial-gradient(circle at 80% 4%, rgba(245,166,35,.08), transparent 25%),
+                linear-gradient(180deg, #06070b 0%, #090b12 48%, #050508 100%);
+            color: var(--ink);
+            font-family: "Space Grotesk", "Inter", system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+            background-size: 56px 56px;
+            mask-image: linear-gradient(180deg, transparent, #000 14%, #000 84%, transparent);
+        }
+        .museum-shell {
+            width: min(1480px, calc(100vw - 40px));
+            margin: 0 auto;
+            padding: 42px 0 80px;
+        }
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 18px 0;
+            background: linear-gradient(180deg, rgba(5,5,8,.92), rgba(5,5,8,.58));
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255,255,255,.08);
+        }
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font: 800 13px "Space Mono", monospace;
+            letter-spacing: 2px;
+        }
+        .brand i { color: var(--cyan); }
+        .nav-chip {
+            border: 1px solid rgba(255,255,255,.14);
+            color: var(--muted);
+            padding: 8px 12px;
+            font: 700 11px "Space Mono", monospace;
+            letter-spacing: 1px;
+        }
+        .hero-gallery {
+            min-height: 86vh;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            gap: clamp(28px, 4vw, 62px);
+            align-items: end;
+            padding: 58px 0 42px;
+        }
+        .projection {
+            position: relative;
+            aspect-ratio: 16 / 9;
+            border: 1px solid rgba(255,255,255,.16);
+            background: #000;
+            box-shadow:
+                0 0 0 1px rgba(0,216,255,.1),
+                0 42px 120px -42px rgba(0,0,0,.95),
+                0 0 88px rgba(0,216,255,.12);
+            overflow: hidden;
+            isolation: isolate;
+        }
+        .projection::before {
+            content: "";
+            position: absolute;
+            inset: -1px;
+            z-index: 2;
+            pointer-events: none;
+            border: 1px solid rgba(0,216,255,.32);
+            clip-path: polygon(0 0, 18% 0, 18% 2px, 2px 2px, 2px 18%, 0 18%, 0 0, 100% 0, 100% 18%, calc(100% - 2px) 18%, calc(100% - 2px) 2px, 82% 2px, 82% 0);
+        }
+        .projection video,
+        .projection iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            object-fit: cover;
+            display: block;
+        }
+        .projection-caption {
+            position: absolute;
+            left: 24px;
+            right: 24px;
+            bottom: 22px;
+            z-index: 3;
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 20px;
+            pointer-events: none;
+        }
+        .caption-num {
+            font: 900 clamp(54px, 8vw, 118px) "Space Mono", monospace;
+            line-height: .72;
+            color: rgba(0,216,255,.22);
+        }
+        .caption-name {
+            text-align: right;
+            font: 800 clamp(13px, 1.3vw, 18px) "Space Mono", monospace;
+            letter-spacing: 1px;
+            text-shadow: 0 0 18px #000;
+        }
+        .wall-label {
+            align-self: stretch;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 26px;
+            border: 1px solid rgba(255,255,255,.12);
+            background:
+                linear-gradient(145deg, rgba(255,255,255,.08), rgba(255,255,255,.025)),
+                rgba(9,11,18,.72);
+            backdrop-filter: blur(16px);
+        }
+        .label-kicker {
+            color: var(--amber);
+            font: 800 11px "Space Mono", monospace;
+            letter-spacing: 3px;
+        }
+        .wall-label h1 {
+            margin: 22px 0 16px;
+            font-size: clamp(36px, 5vw, 72px);
+            line-height: .92;
+            letter-spacing: 0;
+        }
+        .wall-label p {
+            color: var(--muted);
+            font: 13px/1.8 "Space Mono", monospace;
+        }
+        .museum-meta {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 28px;
+        }
+        .meta-cell {
+            border-top: 1px solid rgba(255,255,255,.14);
+            padding-top: 10px;
+            color: var(--muted);
+            font: 700 10px "Space Mono", monospace;
+            letter-spacing: 1px;
+        }
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin: 70px 0 24px;
+            border-bottom: 1px solid rgba(255,255,255,.1);
+            padding-bottom: 14px;
+        }
+        .section-title h2 {
+            margin: 0;
+            font: 900 clamp(24px, 3vw, 42px) "Space Mono", monospace;
+            color: var(--cyan);
+        }
+        .section-title span {
+            color: var(--muted);
+            font: 700 11px "Space Mono", monospace;
+            letter-spacing: 2px;
+        }
+        .triptych {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+        .panel-video {
+            position: relative;
+            aspect-ratio: 9 / 13;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,.14);
+            background: #000;
+            box-shadow: 0 28px 70px -38px rgba(0,0,0,.95);
+        }
+        .panel-video:nth-child(2) { transform: translateY(-26px); }
+        .panel-video video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            filter: saturate(1.05) contrast(1.02);
+        }
+        .panel-video .tag {
+            position: absolute;
+            left: 14px;
+            top: 14px;
+            padding: 6px 8px;
+            background: rgba(0,0,0,.44);
+            border: 1px solid rgba(255,255,255,.2);
+            color: #fff;
+            font: 800 10px "Space Mono", monospace;
+            letter-spacing: 1px;
+        }
+        .film-strip {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 24px;
+        }
+        .film-card {
+            position: relative;
+            min-height: 180px;
+            border: 1px solid rgba(255,255,255,.12);
+            background: rgba(255,255,255,.035);
+            overflow: hidden;
+        }
+        .film-card video {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            display: block;
+            opacity: .76;
+        }
+        .film-card .film-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 12px;
+            font: 800 11px "Space Mono", monospace;
+        }
+        .film-info span:last-child { color: var(--muted); }
+        @media (max-width: 980px) {
+            .hero-gallery {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+            .wall-label {
+                min-height: 360px;
+            }
+            .triptych {
+                grid-template-columns: 1fr;
+            }
+            .panel-video {
+                aspect-ratio: 16 / 9;
+            }
+            .panel-video:nth-child(2) { transform: none; }
+            .film-strip {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 620px) {
+            .museum-shell { width: calc(100vw - 28px); padding-top: 22px; }
+            .topbar { align-items: flex-start; gap: 12px; flex-direction: column; }
+            .projection-caption { left: 16px; right: 16px; bottom: 16px; }
+            .wall-label { padding: 20px; }
+            .film-strip { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <main class="museum-shell">
+        <nav class="topbar">
+            <div class="brand"><i class="fa fa-circle-o-notch"></i> MOTION_EXHIBITION // SAMPLE</div>
+            <div class="nav-chip">ART DIRECTION B / DIGITAL MUSEUM</div>
+        </nav>
+
+        <section class="hero-gallery">
+            <div class="projection">
+                <iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen="true"></iframe>
+                <div class="projection-caption">
+                    <div class="caption-num">01</div>
+                    <div class="caption-name">24-25 SHOWREEL<br>MAIN PROJECTION</div>
+                </div>
+            </div>
+            <aside class="wall-label">
+                <div>
+                    <div class="label-kicker">CURRENT EXHIBIT</div>
+                    <h1>Digital<br>Motion<br>Gallery</h1>
+                    <p>把视频作品当成展厅里的影像装置展示：画面是主体，信息像作品铭牌，滚动时形成一组连续的展览路线。</p>
+                </div>
+                <div class="museum-meta">
+                    <div class="meta-cell">MEDIUM<br>VIDEO DESIGN</div>
+                    <div class="meta-cell">FORMAT<br>PROJECTION</div>
+                    <div class="meta-cell">YEAR<br>2024-2026</div>
+                    <div class="meta-cell">MODE<br>PORTFOLIO</div>
+                </div>
+            </aside>
+        </section>
+
+        <section>
+            <div class="section-title">
+                <h2>TRIPTYCH_SET</h2>
+                <span>多视频作品 / 三联屏展柜</span>
+            </div>
+            <div class="triptych">
+                <article class="panel-video">
+                    <video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video>
+                    <div class="tag">PANEL 01</div>
+                </article>
+                <article class="panel-video">
+                    <video src="../works/video/产品展示类（卡片内容2）.mp4" muted autoplay loop playsinline></video>
+                    <div class="tag">PANEL 02</div>
+                </article>
+                <article class="panel-video">
+                    <video src="../works/video/产品展示类（卡片内容3）.mp4" muted autoplay loop playsinline></video>
+                    <div class="tag">PANEL 03</div>
+                </article>
+            </div>
+        </section>
+
+        <section>
+            <div class="section-title">
+                <h2>FILM_INDEX</h2>
+                <span>底部作品索引 / 可作为快速导航</span>
+            </div>
+            <div class="film-strip">
+                <article class="film-card">
+                    <video src="../works/video/mobvista十二生序1.mp4#t=29" muted autoplay loop playsinline></video>
+                    <div class="film-info"><span>02 MOBVISTA</span><span>BRAND</span></div>
+                </article>
+                <article class="film-card">
+                    <video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video>
+                    <div class="film-info"><span>03 BEFORE/AFTER</span><span>VFX</span></div>
+                </article>
+                <article class="film-card">
+                    <video src="../works/video/Frameit_10K粉.mp4" muted autoplay loop playsinline></video>
+                    <div class="film-info"><span>04 SOCIAL</span><span>AD</span></div>
+                </article>
+                <article class="film-card">
+                    <video src="../works/video/飞船转动.mp4" muted autoplay loop playsinline></video>
+                    <div class="film-info"><span>05 MOTION</span><span>3D</span></div>
+                </article>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

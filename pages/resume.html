@@ -299,12 +299,11 @@
         <a href="https://icheerlam.github.io/" class="nav-logo">PRTS // RESUME</a>
         <div class="nav-links">
             <a href="video.html">Video</a>
-            <a href="graphic.html">Graphic</a>
-            <a href="3d.html">3D</a>
+            <a href="graphic.html">Graphic / 3D</a>
             <a href="vibecoding.html" class="interactable">Vibecoding</a>
-            <a href="data.html">Data</a>
+            <a href="data.html">Data Analysis</a>
         </div>
-        <a href="https://icheerlam.github.io/" class="nav-home-btn">[ RETURN ]</a>
+        <a href="../index.html" class="nav-home-btn">[ RETURN ]</a>
     </nav>
 
     <div class="editor-panel" id="no-print-area">
@@ -337,7 +336,7 @@
         <button class="panel-btn btn-print" onclick="window.print()">🖨️ 导出为 PDF</button>
         <button class="panel-btn btn-save" onclick="downloadHTML()">💾 保存网页文件</button>
         
-        <a href="https://icheerlam.github.io/" class="panel-btn btn-return">← [ RETURN ] 返回主页</a>
+        <a href="../index.html" class="panel-btn btn-return">← [ RETURN ] 返回主页</a>
 
         <div class="hint-text">
             * 提示：右侧简历区域的文字可以直接点击修改。<br>
@@ -425,6 +424,14 @@
     </div>
 
     <script>
+        /* RETURN 按钮环境适配：服务器跳转服务器主页，本地跳转 index.html */
+        (function(){
+            const homeUrl = window.location.hostname === '106.53.112.240' ? 'http://106.53.112.240/' : '../index.html';
+            document.querySelectorAll('.nav-home-btn, .btn-back, .btn-return, .panel-btn').forEach(el => {
+                if (/\[ RETURN \]|返回主页/.test(el.textContent)) el.href = homeUrl;
+            });
+        })();
+
         const resumeCanvas = document.getElementById('resume-canvas');
         
         const fsSlider = document.getElementById('fs-slider');
