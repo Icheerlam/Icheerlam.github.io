@@ -734,7 +734,7 @@
                 </div>
                 <div class="rw-head"><h3>AI 视频</h3><span class="rw-type">AI VIDEO / POST-PROCESSING</span></div>
                 <p class="rw-desc">AI 视频个人练习合集。<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
-                <a href="https://yabjk2ma4je.feishu.cn/docx/R1DvdXm20oO4PyxTDdfcHV0jnQf?from=from_copylink" target="_blank" class="rw-link" id="xiamo-storyboard" style="display:none;">▸ 兰蔻小黑瓶广告 · 故事版</a>
+                <a href="https://www.liblib.tv/canvas/share?spaceId=9742&projectId=bd18010cba024317a0353a4da0493176" target="_blank" class="rw-link" id="xiamo-storyboard">▸ 夏末 · 故事版</a>
             </div>
 
             <div class="rw-card interactable" id="rw-ad">
@@ -939,7 +939,12 @@
                     syncSidebarVariant(card, index);
                     const storyboardLink = card.querySelector('#xiamo-storyboard');
                     if (storyboardLink) {
-                        storyboardLink.style.display = btn.textContent.includes('兰蔻') ? 'inline-flex' : 'none';
+                        const isLancome = btn.dataset.src === 'ai个人练习兰蔻小黑瓶广告.mp4';
+                        storyboardLink.href = isLancome
+                            ? 'https://yabjk2ma4je.feishu.cn/docx/R1DvdXm20oO4PyxTDdfcHV0jnQf?from=from_copylink'
+                            : 'https://www.liblib.tv/canvas/share?spaceId=9742&projectId=bd18010cba024317a0353a4da0493176';
+                        storyboardLink.textContent = isLancome ? '▸ 兰蔻小黑瓶广告 · 故事版' : '▸ 夏末 · 故事版';
+                        storyboardLink.style.display = 'inline-flex';
                     }
                     if (videoEl) {
                         videoEl.src = '../works/video/' + btn.dataset.src;
