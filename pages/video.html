@@ -653,9 +653,13 @@
                 </div>
             </div>
 
-            <div class="split-item" data-idx="2">
+            <div class="split-item has-subs" data-idx="2">
                 <div class="thumb"><video src="../works/video/夏末.mp4" muted loop playsinline preload="metadata"></video></div>
-                <div class="info"><h4>夏末</h4><span>AI VIDEO</span></div>
+                <div class="info"><h4>AI 视频</h4><span>AI VIDEO <span class="arrow">▸</span></span><span class="badge">×2</span></div>
+                <div class="split-sub-items">
+                    <div class="split-sub-item active" data-variant="0"><div class="sub-thumb"><video src="../works/video/夏末.mp4" muted loop playsinline preload="metadata"></video></div>夏末</div>
+                    <div class="split-sub-item" data-variant="1"><div class="sub-thumb"><video src="../works/video/ai个人练习兰蔻小黑瓶广告.mp4" muted loop playsinline preload="metadata"></video></div>兰蔻小黑瓶广告</div>
+                </div>
             </div>
 
             <div class="split-item" data-idx="3">
@@ -721,11 +725,16 @@
 
             <div class="rw-card interactable" id="rw-xiamo">
                 <div class="rw-num">03</div>
+                <div class="rw-variants" data-work="aivideo">
+                    <button class="rw-var-btn active" data-src="夏末.mp4">ASSET_01 · 夏末</button>
+                    <button class="rw-var-btn" data-src="ai个人练习兰蔻小黑瓶广告.mp4">ASSET_02 · 兰蔻小黑瓶广告</button>
+                </div>
                 <div class="rw-video">
                     <video src="../works/video/夏末.mp4" controls playsinline preload="metadata"></video>
                 </div>
-                <div class="rw-head"><h3>夏末</h3><span class="rw-type">AI VIDEO / POST-PROCESSING</span></div>
-                <p class="rw-desc">AI 视频，使用 LiBTV（Nanobanana Pro，可灵3.0，seedance 2.0）生成 AI 视频，Ae 后期处理。<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
+                <div class="rw-head"><h3>AI 视频</h3><span class="rw-type">AI VIDEO / POST-PROCESSING</span></div>
+                <p class="rw-desc">AI 视频个人练习合集。<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
+                <a href="https://yabjk2ma4je.feishu.cn/docx/R1DvdXm20oO4PyxTDdfcHV0jnQf?from=from_copylink" target="_blank" class="rw-link" id="xiamo-storyboard" style="display:none;">▸ 兰蔻小黑瓶广告 · 故事版</a>
             </div>
 
             <div class="rw-card interactable" id="rw-ad">
@@ -928,6 +937,10 @@
                     btns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     syncSidebarVariant(card, index);
+                    const storyboardLink = card.querySelector('#xiamo-storyboard');
+                    if (storyboardLink) {
+                        storyboardLink.style.display = btn.textContent.includes('兰蔻') ? 'inline-flex' : 'none';
+                    }
                     if (videoEl) {
                         videoEl.src = '../works/video/' + btn.dataset.src;
                         videoEl.dataset.played = '0';
