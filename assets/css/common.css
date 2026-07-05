@@ -14,7 +14,6 @@
     --ak-accent-info: #00d8ff;   /* 罗德岛蓝 */
     --ak-accent-warn: #f5a623;   /* 源石橙 */
     --ak-border: #1f232b;
-    --ak-scan-line: rgba(0, 216, 255, 0.04);
 
     /* 缓动曲线体系 —— 替换散落的 transition:0.3s */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -60,38 +59,6 @@ body {
 @keyframes fadeUp { 0% { opacity: 0; transform: translateY(25px); } 100% { opacity: 1; transform: translateY(0); } }
 
 /* ================= 共享组件（全站通用） ================= */
-
-/* 网格扫描遮罩 */
-.tech-overlay {
-    position: fixed; inset: 0; z-index: -9; pointer-events: none;
-    background:
-        radial-gradient(circle at 50% 50%, transparent 20%, rgba(10, 10, 14, 0.85) 100%),
-        linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px);
-    background-size: 100% 100%, 40px 40px, 40px 40px;
-}
-body.light-mode .tech-overlay {
-    background:
-        radial-gradient(circle at 50% 50%, transparent 20%, rgba(240,242,245,0.85) 100%),
-        linear-gradient(rgba(2,132,199,0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(2,132,199,0.05) 1px, transparent 1px);
-    background-size: 100% 100%, 40px 40px, 40px 40px;
-}
-
-/* 四角瞄准 HUD 框 */
-.prts-hud {
-    position: fixed; inset: 20px; z-index: -8; border: 1px solid rgba(0,216,255,0.08); pointer-events: none;
-    background:
-        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,
-        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,
-        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,
-        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,
-        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,
-        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,
-        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,
-        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat;
-    transition: var(--dur-base);
-}
 
 /* 导航栏 */
 nav {

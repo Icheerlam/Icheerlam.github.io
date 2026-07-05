@@ -15,7 +15,6 @@
             --ak-accent-info: #00d8ff;
             --ak-accent-warn: #f5a623;
             --ak-border: #1f232b;
-            --ak-scan-line: rgba(0, 216, 255, 0.04);
         }
         body.light-mode {
             --ak-bg-main: #e5e7eb;
@@ -25,41 +24,10 @@
             --ak-accent-info: #0284c7;
             --ak-accent-warn: #ea580c;
             --ak-border: #ccc;
-            --ak-scan-line: rgba(2, 132, 199, 0.04);
         }
         * { box-sizing:border-box; margin:0; padding:0; }
         html { scroll-behavior: smooth; }
         body { background-color:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',-apple-system,sans-serif; line-height:1.6; overflow-x:hidden; transition:background .4s,color .4s; -webkit-font-smoothing:antialiased; }
-        
-        .tech-bg { position:fixed; top:0; left:0; width:100vw; height:100vh; object-fit:cover; z-index:-10; opacity:0.5; transition:.4s; pointer-events:none; filter:contrast(1.1) brightness(0.7) grayscale(20%); }
-        body.light-mode .tech-bg { opacity:0.1; filter:none; }
-        .tech-dimmer { position:fixed; inset:0; z-index:-9.5; background:rgba(0,0,0,0.6); pointer-events:none; transition:.4s; }
-        body.light-mode .tech-dimmer { background:rgba(0,0,0,0.15); }
-        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none;
-            background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(10,10,14,0.85) 100%),
-                        linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
-                        linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px; }
-        body.light-mode .tech-overlay {
-            background: radial-gradient(circle at 50% 50%, transparent 20%, rgba(240,242,245,0.85) 100%),
-                        linear-gradient(rgba(2,132,199,0.05) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(2,132,199,0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px; }
-        .prts-scanline { position:fixed; top:0; left:0; width:100vw; height:4px; z-index:-8;
-            background:var(--ak-accent-info); box-shadow:0 0 15px var(--ak-accent-info),0 0 30px var(--ak-accent-info);
-            opacity:0.4; pointer-events:none; animation:scan-drop 6s cubic-bezier(0.4,0,0.2,1) infinite; }
-        @keyframes scan-drop { 0%{top:-10%;opacity:0;} 5%{opacity:0.4;} 45%{opacity:0.4;} 50%{top:110%;opacity:0;} 100%{top:110%;opacity:0;} }
-        body.light-mode .prts-scanline { opacity:0.3; }
-        .prts-hud { position:fixed; inset:20px; z-index:-8; border:1px solid rgba(0,216,255,0.08); pointer-events:none;
-            background: linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,
-                        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,
-                        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,
-                        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,
-                        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,
-                        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,
-                        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,
-                        linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; }
-        body.light-mode .prts-hud { border-color:rgba(2,132,199,0.1); }
 
         nav { position:fixed; top:0; width:100%; padding:15px 5vw; display:flex; justify-content:space-between;
             align-items:center; background:rgba(10,12,18,0.88); border-bottom:1px solid var(--ak-border);
@@ -282,19 +250,6 @@
         .rw-var-btn.active { box-shadow: 0 0 10px rgba(0,216,255,0.15); }
 
         /* ============ Index-inspired visual refresh ============ */
-        .tech-dimmer {
-            background:
-                radial-gradient(circle at 72% 12%, rgba(0,216,255,.12), transparent 34%),
-                radial-gradient(circle at 18% 88%, rgba(245,166,35,.12), transparent 28%),
-                linear-gradient(180deg, rgba(7,8,12,.84), rgba(7,8,12,.72) 48%, rgba(7,8,12,.92));
-        }
-        body.light-mode .tech-dimmer {
-            background:
-                radial-gradient(circle at 72% 12%, rgba(2,132,199,.1), transparent 34%),
-                radial-gradient(circle at 18% 88%, rgba(234,88,12,.08), transparent 28%),
-                linear-gradient(180deg, rgba(235,238,244,.78), rgba(246,248,252,.62), rgba(232,235,242,.9));
-        }
-
         nav { padding: 14px min(5vw,64px); background: rgba(10,12,18,.82); }
         .nav-logo, .nav-home-btn {
             clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
@@ -611,11 +566,6 @@
 
     <button class="theme-toggle-btn interactable" id="themeBtn">SYS_DARK</button>
 
-    <video class="tech-bg" src="../works/video/飞船转动.mp4" muted autoplay loop playsinline></video>
-    <div class="tech-dimmer"></div>
-    <div class="tech-overlay"></div>
-    <div class="prts-scanline"></div>
-    <div class="prts-hud"></div>
 
     <nav>
         <a href="../index.html" class="nav-logo interactable">PRTS // CLARENCE YE</a>

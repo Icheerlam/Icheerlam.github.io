@@ -17,8 +17,7 @@
             --ak-accent-info: #00d8ff; /* 罗德岛蓝 */
             --ak-accent-warn: #f5a623; /* 源石橙 */
             --ak-border: #1f232b;
-            --ak-scan-line: rgba(0, 216, 255, 0.04);
-            
+
             --recharge: #00ffaa; 
             --withdraw: #ff3366; 
         }
@@ -72,66 +71,6 @@
             opacity: 0.1; 
             filter: contrast(1) brightness(1) grayscale(0%);
         }
-
-        .tech-overlay {
-            position: fixed; inset: 0; z-index: -9; pointer-events: none; 
-            background: 
-                radial-gradient(circle at 50% 50%, transparent 20%, rgba(10, 10, 14, 0.85) 100%),
-                linear-gradient(var(--ak-scan-line) 1px, transparent 1px),
-                linear-gradient(90deg, var(--ak-scan-line) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
-        }
-
-        body.light-mode .tech-overlay { 
-            background: 
-                radial-gradient(circle at 50% 50%, transparent 20%, rgba(240,242,245,0.85) 100%),
-                linear-gradient(rgba(2, 132, 199, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(2, 132, 199, 0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
-        }
-
-        /* 战术雷达扫描线 */
-        .prts-scanline {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 4px; z-index: -8;
-            background: var(--ak-accent-info);
-            box-shadow: 0 0 15px var(--ak-accent-info), 0 0 30px var(--ak-accent-info);
-            opacity: 0.4; pointer-events: none;
-            animation: scan-drop 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-        body.light-mode .prts-scanline { opacity: 0.3; }
-
-        @keyframes scan-drop {
-            0% { top: -10%; opacity: 0; }
-            5% { opacity: 0.4; }
-            45% { opacity: 0.4; }
-            50% { top: 110%; opacity: 0; }
-            100% { top: 110%; opacity: 0; }
-        }
-
-        /* 屏幕四角瞄准器/装甲边框 */
-        .prts-hud {
-            position: fixed; inset: 20px; z-index: -8; border: 1px solid rgba(0, 216, 255, 0.08); pointer-events: none;
-            background: 
-                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,
-                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,
-                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,
-                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,
-                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,
-                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,
-                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,
-                linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat;
-            transition: 0.4s;
-        }
-        body.light-mode .prts-hud { border-color: rgba(2, 132, 199, 0.1); }
-
-        .prts-watermark {
-            position: fixed; bottom: 10%; left: -80px; z-index: -8;
-            font-family: 'Space Mono', monospace; font-size: 5rem; font-weight: 800;
-            color: rgba(255, 255, 255, 0.02);
-            transform: rotate(-90deg); transform-origin: left bottom;
-            white-space: nowrap; pointer-events: none; user-select: none;
-        }
-        body.light-mode .prts-watermark { color: rgba(0, 0, 0, 0.02); }
 
         /* ================= 顶部导航栏 ================= */
         nav { 
@@ -626,14 +565,6 @@
         <source src="works/video/宇宙列车.mp4" type="video/mp4">
     </video>
     <div class="cinema-scrim"></div>
-    <div class="tech-overlay"></div>
-
-    <div class="prts-scanline"></div>
-    <div class="prts-hud">
-        <div class="hud-corner top-right"></div>
-        <div class="hud-corner bottom-left"></div>
-    </div>
-    <div class="prts-watermark">SYS.VER.2026 // LOGISTICAL_ARCHIVE</div>
 
     <nav>
         <a href="#" class="nav-logo interactable">PRTS // CLARENCE YE</a>
@@ -1762,18 +1693,6 @@
                         scrub: 0.7
                     }
                 });
-            });
-
-            // prts-watermark 随滚动微移
-            gsap.to('.prts-watermark', {
-                y: 30,
-                ease: 'none',
-                scrollTrigger: {
-                    trigger: document.body,
-                    start: 'top top',
-                    end: 'bottom bottom',
-                    scrub: 0.4
-                }
             });
 
             ScrollTrigger.refresh();

@@ -6,15 +6,10 @@
     <title>3D Models & Art</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --ak-bg-main:#050505; --ak-bg-panel:rgba(18,18,20,0.92); --ak-text-main:#ffffff; --ak-text-muted:#7a7a7a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#2a2a2a; --ak-scan-line:rgba(0,216,255,0.03); }
+        :root { --ak-bg-main:#050505; --ak-bg-panel:rgba(18,18,20,0.92); --ak-text-main:#ffffff; --ak-text-muted:#7a7a7a; --ak-accent-info:#00d8ff; --ak-accent-warn:#f5a623; --ak-border:#2a2a2a; }
         * { box-sizing:border-box; margin:0; padding:0; }
         body { background:var(--ak-bg-main); color:var(--ak-text-main); font-family:'Space Grotesk',sans-serif; line-height:1.6; overflow-x:hidden; counter-reset:obj-counter; }
         @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
-
-        /* ✨ 科技蓝图背景 */
-        .tech-bg { position:fixed; inset:0; z-index:-10; background-color:var(--ak-bg-main); background-image:url('https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=2070&auto=format&fit=crop'); background-size:cover; background-position:center; opacity:0.15; filter:grayscale(100%); }
-        .tech-overlay { position:fixed; inset:0; z-index:-9; pointer-events:none; background:linear-gradient(var(--ak-scan-line) 1px,transparent 1px),linear-gradient(90deg,var(--ak-scan-line) 1px,transparent 1px); background-size:40px 40px; }
-        .prts-hud { position:fixed; inset:20px; z-index:-8; border:1px solid rgba(0,216,255,0.05); pointer-events:none; background:linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) top right/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom left/2px 30px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/30px 2px no-repeat,linear-gradient(var(--ak-accent-info),var(--ak-accent-info)) bottom right/2px 30px no-repeat; }
 
         nav { position:fixed; top:0; width:100%; padding:15px 5vw; display:flex; justify-content:space-between; align-items:center; background:var(--ak-bg-panel); border-bottom:1px solid var(--ak-border); z-index:1000; backdrop-filter:blur(10px); }
         .nav-logo { font:800 1rem 'Space Mono'; letter-spacing:2px; color:var(--ak-text-main); text-decoration:none; border:1px solid var(--ak-accent-info); padding:5px 12px; }
@@ -80,7 +75,6 @@
 </head>
 <body>
 
-    <div class="tech-bg"></div><div class="tech-overlay"></div><div class="prts-hud"></div>
 
     <nav>
         <a href="https://icheerlam.github.io/" class="nav-logo">PRTS // CLARENCE YE</a>
