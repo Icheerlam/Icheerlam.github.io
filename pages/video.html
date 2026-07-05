@@ -739,7 +739,7 @@
                     <video src="../works/video/夏末.mp4" controls playsinline preload="metadata"></video>
                 </div>
                 <div class="rw-head"><h3>AI 视频</h3><span class="rw-type">AI VIDEO / POST-PROCESSING</span></div>
-                <p class="rw-desc">AI 视频个人练习合集。<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
+                <p class="rw-desc" id="xiamo-desc">一个音乐mv的预告开头，使用Libtv和AE制作<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
                 <a href="https://www.liblib.tv/canvas/share?spaceId=9742&projectId=bd18010cba024317a0353a4da0493176" target="_blank" class="rw-link" id="xiamo-storyboard">▸ 夏末 · 故事版</a>
             </div>
 
@@ -956,6 +956,15 @@
                             : 'https://www.liblib.tv/canvas/share?spaceId=9742&projectId=bd18010cba024317a0353a4da0493176';
                         storyboardLink.textContent = isLancome ? '▸ 兰蔻小黑瓶广告 · 故事版' : '▸ 夏末 · 故事版';
                         storyboardLink.style.display = 'inline-flex';
+                    }
+                    const descEl = card.querySelector('#xiamo-desc');
+                    if (descEl) {
+                        const descMap = {
+                            '夏末.mp4': '一个音乐mv的预告开头，使用Libtv和AE制作',
+                            '海外AI人卖画.mp4': '海外app信息流广告(Ai人）使用grok制作'
+                        };
+                        const desc = descMap[btn.dataset.src] || 'AI 视频个人练习合集。';
+                        descEl.innerHTML = desc + '<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span>';
                     }
                     if (videoEl) {
                         videoEl.src = '../works/video/' + btn.dataset.src;
