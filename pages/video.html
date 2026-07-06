@@ -831,12 +831,12 @@
             splitSidebar.scrollTo({ top: targetTop, behavior: 'smooth' });
         }
 
-        function setActiveSideItem(activeIndex) {
+        function setActiveSideItem(activeIndex, skipScroll) {
             sideItems.forEach(item => item.classList.remove('active'));
             const activeItem = document.querySelector(`.split-item[data-idx="${activeIndex}"]`);
             if (activeItem) {
                 activeItem.classList.add('active');
-                scrollSideItemIntoView(activeItem);
+                if (!skipScroll) scrollSideItemIntoView(activeItem);
             }
         }
 
@@ -852,7 +852,7 @@
             const cardIndex = rightIds.indexOf(card.id);
             if (cardIndex === -1) return;
             const sideItem = document.querySelector(`.split-item[data-idx="${cardIndex}"]`);
-            setActiveSideItem(cardIndex);
+            setActiveSideItem(cardIndex, true);
             setActiveSubItem(sideItem, variantIndex);
         }
 
@@ -940,7 +940,7 @@
                     const activeIndex = rightIds.indexOf(currentId);
                     
                     if (activeIndex !== -1) {
-                        setActiveSideItem(activeIndex);
+                        setActiveSideItem(activeIndex, true);
                     }
                 }
             });
