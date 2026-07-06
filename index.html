@@ -525,16 +525,16 @@
     <div class="custom-cursor-dot"></div>
     <button class="back-to-top" aria-label="返回顶部">&#9650;</button>
 
-    <audio id="bgmAudio" loop preload="auto">
+    <audio id="bgmAudio" loop preload="none">
         <source src="assets/audio/背景音乐.mp3" type="audio/mpeg"> 
     </audio>
-    <audio id="hoverSound" preload="auto">
+    <audio id="hoverSound" preload="none">
         <source src="assets/audio/鼠标悬停.mp3" type="audio/mpeg"> 
     </audio>
-    <audio id="clickSound" preload="auto">
+    <audio id="clickSound" preload="none">
         <source src="assets/audio/鼠标点击.mp3" type="audio/mpeg"> 
     </audio>
-    <audio id="avatarSound" preload="auto">
+    <audio id="avatarSound" preload="none">
         <source src="assets/audio/点击头像.mp3" type="audio/mpeg"> 
     </audio>
 
@@ -561,9 +561,39 @@
         </div>
     </div>
 
-    <video class="tech-bg-video parallax-bg" autoplay loop muted playsinline poster="assets/audio/宇宙列车.jpg">
-        <source src="works/video/宇宙列车.mp4" type="video/mp4">
+    <video id="heroBgVideo" class="tech-bg-video parallax-bg" loop muted playsinline preload="none" poster="assets/audio/宇宙列车.jpg" aria-hidden="true">
+        <source data-src="works/video/宇宙列车.mp4" type="video/mp4">
     </video>
+    <script>
+        (function () {
+            const video = document.getElementById('heroBgVideo');
+            if (!video) return;
+            const source = video.querySelector('source[data-src]');
+            const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const saveData = navigator.connection && navigator.connection.saveData;
+            if (!source || reducedMotion || saveData) return;
+
+            function loadHeroVideo() {
+                if (video.dataset.loaded) return;
+                video.dataset.loaded = '1';
+                source.src = source.dataset.src;
+                video.load();
+                video.play().catch(function () {});
+            }
+
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(loadHeroVideo, { timeout: 2500 });
+            } else {
+                setTimeout(loadHeroVideo, 1200);
+            }
+
+            document.addEventListener('visibilitychange', function () {
+                if (!video.dataset.loaded) return;
+                if (document.hidden) video.pause();
+                else video.play().catch(function () {});
+            });
+        })();
+    </script>
     <div class="cinema-scrim"></div>
 
     <nav>

@@ -107,8 +107,6 @@
         // 与 GSAP ScrollTrigger 联动
         if (window.ScrollTrigger) {
             AK.lenis.on('scroll', window.ScrollTrigger.update);
-            window.gsap && window.gsap.ticker.add(function (t) { AK.lenis.raf(t * 1000); });
-            window.gsap && window.gsap.ticker.lagSmoothing(0);
         }
     }
 
