@@ -8,7 +8,7 @@
     'use strict';
 
     const AK = window.AK = window.AK || {};
-    AK.audioEnabled = false;
+    AK.audioEnabled = true;
 
     /* ---------- 1. 音频系统 ---------- */
     const bgmAudio = document.getElementById('bgmAudio');
@@ -58,6 +58,16 @@
                 if (bgmAudio) bgmAudio.pause();
             }
         });
+    }
+
+    // 默认自动播放背景音乐
+    if (AK.audioEnabled && bgmAudio) {
+        bgmAudio.volume = volOf(bgmVol);
+        bgmAudio.play().catch(function () {});
+        if (audioToggle) {
+            audioToggle.innerHTML = '[ AUDIO: ON ]';
+            audioToggle.classList.remove('muted');
+        }
     }
 
     if (volHeader && volumePanel) {
