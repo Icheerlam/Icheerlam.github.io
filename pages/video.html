@@ -245,9 +245,9 @@
         }
 
         .rw-variants { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-        .rw-var-btn { padding: 5px 12px; border: 1px solid rgba(255,255,255,0.12); background: transparent; color: var(--ak-text-muted); font: 700 10px 'Space Mono', monospace; cursor: pointer; transition: all .3s; }
-        .rw-var-btn:hover, .rw-var-btn.active { border-color: var(--ak-accent-info); color: var(--ak-accent-info); background: rgba(0,216,255,0.06); }
-        .rw-var-btn.active { box-shadow: 0 0 10px rgba(0,216,255,0.15); }
+        .rw-var-btn { padding: 8px 16px; border: 1.5px solid rgba(255,255,255,0.25); background: rgba(255,255,255,0.04); color: var(--ak-text-main); font: 700 11px 'Space Mono', monospace; cursor: pointer; transition: all .3s; letter-spacing: 0.5px; }
+        .rw-var-btn:hover { border-color: var(--ak-accent-info); color: #fff; background: rgba(0,216,255,0.12); transform: translateY(-1px); }
+        .rw-var-btn.active { border-color: var(--ak-accent-info); color: #000; background: var(--ak-accent-info); box-shadow: 0 0 16px rgba(0,216,255,0.3); font-weight: 800; }
 
         /* ============ Index-inspired visual refresh ============ */
         nav { padding: 14px min(5vw,64px); background: rgba(10,12,18,.82); }
@@ -466,8 +466,8 @@
                 font-size: 10px;
             }
             .rw-var-btn {
-                padding: 4px 10px;
-                font-size: 9px;
+                padding: 7px 12px;
+                font-size: 10px;
             }
         }
 
