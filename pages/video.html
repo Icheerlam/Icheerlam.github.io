@@ -605,13 +605,17 @@
 
             <div class="split-item has-subs" data-idx="2">
                 <div class="thumb"><video src="../works/video/夏末.mp4" muted loop playsinline preload="metadata"></video></div>
-                <div class="info"><h4>AI 视频</h4><span>AI VIDEO <span class="arrow">▸</span></span><span class="badge">×5</span></div>
+                <div class="info"><h4>AI 视频</h4><span>AI VIDEO <span class="arrow">▸</span></span><span class="badge">×9</span></div>
                 <div class="split-sub-items">
                     <div class="split-sub-item active" data-variant="0"><div class="sub-thumb"><video src="../works/video/夏末.mp4" muted loop playsinline preload="metadata"></video></div>夏末</div>
                     <div class="split-sub-item" data-variant="1"><div class="sub-thumb"><video src="../works/video/海外AI人卖画-h264.mp4" poster="../works/video/thumbs/overseas-ai-sell-painting.jpg" muted loop playsinline preload="metadata"></video></div>海外AI人卖画</div>
                     <div class="split-sub-item" data-variant="2"><div class="sub-thumb"><video src="../works/video/书法剧情.mp4" muted loop playsinline preload="metadata"></video></div>书法剧情</div>
                     <div class="split-sub-item" data-variant="3"><div class="sub-thumb"><video src="../works/video/书法app口播.mp4" muted loop playsinline preload="metadata"></video></div>书法app口播</div>
                     <div class="split-sub-item" data-variant="4"><div class="sub-thumb"><video src="../works/video/ai个人练习兰蔻小黑瓶广告.mp4" muted loop playsinline preload="metadata"></video></div>兰蔻小黑瓶广告</div>
+                    <div class="split-sub-item" data-variant="5"><div class="sub-thumb"><span style="font-size:18px;color:var(--ak-accent-info);">▶</span></div>Shorts 1</div>
+                    <div class="split-sub-item" data-variant="6"><div class="sub-thumb"><span style="font-size:18px;color:var(--ak-accent-info);">▶</span></div>Shorts 2</div>
+                    <div class="split-sub-item" data-variant="7"><div class="sub-thumb"><span style="font-size:18px;color:var(--ak-accent-info);">▶</span></div>Shorts 3</div>
+                    <div class="split-sub-item" data-variant="8"><div class="sub-thumb"><span style="font-size:18px;color:var(--ak-accent-info);">▶</span></div>Shorts 4</div>
                 </div>
             </div>
 
@@ -684,9 +688,14 @@
                     <button class="rw-var-btn" data-src="书法剧情.mp4">ASSET_03 · 书法剧情</button>
                     <button class="rw-var-btn" data-src="书法app口播.mp4">ASSET_04 · 书法app口播</button>
                     <button class="rw-var-btn" data-src="ai个人练习兰蔻小黑瓶广告.mp4">ASSET_05 · 兰蔻小黑瓶广告</button>
+                    <button class="rw-var-btn" data-src="pU_xtgvIJoE" data-type="youtube">ASSET_06 · Shorts 1</button>
+                    <button class="rw-var-btn" data-src="eUaxx5JlSKs" data-type="youtube">ASSET_07 · Shorts 2</button>
+                    <button class="rw-var-btn" data-src="XpGuIYu4Wfg" data-type="youtube">ASSET_08 · Shorts 3</button>
+                    <button class="rw-var-btn" data-src="WVcQmg9ITbU" data-type="youtube">ASSET_09 · Shorts 4</button>
                 </div>
                 <div class="rw-video">
                     <video src="../works/video/夏末.mp4" controls playsinline preload="metadata"></video>
+                    <iframe src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:none;"></iframe>
                 </div>
                 <div class="rw-head"><h3>AI 视频</h3><span class="rw-type">AI VIDEO / POST-PROCESSING</span></div>
                 <p class="rw-desc" id="xiamo-desc">一个音乐mv的预告开头，使用Libtv和AE制作<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
@@ -916,13 +925,27 @@
                         const desc = descMap[btn.dataset.src] || 'AI 视频个人练习合集。';
                         descEl.innerHTML = desc + '<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span>';
                     }
-                    if (videoEl) {
+                    const isYoutube = btn.dataset.type === 'youtube';
+                    if (videoEl && iframeEl) {
+                        if (isYoutube) {
+                            videoEl.style.display = 'none';
+                            iframeEl.style.display = '';
+                            iframeEl.src = 'https://www.youtube.com/embed/' + btn.dataset.src + '?rel=0&controls=1&modestbranding=1&vq=hd1080';
+                        } else {
+                            iframeEl.style.display = 'none';
+                            iframeEl.src = '';
+                            videoEl.style.display = '';
+                            videoEl.poster = btn.dataset.poster || '';
+                            videoEl.src = '../works/video/' + btn.dataset.src;
+                            videoEl.dataset.played = '0';
+                            videoEl.load();
+                        }
+                    } else if (videoEl) {
                         videoEl.poster = btn.dataset.poster || '';
                         videoEl.src = '../works/video/' + btn.dataset.src;
                         videoEl.dataset.played = '0';
                         videoEl.load();
-                    }
-                    if (iframeEl) {
+                    } else if (iframeEl) {
                         iframeEl.src = 'https://www.youtube.com/embed/' + btn.dataset.src + '?rel=0&controls=1&modestbranding=1&vq=hd1080';
                     }
                 });
