@@ -654,6 +654,11 @@
                 </div>
             </div>
 
+            <div class="split-item" data-idx="7">
+                <div class="thumb"><div class="placeholder">📱</div></div>
+                <div class="info"><h4>小红书 · 人物视频</h4><span>REFERENCE <span class="badge" style="border-color:var(--ak-accent-info);color:var(--ak-accent-info);">×2</span></span></div>
+            </div>
+
         </aside>
 
         <div class="split-main" id="splitMain">
@@ -756,6 +761,26 @@
                 <p class="rw-desc">Product showcase retrieved.<br><br>[ TYPE ]: <span class="highlight-tag">APP SHOWCASE / HORIZONTAL VIDEO</span></p>
             </div>
 
+            <div class="rw-card interactable" id="rw-xhs">
+                <div class="rw-num">08</div>
+                <div class="rw-video" style="display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap; padding:40px 20px; background:linear-gradient(135deg, rgba(255,36,66,.08), rgba(0,216,255,.04)); border-color:rgba(255,36,66,.2);">
+                    <div style="text-align:center;">
+                        <div style="font:900 2.5rem 'Space Mono',monospace; color:rgba(255,36,66,.5); line-height:1;">📕</div>
+                        <div style="font:800 .7rem 'Space Mono',monospace; color:var(--ak-text-muted); margin-top:8px;">XIAOHONGSHU</div>
+                    </div>
+                </div>
+                <div class="rw-head"><h3>小红书 · 人物视频参考</h3><span class="rw-type">REFERENCE / XHS</span></div>
+                <p class="rw-desc">港星人物视频素材参考，来自小红书平台。<br><br>[ TYPE ]: <span class="highlight-tag">REFERENCE / XIAOHONGSHU</span></p>
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;">
+                    <a href="https://www.xiaohongshu.com/explore/6837ea1b000000000c038d3e" target="_blank" rel="noopener" class="rw-link" style="flex:1; min-width:220px; justify-content:center; text-align:center;">
+                        ▸ 邝文珣 · 被直男老公吐槽婚后大变样
+                    </a>
+                    <a href="https://www.xiaohongshu.com/explore/684645210000000021002803" target="_blank" rel="noopener" class="rw-link" style="flex:1; min-width:220px; justify-content:center; text-align:center; border-color:rgba(245,166,35,.4); color:var(--ak-accent-warn);">
+                        ▸ 陆诗韵 · 港姐两幅面孔 I/E 人
+                    </a>
+                </div>
+            </div>
+
         </div>
 
     </div>
@@ -774,7 +799,7 @@
 
         const splitMain = document.getElementById('splitMain');
         const splitSidebar = document.getElementById('splitSidebar');
-        const rightIds = ['rw-showreel','rw-mobvista','rw-xiamo','rw-ad','rw-comparison','rw-hkweb3','rw-app'];
+        const rightIds = ['rw-showreel','rw-mobvista','rw-xiamo','rw-ad','rw-comparison','rw-hkweb3','rw-app','rw-xhs'];
 
         /* ============ 侧边栏视频性能优化 (悬停播放 + 关键帧定格) ============ */
         document.querySelectorAll('.split-item .thumb video, .split-sub-item .sub-thumb video').forEach(vid => {
