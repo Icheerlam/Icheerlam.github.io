@@ -666,9 +666,13 @@
                 </div>
             </div>
 
-            <div class="split-item" data-idx="7">
-                <div class="thumb"><div class="placeholder">📱</div></div>
-                <div class="info"><h4>小红书 · 人物视频</h4><span>REFERENCE <span class="badge" style="border-color:var(--ak-accent-info);color:var(--ak-accent-info);">×2</span></span></div>
+            <div class="split-item has-subs" data-idx="7">
+                <div class="thumb"><video src="../works/video/小红书_邝文珣.mp4" muted loop playsinline preload="metadata"></video></div>
+                <div class="info"><h4>小红书 · 人物视频</h4><span>REFERENCE <span class="arrow">▸</span></span><span class="badge">×2</span></div>
+                <div class="split-sub-items">
+                    <div class="split-sub-item active" data-variant="0"><div class="sub-thumb"><video src="../works/video/小红书_邝文珣.mp4" muted loop playsinline preload="metadata"></video></div>邝文珣 · 被直男老公吐槽婚后大变样</div>
+                    <div class="split-sub-item" data-variant="1"><div class="sub-thumb"><video src="../works/video/小红书_陆诗韵.mp4" muted loop playsinline preload="metadata"></video></div>陆诗韵 · 港姐两幅面孔 I or E人</div>
+                </div>
             </div>
 
         </aside>
@@ -775,24 +779,16 @@
 
             <div class="rw-card interactable" id="rw-xhs">
                 <div class="rw-num">08</div>
-                <div class="rw-head"><h3>小红书 · 人物视频参考</h3><span class="rw-type">REFERENCE / XHS</span></div>
-                <p class="rw-desc">港星人物视频素材参考。小红书平台限制无法直接嵌入播放，点击下方链接跳转查看。</p>
-                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; margin-top:20px;">
-                    <a href="https://www.xiaohongshu.com/discovery/item/6837ea1b000000000c038d3e?source=webshare&xhsshare=pc_web&xsec_token=AByd9b6VoWCdULV1nsCfuBvjCW8x52ydrANH-H-ctb_8U=&xsec_source=pc_share" target="_blank" rel="noopener" class="xhs-ref-card">
-                        <div style="width:56px; height:56px; flex-shrink:0; background:linear-gradient(135deg, rgba(255,36,66,.3), rgba(255,36,66,.05)); border:1px solid rgba(255,36,66,.25); display:flex; align-items:center; justify-content:center; font-size:1.4rem;">📕</div>
-                        <div style="min-width:0;">
-                            <div style="font:800 .85rem 'Space Mono',monospace; color:var(--ak-text-main); margin-bottom:4px;">邝文珣</div>
-                            <div style="font:.72rem 'Space Grotesk',sans-serif; color:var(--ak-accent-info); line-height:1.4; word-break:break-all;">被直男老公吐槽婚后大变样</div>
-                        </div>
-                    </a>
-                    <a href="https://www.xiaohongshu.com/discovery/item/684645210000000021002803?source=webshare&xhsshare=pc_web&xsec_token=ABcy8qoCLL12BpkN5dBLQ4_nc4C36_rbvmVjyX8ehqe90=&xsec_source=pc_share" target="_blank" rel="noopener" class="xhs-ref-card">
-                        <div style="width:56px; height:56px; flex-shrink:0; background:linear-gradient(135deg, rgba(245,166,35,.3), rgba(245,166,35,.05)); border:1px solid rgba(245,166,35,.25); display:flex; align-items:center; justify-content:center; font-size:1.4rem;">📕</div>
-                        <div style="min-width:0;">
-                            <div style="font:800 .85rem 'Space Mono',monospace; color:var(--ak-text-main); margin-bottom:4px;">陆诗韵Sharon</div>
-                            <div style="font:.72rem 'Space Grotesk',sans-serif; color:var(--ak-accent-warn); line-height:1.4; word-break:break-all;">港姐两幅面孔？ I or E人？</div>
-                        </div>
-                    </a>
+                <div class="rw-variants" data-work="xhs">
+                    <button class="rw-var-btn active" data-src="小红书_邝文珣.mp4">ASSET_01 · 邝文珣 · 被直男老公吐槽婚后大变样</button>
+                    <button class="rw-var-btn" data-src="小红书_陆诗韵.mp4">ASSET_02 · 陆诗韵 · 港姐两幅面孔 I/E 人</button>
                 </div>
+                <div class="rw-video">
+                    <video src="../works/video/小红书_邝文珣.mp4" controls playsinline preload="metadata"></video>
+                </div>
+                <div class="rw-head"><h3>小红书 · 人物视频参考</h3><span class="rw-type">REFERENCE / XIAOHONGSHU</span></div>
+                <p class="rw-desc">小红书港星人物视频素材参考。<br><br>[ TYPE ]: <span class="highlight-tag">REFERENCE / XIAOHONGSHU</span></p>
+                <a href="https://www.xiaohongshu.com/explore/6837ea1b000000000c038d3e" target="_blank" rel="noopener" class="rw-link" id="xhs-link">▸ 邝文珣 · 小红书原帖</a>
             </div>
 
         </div>
@@ -947,6 +943,16 @@
                             : 'https://www.liblib.tv/canvas/share?spaceId=9742&projectId=bd18010cba024317a0353a4da0493176';
                         storyboardLink.textContent = isLancome ? '▸ 兰蔻小黑瓶广告 · 故事版' : '▸ 夏末 · 故事版';
                         storyboardLink.style.display = 'inline-flex';
+                    }
+                    const xhsLink = card.querySelector('#xhs-link');
+                    if (xhsLink) {
+                        const xhsUrls = [
+                            'https://www.xiaohongshu.com/explore/6837ea1b000000000c038d3e',
+                            'https://www.xiaohongshu.com/explore/684645210000000021002803'
+                        ];
+                        const xhsTexts = ['▸ 邝文珣 · 小红书原帖', '▸ 陆诗韵 · 小红书原帖'];
+                        xhsLink.href = xhsUrls[index] || xhsUrls[0];
+                        xhsLink.textContent = xhsTexts[index] || xhsTexts[0];
                     }
                     const descEl = card.querySelector('#xiamo-desc');
                     if (descEl) {
