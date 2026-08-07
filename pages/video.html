@@ -416,6 +416,18 @@
             clip-path: polygon(0 0, calc(100% - 7px) 0, 100% 7px, 100% 100%, 7px 100%, 0 calc(100% - 7px));
         }
 
+        /* 小红书参考卡片 */
+        .xhs-ref-card {
+            display:flex; align-items:center; gap:14px; padding:20px 22px;
+            background:rgba(0,0,0,.2); border:1px solid rgba(255,255,255,.08);
+            text-decoration:none; color:inherit; transition:.3s;
+            clip-path:polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+        }
+        .xhs-ref-card:hover {
+            background:rgba(0,216,255,.06); border-color:var(--ak-accent-info);
+            transform:translateY(-3px); box-shadow:0 12px 30px rgba(0,0,0,.3);
+        }
+
         @media (min-width: 901px) {
             .rw-card {
                 display: block;
@@ -763,20 +775,22 @@
 
             <div class="rw-card interactable" id="rw-xhs">
                 <div class="rw-num">08</div>
-                <div class="rw-video" style="display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap; padding:40px 20px; background:linear-gradient(135deg, rgba(255,36,66,.08), rgba(0,216,255,.04)); border-color:rgba(255,36,66,.2);">
-                    <div style="text-align:center;">
-                        <div style="font:900 2.5rem 'Space Mono',monospace; color:rgba(255,36,66,.5); line-height:1;">📕</div>
-                        <div style="font:800 .7rem 'Space Mono',monospace; color:var(--ak-text-muted); margin-top:8px;">XIAOHONGSHU</div>
-                    </div>
-                </div>
                 <div class="rw-head"><h3>小红书 · 人物视频参考</h3><span class="rw-type">REFERENCE / XHS</span></div>
-                <p class="rw-desc">港星人物视频素材参考，来自小红书平台。<br><br>[ TYPE ]: <span class="highlight-tag">REFERENCE / XIAOHONGSHU</span></p>
-                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-top:16px;">
-                    <a href="https://www.xiaohongshu.com/explore/6837ea1b000000000c038d3e" target="_blank" rel="noopener" class="rw-link" style="flex:1; min-width:220px; justify-content:center; text-align:center;">
-                        ▸ 邝文珣 · 被直男老公吐槽婚后大变样
+                <p class="rw-desc">港星人物视频素材参考。小红书平台限制无法直接嵌入播放，点击下方链接跳转查看。</p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; margin-top:20px;">
+                    <a href="https://www.xiaohongshu.com/discovery/item/6837ea1b000000000c038d3e?source=webshare&xhsshare=pc_web&xsec_token=AByd9b6VoWCdULV1nsCfuBvjCW8x52ydrANH-H-ctb_8U=&xsec_source=pc_share" target="_blank" rel="noopener" class="xhs-ref-card">
+                        <div style="width:56px; height:56px; flex-shrink:0; background:linear-gradient(135deg, rgba(255,36,66,.3), rgba(255,36,66,.05)); border:1px solid rgba(255,36,66,.25); display:flex; align-items:center; justify-content:center; font-size:1.4rem;">📕</div>
+                        <div style="min-width:0;">
+                            <div style="font:800 .85rem 'Space Mono',monospace; color:var(--ak-text-main); margin-bottom:4px;">邝文珣</div>
+                            <div style="font:.72rem 'Space Grotesk',sans-serif; color:var(--ak-accent-info); line-height:1.4; word-break:break-all;">被直男老公吐槽婚后大变样</div>
+                        </div>
                     </a>
-                    <a href="https://www.xiaohongshu.com/explore/684645210000000021002803" target="_blank" rel="noopener" class="rw-link" style="flex:1; min-width:220px; justify-content:center; text-align:center; border-color:rgba(245,166,35,.4); color:var(--ak-accent-warn);">
-                        ▸ 陆诗韵 · 港姐两幅面孔 I/E 人
+                    <a href="https://www.xiaohongshu.com/discovery/item/684645210000000021002803?source=webshare&xhsshare=pc_web&xsec_token=ABcy8qoCLL12BpkN5dBLQ4_nc4C36_rbvmVjyX8ehqe90=&xsec_source=pc_share" target="_blank" rel="noopener" class="xhs-ref-card">
+                        <div style="width:56px; height:56px; flex-shrink:0; background:linear-gradient(135deg, rgba(245,166,35,.3), rgba(245,166,35,.05)); border:1px solid rgba(245,166,35,.25); display:flex; align-items:center; justify-content:center; font-size:1.4rem;">📕</div>
+                        <div style="min-width:0;">
+                            <div style="font:800 .85rem 'Space Mono',monospace; color:var(--ak-text-main); margin-bottom:4px;">陆诗韵Sharon</div>
+                            <div style="font:.72rem 'Space Grotesk',sans-serif; color:var(--ak-accent-warn); line-height:1.4; word-break:break-all;">港姐两幅面孔？ I or E人？</div>
+                        </div>
                     </a>
                 </div>
             </div>
