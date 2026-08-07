@@ -46,28 +46,54 @@
 
     if (audioToggle) {
         audioToggle.addEventListener('click', function () {
-            AK.audioEnabled = !AK.audioEnabled;
             if (AK.audioEnabled) {
-                audioToggle.innerHTML = '[ AUDIO: ON ]';
-                audioToggle.classList.remove('muted');
-                if (bgmAudio) { bgmAudio.volume = volOf(bgmVol); bgmAudio.play().catch(function () {}); }
-                AK.playSound(clickSound, clickVol);
-            } else {
+                // 当前 ON → 切换为 OFF
+                AK.audioEnabled = false;
                 audioToggle.innerHTML = '[ AUDIO: OFF ]';
                 audioToggle.classList.add('muted');
                 if (bgmAudio) bgmAudio.pause();
+            } else {
+                // 当前 OFF → 尝试切换为 ON
+                if (bgmAudio) {
+                    bgmAudio.volume = volOf(bgmVol);
+                    bgmAudio.play().then(function () {
+                        AK.audioEnabled = true;
+                        audioToggle.innerHTML = '[ AUDIO: ON ]';
+                        audioToggle.classList.remove('muted');
+                        AK.playSound(clickSound, clickVol);
+                    }).catch(function () {
+                        // 播放失败（极少见，用户手势通常不会被阻止），保持 OFF
+                        AK.audioEnabled = false;
+                        audioToggle.innerHTML = '[ AUDIO: OFF ]';
+                        audioToggle.classList.add('muted');
+                    });
+                } else {
+                    AK.audioEnabled = true;
+                    audioToggle.innerHTML = '[ AUDIO: ON ]';
+                    audioToggle.classList.remove('muted');
+                    AK.playSound(clickSound, clickVol);
+                }
             }
         });
     }
 
-    // 默认自动播放背景音乐
+    // 默认自动播放背景音乐（浏览器可能阻止，失败则同步 UI 为 OFF）
     if (AK.audioEnabled && bgmAudio) {
         bgmAudio.volume = volOf(bgmVol);
-        bgmAudio.play().catch(function () {});
-        if (audioToggle) {
-            audioToggle.innerHTML = '[ AUDIO: ON ]';
-            audioToggle.classList.remove('muted');
-        }
+        bgmAudio.play().then(function () {
+            // 自动播放成功，UI 保持 ON
+            if (audioToggle) {
+                audioToggle.innerHTML = '[ AUDIO: ON ]';
+                audioToggle.classList.remove('muted');
+            }
+        }).catch(function () {
+            // 浏览器阻止自动播放，同步状态为 OFF
+            AK.audioEnabled = false;
+            if (audioToggle) {
+                audioToggle.innerHTML = '[ AUDIO: OFF ]';
+                audioToggle.classList.add('muted');
+            }
+        });
     }
 
     if (volHeader && volumePanel) {
