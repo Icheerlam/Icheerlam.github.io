@@ -361,13 +361,13 @@
         </div>
 
         <button class="panel-btn btn-print" onclick="window.print()">🖨️ 导出为 PDF</button>
-        <button class="panel-btn btn-save" onclick="window.print()">💾 导出 PDF 简历</button>
+        <button class="panel-btn btn-save" onclick="saveResume()">💾 保存当前排版</button>
         
         <a href="../index.html" class="panel-btn btn-return">← [ RETURN ] 返回主页</a>
 
         <div class="hint-text">
-            * 提示：右侧简历区域的文字可以直接点击修改。<br>
-            * 点击"导出为 PDF"或"导出 PDF 简历"将打印输出为 A4 格式 PDF 文件。
+            * 提示：右侧简历文字可直接点击修改，调整排版后点击"保存"。<br>
+            * 保存的内容和排版设置会保留在浏览器中，下次打开自动恢复。
         </div>
     </div>
 
@@ -450,6 +450,8 @@
     </div>
 
     <script>
+        const RESUME_STORAGE_KEY = 'resume_saved_state_v1';
+
         /* RETURN 按钮环境适配：服务器跳转服务器主页，本地跳转 index.html */
         (function(){
             const homeUrl = window.location.hostname === '106.53.112.240' ? 'http://106.53.112.240/' : '../index.html';
@@ -459,13 +461,42 @@
         })();
 
         const resumeCanvas = document.getElementById('resume-canvas');
-        
+
+        function saveResume() {
+            const state = {
+                html: resumeCanvas.innerHTML,
+                fs: fsSlider.value,
+                lh: lhSlider.value,
+                margin: marginSlider.value,
+                savedAt: new Date().toISOString()
+            };
+            localStorage.setItem(RESUME_STORAGE_KEY, JSON.stringify(state));
+            // 短暂反馈
+            const btn = document.querySelector('.btn-save');
+            const orig = btn.textContent;
+            btn.textContent = '✓ 已保存';
+            btn.style.background = '#28a745';
+            setTimeout(() => { btn.textContent = orig; btn.style.background = '#000'; }, 1500);
+        }
+
+        function loadResume() {
+            const saved = localStorage.getItem(RESUME_STORAGE_KEY);
+            if (!saved) return;
+            try {
+                const state = JSON.parse(saved);
+                if (state.html) resumeCanvas.innerHTML = state.html;
+                if (state.fs) { fsSlider.value = state.fs; fsVal.innerText = state.fs + 'px'; resumeCanvas.style.setProperty('--resume-fs', state.fs + 'px'); }
+                if (state.lh) { lhSlider.value = state.lh; lhVal.innerText = state.lh; resumeCanvas.style.setProperty('--resume-lh', state.lh); }
+                if (state.margin) { marginSlider.value = state.margin; marginVal.innerText = state.margin + 'px'; resumeCanvas.style.setProperty('--resume-margin', state.margin + 'px'); }
+            } catch(e) { /* 忽略损坏的存档 */ }
+        }
+
         const fsSlider = document.getElementById('fs-slider');
         const fsVal = document.getElementById('fs-val');
         fsSlider.addEventListener('input', (e) => {
             const val = e.target.value;
-            fsVal.innerText = val + 'px'; 
-            resumeCanvas.style.setProperty('--resume-fs', val + 'px'); 
+            fsVal.innerText = val + 'px';
+            resumeCanvas.style.setProperty('--resume-fs', val + 'px');
         });
 
         const lhSlider = document.getElementById('lh-slider');
@@ -483,6 +514,9 @@
             marginVal.innerText = val + 'px';
             resumeCanvas.style.setProperty('--resume-margin', val + 'px');
         });
+
+        // 页面加载时恢复之前保存的状态
+        loadResume();
     </script>
 
 </body>
