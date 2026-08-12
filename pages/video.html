@@ -67,6 +67,10 @@
             font:700 .8rem 'Space Mono',monospace; cursor:pointer; z-index:1500; transition:.3s; }
         .theme-toggle-btn:hover { border-color:var(--ak-accent-info); color:var(--ak-accent-info); transform:translateY(-3px); }
 
+        /* 中英文切换 */
+        body.lang-en [data-lang="zh"] { display: none !important; }
+        body:not(.lang-en) [data-lang="en"] { display: none !important; }
+
         /* ============ 双栏布局 ============ */
         .page-header { text-align:center; padding:100px 5vw 10px; position:relative; z-index:10; }
         .page-header h1 { font:900 clamp(22px,3vw,38px) 'Space Mono'; color:var(--ak-accent-info); letter-spacing:-1px; margin-bottom:4px; }
@@ -559,7 +563,7 @@
         }
     </style>
 </head>
-<body class="dark-mode">
+<body class="dark-mode lang-en">
 
     <audio id="bgmAudio" loop preload="auto"><source src="../assets/audio/Musicbox.mp3" type="audio/mpeg"></audio>
     <audio id="hoverSound" preload="auto"><source src="../assets/audio/鼠标悬停.mp3" type="audio/mpeg"></audio>
@@ -577,7 +581,7 @@
         </div>
     </div>
 
-    <button class="theme-toggle-btn interactable" id="themeBtn">SYS_DARK</button>
+    <button class="theme-toggle-btn interactable" id="langBtn">中</button>
 
 
     <nav>
@@ -699,8 +703,10 @@
                     <video src="../works/video/mobvista十二生序1.mp4#t=29" controls playsinline preload="metadata" onplay="if(this.dataset.played!=='1'){this.currentTime=0;this.dataset.played='1';}"></video>
                 </div>
                 <div class="rw-head"><h3>Mobvista 十二生序</h3><span class="rw-type">VIDEO DESIGN / BRANDING</span></div>
-                <p class="rw-desc">接了前mentor的外包，做了两个版本<br>年会大屏投屏视频<br><br>[ TYPE ]: <span class="highlight-tag">VIDEO DESIGN / BRANDING</span></p>
-                <a href="分析报告_mobvista十二生序1_mp4_vs_mobvista十二生序2_mp4.html" class="rw-link">▸ 查看对比分析报告</a>
+                <p class="rw-desc" data-lang="zh">接了前mentor的外包，做了两个版本<br>年会大屏投屏视频<br><br>[ TYPE ]: <span class="highlight-tag">VIDEO DESIGN / BRANDING</span></p>
+                <p class="rw-desc" data-lang="en">Two versions produced as a freelance project for a former mentor.<br>Annual gala large-screen projection video.<br><br>[ TYPE ]: <span class="highlight-tag">VIDEO DESIGN / BRANDING</span></p>
+                <a href="分析报告_mobvista十二生序1_mp4_vs_mobvista十二生序2_mp4.html" class="rw-link" data-lang="zh">▸ 查看对比分析报告</a>
+                <a href="分析报告_mobvista十二生序1_mp4_vs_mobvista十二生序2_mp4.html" class="rw-link" data-lang="en">▸ View Comparison Report</a>
             </div>
 
             <div class="rw-card interactable" id="rw-xiamo">
@@ -722,7 +728,8 @@
                     <iframe src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:none;"></iframe>
                 </div>
                 <div class="rw-head"><h3>AI 视频</h3><span class="rw-type">AI VIDEO / POST-PROCESSING</span></div>
-                <p class="rw-desc" id="xiamo-desc">一个音乐mv的预告开头，使用Libtv和AE制作<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
+                <p class="rw-desc" id="xiamo-desc" data-lang="zh">一个音乐mv的预告开头，使用Libtv和AE制作<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
+                <p class="rw-desc" data-lang="en">A music video trailer opener, created with Libtv and After Effects.<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
                 <a href="https://www.liblib.tv/canvas/share?spaceId=9742&projectId=bd18010cba024317a0353a4da0493176" target="_blank" class="rw-link" id="xiamo-storyboard">▸ 夏末 · 故事版</a>
             </div>
 
@@ -732,8 +739,10 @@
                     <iframe src="https://www.youtube.com/embed/BziFgsUG-y4?rel=0&controls=1&modestbranding=1&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
                 <div class="rw-head"><h3>Project // Logistical Ad</h3><span class="rw-type">COMMERCIAL / ADVERTISEMENT</span></div>
-                <p class="rw-desc">实习期间和脚本策划一起制作的广告<br><br>[ TYPE ]: <span class="highlight-tag">COMMERCIAL / ADVERTISEMENT</span></p>
-                <a href="分析报告_From zero to hero__mp4.html" class="rw-link">▸ 查看分析报告</a>
+                <p class="rw-desc" data-lang="zh">实习期间和脚本策划一起制作的广告<br><br>[ TYPE ]: <span class="highlight-tag">COMMERCIAL / ADVERTISEMENT</span></p>
+                <p class="rw-desc" data-lang="en">Commercial produced during internship in collaboration with the script planner.<br><br>[ TYPE ]: <span class="highlight-tag">COMMERCIAL / ADVERTISEMENT</span></p>
+                <a href="分析报告_From zero to hero__mp4.html" class="rw-link" data-lang="zh">▸ 查看分析报告</a>
+                <a href="分析报告_From zero to hero__mp4.html" class="rw-link" data-lang="en">▸ View Analysis Report</a>
             </div>
 
             <div class="rw-card interactable" id="rw-comparison">
@@ -746,8 +755,9 @@
                     <video src="../works/video/2B套地洞刷怪包装.mp4" controls playsinline preload="metadata"></video>
                 </div>
                 <div class="rw-head"><h3>Before & After // 包装对比</h3><span class="rw-type">POST-PROCESSING / VFX</span></div>
-                <p class="rw-desc">Visual enhancement complete.<br><br>[ TYPE ]: <span class="highlight-tag">POST-PROCESSING / VFX</span></p>
-                <a href="分析报告_2B套地洞刷怪_包装前_mp4_vs_包装后_mp4.html" target="_blank" class="rw-link">▸ 查看分析报告</a>
+                <p class="rw-desc" data-lang="zh">Visual enhancement complete.<br><br>[ TYPE ]: <span class="highlight-tag">POST-PROCESSING / VFX</span></p>
+                <a href="分析报告_2B套地洞刷怪_包装前_mp4_vs_包装后_mp4.html" target="_blank" class="rw-link" data-lang="zh">▸ 查看分析报告</a>
+                <a href="分析报告_2B套地洞刷怪_包装前_mp4_vs_包装后_mp4.html" target="_blank" class="rw-link" data-lang="en">▸ View Analysis Report</a>
             </div>
 
             <div class="rw-card interactable" id="rw-hkweb3">
@@ -761,8 +771,10 @@
                     <iframe src="https://www.youtube.com/embed/Pqat0JJ6Dkc?rel=0&controls=1&modestbranding=1&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
                 <div class="rw-head"><h3>Web3 项目</h3><span class="rw-type">VIDEO DESIGN / WEB3</span></div>
-                <p class="rw-desc">港中大 FMBA Web3 + 香港 Web3 协会<br><br>[ TYPE ]: <span class="highlight-tag">VIDEO DESIGN / WEB3</span></p>
-                <a href="分析报告_港中大FMBA_Web3协会_mp4.html" class="rw-link">▸ 查看分析报告</a>
+                <p class="rw-desc" data-lang="zh">港中大 FMBA Web3 + 香港 Web3 协会<br><br>[ TYPE ]: <span class="highlight-tag">VIDEO DESIGN / WEB3</span></p>
+                <p class="rw-desc" data-lang="en">CUHK FMBA Web3 + Hong Kong Web3 Association<br><br>[ TYPE ]: <span class="highlight-tag">VIDEO DESIGN / WEB3</span></p>
+                <a href="分析报告_港中大FMBA_Web3协会_mp4.html" class="rw-link" data-lang="zh">▸ 查看分析报告</a>
+                <a href="分析报告_港中大FMBA_Web3协会_mp4.html" class="rw-link" data-lang="en">▸ View Analysis Report</a>
             </div>
 
             <div class="rw-card interactable" id="rw-app">
@@ -789,7 +801,8 @@
                     <video src="../works/video/小红书_邝文珣.mp4" controls playsinline preload="metadata"></video>
                 </div>
                 <div class="rw-head"><h3>小红书 · 人物视频参考</h3><span class="rw-type">REFERENCE / XIAOHONGSHU</span></div>
-                <p class="rw-desc">港星采访多机位剪辑<br><br>[ TYPE ]: <span class="highlight-tag">REFERENCE / XIAOHONGSHU</span></p>
+                <p class="rw-desc" data-lang="zh">港星采访多机位剪辑<br><br>[ TYPE ]: <span class="highlight-tag">REFERENCE / XIAOHONGSHU</span></p>
+                <p class="rw-desc" data-lang="en">HK celebrity interview multi-cam edit<br><br>[ TYPE ]: <span class="highlight-tag">REFERENCE / XIAOHONGSHU</span></p>
                 <a href="https://www.xiaohongshu.com/explore/6837ea1b000000000c038d3e" target="_blank" rel="noopener" class="rw-link" id="xhs-link">▸ 邝文珣 · 小红书原帖</a>
             </div>
 
@@ -1079,12 +1092,30 @@
             }
         });
 
-        /* ============ 主题切换 ============ */
-        const themeBtn = document.getElementById('themeBtn');
-        themeBtn.addEventListener('click', () => {
-            document.body.classList.toggle('light-mode');
-            themeBtn.innerHTML = document.body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
-        });
+        /* ============ 语言切换 ============ */
+        const langBtn = document.getElementById('langBtn');
+        const LANG_KEY = 'site_lang_pref';
+        function setLang(lang) {
+            if (lang === 'en') {
+                document.body.classList.add('lang-en');
+                if (langBtn) langBtn.textContent = '中';
+            } else {
+                document.body.classList.remove('lang-en');
+                if (langBtn) langBtn.textContent = 'EN';
+            }
+            localStorage.setItem(LANG_KEY, lang);
+            document.querySelectorAll('[data-lang-zh][data-lang-en]').forEach(el => {
+                el.textContent = el.getAttribute('data-lang-' + lang);
+            });
+        }
+        if (langBtn) {
+            const saved = localStorage.getItem(LANG_KEY);
+            setLang(saved || 'en');
+            langBtn.addEventListener('click', () => {
+                const next = document.body.classList.contains('lang-en') ? 'zh' : 'en';
+                setLang(next);
+            });
+        }
     </script>
 </body>
 </html>
