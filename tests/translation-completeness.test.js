@@ -52,3 +52,14 @@ test('resume content is not hidden as a Chinese-only page block', () => {
   const html = fs.readFileSync(path.join(root, 'pages/resume.html'), 'utf8');
   assert.doesNotMatch(html, /id=["']resume-canvas["'][^>]*data-lang=["']zh["']/);
 });
+
+test('data and vibecoding pages pair every Chinese block with English', () => {
+  const failures = [];
+  for (const relative of ['pages/data.html', 'pages/vibecoding.html']) {
+    const html = fs.readFileSync(path.join(root, relative), 'utf8');
+    const chinese = (html.match(/data-lang=["']zh["']/g) || []).length;
+    const english = (html.match(/data-lang=["']en["']/g) || []).length;
+    if (chinese !== english) failures.push(`${relative}: zh=${chinese}, en=${english}`);
+  }
+  assert.deepEqual(failures, []);
+});
