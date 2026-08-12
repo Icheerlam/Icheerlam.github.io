@@ -45,6 +45,9 @@
         .theme-toggle-btn { position:fixed; bottom:30px; right:30px; background:var(--ak-bg-panel); color:var(--ak-text-muted); border:1px solid var(--ak-border); padding:12px 16px; font-family:'Space Mono',monospace; font-size:0.8rem; font-weight:700; cursor:pointer; z-index:1500; transition:0.3s; box-shadow:0 4px 10px rgba(0,0,0,0.5); }
         .theme-toggle-btn:hover { border-color:var(--ak-accent-info); color:var(--ak-accent-info); transform:translateY(-3px); }
 
+        body.lang-en [data-lang="zh"] { display: none !important; }
+        body:not(.lang-en) [data-lang="en"] { display: none !important; }
+
         .page-header { text-align:center; margin:140px auto 50px; animation:fadeUp 0.6s forwards; position:relative; z-index:10; }
         .page-header h1 { font:800 2.2rem 'Space Mono'; color:var(--ak-accent-warn); margin-bottom:10px; }
         .page-header p { color:var(--ak-text-muted); font-family:'Space Mono',monospace; }
@@ -130,7 +133,7 @@
         }
     </style>
 </head>
-<body class="dark-mode">
+<body class="dark-mode lang-en">
 
     <audio id="bgmAudio" loop preload="auto"><source src="../assets/audio/Sowing Chia Seed.mp3" type="audio/mpeg"></audio>
     <audio id="hoverSound" preload="auto"><source src="../assets/audio/鼠标悬停.mp3" type="audio/mpeg"></audio>
@@ -164,7 +167,7 @@
         </div>
     </div>
 
-    <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
+    <button class="theme-toggle-btn interactable" id="langBtn">中</button>
 
     <nav>
         <a href="https://icheerlam.github.io/" class="nav-logo interactable">PRTS // CLARENCE YE</a>
@@ -181,66 +184,66 @@
 
     <header class="page-header">
         <h1>[ PERSONAL KNOWLEDGE BASE ]</h1>
-        <p>GitHub 项目 · AI Agent Skill · 自主收录</p>
+        <p><span data-lang="zh">GitHub 项目 · AI Agent Skill · 自主收录</span><span data-lang="en">GitHub Projects · AI Agent Skills · Personal Archive</span></p>
     </header>
 
     <main class="container">
         <div class="toolbar">
             <div class="search-box">
-                <input type="text" id="searchInput" placeholder="搜索项目、技能、标签..." class="interactable">
+                <input type="text" id="searchInput" placeholder="搜索项目、技能、标签..." class="interactable" data-lang-zh="搜索项目、技能、标签..." data-lang-en="Search projects, skills, tags...">
                 <span class="search-icon">&#128269;</span>
             </div>
             <div class="filter-tabs" id="filterTabs">
-                <button class="filter-tab active interactable" data-cat="all">全部</button>
-                <button class="filter-tab interactable" data-cat="github">GitHub 项目</button>
-                <button class="filter-tab interactable" data-cat="skill">AI Agent Skill</button>
+                <button class="filter-tab active interactable" data-cat="all"><span data-lang="zh">全部</span><span data-lang="en">All</span></button>
+                <button class="filter-tab interactable" data-cat="github"><span data-lang="zh">GitHub 项目</span><span data-lang="en">GitHub Projects</span></button>
+                <button class="filter-tab interactable" data-cat="skill"><span data-lang="zh">AI Agent 技能</span><span data-lang="en">AI Agent Skill</span></button>
             </div>
-            <button class="add-btn interactable" id="btnAdd">+ 添加条目</button>
+            <button class="add-btn interactable" id="btnAdd" data-lang-zh="+ 添加条目" data-lang-en="+ Add Entry">+ 添加条目</button>
             <span class="result-count" id="resultCount"></span>
         </div>
 
         <div class="knowledge-grid" id="knowledgeGrid"></div>
         <div class="no-result" id="noResult">
             <div class="icon">&#128270;</div>
-            <p>NO_ENTRIES_FOUND</p>
+            <p data-lang-zh="没有找到匹配条目" data-lang-en="NO_ENTRIES_FOUND">NO_ENTRIES_FOUND</p>
         </div>
     </main>
 
     <!-- 添加条目弹窗 -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
-            <h2>[ ADD NEW ENTRY ]</h2>
+            <h2 data-lang-zh="[ 添加新条目 ]" data-lang-en="[ ADD NEW ENTRY ]">[ ADD NEW ENTRY ]</h2>
             <div class="form-group">
-                <label>类型 *</label>
+                <label><span data-lang="zh">类型 *</span><span data-lang="en">Category *</span></label>
                 <select id="formCat">
                     <option value="github">GitHub 项目</option>
                     <option value="skill">AI Agent Skill</option>
                 </select>
             </div>
             <div class="form-group">
-                <label>名称 *</label>
+                <label><span data-lang="zh">名称 *</span><span data-lang="en">Name *</span></label>
                 <input type="text" id="formTitle" placeholder="项目或技能名称">
             </div>
             <div class="form-group">
-                <label>链接</label>
+                <label><span data-lang="zh">链接</span><span data-lang="en">Link</span></label>
                 <input type="url" id="formLink" placeholder="https://github.com/... 或相关链接">
             </div>
             <div class="form-group">
-                <label>下载链接</label>
+                <label><span data-lang="zh">下载链接</span><span data-lang="en">Download Link</span></label>
                 <input type="url" id="formDl" placeholder="文件下载地址或相对路径">
             </div>
             <div class="form-group">
-                <label>描述 *</label>
+                <label><span data-lang="zh">描述 *</span><span data-lang="en">Description *</span></label>
                 <textarea id="formDesc" placeholder="简要描述这个项目或技能的用途..."></textarea>
             </div>
             <div class="form-group">
-                <label>标签</label>
+                <label><span data-lang="zh">标签</span><span data-lang="en">Tags</span></label>
                 <input type="text" id="formTags" placeholder="用逗号分隔，如：AI, Python, 自动化">
-                <span class="hint">用逗号分隔多个标签</span>
+                <span class="hint" data-lang-zh="用逗号分隔多个标签" data-lang-en="Separate multiple tags with commas">用逗号分隔多个标签</span>
             </div>
             <div class="modal-actions">
-                <button class="btn-cancel interactable" id="btnCancel">取消</button>
-                <button class="btn-submit interactable" id="btnSubmit">确认添加</button>
+                <button class="btn-cancel interactable" id="btnCancel" data-lang-zh="取消" data-lang-en="Cancel">取消</button>
+                <button class="btn-submit interactable" id="btnSubmit" data-lang-zh="确认添加" data-lang-en="Confirm">确认添加</button>
             </div>
         </div>
     </div>
@@ -325,14 +328,15 @@
             if(data.length === 0) {
                 grid.style.display = 'none';
                 noResult.style.display = 'block';
-                resultCount.textContent = '0 条结果';
+                resultCount.textContent = (document.body.classList.contains('lang-en') ? '0 results' : '0 条结果');
                 return;
             }
             grid.style.display = '';
             noResult.style.display = 'none';
-            resultCount.textContent = data.length + ' 条结果';
+            resultCount.textContent = (document.body.classList.contains('lang-en') ? data.length + ' results' : data.length + ' 条结果');
             data.forEach((item, idx) => {
-                const catLabel = item.cat === 'github' ? 'GitHub 项目' : 'AI Agent Skill';
+                const catLabelZh = item.cat === 'github' ? 'GitHub 项目' : 'AI Agent 技能';
+                const catLabelEn = item.cat === 'github' ? 'GitHub Project' : 'AI Agent Skill';
                 const card = document.createElement('div');
                 card.className = 'knowledge-card interactable';
                 card.style.animationDelay = (idx * 0.04) + 's';
@@ -343,13 +347,13 @@
                     ? `<a href="${item.link}" target="_blank" class="k-card-link interactable" onclick="event.stopPropagation()">OPEN &#8599;</a>`
                     : '';
                 const dlHtml = item.download
-                    ? `<a href="${item.download}" class="k-card-dl interactable" onclick="event.stopPropagation()">&#128229; 下载</a>`
+                    ? `<a href="${item.download}" class="k-card-dl interactable" onclick="event.stopPropagation()" data-lang-zh="&#128229; 下载" data-lang-en="&#128229; Download">&#128229; 下载</a>`
                     : '';
                 const dateHtml = item.date || '';
                 card.innerHTML = `
                     <div class="k-card-header">
-                        <span class="k-card-category ${item.cat}">${catLabel}</span>
-                        <button class="k-card-delete interactable" data-id="${item.id}" title="删除此条目">DEL</button>
+                        <span class="k-card-category ${item.cat}" data-lang-zh="${catLabelZh}" data-lang-en="${catLabelEn}">${catLabelZh}</span>
+                        <button class="k-card-delete interactable" data-id="${item.id}" title="DEL" data-lang-zh="删除此条目" data-lang-en="Delete this entry">DEL</button>
                     </div>
                     <h3 class="k-card-title">${escapeHtml(item.title)}</h3>
                     <p class="k-card-desc">${escapeHtml(item.desc)}</p>
@@ -367,7 +371,7 @@
                     e.stopPropagation();
                     const id = parseInt(btn.dataset.id);
                     if(id < USER_MIN_ID) {
-                        if(!confirm('删除该预设条目？（可通过清除浏览器站点数据恢复）')) return;
+                        if(!confirm(document.body.classList.contains('lang-en') ? 'Delete this preset entry? (Can be restored by clearing browser site data)' : '删除该预设条目？（可通过清除浏览器站点数据恢复）')) return;
                         deletedIds.add(id);
                         saveDeletedIds(deletedIds);
                     } else {
@@ -557,12 +561,19 @@
                 }
             });
 
-            const themeBtn = document.getElementById('themeBtn');
-            const body = document.body;
-            themeBtn.addEventListener('click', () => {
-                body.classList.toggle('light-mode');
-                themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
-            });
+            const langBtn = document.getElementById('langBtn');
+            const LANG_KEY = 'site_lang_pref';
+            function setLang(lang) {
+                if (lang === 'en') { document.body.classList.add('lang-en'); if (langBtn) langBtn.textContent = '中'; }
+                else { document.body.classList.remove('lang-en'); if (langBtn) langBtn.textContent = 'EN'; }
+                localStorage.setItem(LANG_KEY, lang);
+                document.querySelectorAll('[data-lang-zh][data-lang-en]').forEach(el => { el.textContent = el.getAttribute('data-lang-' + lang); });
+                const si = document.getElementById('searchInput');
+                if (si && si.hasAttribute('data-lang-' + lang)) si.placeholder = si.getAttribute('data-lang-' + lang);
+            }
+            if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'en'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
+            /* 语言切换时同步更新搜索框 placeholder */
+            if (langBtn) { const savedLang = localStorage.getItem(LANG_KEY) || 'en'; document.getElementById('searchInput').placeholder = document.getElementById('searchInput').getAttribute('data-lang-' + savedLang); }
         });
     </script>
 </body>

@@ -236,6 +236,9 @@
             box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5), 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
+        body.lang-en [data-lang="zh"] { display: none !important; }
+        body:not(.lang-en) [data-lang="en"] { display: none !important; }
+
         /* ================= 5. 简历内部的排版细节 ================= */
         header { text-align: center; margin-bottom: 25px; }
         header h1 { font-size: 28px; font-weight: 700; letter-spacing: 4px; margin-bottom: 15px; color: #000; }
@@ -319,7 +322,7 @@
         }
     </style>
 </head>
-<body>
+<body class="lang-en">
 
     <!-- 顶部导航栏 -->
     <nav class="top-nav" id="no-print-area">
@@ -335,9 +338,10 @@
 
     <div class="editor-panel" id="no-print-area">
         <h3>排版控制器</h3>
+        <button id="langBtn" style="width:100%;padding:8px;margin-bottom:12px;background:#f0f0f0;border:1px solid #ccc;border-radius:4px;font-weight:bold;cursor:pointer;">中</button>
         
         <div class="control-group">
-            <label>正文字体大小</label>
+            <label>字体大小 / Font Size</label>
             <div class="slider-wrapper">
                 <input type="range" id="fs-slider" min="12" max="18" step="1" value="14">
                 <span class="val-display" id="fs-val">14px</span>
@@ -360,7 +364,7 @@
             </div>
         </div>
 
-        <button class="panel-btn btn-print" onclick="window.print()">🖨️ 导出为 PDF</button>
+        <button class="panel-btn btn-print" onclick="window.print()"><span data-lang="zh">🖨️ 导出为 PDF</span><span data-lang="en">🖨️ Export as PDF</span></button>
         <button class="panel-btn btn-save" onclick="saveResume()">💾 保存当前排版</button>
         
         <a href="../index.html" class="panel-btn btn-return">← [ RETURN ] 返回主页</a>
@@ -373,7 +377,7 @@
 
     <div class="main-viewport">
         
-        <div class="resume-container" id="resume-canvas" contenteditable="true" spellcheck="false">
+        <div class="resume-container" id="resume-canvas" contenteditable="true" spellcheck="false" data-lang="zh">
             
             <header>
                 <h1>叶承霖</h1>
@@ -517,6 +521,15 @@
 
         // 页面加载时恢复之前保存的状态
         loadResume();
+
+        const langBtn = document.getElementById('langBtn');
+        const LANG_KEY = 'site_lang_pref';
+        function setLang(lang) {
+            if (lang === 'en') { document.body.classList.add('lang-en'); if (langBtn) langBtn.textContent = '中'; }
+            else { document.body.classList.remove('lang-en'); if (langBtn) langBtn.textContent = 'EN'; }
+            localStorage.setItem(LANG_KEY, lang);
+        }
+        if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'en'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
     </script>
 
 </body>

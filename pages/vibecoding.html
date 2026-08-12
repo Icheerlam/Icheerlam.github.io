@@ -44,6 +44,9 @@
         .theme-toggle-btn { position:fixed; bottom:30px; right:30px; background:var(--ak-bg-panel); color:var(--ak-text-muted); border:1px solid var(--ak-border); padding:12px 16px; font-family:'Space Mono',monospace; font-size:0.8rem; font-weight:700; cursor:pointer; z-index:1500; transition:0.3s; box-shadow:0 4px 10px rgba(0,0,0,0.5); }
         .theme-toggle-btn:hover { border-color:var(--ak-accent-info); color:var(--ak-accent-info); transform:translateY(-3px); }
 
+        body.lang-en [data-lang="zh"] { display: none !important; }
+        body:not(.lang-en) [data-lang="en"] { display: none !important; }
+
         .page-header { text-align:center; margin:140px auto 50px; animation:fadeUp 0.6s forwards; position:relative; z-index:10; }
         .page-header h1 { font:800 2.2rem 'Space Mono'; color:var(--ak-accent-info); margin-bottom:10px; }
         .page-header p { color:var(--ak-text-muted); font-family:'Space Mono',monospace; }
@@ -98,7 +101,7 @@
         }
     </style>
 </head>
-<body class="dark-mode">
+<body class="dark-mode lang-en">
 
     <audio id="bgmAudio" loop preload="auto"><source src="../assets/audio/Sowing Chia Seed.mp3" type="audio/mpeg"></audio>
     <audio id="hoverSound" preload="auto"><source src="../assets/audio/鼠标悬停.mp3" type="audio/mpeg"></audio>
@@ -132,7 +135,7 @@
         </div>
     </div>
 
-    <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
+    <button class="theme-toggle-btn interactable" id="langBtn">中</button>
 
     <nav>
         <a href="https://icheerlam.github.io/" class="nav-logo interactable">PRTS // CLARENCE YE</a>
@@ -149,7 +152,7 @@
 
     <header class="page-header">
         <h1>[ VIBECODING // VIDEO AI TOOLS ]</h1>
-        <p>视频 AI 分析工具集</p>
+        <p><span data-lang="zh">视频 AI 分析工具集</span></p>
     </header>
 
     <main class="container">
@@ -158,9 +161,9 @@
             <!-- 视频分析功能 - 主卡片 -->
             <div class="feature-card feature-card-main interactable" style="animation-delay:0.1s;">
                 <div class="card-icon">&#9654;</div>
-                <h3 class="card-title">视频运营分析助手</h3>
+                <h3 class="card-title"><span data-lang="zh">视频运营分析助手</span></h3>
                 <p class="card-desc">
-                    上传视频，AI 自动提取关键帧，从内容概述、用户画像、数据预测、竞品对标、标题优化、发布策略等多维度输出专业分析报告。支持单视频分析与 A/B 对比分析。
+                    <span data-lang="zh">上传视频，AI 自动提取关键帧，从内容概述、用户画像、数据预测、竞品对标、标题优化、发布策略等多维度输出专业分析报告。支持单视频分析与 A/B 对比分析。</span>
                 </p>
                 <a href="视频分析功能.html" class="block-btn interactable">LAUNCH &gt;</a>
             </div>
@@ -168,9 +171,9 @@
             <!-- Adobe Stock 图片识别 -->
             <div class="feature-card feature-card-main interactable" style="animation-delay:0.2s;">
                 <div class="card-icon">&#9654;</div>
-                <h3 class="card-title">Adobe Stock 图片识别</h3>
+                <h3 class="card-title"><span data-lang="zh">Adobe Stock 图片识别</span></h3>
                 <p class="card-desc">
-                    通义千问视觉模型驱动的批量识别工具，自动为图片生成 Adobe Stock 上架所需的英文标题、关键词（≤49 个）与 21 类分类，多线程并发处理，一键导出可批量上传的 CSV；另内置趋势分析，按市场热点生成可销售的 AI 作图提示词。
+                    <span data-lang="zh">通义千问视觉模型驱动的批量识别工具，自动为图片生成 Adobe Stock 上架所需的英文标题、关键词（≤49 个）与 21 类分类，多线程并发处理，一键导出可批量上传的 CSV；另内置趋势分析，按市场热点生成可销售的 AI 作图提示词。</span>
                 </p>
                 <a href="adobe_stock.html" class="block-btn interactable">LAUNCH &gt;</a>
             </div>
@@ -178,9 +181,9 @@
             <!-- 个人知识库 -->
             <div class="feature-card feature-card-main interactable" style="animation-delay:0.6s;">
                 <div class="card-icon">&#128218;</div>
-                <h3 class="card-title">个人知识库</h3>
+                <h3 class="card-title"><span data-lang="zh">个人知识库</span></h3>
                 <p class="card-desc">
-                    GitHub 项目与 AI Agent Skill 收录库，支持自主添加条目、标注标签、按分类筛选检索。持续收录优质开源项目与实用 AI 技能配置。
+                    <span data-lang="zh">GitHub 项目与 AI Agent Skill 收录库，支持自主添加条目、标注标签、按分类筛选检索。持续收录优质开源项目与实用 AI 技能配置。</span>
                 </p>
                 <a href="knowledge.html" class="block-btn orange interactable">ENTER &gt;</a>
             </div>
@@ -262,12 +265,16 @@
                 }
             });
 
-            const themeBtn = document.getElementById('themeBtn');
-            const body = document.body;
-            themeBtn.addEventListener('click', () => {
-                body.classList.toggle('light-mode');
-                themeBtn.innerHTML = body.classList.contains('light-mode') ? 'MED_DEPT' : 'OP_DEPT';
-            });
+            /* ============ 语言切换 ============ */
+            const langBtn = document.getElementById('langBtn');
+            const LANG_KEY = 'site_lang_pref';
+            function setLang(lang) {
+                if (lang === 'en') { document.body.classList.add('lang-en'); if (langBtn) langBtn.textContent = '中'; }
+                else { document.body.classList.remove('lang-en'); if (langBtn) langBtn.textContent = 'EN'; }
+                localStorage.setItem(LANG_KEY, lang);
+                document.querySelectorAll('[data-lang-zh][data-lang-en]').forEach(el => { el.textContent = el.getAttribute('data-lang-' + lang); });
+            }
+            if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'en'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
         });
     </script>
 </body>
