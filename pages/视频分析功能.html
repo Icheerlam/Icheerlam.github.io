@@ -193,7 +193,7 @@
 
     <header class="page-header">
         <h1>[ VIDEO ANALYSIS // AI ASSISTANT ]</h1>
-        <p data-lang-zh="上传视频，AI 多维度运营分析与对比" data-lang-en="Upload video, AI multi-dimensional operation analysis and comparison">上传视频，AI 多维度运营分析与对比</p>
+        <p data-lang-zh="上传视频，AI 多维度运营分析与对比" data-lang-en="Upload video, AI multi-dimensional operation analysis and comparison"><span data-lang="zh">上传视频，AI 多维度运营分析与对比</span><span data-lang="en">Upload video, AI multi-dimensional operation analysis and comparison</span></p>
     </header>
 
     <main class="app-container">
@@ -205,7 +205,7 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label data-lang-zh="选择 AI 服务" data-lang-en="Choose an AI service">选择 AI 服务</label>
+                    <label data-lang-zh="选择 AI 服务" data-lang-en="Choose an AI service"><span data-lang="zh">选择 AI 服务</span><span data-lang="en">Choose an AI service</span></label>
                     <select id="aiService" onchange="updateApiKeyPlaceholder()">
                         <option value="qwen" data-lang-zh="通义千问（阿里云）" data-lang-en="Tongyi Qianwen (Alibaba Cloud)">通义千问（阿里云）</option>
                         <option value="claude">Claude API</option>
@@ -217,7 +217,7 @@
                     <input type="password" id="apiKey" placeholder="请输入 API Key" data-lang-zh="请输入 API Key" data-lang-en="Enter API Key">
                 </div>
                 <div class="form-group">
-                    <label data-lang-zh="视频平台（用于分析）" data-lang-en="Video platform (for analytics)">视频平台（用于分析）</label>
+                    <label data-lang-zh="视频平台（用于分析）" data-lang-en="Video platform (for analytics)"><span data-lang="zh">视频平台（用于分析）</span><span data-lang="en">Video platform (for analytics)</span></label>
                     <select id="platform">
                         <option value="douyin" data-lang-zh="抖音" data-lang-en="Tik Tok">抖音</option>
                         <option value="xiaohongshu" data-lang-zh="小红书" data-lang-en="little red book">小红书</option>
@@ -228,14 +228,14 @@
                     </select>
                 </div>
                 <div class="info-box">
-                    <p><strong data-lang-zh="如何获取 API Key：" data-lang-en="How to get API Key:">如何获取 API Key：</strong></p>
+                    <p><strong data-lang-zh="如何获取 API Key：" data-lang-en="How to get API Key:"><span data-lang="zh">如何获取 API Key：</span><span data-lang="en">How to get API Key:</span></strong></p>
                     <ul>
-                        <li><strong data-lang-zh="通义千问：" data-lang-en="Tongyi Qianwen:">通义千问：</strong><a href="https://dashscope.console.aliyun.com/" target="_blank" data-lang-zh="阿里云控制台" data-lang-en="Alibaba Cloud Console">阿里云控制台</a>，开通 DashScope 服务</li>
-                        <li><strong>Claude：</strong><a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a>（需科学上网）</li>
-                        <li><strong>OpenAI：</strong><a href="https://platform.openai.com/" target="_blank">OpenAI Platform</a>（需科学上网）</li>
+                        <li><strong data-lang-zh="通义千问：" data-lang-en="Tongyi Qianwen:"><span data-lang="zh">通义千问：</span><span data-lang="en">Tongyi Qianwen:</span></strong><a href="https://dashscope.console.aliyun.com/" target="_blank" data-lang-zh="阿里云控制台" data-lang-en="Alibaba Cloud Console"><span data-lang="zh">阿里云控制台</span><span data-lang="en">Alibaba Cloud Console</span></a><span data-lang="zh">，开通 DashScope 服务</span><span data-lang="en">, activate the DashScope service</span></li>
+                        <li><strong>Claude：</strong><a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a><span data-lang="zh">（需科学上网）</span><span data-lang="en">(requires scientific Internet access)</span></li>
+                        <li><strong>OpenAI：</strong><a href="https://platform.openai.com/" target="_blank">OpenAI Platform</a><span data-lang="zh">（需科学上网）</span><span data-lang="en">(requires scientific Internet access)</span></li>
                     </ul>
                 </div>
-                <button onclick="saveApiKey()" class="btn btn-primary" data-lang-zh="&amp;#9656; 保存配置" data-lang-en="▸ Save configuration">&#9656; 保存配置</button>
+                <button onclick="saveApiKey()" class="btn btn-primary" data-lang-zh="&amp;#9656; 保存配置" data-lang-en="▸ Save configuration"><span data-lang="zh">&#9656; 保存配置</span><span data-lang="en">▸ Save configuration</span></button>
             </div>
         </div>
 
@@ -247,54 +247,54 @@
             <div class="panel-body">
                 <div class="upload-grid">
                     <div class="upload-slot">
-                        <div class="upload-slot-title" data-lang-zh="&amp;#9654; 视频 A" data-lang-en="▶ Video A">&#9654; 视频 A</div>
+                        <div class="upload-slot-title" data-lang-zh="&amp;#9654; 视频 A" data-lang-en="▶ Video A"><span data-lang="zh">&#9654; 视频 A</span><span data-lang="en">▶ Video A</span></div>
                         <div class="upload-zone" id="uploadZone1">
                             <div class="upload-icon">&#9653;</div>
-                            <p data-lang-zh="拖拽或点击上传" data-lang-en="Drag or click to upload">拖拽或点击上传</p>
+                            <p data-lang-zh="拖拽或点击上传" data-lang-en="Drag or click to upload"><span data-lang="zh">拖拽或点击上传</span><span data-lang="en">Drag or click to upload</span></p>
                             <small>MP4, MOV, AVI</small>
                             <input type="file" id="videoInput1" accept="video/*" style="display:none">
                         </div>
                         <div class="video-preview" id="videoPreview1">
                             <video id="videoPlayer1" controls></video>
                             <div class="video-meta">
-                                <p><strong data-lang-zh="文件：" data-lang-en="document:">文件：</strong><span id="fileName1"></span></p>
-                                <p><strong data-lang-zh="大小：" data-lang-en="size:">大小：</strong><span id="fileSize1"></span></p>
-                                <p><strong data-lang-zh="时长：" data-lang-en="Duration:">时长：</strong><span id="videoDuration1"></span></p>
+                                <p><strong data-lang-zh="文件：" data-lang-en="document:"><span data-lang="zh">文件：</span><span data-lang="en">document:</span></strong><span id="fileName1"></span></p>
+                                <p><strong data-lang-zh="大小：" data-lang-en="size:"><span data-lang="zh">大小：</span><span data-lang="en">size:</span></strong><span id="fileSize1"></span></p>
+                                <p><strong data-lang-zh="时长：" data-lang-en="Duration:"><span data-lang="zh">时长：</span><span data-lang="en">Duration:</span></strong><span id="videoDuration1"></span></p>
                             </div>
                         </div>
                     </div>
                     <div class="upload-slot">
-                        <div class="upload-slot-title" data-lang-zh="&amp;#9654; 视频 B" data-lang-en="▶ Video B">&#9654; 视频 B</div>
+                        <div class="upload-slot-title" data-lang-zh="&amp;#9654; 视频 B" data-lang-en="▶ Video B"><span data-lang="zh">&#9654; 视频 B</span><span data-lang="en">▶ Video B</span></div>
                         <div class="upload-zone" id="uploadZone2">
                             <div class="upload-icon">&#9653;</div>
-                            <p data-lang-zh="拖拽或点击上传" data-lang-en="Drag or click to upload">拖拽或点击上传</p>
+                            <p data-lang-zh="拖拽或点击上传" data-lang-en="Drag or click to upload"><span data-lang="zh">拖拽或点击上传</span><span data-lang="en">Drag or click to upload</span></p>
                             <small>MP4, MOV, AVI</small>
                             <input type="file" id="videoInput2" accept="video/*" style="display:none">
                         </div>
                         <div class="video-preview" id="videoPreview2">
                             <video id="videoPlayer2" controls></video>
                             <div class="video-meta">
-                                <p><strong data-lang-zh="文件：" data-lang-en="document:">文件：</strong><span id="fileName2"></span></p>
-                                <p><strong data-lang-zh="大小：" data-lang-en="size:">大小：</strong><span id="fileSize2"></span></p>
-                                <p><strong data-lang-zh="时长：" data-lang-en="Duration:">时长：</strong><span id="videoDuration2"></span></p>
+                                <p><strong data-lang-zh="文件：" data-lang-en="document:"><span data-lang="zh">文件：</span><span data-lang="en">document:</span></strong><span id="fileName2"></span></p>
+                                <p><strong data-lang-zh="大小：" data-lang-en="size:"><span data-lang="zh">大小：</span><span data-lang="en">size:</span></strong><span id="fileSize2"></span></p>
+                                <p><strong data-lang-zh="时长：" data-lang-en="Duration:"><span data-lang="zh">时长：</span><span data-lang="en">Duration:</span></strong><span id="videoDuration2"></span></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="action-row">
-                    <button onclick="analyzeFrame(1)" id="btnAnalyze1" class="btn btn-primary" disabled data-lang-zh="&amp;#9656; 分析当前帧 A" data-lang-en="▸ Analyze current frame A">&#9656; 分析当前帧 A</button>
-                    <button onclick="analyzeFrame(2)" id="btnAnalyze2" class="btn btn-primary" disabled data-lang-zh="&amp;#9656; 分析当前帧 B" data-lang-en="▸ Analyze current frame B">&#9656; 分析当前帧 B</button>
-                    <button onclick="analyzeVideoOp(1)" id="btnOp1" class="btn" disabled data-lang-zh="&amp;#9656; 运营分析 A" data-lang-en="▸ Operational Analysis A">&#9656; 运营分析 A</button>
-                    <button onclick="analyzeVideoOp(2)" id="btnOp2" class="btn" disabled data-lang-zh="&amp;#9656; 运营分析 B" data-lang-en="▸ Operational Analysis B">&#9656; 运营分析 B</button>
-                    <button onclick="compareVideos()" id="btnCompare" class="btn btn-warn" disabled data-lang-zh="&amp;#8646; 对比分析" data-lang-en="⇆ Comparative analysis">&#8646; 对比分析</button>
-                    <button onclick="document.getElementById('historyPanel').classList.toggle('active')" class="btn btn-sm" data-lang-zh="&amp;#8635; 历史记录" data-lang-en="↻ History">&#8635; 历史记录</button>
+                    <button onclick="analyzeFrame(1)" id="btnAnalyze1" class="btn btn-primary" disabled data-lang-zh="&amp;#9656; 分析当前帧 A" data-lang-en="▸ Analyze current frame A"><span data-lang="zh">&#9656; 分析当前帧 A</span><span data-lang="en">▸ Analyze current frame A</span></button>
+                    <button onclick="analyzeFrame(2)" id="btnAnalyze2" class="btn btn-primary" disabled data-lang-zh="&amp;#9656; 分析当前帧 B" data-lang-en="▸ Analyze current frame B"><span data-lang="zh">&#9656; 分析当前帧 B</span><span data-lang="en">▸ Analyze current frame B</span></button>
+                    <button onclick="analyzeVideoOp(1)" id="btnOp1" class="btn" disabled data-lang-zh="&amp;#9656; 运营分析 A" data-lang-en="▸ Operational Analysis A"><span data-lang="zh">&#9656; 运营分析 A</span><span data-lang="en">▸ Operational Analysis A</span></button>
+                    <button onclick="analyzeVideoOp(2)" id="btnOp2" class="btn" disabled data-lang-zh="&amp;#9656; 运营分析 B" data-lang-en="▸ Operational Analysis B"><span data-lang="zh">&#9656; 运营分析 B</span><span data-lang="en">▸ Operational Analysis B</span></button>
+                    <button onclick="compareVideos()" id="btnCompare" class="btn btn-warn" disabled data-lang-zh="&amp;#8646; 对比分析" data-lang-en="⇆ Comparative analysis"><span data-lang="zh">&#8646; 对比分析</span><span data-lang="en">⇆ Comparative analysis</span></button>
+                    <button onclick="document.getElementById('historyPanel').classList.toggle('active')" class="btn btn-sm" data-lang-zh="&amp;#8635; 历史记录" data-lang-en="↻ History"><span data-lang="zh">&#8635; 历史记录</span><span data-lang="en">↻ History</span></button>
                 </div>
             </div>
         </div>
 
         <div class="loading-panel" id="loadingState">
             <div class="loader"></div>
-            <p>正在分析视频内容，请稍候...<small id="loadingDetail" data-lang-zh="提取视频关键帧中..." data-lang-en="Extracting video key frames...">提取视频关键帧中...</small></p>
+            <p><span data-lang="zh">正在分析视频内容，请稍候...</span><span data-lang="en">Video content is being analyzed, please wait...</span><small id="loadingDetail" data-lang-zh="提取视频关键帧中..." data-lang-en="Extracting video key frames..."><span data-lang="zh">提取视频关键帧中...</span><span data-lang="en">Extracting video key frames...</span></small></p>
         </div>
 
         <div class="result-panel" id="analysisResult">
@@ -302,10 +302,10 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
                     <div class="panel-title">Analysis Report</div>
                     <div style="display:flex;gap:8px;">
-                        <button onclick="exportReport('txt')" class="btn btn-sm" data-lang-zh="&amp;#9656; 导出 TXT" data-lang-en="▸ Export TXT">&#9656; 导出 TXT</button>
-                        <button onclick="exportReport('md')" class="btn btn-sm btn-primary" data-lang-zh="&amp;#9656; 导出 MD" data-lang-en="▸ Export MD">&#9656; 导出 MD</button>
-                        <button onclick="exportReport('html')" class="btn btn-sm btn-warn" data-lang-zh="&amp;#9656; 导出 HTML" data-lang-en="▸ Export HTML">&#9656; 导出 HTML</button>
-                        <button onclick="openReportHTML()" class="btn btn-sm btn-danger" data-lang-zh="&amp;#9656; 预览 HTML" data-lang-en="▸ Preview HTML">&#9656; 预览 HTML</button>
+                        <button onclick="exportReport('txt')" class="btn btn-sm" data-lang-zh="&amp;#9656; 导出 TXT" data-lang-en="▸ Export TXT"><span data-lang="zh">&#9656; 导出 TXT</span><span data-lang="en">▸ Export TXT</span></button>
+                        <button onclick="exportReport('md')" class="btn btn-sm btn-primary" data-lang-zh="&amp;#9656; 导出 MD" data-lang-en="▸ Export MD"><span data-lang="zh">&#9656; 导出 MD</span><span data-lang="en">▸ Export MD</span></button>
+                        <button onclick="exportReport('html')" class="btn btn-sm btn-warn" data-lang-zh="&amp;#9656; 导出 HTML" data-lang-en="▸ Export HTML"><span data-lang="zh">&#9656; 导出 HTML</span><span data-lang="en">▸ Export HTML</span></button>
+                        <button onclick="openReportHTML()" class="btn btn-sm btn-danger" data-lang-zh="&amp;#9656; 预览 HTML" data-lang-en="▸ Preview HTML"><span data-lang="zh">&#9656; 预览 HTML</span><span data-lang="en">▸ Preview HTML</span></button>
                     </div>
                 </div>
                 <div class="result-content" id="resultContent"></div>
@@ -613,24 +613,24 @@
             const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
             let html='<div class="op-report">';
             html+=`<div class="gen-header"><span class="gen-header-title">OPERATION ANALYSIS // ${esc(name)}</span></div>`;
-            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);" data-lang-zh="&amp;#9670; 视频类型" data-lang-en="◆Video type">&#9670; 视频类型</div><div class="op-value" data-lang-zh="${esc(data.video_type||'无法判断')}" data-lang-en="${esc(data.video_type||'Unable to determine')}">${esc(data.video_type||'无法判断')}</div></div>`;
-            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);" data-lang-zh="&amp;#9670; 目标用户" data-lang-en="◆ Target users">&#9670; 目标用户</div><div class="op-value" data-lang-zh="${esc(data.target_user||'无法判断')}" data-lang-en="${esc(data.target_user||'Unable to determine')}">${esc(data.target_user||'无法判断')}</div></div>`;
-            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);" data-lang-zh="&amp;#9670; 核心Hook" data-lang-en="◆ Core Hook">&#9670; 核心Hook</div><div class="op-value" data-lang-zh="${esc(data.core_hook||'无法判断')}" data-lang-en="${esc(data.core_hook||'Unable to determine')}">${esc(data.core_hook||'无法判断')}</div></div>`;
+            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);" data-lang-zh="&amp;#9670; 视频类型" data-lang-en="◆Video type"><span data-lang="zh">&#9670; 视频类型</span><span data-lang="en">◆Video type</span></div><div class="op-value" data-lang-zh="${esc(data.video_type||'无法判断')}" data-lang-en="${esc(data.video_type||'Unable to determine')}"><span data-lang="zh">${esc(data.video_type||'无法判断')}</span><span data-lang="en">${esc(data.video_type||'Unable to determine')}</span></div></div>`;
+            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);" data-lang-zh="&amp;#9670; 目标用户" data-lang-en="◆ Target users"><span data-lang="zh">&#9670; 目标用户</span><span data-lang="en">◆ Target users</span></div><div class="op-value" data-lang-zh="${esc(data.target_user||'无法判断')}" data-lang-en="${esc(data.target_user||'Unable to determine')}"><span data-lang="zh">${esc(data.target_user||'无法判断')}</span><span data-lang="en">${esc(data.target_user||'Unable to determine')}</span></div></div>`;
+            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);" data-lang-zh="&amp;#9670; 核心Hook" data-lang-en="◆ Core Hook"><span data-lang="zh">&#9670; 核心Hook</span><span data-lang="en">◆ Core Hook</span></div><div class="op-value" data-lang-zh="${esc(data.core_hook||'无法判断')}" data-lang-en="${esc(data.core_hook||'Unable to determine')}"><span data-lang="zh">${esc(data.core_hook||'无法判断')}</span><span data-lang="en">${esc(data.core_hook||'Unable to determine')}</span></div></div>`;
             if(data.optimization){
-                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);" data-lang-zh="&amp;#9670; 优化建议" data-lang-en="◆ Optimization suggestions">&#9670; 优化建议</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="节奏：" data-lang-en="Rhythm:">节奏：</span>${esc(data.optimization.pacing||'')}</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="内容：" data-lang-en="content:">内容：</span>${esc(data.optimization.content||'')}</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="结构：" data-lang-en="structure:">结构：</span>${esc(data.optimization.structure||'')}</div>`;
+                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);" data-lang-zh="&amp;#9670; 优化建议" data-lang-en="◆ Optimization suggestions"><span data-lang="zh">&#9670; 优化建议</span><span data-lang="en">◆ Optimization suggestions</span></div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="节奏：" data-lang-en="Rhythm:"><span data-lang="zh">节奏：</span><span data-lang="en">Rhythm:</span></span>${esc(data.optimization.pacing||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="内容：" data-lang-en="content:"><span data-lang="zh">内容：</span><span data-lang="en">content:</span></span>${esc(data.optimization.content||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="结构：" data-lang-en="structure:"><span data-lang="zh">结构：</span><span data-lang="en">structure:</span></span>${esc(data.optimization.structure||'')}</div>`;
                 html+=`</div>`;
             }
             if(data.expected){
-                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);" data-lang-zh="&amp;#9670; 预期效果" data-lang-en="◆ Expected results">&#9670; 预期效果</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="点击：" data-lang-en="Click:">点击：</span>${esc(data.expected.click||'')}</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="留存：" data-lang-en="Retention:">留存：</span>${esc(data.expected.retention||'')}</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="转化：" data-lang-en="Conversion:">转化：</span>${esc(data.expected.conversion||'')}</div>`;
+                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);" data-lang-zh="&amp;#9670; 预期效果" data-lang-en="◆ Expected results"><span data-lang="zh">&#9670; 预期效果</span><span data-lang="en">◆ Expected results</span></div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="点击：" data-lang-en="Click:"><span data-lang="zh">点击：</span><span data-lang="en">Click:</span></span>${esc(data.expected.click||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="留存：" data-lang-en="Retention:"><span data-lang="zh">留存：</span><span data-lang="en">Retention:</span></span>${esc(data.expected.retention||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="转化：" data-lang-en="Conversion:"><span data-lang="zh">转化：</span><span data-lang="en">Conversion:</span></span>${esc(data.expected.conversion||'')}</div>`;
                 html+=`</div>`;
             }
-            html+='</div>';
+            html+='</div><span data-lang="zh">';
             document.getElementById('resultContent').innerHTML=html;
             document.getElementById('analysisResult').classList.add('active');
             lastReportData={type:'operate',name,text,opData:data};
@@ -663,7 +663,7 @@
                 lastReportData={type:'single',name,modules};
                 saveHistory(text,name,type,modules);
             }else{
-                let html=text.replace(/^# (.+)$/gm,'<h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
+                let html=text.replace(/^# (.+)$/gm,'</span><span data-lang="en">'; document.getElementById('resultContent').innerHTML=html; document.getElementById('analysisResult').classList.add('active'); lastReportData={type:'operate',name,text,opData:data}; saveHistory(text,name,'operate'); document.getElementById('analysisResult').scrollIntoView({behavior:'smooth'}); } async function compareVideos(){ const cfg=JSON.parse(localStorage.getItem('aiConfig')||'{}'); if(!cfg.apiKey){alert('Please configure the API first Key');togglePanel('apiPanel');return;} if(!currentVideoFile1||!currentVideoFile2){alert('Please upload two videos first');return;} document.getElementById('loadingState').classList.add('active'); document.getElementById('analysisResult').classList.remove('active'); try{ document.getElementById('loadingDetail').textContent='Extract two video key frames...'; const [f1,f2]=await Promise.all([extractFrames(document.getElementById('videoPlayer1')),extractFrames(document.getElementById('videoPlayer2'))]); document.getElementById('loadingDetail').textContent='AI comparison analysis is in progress, estimated to take 15-30 seconds...'; const result=await callCompare(f1,f2,cfg); showResult(result,currentVideoFile1.name+' vs '+currentVideoFile2.name,'compare'); }catch(e){alert('Comparison analysis failed: '+e.message);} document.getElementById('loadingState').classList.remove('active'); } function showResult(text,name,type,frames){ if(type==='single'&amp;&amp;frames&amp;&amp;frames.length){ const modules=parseGenResult(text,frames); const html=renderGenModules(modules); document.getElementById('resultContent').innerHTML=html; window._genModules=modules; lastReportData={type:'single',name,modules}; saveHistory(text,name,type,modules); }else{ let html=text.replace(/^# (.+)$/gm,'</span><h1>$1</h1>').replace(/^## (.+)$/gm,'<h2>$1</h2>').replace(/^### (.+)$/gm,'<h3>$1</h3>').replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>').replace(/\*(.+?)\*/g,'<em>$1</em>').replace(/^\|(.+)\|$/gim,(m)=>{const cells=m.split('|').filter(c=>c.trim());if(cells.every(c=>/^[\s:-]+$/.test(c)))return'';return'<tr>'+cells.map(c=>'<td>'+c.trim()+'</td>').join('')+'</tr>'}).replace(/(<tr>.*<\/tr>\s*)+/g,m=>'<table>'+m+'</table>').replace(/^- (.+)$/gm,'<li>$1</li>').replace(/^\d+\. (.+)$/gm,'<li>$1</li>').replace(/\n/g,'<br>');
                 document.getElementById('resultContent').innerHTML=html;
             }
             lastReportData={type,name,text};
@@ -679,7 +679,7 @@
         }
 
         function renderGenModules(modules){
-            let html='<div class="gen-header"><span class="gen-header-title">GENERATED // AI PAINTING PROMPTS</span><button onclick="batchCopyAll()" class="btn btn-sm btn-primary" data-lang-zh="&amp;#9656; 批量复制全部" data-lang-en="▸ Batch copy all">&#9656; 批量复制全部</button></div>';
+            let html='<div class="gen-header"><span class="gen-header-title">GENERATED // AI PAINTING PROMPTS</span><button onclick="batchCopyAll()" class="btn btn-sm btn-primary" data-lang-zh="&amp;#9656; 批量复制全部" data-lang-en="▸ Batch copy all"><span data-lang="zh">&#9656; 批量复制全部</span><span data-lang="en">▸ Batch copy all</span></button></div>';
             html+='<div class="gen-modules">';
             modules.forEach((m,i)=>{
                 html+=`<div class="gen-module${i===0?' open':''}" data-index="${i}">
@@ -690,11 +690,11 @@
                     <div class="gen-module-body">
                         ${m.img?`<img class="gen-module-image" src="${m.img}" alt="帧${i+1}">`:''}
                         <div class="gen-module-section">
-                            <div class="gen-module-section-label gen-section-keywords"><span class="label-icon">&#9670;</span><span class="label-text" data-lang-zh="画面描述" data-lang-en="Screen description">画面描述</span></div>
+                            <div class="gen-module-section-label gen-section-keywords"><span class="label-icon">&#9670;</span><span class="label-text" data-lang-zh="画面描述" data-lang-en="Screen description"><span data-lang="zh">画面描述</span><span data-lang="en">Screen description</span></span></div>
                             <div class="gen-desc-text">${m.prompt}</div>
                         </div>
                         <div class="gen-module-actions">
-                            <button onclick="copyModule(${i})" class="btn btn-sm btn-warn" data-lang-zh="&amp;#9656; 复制" data-lang-en="▸ Copy">&#9656; 复制</button>
+                            <button onclick="copyModule(${i})" class="btn btn-sm btn-warn" data-lang-zh="&amp;#9656; 复制" data-lang-en="▸ Copy"><span data-lang="zh">&#9656; 复制</span><span data-lang="en">▸ Copy</span></button>
                         </div>
                     </div>
                 </div>`;
@@ -706,7 +706,7 @@
         function renderHistory(){
             const list=document.getElementById('historyList');
             if(!analysisHistory.length){list.innerHTML='<div class="history-empty">> NO HISTORY FOUND</div>';return;}
-            list.innerHTML=analysisHistory.map(h=>`<div class="history-item"><div class="history-item-header"><div class="history-item-title"><span class="history-badge ${h.type==='compare'?'compare':'single'}" data-lang-zh="${h.type==='compare'?'对比':'单视频'}" data-lang-en="${h.type==='compare'?'Compare':'Single video'}">${h.type==='compare'?'对比':'单视频'}</span>${h.name}</div><div class="history-actions"><button onclick="viewHistory(${h.id})" class="btn btn-sm btn-primary" data-lang-zh="查看" data-lang-en="Check">查看</button><button onclick="delHistory(${h.id})" class="btn btn-sm btn-danger" data-lang-zh="删除" data-lang-en="delete">删除</button></div></div><div class="history-item-time">${h.timestamp}</div></div>`).join('');
+            list.innerHTML=analysisHistory.map(h=>`<div class="history-item"><div class="history-item-header"><div class="history-item-title"><span class="history-badge ${h.type==='compare'?'compare':'single'}" data-lang-zh="${h.type==='compare'?'对比':'单视频'}" data-lang-en="${h.type==='compare'?'Compare':'Single video'}"><span data-lang="zh">${h.type==='compare'?'对比':'单视频'}</span><span data-lang="en">${h.type==='compare'?'Compare':'Single video'}</span></span>${h.name}</div><div class="history-actions"><button onclick="viewHistory(${h.id})" class="btn btn-sm btn-primary" data-lang-zh="查看" data-lang-en="Check"><span data-lang="zh">查看</span><span data-lang="en">Check</span></button><button onclick="delHistory(${h.id})" class="btn btn-sm btn-danger" data-lang-zh="删除" data-lang-en="delete"><span data-lang="zh">删除</span><span data-lang="en">delete</span></button></div></div><div class="history-item-time">${h.timestamp}</div></div>`).join('');
         }
 
         function viewHistory(id){
@@ -728,7 +728,7 @@
 
         function parseGenResult(text,frames){
             const results=[];
-            const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+            const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/><span data-lang="zh">/g,'&gt;').replace(/"/g,'&quot;');
             const lines=text.split('\n').filter(l=>l.trim());
             frames.forEach((img,i)=>{
                 const line=lines[i]||'';
@@ -794,37 +794,37 @@
         }
 
         function buildExportHTML(md, name) {
-            const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            const esc = s => String(s).replace(/&/g,'&amp;').replace(/</span><span data-lang="en">/g,'&gt;').replace(/"/g,'"'); const lines=text.split('\n').filter(l=&gt;l.trim()); frames.forEach((img,i)=&gt;{ const line=lines[i]||''; results.push({prompt:esc(line.trim()||'(No content)'),img}); }); return results; } function toggleModule(el){ el.closest('.gen-module').classList.toggle('open'); } function copyModule(idx){ const m=window._genModules[idx]; if(!m)return; navigator.clipboard.writeText(m.prompt).then(()=&gt;{ const btn=document.querySelector(`.gen-module[data-index="${idx}"] .gen-module-actions .btn`); if(btn){const orig=btn.innerHTML;btn.innerHTML='✓ Copied';setTimeout(()=&gt;btn.innerHTML=orig,1500);} }); } function batchCopyAll(){ if(!window._genModules||!window._genModules.length)return; const text=window._genModules.map(m=&gt;m.prompt).join('\n'); navigator.clipboard.writeText(text).then(()=&gt;{ const btn=document.querySelector('.gen-header .btn'); if(btn){const orig=btn.innerHTML;btn.innerHTML='✓ All have been copied';setTimeout(()=&gt;btn.innerHTML='▸ Batch copy all',1500);} }); } let lastReportData = null; function exportReport(format) { if (!lastReportData) { alert('No analysis report can be exported'); return; } const { type, name, text, modules, opData } = lastReportData; let content = ''; const header = `# Video analysis report\n## ${name}\nDate: ${new Date().toLocaleString('zh-CN')}\n\n`; if (type === 'single' &amp;&amp; modules) { content = header + modules.map((m, i) =&gt; `## #${i + 1}\n${m.prompt}`).join('\n\n'); } else if (type === 'operate' &amp;&amp; opData) { content = header; content += `## Video type\n${opData.video_type || ''}\n\n`; content += `## Target user\n${opData.target_user || ''}\n\n`; content += `## Core Hook\n${opData.core_hook || ''}\n\n`; if (opData.optimization) { content += `## Optimization suggestions\n- Pacing: ${opData.optimization.pacing || ''}\n- Content: ${opData.optimization.content || ''}\n- Structure: ${opData.optimization.structure || ''}\n\n`; } if (opData.expected) { content += `## Expected effect\n- Click: ${opData.expected.click || ''}\n- Retention: ${opData.expected.retention || ''}\n- Conversion: ${opData.expected.conversion || ''}\n`; } } else { content = header + text; } if (format === 'html') { const htmlContent = buildExportHTML(content, name); downloadFile(htmlContent, `Analysis Report_${name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_')}.html`, 'text/html;charset=utf-8'); } else { const ext = format === 'md' ? 'md' : 'txt'; downloadFile(content, `Analysis report_${name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '_')}.${ext}`, 'text/plain;charset=utf-8'); } } function buildExportHTML(md, name) { const esc = s =&gt; String(s).replace(/&amp;/g,'&amp;').replace(/</span></g,'&lt;').replace(/>/g,'&gt;');
             const { type, modules, opData, text } = lastReportData;
             const C = {bg:'#0a0a0f',card:'#111118',border:'#2a2a2a',accent:'#00d8ff',warn:'#f5a623',text:'#cccccc',head:'#ffffff'};
             const th = (label,color) => `<th style="text-align:left;padding:10px 14px;color:${color||C.accent};font-weight:700;font-size:0.85rem;white-space:nowrap;width:120px;vertical-align:top;border-bottom:1px solid ${C.border};">${label}</th>`;
             const td = (val) => `<td style="padding:10px 14px;color:${C.text};font-size:0.9rem;line-height:1.7;border-bottom:1px solid ${C.border};">${esc(val)}</td>`;
             const section = (title,color,rows) => `<tr><td colspan="2" style="padding:12px 14px;font-weight:700;font-size:0.9rem;color:${color||C.accent};background:rgba(0,216,255,0.05);border-bottom:1px solid ${C.border};">${title}</td></tr>${rows}`;
 
-            let body = `<h1 style="font:bold 1.6rem monospace;color:${C.accent};margin:0 0 6px;" data-lang-zh="视频分析报告" data-lang-en="Video analysis report">视频分析报告</h1>
+            let body = `<h1 style="font:bold 1.6rem monospace;color:${C.accent};margin:0 0 6px;" data-lang-zh="视频分析报告" data-lang-en="Video analysis report"><span data-lang="zh">视频分析报告</span><span data-lang="en">Video analysis report</span></h1>
 <p style="color:#666;font-size:0.85rem;margin:0 0 24px;">${esc(name)} &nbsp;|&nbsp; ${new Date().toLocaleString('zh-CN')}</p>
-<table style="width:100%;border-collapse:collapse;border:1px solid ${C.border};">`;
+<table style="width:100%;border-collapse:collapse;border:1px solid ${C.border};"><span data-lang="zh">`;
 
             if (type === 'operate' && opData) {
                 body += section('基本信息', C.accent,
-                    `<tr data-lang-zh="${th('视频类型',C.accent)}${td(opData.video_type||'')}" data-lang-en="${th('Video type',C.accent)}${td(opData.video_type||'')}">${th('视频类型',C.accent)}${td(opData.video_type||'')}</tr>
-<tr data-lang-zh="${th('目标用户',C.accent)}${td(opData.target_user||'')}" data-lang-en="${th('target user',C.accent)}${td(opData.target_user||'')}">${th('目标用户',C.accent)}${td(opData.target_user||'')}</tr>
-<tr data-lang-zh="${th('核心Hook',C.accent)}${td(opData.core_hook||'')}" data-lang-en="${th('CoreHook',C.accent)}${td(opData.core_hook||'')}">${th('核心Hook',C.accent)}${td(opData.core_hook||'')}</tr>`);
+                    `</span><span data-lang="en">`; if (type === 'operate' &amp;&amp; opData) { body += section('Basic information', C.accent, `</span><tr data-lang-zh="${th('视频类型',C.accent)}${td(opData.video_type||'')}" data-lang-en="${th('Video type',C.accent)}${td(opData.video_type||'')}"><span data-lang="zh">${th('视频类型',C.accent)}${td(opData.video_type||'')}</span><span data-lang="en">${th('Video type',C.accent)}${td(opData.video_type||'')}</span></tr>
+<tr data-lang-zh="${th('目标用户',C.accent)}${td(opData.target_user||'')}" data-lang-en="${th('target user',C.accent)}${td(opData.target_user||'')}"><span data-lang="zh">${th('目标用户',C.accent)}${td(opData.target_user||'')}</span><span data-lang="en">${th('target user',C.accent)}${td(opData.target_user||'')}</span></tr>
+<tr data-lang-zh="${th('核心Hook',C.accent)}${td(opData.core_hook||'')}" data-lang-en="${th('CoreHook',C.accent)}${td(opData.core_hook||'')}"><span data-lang="zh">${th('核心Hook',C.accent)}${td(opData.core_hook||'')}</span><span data-lang="en">${th('CoreHook',C.accent)}${td(opData.core_hook||'')}</span></tr><span data-lang="zh">`);
                 if (opData.optimization) {
                     body += section('优化建议', C.warn,
-                        `<tr data-lang-zh="${th('节奏',C.warn)}${td(opData.optimization.pacing||'')}" data-lang-en="${th('pacing',C.warn)}${td(opData.optimization.pacing||'')}">${th('节奏',C.warn)}${td(opData.optimization.pacing||'')}</tr>
-<tr data-lang-zh="${th('内容',C.warn)}${td(opData.optimization.content||'')}" data-lang-en="${th('content',C.warn)}${td(opData.optimization.content||'')}">${th('内容',C.warn)}${td(opData.optimization.content||'')}</tr>
-<tr data-lang-zh="${th('结构',C.warn)}${td(opData.optimization.structure||'')}" data-lang-en="${th('structure',C.warn)}${td(opData.optimization.structure||'')}">${th('结构',C.warn)}${td(opData.optimization.structure||'')}</tr>`);
+                        `</span><span data-lang="en">`); if (opData.optimization) { body += section('Optimization suggestions', C.warn, `</span><tr data-lang-zh="${th('节奏',C.warn)}${td(opData.optimization.pacing||'')}" data-lang-en="${th('pacing',C.warn)}${td(opData.optimization.pacing||'')}"><span data-lang="zh">${th('节奏',C.warn)}${td(opData.optimization.pacing||'')}</span><span data-lang="en">${th('pacing',C.warn)}${td(opData.optimization.pacing||'')}</span></tr>
+<tr data-lang-zh="${th('内容',C.warn)}${td(opData.optimization.content||'')}" data-lang-en="${th('content',C.warn)}${td(opData.optimization.content||'')}"><span data-lang="zh">${th('内容',C.warn)}${td(opData.optimization.content||'')}</span><span data-lang="en">${th('content',C.warn)}${td(opData.optimization.content||'')}</span></tr>
+<tr data-lang-zh="${th('结构',C.warn)}${td(opData.optimization.structure||'')}" data-lang-en="${th('structure',C.warn)}${td(opData.optimization.structure||'')}"><span data-lang="zh">${th('结构',C.warn)}${td(opData.optimization.structure||'')}</span><span data-lang="en">${th('structure',C.warn)}${td(opData.optimization.structure||'')}</span></tr><span data-lang="zh">`);
                 }
                 if (opData.expected) {
                     body += section('预期效果', C.warn,
-                        `<tr data-lang-zh="${th('点击',C.warn)}${td(opData.expected.click||'')}" data-lang-en="${th('click',C.warn)}${td(opData.expected.click||'')}">${th('点击',C.warn)}${td(opData.expected.click||'')}</tr>
-<tr data-lang-zh="${th('留存',C.warn)}${td(opData.expected.retention||'')}" data-lang-en="${th('retention',C.warn)}${td(opData.expected.retention||'')}">${th('留存',C.warn)}${td(opData.expected.retention||'')}</tr>
-<tr data-lang-zh="${th('转化',C.warn)}${td(opData.expected.conversion||'')}" data-lang-en="${th('conversion',C.warn)}${td(opData.expected.conversion||'')}">${th('转化',C.warn)}${td(opData.expected.conversion||'')}</tr>`);
+                        `</span><span data-lang="en">`); } if (opData.expected) { body += section('Expected effect', C.warn, `</span><tr data-lang-zh="${th('点击',C.warn)}${td(opData.expected.click||'')}" data-lang-en="${th('click',C.warn)}${td(opData.expected.click||'')}"><span data-lang="zh">${th('点击',C.warn)}${td(opData.expected.click||'')}</span><span data-lang="en">${th('click',C.warn)}${td(opData.expected.click||'')}</span></tr>
+<tr data-lang-zh="${th('留存',C.warn)}${td(opData.expected.retention||'')}" data-lang-en="${th('retention',C.warn)}${td(opData.expected.retention||'')}"><span data-lang="zh">${th('留存',C.warn)}${td(opData.expected.retention||'')}</span><span data-lang="en">${th('retention',C.warn)}${td(opData.expected.retention||'')}</span></tr>
+<tr data-lang-zh="${th('转化',C.warn)}${td(opData.expected.conversion||'')}" data-lang-en="${th('conversion',C.warn)}${td(opData.expected.conversion||'')}"><span data-lang="zh">${th('转化',C.warn)}${td(opData.expected.conversion||'')}</span><span data-lang="en">${th('conversion',C.warn)}${td(opData.expected.conversion||'')}</span></tr><span data-lang="zh">`);
                 }
             } else if (type === 'single' && modules) {
                 body += section('AI 生图提示词', C.accent,
-                    modules.map((m,i) => `<tr>${th('#'+(i+1),C.accent)}${td(m.prompt)}</tr>`).join(''));
+                    modules.map((m,i) => `</span><span data-lang="en">`); } } else if (type === 'single' &amp;&amp; modules) { body += section('AI image prompt words', C.accent, modules.map((m,i) =&gt; `</span><tr>${th('#'+(i+1),C.accent)}${td(m.prompt)}</tr><span data-lang="zh">`).join(''));
             } else {
                 // 对比分析 - 解析 markdown 表格和普通文本
                 const lines = text.split('\n');
@@ -838,7 +838,7 @@
                         inTable = true;
                         const tag = isHeader ? 'th' : 'td';
                         const style = isHeader ? `color:${C.accent};font-weight:700;background:rgba(0,216,255,0.05);` : `color:${C.text};`;
-                        tableRows += `<tr>${cells.map(c => `<${tag} style="padding:8px 14px;font-size:0.85rem;${style}border:1px solid ${C.border};">${esc(c.trim())}</${tag}>`).join('')}</tr>`;
+                        tableRows += `</span><span data-lang="en">`).join('')); } else { // Comparative analysis - parsing markdown tables and ordinary text const lines = text.split('\n'); let inTable = false; let tableRows = ''; lines.forEach(line =&gt; { if (line.match(/^\|.*\|$/)) { const cells = line.split('|').filter(c =&gt; c.trim()); if (cells.every(c =&gt; /^[\s:-]+$/.test(c))) return; const isHeader = !inTable; inTable = true; const tag = isHeader ? 'th' : 'td'; const style = isHeader ? `color:${C.accent};font-weight:700;background:rgba(0,216,255,0.05);` : `color:${C.text};`; tableRows += `</span><tr>${cells.map(c => `<${tag} style="padding:8px 14px;font-size:0.85rem;${style}border:1px solid ${C.border};">${esc(c.trim())}</${tag}>`).join('')}</tr>`;
                     } else {
                         if (inTable) { body += tableRows; tableRows = ''; inTable = false; }
                         const t = line.trim();
@@ -860,7 +860,7 @@
             body += '</table>';
             return `<!DOCTYPE html><html lang="zh-CN" data-title-zh="视频分析功能" data-title-en="Video Analysis"><head><meta charset="UTF-8"><title>${esc(name)} - 分析报告</title>    <link rel="stylesheet" href="../assets/css/language.css">
 </head><body style="background:${C.bg};color:${C.head};font-family:-apple-system,sans-serif;max-width:900px;margin:0 auto;padding:40px 24px;">${body}    <script src="../assets/js/language.js"></script>
-</body></html>`;
+</body></html><span data-lang="zh">`;
         }
 
         function downloadFile(content, filename, mime) {
@@ -878,7 +878,7 @@
             const html = buildExportHTML('', name);
             const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
             window.open(URL.createObjectURL(blob), '_blank');
-        }
+        }</span><span data-lang="en">`; } function downloadFile(content, filename, mime) { const blob = new Blob([content], { type: mime }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); URL.revokeObjectURL(a.href); } function openReportHTML() { if (!lastReportData) { alert('No analysis report'); return; } const { name } = lastReportData; const html = buildExportHTML('', name); const blob = new Blob([html], { type: 'text/html;charset=utf-8' }); window.open(URL.createObjectURL(blob), '_blank'); }</span>
     </script>
     <script src="../assets/js/language.js"></script>
 </body>

@@ -8,14 +8,14 @@
   const STORAGE_KEY = 'site-language';
 
   function normalizeLanguage(value) {
-    return value === 'en' ? 'en' : 'zh';
+    return value === 'zh' ? 'zh' : 'en';
   }
 
   function readLanguage(storage) {
     try {
       return normalizeLanguage(storage && storage.getItem(STORAGE_KEY));
     } catch (_) {
-      return 'zh';
+      return 'en';
     }
   }
 
@@ -44,6 +44,15 @@
     });
     doc.querySelectorAll('[data-placeholder-zh][data-placeholder-en]').forEach(function (node) {
       node.setAttribute('placeholder', node.dataset[language === 'en' ? 'placeholderEn' : 'placeholderZh']);
+    });
+    doc.querySelectorAll('[data-aria-label-zh][data-aria-label-en]').forEach(function (node) {
+      node.setAttribute('aria-label', node.dataset[language === 'en' ? 'ariaLabelEn' : 'ariaLabelZh']);
+    });
+    doc.querySelectorAll('[data-title-zh][data-title-en]:not(html)').forEach(function (node) {
+      node.setAttribute('title', node.dataset[language === 'en' ? 'titleEn' : 'titleZh']);
+    });
+    doc.querySelectorAll('[data-desc-zh][data-desc-en]').forEach(function (node) {
+      node.dataset.desc = node.dataset[language === 'en' ? 'descEn' : 'descZh'];
     });
 
     const title = doc.documentElement.dataset[language === 'en' ? 'titleEn' : 'titleZh'];
@@ -78,7 +87,7 @@
     if (button.dataset.languageBound !== 'true') {
       button.dataset.languageBound = 'true';
       button.addEventListener('click', function () {
-        const current = doc.documentElement.getAttribute('data-current-lang') || 'zh';
+        const current = doc.documentElement.getAttribute('data-current-lang') || 'en';
         toggleLanguage(current, doc, store, button);
       });
     }

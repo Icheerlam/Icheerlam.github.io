@@ -338,10 +338,10 @@
     </nav>
 
     <div class="editor-panel" id="no-print-area">
-        <h3 data-lang-zh="排版控制器" data-lang-en="Layout controller">排版控制器</h3>
+        <h3 data-lang-zh="排版控制器" data-lang-en="Layout controller"><span data-lang="zh">排版控制器</span><span data-lang="en">Layout controller</span></h3>
         
         <div class="control-group">
-            <label data-lang-zh="字体大小 / Font Size" data-lang-en="Font Size / Font Size">字体大小 / Font Size</label>
+            <label data-lang-zh="字体大小 / Font Size" data-lang-en="Font Size / Font Size"><span data-lang="zh">字体大小 / Font Size</span><span data-lang="en">Font Size / Font Size</span></label>
             <div class="slider-wrapper">
                 <input type="range" id="fs-slider" min="12" max="18" step="1" value="14">
                 <span class="val-display" id="fs-val">14px</span>
@@ -349,7 +349,7 @@
         </div>
 
         <div class="control-group">
-            <label data-lang-zh="行高 (呼吸感)" data-lang-en="Row height (breathing sensation)">行高 (呼吸感)</label>
+            <label data-lang-zh="行高 (呼吸感)" data-lang-en="Row height (breathing sensation)"><span data-lang="zh">行高 (呼吸感)</span><span data-lang="en">Row height (breathing sensation)</span></label>
             <div class="slider-wrapper">
                 <input type="range" id="lh-slider" min="1.2" max="2.2" step="0.1" value="1.6">
                 <span class="val-display" id="lh-val">1.6</span>
@@ -357,7 +357,7 @@
         </div>
 
         <div class="control-group">
-            <label data-lang-zh="列表段落间距" data-lang-en="list paragraph spacing">列表段落间距</label>
+            <label data-lang-zh="列表段落间距" data-lang-en="list paragraph spacing"><span data-lang="zh">列表段落间距</span><span data-lang="en">list paragraph spacing</span></label>
             <div class="slider-wrapper">
                 <input type="range" id="margin-slider" min="0" max="16" step="2" value="8">
                 <span class="val-display" id="margin-val">8px</span>
@@ -365,19 +365,19 @@
         </div>
 
         <button class="panel-btn btn-print" onclick="window.print()"><span data-lang="zh">🖨️ 导出为 PDF</span><span data-lang="en">🖨️ Export as PDF</span></button>
-        <button class="panel-btn btn-save" onclick="saveResume()" data-lang-zh="💾 保存当前排版" data-lang-en="💾 Save current layout">💾 保存当前排版</button>
+        <button class="panel-btn btn-save" onclick="saveResume()" data-lang-zh="💾 保存当前排版" data-lang-en="💾 Save current layout"><span data-lang="zh">💾 保存当前排版</span><span data-lang="en">💾 Save current layout</span></button>
         
-        <a href="../index.html" class="panel-btn btn-return" data-lang-zh="← [ RETURN ] 返回主页" data-lang-en="← [ RETURN ] Return to homepage">← [ RETURN ] 返回主页</a>
+        <a href="../index.html" class="panel-btn btn-return" data-lang-zh="← [ RETURN ] 返回主页" data-lang-en="← [ RETURN ] Return to homepage"><span data-lang="zh">← [ RETURN ] 返回主页</span><span data-lang="en">← [ RETURN ] Return to homepage</span></a>
 
         <div class="hint-text">
-            * 提示：右侧简历文字可直接点击修改，调整排版后点击"保存"。<br>
-            * 保存的内容和排版设置会保留在浏览器中，下次打开自动恢复。
+            <span data-lang="zh">* 提示：右侧简历文字可直接点击修改，调整排版后点击"保存"。</span><span data-lang="en">* Tip: You can directly click to modify the resume text on the right, and click "Save" after adjusting the layout.</span><br>
+            <span data-lang="zh">* 保存的内容和排版设置会保留在浏览器中，下次打开自动恢复。</span><span data-lang="en">* The saved content and layout settings will be retained in the browser and will be automatically restored next time you open it.</span>
         </div>
     </div>
 
     <div class="main-viewport">
         
-        <div class="resume-container" id="resume-canvas" contenteditable="true" spellcheck="false" data-lang="zh">
+        <div class="resume-container" id="resume-canvas" contenteditable="true" spellcheck="false">
             
             <header>
                 <h1 data-lang-zh="叶承霖" data-lang-en="Ye Chenglin">叶承霖</h1>
