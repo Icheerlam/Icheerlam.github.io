@@ -151,13 +151,17 @@
         .vol-slider::-webkit-slider-thumb:hover { background: var(--ak-accent-warn); }
 
         /* ================= 主题切换悬浮键 ================= */
-        .theme-toggle-btn { 
-            position: fixed; bottom: 30px; right: 30px; background: var(--ak-bg-panel); 
-            color: var(--ak-text-muted); border: 1px solid var(--ak-border); 
-            padding: 12px 16px; font-family: 'Space Mono', monospace; font-size: 0.8rem; 
+        .theme-toggle-btn {
+            position: fixed; bottom: 30px; right: 30px; background: var(--ak-bg-panel);
+            color: var(--ak-text-muted); border: 1px solid var(--ak-border);
+            padding: 12px 16px; font-family: 'Space Mono', monospace; font-size: 0.8rem;
             font-weight: 700; cursor: pointer; z-index: 1500; transition: 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
         }
         .theme-toggle-btn:hover { border-color: var(--ak-accent-info); color: var(--ak-accent-info); transform: translateY(-3px);}
+
+        /* 中英文切换 */
+        body.lang-en [data-lang="zh"] { display: none !important; }
+        body:not(.lang-en) [data-lang="en"] { display: none !important; }
 
         /* 移动端适配 (按钮防遮挡) */
         @media (max-width: 768px) { 
@@ -1180,9 +1184,11 @@
             <div class="click-hint parallax-mid">&gt; CLICK_AVATAR</div>
         </div>
         <div class="hero-copy">
-            <span class="hero-kicker">Motion / Growth / Visual System</span>
-            <h1 class="hero-title parallax-deep">历飞雨</h1>
-            <p class="hero-lede">面向增长、广告投放和品牌传播的视觉设计师，把视频动效、数据洞察与 AI 工作流整合成可持续迭代的内容系统。</p>
+            <span class="hero-kicker" data-lang="zh">动态 / 增长 / 视觉系统</span>
+            <span class="hero-kicker" data-lang="en">Motion / Growth / Visual System</span>
+            <h1 class="hero-title parallax-deep" data-lang-zh="历飞雨" data-lang-en="Clarence Ye">历飞雨</h1>
+            <p class="hero-lede" data-lang="zh">面向增长、广告投放和品牌传播的视觉设计师，把视频动效、数据洞察与 AI 工作流整合成可持续迭代的内容系统。</p>
+            <p class="hero-lede" data-lang="en">Visual designer focused on growth, ad creative, and brand communication — integrating motion design, data insights, and AI workflows into a scalable content system.</p>
             <p class="hero-subtitle" id="ai-prompt-text"></p>
             <div class="hero-actions">
                 <a href="#projects" class="hero-secondary-btn interactable">VIEW WORKS ↓</a>
@@ -1196,10 +1202,10 @@
         <div class="edit-card accent" id="about">
             <h2 class="sec-title">Operator Profile</h2>
             <div class="info-grid">
-                <div class="info-item"><strong>Education</strong><span>广东工业大学 // 动画系<br>2020.09 - 2024.07</span></div>
-                <div class="info-item"><strong>Languages</strong><span>粤语 / 英语 (CET-6)</span></div>
-                <div class="info-item"><strong>Email</strong><span>Clrenceye1@gmail.com</span></div>
-                <div class="info-item"><strong>Phone</strong><span>+86 13719113230</span></div>
+                <div class="info-item"><strong data-lang-zh="教育背景" data-lang-en="Education">Education</strong><span>广东工业大学 // 动画系<br>2020.09 - 2024.07</span></div>
+                <div class="info-item"><strong data-lang-zh="语言能力" data-lang-en="Languages">Languages</strong><span>粤语 / 英语 (CET-6)</span></div>
+                <div class="info-item"><strong data-lang-zh="电子邮箱" data-lang-en="Email">Email</strong><span>Clrenceye1@gmail.com</span></div>
+                <div class="info-item"><strong data-lang-zh="电话" data-lang-en="Phone">Phone</strong><span>+86 13719113230</span></div>
             </div>
         </div>
 
@@ -1218,29 +1224,29 @@
                 <span class="tag interactable">LibuTV</span>
                 <span class="tag interactable">Blender 3D</span>
                 <span class="tag interactable">Jimeng / Kling</span>
-                <span class="tag interactable">Video Ads</span>
-                <span class="tag interactable">Growth Mechanics</span>
+                <span class="tag interactable" data-lang-zh="视频广告" data-lang-en="Video Ads">Video Ads</span>
+                <span class="tag interactable" data-lang-zh="增长机制" data-lang-en="Growth Mechanics">Growth Mechanics</span>
             </div>
         </div>
 
         <div class="edit-card wide accent" id="impact">
-            <h2 class="sec-title">Impact Snapshot // 关键成果</h2>
+            <h2 class="sec-title" data-lang-zh="Impact Snapshot // 关键成果" data-lang-en="Impact Snapshot // Key Results">Impact Snapshot // 关键成果</h2>
             <div class="impact-strip">
-                <div class="impact-item"><span class="impact-value">153万</span><span class="impact-label">年度主导短视频累计消耗</span></div>
-                <div class="impact-item"><span class="impact-value">24.5万+</span><span class="impact-label">海外广告账户美元消耗</span></div>
-                <div class="impact-item"><span class="impact-value">16.7万+</span><span class="impact-label">新增装机量</span></div>
-                <div class="impact-item"><span class="impact-value">20%</span><span class="impact-label">年度投放效率提升</span></div>
+                <div class="impact-item"><span class="impact-value">153万</span><span class="impact-label" data-lang-zh="年度主导短视频累计消耗" data-lang-en="Annual Short Video Ad Spend Led">年度主导短视频累计消耗</span></div>
+                <div class="impact-item"><span class="impact-value">24.5万+</span><span class="impact-label" data-lang-zh="海外广告账户美元消耗" data-lang-en="Overseas Ad Account USD Spend">海外广告账户美元消耗</span></div>
+                <div class="impact-item"><span class="impact-value">16.7万+</span><span class="impact-label" data-lang-zh="新增装机量" data-lang-en="New App Installs">新增装机量</span></div>
+                <div class="impact-item"><span class="impact-value">20%</span><span class="impact-label" data-lang-zh="年度投放效率提升" data-lang-en="Annual Ad Efficiency Gain">年度投放效率提升</span></div>
             </div>
         </div>
 
         <!-- 全宽：PROJECTS -->
         <div class="edit-card wide cyan" id="projects">
-            <h2 class="sec-title">Selected Works // 作品入口</h2>
+            <h2 class="sec-title" data-lang-zh="Selected Works // 作品入口" data-lang-en="Selected Works">Selected Works // 作品入口</h2>
             <div class="portfolio-links">
-                <a href="pages/data.html" class="link-card interactable"><h3>Data</h3><p>投放复盘、素材表现与增长分析，用数据解释创意迭代。</p></a>
-                <a href="pages/graphic.html" class="link-card interactable"><h3>Graphic / 3D</h3><p>平面视觉、三维实验、广告素材与品牌画面输出。</p></a>
-                <a href="pages/video.html" class="link-card link-card-video interactable"><h3>Video<span class="video-rec-dot"></span></h3><p>动态广告、买量视频、Showreel 与节奏型动效合集。</p></a>
-                <a href="pages/vibecoding.html" class="link-card interactable"><h3>Vibecoding</h3><p>AI 辅助开发、工具原型、自动化与创意工作流探索。</p></a>
+                <a href="pages/data.html" class="link-card interactable"><h3>Data</h3><p data-lang="zh">投放复盘、素材表现与增长分析，用数据解释创意迭代。</p><p data-lang="en">Ad performance reviews, creative analysis, and growth insights driven by data.</p></a>
+                <a href="pages/graphic.html" class="link-card interactable"><h3>Graphic / 3D</h3><p data-lang="zh">平面视觉、三维实验、广告素材与品牌画面输出。</p><p data-lang="en">Graphic design, 3D experiments, ad creatives and brand visuals.</p></a>
+                <a href="pages/video.html" class="link-card link-card-video interactable"><h3>Video<span class="video-rec-dot"></span></h3><p data-lang="zh">动态广告、买量视频、Showreel 与节奏型动效合集。</p><p data-lang="en">Motion ads, UA videos, showreels and rhythmic motion design.</p></a>
+                <a href="pages/vibecoding.html" class="link-card interactable"><h3>Vibecoding</h3><p data-lang="zh">AI 辅助开发、工具原型、自动化与创意工作流探索。</p><p data-lang="en">AI-assisted dev, tool prototypes, automation and creative workflow exploration.</p></a>
             </div>
         </div>
 
@@ -1249,15 +1255,17 @@
     <section class="footer-cta">
         <div>
             <h2>Ready for the next visual mission?</h2>
-            <p>如果你想快速了解我的履历、作品方向和增长型视觉经验，可以直接进入简历页。</p>
+            <p data-lang="zh">如果你想快速了解我的履历、作品方向和增长型视觉经验，可以直接进入简历页。</p>
+            <p data-lang="en">For a quick overview of my experience, portfolio, and growth-focused visual work, head to the resume page.</p>
         </div>
         <a href="pages/resume.html" class="interactable">ACCESS RESUME</a>
     </section>
 
     <section class="official-entry">
         <div>
-            <h2>AI Model Hub // 一站式 AI 模型平台</h2>
-            <p>官网入口指向 AI Model Hub，聚合 500+ AI 模型能力，覆盖 Sora 2、Veo 3.1、Kling 等视频生成，GPT-5.5、Claude、Gemini 3、DeepSeek 等对话模型，以及图像生成、音乐、语音、Agent 自动化工作流与统一 API。</p>
+            <h2>AI Model Hub<span data-lang="zh"> // 一站式 AI 模型平台</span></h2>
+            <p data-lang="zh">官网入口指向 AI Model Hub，聚合 500+ AI 模型能力，覆盖 Sora 2、Veo 3.1、Kling 等视频生成，GPT-5.5、Claude、Gemini 3、DeepSeek 等对话模型，以及图像生成、音乐、语音、Agent 自动化工作流与统一 API。</p>
+            <p data-lang="en">Official site linking to AI Model Hub — aggregating 500+ AI model capabilities across Sora 2, Veo 3.1, Kling for video generation, GPT-5.5, Claude, Gemini 3, DeepSeek for chat, plus image gen, music, voice, Agent automation workflows and unified API.</p>
         </div>
         <a href="https://icheerlam.lk888.ai/home" target="_blank" rel="noopener noreferrer" class="hero-site-btn magnetic interactable" data-magnetic="0.4">&#9889; ENTER OFFICIAL SITE &#8599;</a>
     </section>
@@ -1362,13 +1370,41 @@
         </div>
     </div>
 
-    <button class="theme-toggle-btn interactable" id="themeBtn" aria-label="Toggle Theme">SYS_DARK</button>
+    <button class="theme-toggle-btn interactable" id="langBtn" aria-label="Switch Language">EN</button>
 
     <script>
         // 首页扩展 interactable 选择器（顶层声明，确保在 common.js 绑定前就绪）
         window.AK_EXTRA_INTERACTABLE = '.edit-card, .link-card, .resume-btn';
 
         document.addEventListener('DOMContentLoaded', () => {
+
+            /* --- 语言切换 --- */
+            const langBtn = document.getElementById('langBtn');
+            const LANG_KEY = 'site_lang_pref';
+            function setLang(lang) {
+                if (lang === 'en') {
+                    document.body.classList.add('lang-en');
+                    if (langBtn) langBtn.textContent = '中';
+                } else {
+                    document.body.classList.remove('lang-en');
+                    if (langBtn) langBtn.textContent = 'EN';
+                }
+                localStorage.setItem(LANG_KEY, lang);
+                // 更新有 data-lang-zh/en 属性的内联文字
+                document.querySelectorAll('[data-lang-zh][data-lang-en]').forEach(el => {
+                    el.textContent = el.getAttribute('data-lang-' + lang);
+                });
+                // AI 打字机重播
+                if (window._updateAIPrompt) window._updateAIPrompt(lang);
+            }
+            if (langBtn) {
+                const saved = localStorage.getItem(LANG_KEY);
+                if (saved) setLang(saved);
+                langBtn.addEventListener('click', () => {
+                    const next = document.body.classList.contains('lang-en') ? 'zh' : 'en';
+                    setLang(next);
+                });
+            }
 
             /* --- 音频系统 / 主题切换 / interactable 音效 / 平滑滚动 / 光标 / 进度条 ---
                已迁移至 assets/js/common.js（通过 window.AK 暴露） */
@@ -1393,21 +1429,31 @@
             }
 
             /* --- 3. AI 打字机终端特效 --- */
-            // 💡 简化过的开头引导文案
-            const promptText = "> 网页主要用 Gemini 3.1 Pro + Claude code + Codex 制作，持续优化迭代。 _";
+            const promptTextZh = "> 网页主要用 Gemini 3.1 Pro + Claude code + Codex 制作，持续优化迭代。 _";
+            const promptTextEn = "> Built with Gemini 3.1 Pro + Claude Code + Codex, continuously iterating. _";
             const subtitleElement = document.getElementById('ai-prompt-text');
             let typingIndex = 0;
-            
+            let currentPrompt = promptTextZh;
+
             function typeWriter() {
-                if (typingIndex < promptText.length) {
-                    subtitleElement.innerHTML += promptText.charAt(typingIndex);
+                if (typingIndex < currentPrompt.length) {
+                    subtitleElement.innerHTML += currentPrompt.charAt(typingIndex);
                     typingIndex++;
-                    setTimeout(typeWriter, 35); 
+                    setTimeout(typeWriter, 35);
                 } else {
                     subtitleElement.innerHTML += '<span class="cursor"></span>';
                 }
             }
             setTimeout(typeWriter, 800);
+
+            // 语言切换时重新打字
+            const origSetLang = window._setLangForAI || function(){};
+            window._updateAIPrompt = function(lang) {
+                typingIndex = 0;
+                currentPrompt = lang === 'en' ? promptTextEn : promptTextZh;
+                subtitleElement.innerHTML = '';
+                setTimeout(typeWriter, 300);
+            };
 
             /* --- 4. 随机掉落彩蛋 --- */
             const avatarTrigger = document.getElementById('avatarTrigger');
