@@ -1270,7 +1270,7 @@
         <a href="https://icheerlam.lk888.ai/home" target="_blank" rel="noopener noreferrer" class="hero-site-btn magnetic interactable" data-magnetic="0.4">&#9889; ENTER OFFICIAL SITE &#8599;</a>
     </section>
 
-    <section id="privateSection">
+    <section id="privateSection" data-lang="zh">
             <div class="secret-header">
                 <h2>[ LOGISTICAL_DATA_VAULT ]</h2>
                 <div class="data-actions">
@@ -1399,7 +1399,7 @@
             }
             if (langBtn) {
                 const saved = localStorage.getItem(LANG_KEY);
-                if (saved) setLang(saved);
+                setLang(saved || 'zh'); // 默认中文
                 langBtn.addEventListener('click', () => {
                     const next = document.body.classList.contains('lang-en') ? 'zh' : 'en';
                     setLang(next);
