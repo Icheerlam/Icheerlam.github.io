@@ -63,3 +63,12 @@ test('data and vibecoding pages pair every Chinese block with English', () => {
   }
   assert.deepEqual(failures, []);
 });
+
+test('homepage defaults its audio and AI prompt to English-on state', () => {
+  const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  const common = fs.readFileSync(path.join(root, 'assets/js/common.js'), 'utf8');
+  assert.match(html, /let currentPrompt = promptTextEn;/);
+  assert.match(html, /\[ AUDIO: ON \]/);
+  assert.match(common, /function resumeBgmOnFirstInteraction/);
+  assert.doesNotMatch(common, /自动播放[\s\S]{0,300}AK\.audioEnabled = false;/);
+});

@@ -946,6 +946,7 @@
             box-shadow:0 30px 70px rgba(0,0,0,.28), 0 0 34px rgba(245,166,35,.08);
         }
         .impact-item:first-child .impact-value{font-size:clamp(2.2rem,5vw,4rem);}
+        html[lang="en"] .impact-item:first-child .impact-value{font-size:clamp(1.8rem,3.6vw,3rem);}
         .impact-value{display:block;font:800 clamp(1.55rem,3vw,2.2rem) 'Space Mono';color:var(--ak-accent-warn);line-height:1;}
         .impact-label{display:block;margin-top:10px;font:.72rem 'Space Mono';color:var(--ak-text-muted);line-height:1.45;text-transform:uppercase;}
 
@@ -1432,7 +1433,7 @@
             const promptTextEn = "> Built with Gemini 3.1 Pro + Claude Code + Codex, continuously iterating. _";
             const subtitleElement = document.getElementById('ai-prompt-text');
             let typingIndex = 0;
-            let currentPrompt = promptTextZh;
+            let currentPrompt = promptTextEn;
 
             function typeWriter() {
                 if (typingIndex < currentPrompt.length) {

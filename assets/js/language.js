@@ -57,6 +57,9 @@
 
     const title = doc.documentElement.dataset[language === 'en' ? 'titleEn' : 'titleZh'];
     if (title) doc.title = title;
+    if (typeof window !== 'undefined' && typeof window._updateAIPrompt === 'function') {
+      window._updateAIPrompt(language);
+    }
     updateButton(button || doc.querySelector('.site-language-toggle'), language);
     return language;
   }

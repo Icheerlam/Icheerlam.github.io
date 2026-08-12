@@ -77,7 +77,16 @@
         });
     }
 
-    // 默认自动播放背景音乐（浏览器可能阻止，失败则同步 UI 为 OFF）
+    function resumeBgmOnFirstInteraction() {
+        if (!AK.audioEnabled || !bgmAudio || !bgmAudio.paused) return;
+        bgmAudio.volume = volOf(bgmVol);
+        bgmAudio.play().then(function () {
+            document.removeEventListener('pointerdown', resumeBgmOnFirstInteraction, true);
+            document.removeEventListener('keydown', resumeBgmOnFirstInteraction, true);
+        }).catch(function () {});
+    }
+
+    // 默认开启背景音乐；若浏览器阻止自动播放，则在首次交互时继续播放。
     if (AK.audioEnabled && bgmAudio) {
         bgmAudio.volume = volOf(bgmVol);
         bgmAudio.play().then(function () {
@@ -87,12 +96,13 @@
                 audioToggle.classList.remove('muted');
             }
         }).catch(function () {
-            // 浏览器阻止自动播放，同步状态为 OFF
-            AK.audioEnabled = false;
+            // 保持默认开启状态，等待用户首次交互以满足浏览器播放策略。
             if (audioToggle) {
-                audioToggle.innerHTML = '[ AUDIO: OFF ]';
-                audioToggle.classList.add('muted');
+                audioToggle.innerHTML = '[ AUDIO: ON ]';
+                audioToggle.classList.remove('muted');
             }
+            document.addEventListener('pointerdown', resumeBgmOnFirstInteraction, true);
+            document.addEventListener('keydown', resumeBgmOnFirstInteraction, true);
         });
     }
 
