@@ -375,7 +375,7 @@
                         deletedIds.add(id);
                         saveDeletedIds(deletedIds);
                     } else {
-                        if(!confirm('确认删除该条目？')) return;
+                        if(!confirm(document.body.classList.contains('lang-en') ? 'Confirm delete this entry?' : '确认删除该条目？')) return;
                         userEntries = userEntries.filter(d => d.id !== id);
                         saveUserEntries(userEntries);
                     }
@@ -454,8 +454,8 @@
         btnSubmit.addEventListener('click', () => {
             const title = formTitle.value.trim();
             const desc = formDesc.value.trim();
-            if(!title) { alert('请填写名称'); return; }
-            if(!desc) { alert('请填写描述'); return; }
+            if(!title) { alert(document.body.classList.contains('lang-en') ? 'Please enter a name' : '请填写名称'); return; }
+            if(!desc) { alert(document.body.classList.contains('lang-en') ? 'Please enter a description' : '请填写描述'); return; }
 
             const tags = formTags.value
                 .split(/[,，]/)
@@ -572,8 +572,6 @@
                 if (si && si.hasAttribute('data-lang-' + lang)) si.placeholder = si.getAttribute('data-lang-' + lang);
             }
             if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'en'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
-            /* 语言切换时同步更新搜索框 placeholder */
-            if (langBtn) { const savedLang = localStorage.getItem(LANG_KEY) || 'en'; document.getElementById('searchInput').placeholder = document.getElementById('searchInput').getAttribute('data-lang-' + savedLang); }
         });
     </script>
 </body>
