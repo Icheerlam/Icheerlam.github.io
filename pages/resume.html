@@ -261,23 +261,52 @@
 
         /* ================= 6. 打印机专属样式优化 ================= */
         @media print {
-            body {
-                background: #fff; 
-                -webkit-print-color-adjust: exact; 
-                display: block; 
+            @page {
+                size: A4;
+                margin: 15mm 18mm 15mm 18mm;
             }
-            .editor-panel {
-                display: none !important; 
+            html, body {
+                width: 100%;
+                height: auto;
+                background: #fff !important;
+                display: block !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            .top-nav,
+            .editor-panel,
+            .nav-home-btn,
+            #no-print-area {
+                display: none !important;
             }
             .main-viewport {
-                margin-left: 0; 
-                padding: 0; 
+                margin-left: 0 !important;
+                padding: 0 !important;
+                margin-top: 0 !important;
+                width: 100% !important;
             }
             .resume-container {
-                margin: 0;
-                padding: 0;
-                box-shadow: none; 
-                max-width: 100%;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                max-width: 100% !important;
+                outline: none !important;
+            }
+            /* 链接显示为普通文字 */
+            .resume-container a {
+                color: #000 !important;
+                text-decoration: none !important;
+                border-bottom: none !important;
+            }
+            /* 确保分页不在中间截断 */
+            h2.section-title {
+                page-break-after: avoid;
+            }
+            .experience-item {
+                page-break-inside: avoid;
             }
         }
 
@@ -295,7 +324,7 @@
 <body>
 
     <!-- 顶部导航栏 -->
-    <nav class="top-nav">
+    <nav class="top-nav" id="no-print-area">
         <a href="https://icheerlam.github.io/" class="nav-logo">PRTS // RESUME</a>
         <div class="nav-links">
             <a href="video.html">Video</a>
@@ -334,13 +363,13 @@
         </div>
 
         <button class="panel-btn btn-print" onclick="window.print()">🖨️ 导出为 PDF</button>
-        <button class="panel-btn btn-save" onclick="downloadResumePDF()">💾 下载 PDF 简历</button>
+        <button class="panel-btn btn-save" onclick="window.print()">💾 导出 PDF 简历</button>
         
         <a href="../index.html" class="panel-btn btn-return">← [ RETURN ] 返回主页</a>
 
         <div class="hint-text">
             * 提示：右侧简历区域的文字可以直接点击修改。<br>
-            * 点击"下载 PDF 简历"可下载原始 PDF 格式简历文件。
+            * 点击"导出为 PDF"或"导出 PDF 简历"将打印输出为 A4 格式 PDF 文件。
         </div>
     </div>
 
@@ -456,15 +485,6 @@
             marginVal.innerText = val + 'px';
             resumeCanvas.style.setProperty('--resume-margin', val + 'px');
         });
-
-        function downloadResumePDF() {
-            const a = document.createElement('a');
-            a.href = '../docs/简历2026_1.pdf';
-            a.download = '叶承霖_简历_2026.pdf';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
     </script>
 
 </body>
