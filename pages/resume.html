@@ -269,19 +269,17 @@
                 width: 100%;
                 height: auto;
                 background: #fff !important;
-                display: block !important;
                 padding: 0 !important;
                 margin: 0 !important;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
-            .top-nav,
-            .editor-panel,
-            .nav-home-btn,
-            #no-print-area {
+            /* 先隐藏所有 body 直接子元素，再单独显示简历区 */
+            body > * {
                 display: none !important;
             }
             .main-viewport {
+                display: block !important;
                 margin-left: 0 !important;
                 padding: 0 !important;
                 margin-top: 0 !important;
