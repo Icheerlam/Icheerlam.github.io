@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="Adobe Stock 图片识别工具" data-title-en="Adobe Stock Image Recognition Tool">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -110,6 +110,7 @@
 
         @media (max-width:768px) { .nav-links{display:none;} .upload-row{flex-direction:column;} }
     </style>
+    <link rel="stylesheet" href="../assets/css/language.css">
 </head>
 <body>
 
@@ -128,9 +129,9 @@
 
     <header class="page-header">
         <h1>[ ADOBE STOCK // IMAGE RECOGNIZER ]</h1>
-        <p>上传图片或文件夹，AI 批量生成 Adobe Stock 标准的标题、关键词和分类</p>
+        <p data-lang-zh="上传图片或文件夹，AI 批量生成 Adobe Stock 标准的标题、关键词和分类" data-lang-en="Upload images or folders, and AI will batch generate Adobe Stock standard titles, keywords, and categories.">上传图片或文件夹，AI 批量生成 Adobe Stock 标准的标题、关键词和分类</p>
         <p style="margin-top:16px;">
-            <a href="../Adobe_Stock_程序.zip" class="btn btn-primary" style="font-size:0.85rem;">&#128229; 下载本地程序</a>
+            <a href="../Adobe_Stock_程序.zip" class="btn btn-primary" style="font-size:0.85rem;" data-lang-zh="&amp;#128229; 下载本地程序" data-lang-en="&amp;#128229; Download local program">&#128229; 下载本地程序</a>
         </p>
     </header>
 
@@ -178,67 +179,67 @@
         </style>
 
         <div class="ov-title">
-            <h2>&gt; SYSTEM OVERVIEW // 图库识别全景</h2>
-            <p>从「看到一张图」到「安全上架一批不重复的图」全链路自动化</p>
+            <h2 data-lang-zh="&amp;gt; SYSTEM OVERVIEW // 图库识别全景" data-lang-en="> SYSTEM OVERVIEW // Gallery recognition panorama">&gt; SYSTEM OVERVIEW // 图库识别全景</h2>
+            <p data-lang-zh="从「看到一张图」到「安全上架一批不重复的图」全链路自动化" data-lang-en="Full-link automation from &quot;seeing a picture&quot; to &quot;safely putting a batch of non-duplicate pictures&quot;">从「看到一张图」到「安全上架一批不重复的图」全链路自动化</p>
         </div>
 
         <!-- 闭环流程 -->
         <div class="ov-flow">
             <div class="ov-node b">
                 <div class="ic">&#128270;</div>
-                <div class="nm">模块B · 生成方向</div>
+                <div class="nm" data-lang-zh="模块B · 生成方向" data-lang-en="Module B·Generation direction">模块B · 生成方向</div>
                 <div class="ds">抓图库建避重库<br>生成不撞车关键词</div>
             </div>
             <div class="ov-arrow">&#8594;</div>
             <div class="ov-node">
                 <div class="ic">&#127912;</div>
-                <div class="nm">出图 / 挑图</div>
+                <div class="nm" data-lang-zh="出图 / 挑图" data-lang-en="Publish/Select pictures">出图 / 挑图</div>
                 <div class="ds">按提示词产出<br>待识别素材</div>
             </div>
             <div class="ov-arrow">&#8594;</div>
             <div class="ov-node a">
                 <div class="ic">&#129504;</div>
-                <div class="nm">模块A · 图片识别</div>
+                <div class="nm" data-lang-zh="模块A · 图片识别" data-lang-en="Module A·Picture Recognition">模块A · 图片识别</div>
                 <div class="ds">视觉模型生成<br>标题/关键词/分类</div>
             </div>
             <div class="ov-arrow">&#8594;</div>
             <div class="ov-node">
                 <div class="ic">&#128230;</div>
-                <div class="nm">上传 Adobe Stock</div>
+                <div class="nm" data-lang-zh="上传 Adobe Stock" data-lang-en="Upload Adobe Stock">上传 Adobe Stock</div>
                 <div class="ds">导出 CSV<br>批量上架</div>
             </div>
         </div>
-        <div class="ov-loop"><span>&#8635; 上架后重新抓取图库 → 更新避重库 → 下一轮继续避重（闭环）</span></div>
+        <div class="ov-loop"><span data-lang-zh="&amp;#8635; 上架后重新抓取图库 → 更新避重库 → 下一轮继续避重（闭环）" data-lang-en="↻ Re-crawl the gallery after it is put on the shelf → Update the gravity avoidance library → Continue to avoid gravity in the next round (closed loop)">&#8635; 上架后重新抓取图库 → 更新避重库 → 下一轮继续避重（闭环）</span></div>
 
         <!-- 两模块详情 -->
         <div class="ov-modules">
             <div class="ov-module b">
                 <span class="ov-tag b">MODULE B</span>
-                <h3>图片识别引擎</h3>
-                <p>通义千问 qwen-vl-max 视觉模型批量识别，自动压缩（≤800px），多线程并发，输出符合 Adobe Stock 标准的 Title / Keywords(≤49) / Category(1-21)，另内置 qwen-max 趋势分析生成可销售提示词。</p>
+                <h3 data-lang-zh="图片识别引擎" data-lang-en="Image recognition engine">图片识别引擎</h3>
+                <p data-lang-zh="通义千问 qwen-vl-max 视觉模型批量识别，自动压缩（≤800px），多线程并发，输出符合 Adobe Stock 标准的 Title / Keywords(≤49) / Category(1-21)，另内置 qwen-max 趋势分析生成可销售提示词。" data-lang-en="Tongyi Qianwen's qwen-vl-max visual model batch recognition, automatic compression (≤800px), multi-thread concurrency, output Title / Keywords (≤49) / Category (1-21) that comply with Adobe Stock standards, and built-in qwen-max trend analysis to generate sellable prompt words.">通义千问 qwen-vl-max 视觉模型批量识别，自动压缩（≤800px），多线程并发，输出符合 Adobe Stock 标准的 Title / Keywords(≤49) / Category(1-21)，另内置 qwen-max 趋势分析生成可销售提示词。</p>
                 <div class="ov-feats">
                     <span class="ov-feat">qwen-vl-max</span>
-                    <span class="ov-feat">多线程并发</span>
-                    <span class="ov-feat">CSV 导出</span>
-                    <span class="ov-feat">趋势提示词</span>
+                    <span class="ov-feat" data-lang-zh="多线程并发" data-lang-en="Multi-thread concurrency">多线程并发</span>
+                    <span class="ov-feat" data-lang-zh="CSV 导出" data-lang-en="CSV export">CSV 导出</span>
+                    <span class="ov-feat" data-lang-zh="趋势提示词" data-lang-en="Trend prompt words">趋势提示词</span>
                 </div>
             </div>
             <div class="ov-module a">
                 <span class="ov-tag a">MODULE A</span>
-                <h3>图库避重优化器</h3>
-                <p>Chrome CDP 抓取 Contributor 已上图库（不碰账号密码），建立本地避重数据库；审计候选批次的关键词重叠（前10词≥5=高风险），修订至零风险后复制到剪贴板。</p>
+                <h3 data-lang-zh="图库避重优化器" data-lang-en="Library weight avoidance optimizer">图库避重优化器</h3>
+                <p data-lang-zh="Chrome CDP 抓取 Contributor 已上图库（不碰账号密码），建立本地避重数据库；审计候选批次的关键词重叠（前10词≥5=高风险），修订至零风险后复制到剪贴板。" data-lang-en="Chrome CDP grabs the Contributor that has been uploaded to the gallery (without touching the account and password), and establishes a local avoidance database; audits the overlapping keywords of the candidate batch (the first 10 words ≥ 5 = high risk), and then copies them to the clipboard after revising them to zero risk.">Chrome CDP 抓取 Contributor 已上图库（不碰账号密码），建立本地避重数据库；审计候选批次的关键词重叠（前10词≥5=高风险），修订至零风险后复制到剪贴板。</p>
                 <div class="ov-feats">
-                    <span class="ov-feat">CDP 抓取</span>
-                    <span class="ov-feat">关键词去重</span>
-                    <span class="ov-feat">风险审计</span>
-                    <span class="ov-feat">Obsidian 同步</span>
+                    <span class="ov-feat" data-lang-zh="CDP 抓取" data-lang-en="CDP scraping">CDP 抓取</span>
+                    <span class="ov-feat" data-lang-zh="关键词去重" data-lang-en="Keyword removal">关键词去重</span>
+                    <span class="ov-feat" data-lang-zh="风险审计" data-lang-en="risk audit">风险审计</span>
+                    <span class="ov-feat" data-lang-zh="Obsidian 同步" data-lang-en="Obsidian sync">Obsidian 同步</span>
                 </div>
             </div>
         </div>
 
         <!-- 技术栈 -->
         <div class="ov-stack">
-            <span class="ov-chip">通义千问 VL</span>
+            <span class="ov-chip" data-lang-zh="通义千问 VL" data-lang-en="Tongyi Qianwen VL">通义千问 VL</span>
             <span class="ov-chip">qwen-max</span>
             <span class="ov-chip">Python / Flask</span>
             <span class="ov-chip">Pillow</span>
@@ -252,36 +253,36 @@
 
         <!-- API 配置 -->
         <div class="panel" style="animation-delay:0.1s;">
-            <div class="panel-title">API Config // 配置</div>
+            <div class="panel-title" data-lang-zh="API Config // 配置" data-lang-en="API Config // configuration">API Config // 配置</div>
             <div class="form-group">
-                <label>API Key (阿里云 DashScope)</label>
-                <input type="password" id="apiKeyInput" placeholder="请输入 API Key（sk-...）">
+                <label data-lang-zh="API Key (阿里云 DashScope)" data-lang-en="API Key (Alibaba Cloud DashScope)">API Key (阿里云 DashScope)</label>
+                <input type="password" id="apiKeyInput" placeholder="请输入 API Key（sk-...）" data-lang-zh="请输入 API Key（sk-...）" data-lang-en="Enter API Key (sk-...)">
             </div>
             <div class="warn-box"><p>> 请确�� API Key 有效，qwen-vl-max 模型需已开通 DashScope 服务</p></div>
-            <button onclick="saveConfig()" class="btn btn-primary">&#9656; 保存配置</button>
+            <button onclick="saveConfig()" class="btn btn-primary" data-lang-zh="&amp;#9656; 保存配置" data-lang-en="▸ Save configuration">&#9656; 保存配置</button>
         </div>
 
         <!-- 热点关键词生成 -->
         <div class="panel" style="animation-delay:0.15s;">
-            <div class="panel-title">Trend Keywords // 热点关键词生成</div>
+            <div class="panel-title" data-lang-zh="Trend Keywords // 热点关键词生成" data-lang-en="Trend Keywords // Hot keyword generation">Trend Keywords // 热点关键词生成</div>
             <div class="form-group">
-                <label>生成数量</label>
+                <label data-lang-zh="生成数量" data-lang-en="Generate quantity">生成数量</label>
                 <input type="number" id="keywordCount" value="5" min="1" max="20" style="width:80px;">
             </div>
             <div class="form-group">
-                <label>热点领域（可选，支持手动输入）</label>
-                <input type="text" id="trendDomain" placeholder="例如：科技/AI、美食、旅行..." style="width:100%; max-width:300px;">
+                <label data-lang-zh="热点领域（可选，支持手动输入）" data-lang-en="Hot areas (optional, supports manual input)">热点领域（可选，支持手动输入）</label>
+                <input type="text" id="trendDomain" placeholder="例如：科技/AI、美食、旅行..." data-lang-zh="例如：科技/AI、美食、旅行..." data-lang-en="For example: Tech/AI, food, travel..." style="width:100%; max-width:300px;">
             </div>
             <div class="form-group">
-                <label>自定义条件提示词（可选）</label>
-                <textarea id="customPrompt" rows="3" placeholder="例如：&#10;- 只生成横构图场景&#10;- 色调偏暖，适合夏季&#10;- 主体必须包含人物" style="width:100%;resize:vertical;"></textarea>
+                <label data-lang-zh="自定义条件提示词（可选）" data-lang-en="Custom conditional prompt words (optional)">自定义条件提示词（可选）</label>
+                <textarea id="customPrompt" rows="3" placeholder="例如：&#10;- 只生成横构图场景&#10;- 色调偏暖，适合夏季&#10;- 主体必须包含人物" data-lang-zh="例如：&#10;- 只生成横构图场景&#10;- 色调偏暖，适合夏季&#10;- 主体必须包含人物" data-lang-en="For example:&#10;- Generate landscape scenes only&#10;- Use warm summer tones&#10;- The subject must include people" style="width:100%;resize:vertical;"></textarea>
             </div>
-            <button onclick="generateTrendKeywords()" id="btnGenerateKeywords" class="btn btn-primary">&#9656; 生成热点关键词</button>
+            <button onclick="generateTrendKeywords()" id="btnGenerateKeywords" class="btn btn-primary" data-lang-zh="&amp;#9656; 生成热点关键词" data-lang-en="▸ Generate hot keywords">&#9656; 生成热点关键词</button>
 
             <div id="keywordsResultPanel" style="display:none; margin-top:20px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <div class="info-box" style="margin:0;"><p>AI 分析当前市场趋势，生成易售图片主题建议</p></div>
-                    <button onclick="copyAllKeywords()" class="btn btn-success btn-sm">批量复制全部</button>
+                    <div class="info-box" style="margin:0;"><p data-lang-zh="AI 分析当前市场趋势，生成易售图片主题建议" data-lang-en="AI analyzes current market trends and generates easy-to-sell image theme suggestions">AI 分析当前市场趋势，生成易售图片主题建议</p></div>
+                    <button onclick="copyAllKeywords()" class="btn btn-success btn-sm" data-lang-zh="批量复制全部" data-lang-en="Batch copy all">批量复制全部</button>
                 </div>
                 <div id="keywordsResultList"></div>
             </div>
@@ -289,40 +290,40 @@
 
         <!-- 上传 -->
         <div class="panel" style="animation-delay:0.2s;">
-            <div class="panel-title">Upload Images // 上传图片或文件夹</div>
+            <div class="panel-title" data-lang-zh="Upload Images // 上传图片或文件夹" data-lang-en="Upload Images // Upload pictures or folders">Upload Images // 上传图片或文件夹</div>
             <div class="upload-row">
                 <div class="upload-area">
                     <div class="upload-icon">&#9653;</div>
-                    <p>上传单张图片</p>
+                    <p data-lang-zh="上传单张图片" data-lang-en="Upload a single image">上传单张图片</p>
                     <small>JPG, PNG, WEBP</small>
                     <input type="file" id="singleFileInput" accept="image/*">
                 </div>
                 <div class="upload-area">
                     <div class="upload-icon">&#9650;</div>
-                    <p>上传文件夹</p>
-                    <small>自动识别所有图片</small>
+                    <p data-lang-zh="上传文件夹" data-lang-en="Upload folder">上传文件夹</p>
+                    <small data-lang-zh="自动识别所有图片" data-lang-en="Automatically recognize all pictures">自动识别所有图片</small>
                     <input type="file" id="folderInput" webkitdirectory multiple>
                 </div>
             </div>
             <div class="file-list-header">
                 <span>&#9656; 待处理文件（共 <strong id="fileCount">0</strong> 个）</span>
-                <button onclick="clearFiles()" class="btn btn-sm btn-danger">清空列表</button>
+                <button onclick="clearFiles()" class="btn btn-sm btn-danger" data-lang-zh="清空列表" data-lang-en="Clear list">清空列表</button>
             </div>
             <div class="file-list" id="fileList"></div>
             <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                <button onclick="startBatch()" id="btnStart" class="btn btn-primary" disabled>&#9656; 开始批量识别</button>
-                <button onclick="stopBatch()" id="btnStop" class="btn btn-danger" style="display:none;">&#9632; 停止</button>
-                <span style="font:0.75rem 'Space Mono'; color:var(--ak-text-muted); margin-left:10px;">并发数：</span>
+                <button onclick="startBatch()" id="btnStart" class="btn btn-primary" disabled data-lang-zh="&amp;#9656; 开始批量识别" data-lang-en="▸ Start batch identification">&#9656; 开始批量识别</button>
+                <button onclick="stopBatch()" id="btnStop" class="btn btn-danger" style="display:none;" data-lang-zh="&amp;#9632; 停止" data-lang-en="■ Stop">&#9632; 停止</button>
+                <span style="font:0.75rem 'Space Mono'; color:var(--ak-text-muted); margin-left:10px;" data-lang-zh="并发数：" data-lang-en="Number of concurrencies:">并发数：</span>
                 <input type="number" id="workersInput" value="3" min="1" max="5" style="width:60px; padding:6px; text-align:center;">
             </div>
         </div>
 
         <!-- 进度 -->
         <div class="panel" id="progressPanel" style="display:none;">
-            <div class="panel-title">Processing // 处理进度</div>
+            <div class="panel-title" data-lang-zh="Processing // 处理进度" data-lang-en="Processing // Processing progress">Processing // 处理进度</div>
             <div class="progress-bar-wrap">
                 <div class="progress-bar-label">
-                    <span id="progressText">准备中...</span>
+                    <span id="progressText" data-lang-zh="准备中..." data-lang-en="In preparation...">准备中...</span>
                     <span id="progressCount">0 / 0</span>
                 </div>
                 <div class="progress-bar"><div class="progress-bar-fill" id="progressBar" style="width:0%"></div></div>
@@ -332,11 +333,11 @@
 
         <!-- 结果 -->
         <div class="panel" id="resultPanel" style="display:none;">
-            <div class="panel-title">Recognition Results // 识别结果</div>
+            <div class="panel-title" data-lang-zh="Recognition Results // 识别结果" data-lang-en="Recognition Results // Recognition results">Recognition Results // 识别结果</div>
             <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px;">
-                <button onclick="downloadAllCSV()" class="btn btn-success">下载 CSV（全部）</button>
-                <button onclick="downloadOKCSV()" class="btn">下载 CSV（仅成功）</button>
-                <button onclick="clearResults()" class="btn btn-danger">清空结果</button>
+                <button onclick="downloadAllCSV()" class="btn btn-success" data-lang-zh="下载 CSV（全部）" data-lang-en="Download CSV (all)">下载 CSV（全部）</button>
+                <button onclick="downloadOKCSV()" class="btn" data-lang-zh="下载 CSV（仅成功）" data-lang-en="Download CSV (successful only)">下载 CSV（仅成功）</button>
+                <button onclick="clearResults()" class="btn btn-danger" data-lang-zh="清空结果" data-lang-en="Clear results">清空结果</button>
             </div>
             <div class="result-table-wrap">
                 <table class="result-table" id="resultTable">
@@ -423,7 +424,7 @@
         function renderFileList() {
             document.getElementById('fileCount').textContent = allFiles.length;
             const list = document.getElementById('fileList');
-            if (!allFiles.length) { list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--ak-text-muted); font:0.8rem Space Mono;">暂无待处理文件</div>'; return; }
+            if (!allFiles.length) { list.innerHTML = '<div style="padding:20px; text-align:center; color:var(--ak-text-muted); font:0.8rem Space Mono;" data-lang-zh="暂无待处理文件" data-lang-en="No pending files yet">暂无待处理文件</div>'; return; }
             list.innerHTML = allFiles.map((f, i) => {
                 const existing = batchResults.find(r => r.name === f.name);
                 if (existing) {
@@ -580,8 +581,8 @@ Return only valid JSON.`;
 
             document.getElementById('resultBody').innerHTML = allFiles.map((f, i) => {
                 const r = batchResults.find(x => x.name === f.name);
-                if (!r) return `<tr><td>${i+1}</td><td>${f.name}</td><td colspan="3" style="color:var(--ak-text-muted);">待处理</td></tr>`;
-                if (!r.ok) return `<tr class="fail"><td>${i+1}</td><td>${r.name}</td><td colspan="3" style="color:#ff3366;">失败: ${r.error}</td></tr>`;
+                if (!r) return `<tr><td>${i+1}</td><td>${f.name}</td><td colspan="3" style="color:var(--ak-text-muted);" data-lang-zh="待处理" data-lang-en="Pending">待处理</td></tr>`;
+                if (!r.ok) return `<tr class="fail"><td>${i+1}</td><td>${r.name}</td><td colspan="3" style="color:#ff3366;" data-lang-zh="失败: ${r.error}" data-lang-en="Failure: ${r.error}">失败: ${r.error}</td></tr>`;
                 const catName = CATEGORIES[r.category] || r.category;
                 const kws = r.keywords.slice(0, 15).map(k => `<span class="kw-tag">${k}</span>`).join('');
                 if (r.keywords.length > 15) kws += `<span class="kw-tag" style="opacity:0.5;">+${r.keywords.length-15}</span>`;
@@ -719,7 +720,7 @@ ${customPrompt ? `\n用户自定义条件：\n${customPrompt}\n` : ''}
                                     ${escLine}
                                 </div>
                             </div>
-                            <button onclick="copyKeywordItem(${i})" class="btn btn-sm btn-warn">复制</button>
+                            <button onclick="copyKeywordItem(${i})" class="btn btn-sm btn-warn" data-lang-zh="复制" data-lang-en="copy">复制</button>
                         </div>
                     </div>`;
             }).join('');
@@ -745,5 +746,6 @@ ${customPrompt ? `\n用户自定义条件：\n${customPrompt}\n` : ''}
             setTimeout(() => t.classList.remove('show'), 2500);
         }
     </script>
+    <script src="../assets/js/language.js"></script>
 </body>
 </html>

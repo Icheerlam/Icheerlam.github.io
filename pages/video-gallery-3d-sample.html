@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="3D 动效画廊样例" data-title-en="3D Motion Gallery Sample">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -220,6 +220,7 @@
             .dock { bottom: 16px; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/language.css">
 </head>
 <body>
     <section class="stage" id="stage" aria-label="3D motion gallery demo">
@@ -227,7 +228,7 @@
         <div class="hud">
             <div class="eyebrow"><i class="fa fa-cube"></i> 3D INTERACTIVE SAMPLE</div>
             <h1>Orbit<br>Motion<br>Gallery</h1>
-            <p>一个可拖拽的 3D 影像环：视频作品像漂浮屏幕围绕观众排列。正式版可以把每个屏幕接到作品详情、YouTube 或分析报告。</p>
+            <p data-lang-zh="一个可拖拽的 3D 影像环：视频作品像漂浮屏幕围绕观众排列。正式版可以把每个屏幕接到作品详情、YouTube 或分析报告。" data-lang-en="A draggable 3D image ring: video works arranged like floating screens around the viewer. The official version can connect each screen to work details, YouTube or analysis reports.">一个可拖拽的 3D 影像环：视频作品像漂浮屏幕围绕观众排列。正式版可以把每个屏幕接到作品详情、YouTube 或分析报告。</p>
         </div>
         <div class="control-note">DRAG / WHEEL TO ROTATE</div>
         <div class="plinth"></div>
@@ -314,5 +315,6 @@
 
         render();
     </script>
+    <script src="../assets/js/language.js"></script>
 </body>
 </html>

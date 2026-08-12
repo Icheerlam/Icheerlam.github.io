@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="叶澄澜｜个人作品集" data-title-en="Clarence Ye | Personal Portfolio">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -493,6 +493,7 @@
         footer p { transition: color 0.3s; cursor: crosshair; }
         footer p:hover { color: var(--ak-accent-info); text-shadow: 0 0 8px rgba(0, 216, 255, 0.5); }
     </style>
+    <link rel="stylesheet" href="assets/css/language.css">
 </head>
 <body class="dark-mode lang-en">
 
@@ -1220,7 +1221,7 @@
                 <span class="tag interactable">Claude Code</span>
                 <span class="tag interactable">Codex</span>
                 <span class="tag interactable">After Effects</span>
-                <span class="tag interactable">CapCut / 剪映</span>
+                <span class="tag interactable" data-lang-zh="CapCut / 剪映" data-lang-en="CapCut/Cut">CapCut / 剪映</span>
                 <span class="tag interactable">LibuTV</span>
                 <span class="tag interactable">Blender 3D</span>
                 <span class="tag interactable">Jimeng / Kling</span>
@@ -1232,9 +1233,9 @@
         <div class="edit-card wide accent" id="impact">
             <h2 class="sec-title" data-lang-zh="Impact Snapshot // 关键成果" data-lang-en="Impact Snapshot // Key Results">Impact Snapshot // Key Results</h2>
             <div class="impact-strip">
-                <div class="impact-item"><span class="impact-value">153万</span><span class="impact-label" data-lang-zh="年度主导短视频累计消耗" data-lang-en="Annual Short Video Ad Spend Led">Annual Short Video Ad Spend Led</span></div>
-                <div class="impact-item"><span class="impact-value">24.5万+</span><span class="impact-label" data-lang-zh="海外广告账户美元消耗" data-lang-en="Overseas Ad Account USD Spend">Overseas Ad Account USD Spend</span></div>
-                <div class="impact-item"><span class="impact-value">16.7万+</span><span class="impact-label" data-lang-zh="新增装机量" data-lang-en="New App Installs">New App Installs</span></div>
+                <div class="impact-item"><span class="impact-value" data-lang-zh="153万" data-lang-en="1.53 million">153万</span><span class="impact-label" data-lang-zh="年度主导短视频累计消耗" data-lang-en="Annual Short Video Ad Spend Led">Annual Short Video Ad Spend Led</span></div>
+                <div class="impact-item"><span class="impact-value" data-lang-zh="24.5万+" data-lang-en="245,000+">24.5万+</span><span class="impact-label" data-lang-zh="海外广告账户美元消耗" data-lang-en="Overseas Ad Account USD Spend">Overseas Ad Account USD Spend</span></div>
+                <div class="impact-item"><span class="impact-value" data-lang-zh="16.7万+" data-lang-en="167,000+">16.7万+</span><span class="impact-label" data-lang-zh="新增装机量" data-lang-en="New App Installs">New App Installs</span></div>
                 <div class="impact-item"><span class="impact-value">20%</span><span class="impact-label" data-lang-zh="年度投放效率提升" data-lang-en="Annual Ad Efficiency Gain">Annual Ad Efficiency Gain</span></div>
             </div>
         </div>
@@ -1369,8 +1370,6 @@
             <button class="btn-cancel interactable" onclick="closePasswordModal()">[ ABORT_OPERATION ]</button>
         </div>
     </div>
-
-    <button class="theme-toggle-btn interactable" id="langBtn" aria-label="Switch Language">EN</button>
 
     <script>
         // 首页扩展 interactable 选择器（顶层声明，确保在 common.js 绑定前就绪）
@@ -1773,5 +1772,6 @@
             ScrollTrigger.refresh();
         });
     </script>
+    <script src="assets/js/language.js"></script>
 </body>
 </html>

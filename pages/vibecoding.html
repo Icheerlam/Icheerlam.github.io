@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="氛围编程" data-title-en="Vibe Coding">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,6 +100,7 @@
             .theme-toggle-btn { bottom:20px; right:20px; z-index:2000; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/language.css">
 </head>
 <body class="dark-mode lang-en">
 
@@ -134,8 +135,6 @@
             </div>
         </div>
     </div>
-
-    <button class="theme-toggle-btn interactable" id="langBtn">中</button>
 
     <nav>
         <a href="https://icheerlam.github.io/" class="nav-logo interactable">PRTS // CLARENCE YE</a>
@@ -277,5 +276,6 @@
             if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'en'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
         });
     </script>
+    <script src="../assets/js/language.js"></script>
 </body>
 </html>

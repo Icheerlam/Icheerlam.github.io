@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="视频分析功能" data-title-en="Video Analysis">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -174,6 +174,7 @@
 
         @media (max-width:768px) { .upload-grid { grid-template-columns:1fr; } .nav-links { display:none; } }
     </style>
+    <link rel="stylesheet" href="../assets/css/language.css">
 </head>
 <body>
 
@@ -192,7 +193,7 @@
 
     <header class="page-header">
         <h1>[ VIDEO ANALYSIS // AI ASSISTANT ]</h1>
-        <p>上传视频，AI 多维度运营分析与对比</p>
+        <p data-lang-zh="上传视频，AI 多维度运营分析与对比" data-lang-en="Upload video, AI multi-dimensional operation analysis and comparison">上传视频，AI 多维度运营分析与对比</p>
     </header>
 
     <main class="app-container">
@@ -204,37 +205,37 @@
             </div>
             <div class="panel-body">
                 <div class="form-group">
-                    <label>选择 AI 服务</label>
+                    <label data-lang-zh="选择 AI 服务" data-lang-en="Choose an AI service">选择 AI 服务</label>
                     <select id="aiService" onchange="updateApiKeyPlaceholder()">
-                        <option value="qwen">通义千问（阿里云）</option>
+                        <option value="qwen" data-lang-zh="通义千问（阿里云）" data-lang-en="Tongyi Qianwen (Alibaba Cloud)">通义千问（阿里云）</option>
                         <option value="claude">Claude API</option>
                         <option value="openai">OpenAI API</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label>API Key</label>
-                    <input type="password" id="apiKey" placeholder="请输入 API Key">
+                    <input type="password" id="apiKey" placeholder="请输入 API Key" data-lang-zh="请输入 API Key" data-lang-en="Enter API Key">
                 </div>
                 <div class="form-group">
-                    <label>视频平台（用于分析）</label>
+                    <label data-lang-zh="视频平台（用于分析）" data-lang-en="Video platform (for analytics)">视频平台（用于分析）</label>
                     <select id="platform">
-                        <option value="douyin">抖音</option>
-                        <option value="xiaohongshu">小红书</option>
-                        <option value="shipinhao">视频号</option>
-                        <option value="bilibili">B站</option>
-                        <option value="kuaishou">快手</option>
-                        <option value="tiktok">TikTok（海外）</option>
+                        <option value="douyin" data-lang-zh="抖音" data-lang-en="Tik Tok">抖音</option>
+                        <option value="xiaohongshu" data-lang-zh="小红书" data-lang-en="little red book">小红书</option>
+                        <option value="shipinhao" data-lang-zh="视频号" data-lang-en="Video number">视频号</option>
+                        <option value="bilibili" data-lang-zh="B站" data-lang-en="Station B">B站</option>
+                        <option value="kuaishou" data-lang-zh="快手" data-lang-en="quick worker">快手</option>
+                        <option value="tiktok" data-lang-zh="TikTok（海外）" data-lang-en="TikTok (overseas)">TikTok（海外）</option>
                     </select>
                 </div>
                 <div class="info-box">
-                    <p><strong>如何获取 API Key：</strong></p>
+                    <p><strong data-lang-zh="如何获取 API Key：" data-lang-en="How to get API Key:">如何获取 API Key：</strong></p>
                     <ul>
-                        <li><strong>通义千问：</strong><a href="https://dashscope.console.aliyun.com/" target="_blank">阿里云控制台</a>，开通 DashScope 服务</li>
+                        <li><strong data-lang-zh="通义千问：" data-lang-en="Tongyi Qianwen:">通义千问：</strong><a href="https://dashscope.console.aliyun.com/" target="_blank" data-lang-zh="阿里云控制台" data-lang-en="Alibaba Cloud Console">阿里云控制台</a>，开通 DashScope 服务</li>
                         <li><strong>Claude：</strong><a href="https://console.anthropic.com/" target="_blank">Anthropic Console</a>（需科学上网）</li>
                         <li><strong>OpenAI：</strong><a href="https://platform.openai.com/" target="_blank">OpenAI Platform</a>（需科学上网）</li>
                     </ul>
                 </div>
-                <button onclick="saveApiKey()" class="btn btn-primary">&#9656; 保存配置</button>
+                <button onclick="saveApiKey()" class="btn btn-primary" data-lang-zh="&amp;#9656; 保存配置" data-lang-en="▸ Save configuration">&#9656; 保存配置</button>
             </div>
         </div>
 
@@ -246,54 +247,54 @@
             <div class="panel-body">
                 <div class="upload-grid">
                     <div class="upload-slot">
-                        <div class="upload-slot-title">&#9654; 视频 A</div>
+                        <div class="upload-slot-title" data-lang-zh="&amp;#9654; 视频 A" data-lang-en="▶ Video A">&#9654; 视频 A</div>
                         <div class="upload-zone" id="uploadZone1">
                             <div class="upload-icon">&#9653;</div>
-                            <p>拖拽或点击上传</p>
+                            <p data-lang-zh="拖拽或点击上传" data-lang-en="Drag or click to upload">拖拽或点击上传</p>
                             <small>MP4, MOV, AVI</small>
                             <input type="file" id="videoInput1" accept="video/*" style="display:none">
                         </div>
                         <div class="video-preview" id="videoPreview1">
                             <video id="videoPlayer1" controls></video>
                             <div class="video-meta">
-                                <p><strong>文件：</strong><span id="fileName1"></span></p>
-                                <p><strong>大小：</strong><span id="fileSize1"></span></p>
-                                <p><strong>时长：</strong><span id="videoDuration1"></span></p>
+                                <p><strong data-lang-zh="文件：" data-lang-en="document:">文件：</strong><span id="fileName1"></span></p>
+                                <p><strong data-lang-zh="大小：" data-lang-en="size:">大小：</strong><span id="fileSize1"></span></p>
+                                <p><strong data-lang-zh="时长：" data-lang-en="Duration:">时长：</strong><span id="videoDuration1"></span></p>
                             </div>
                         </div>
                     </div>
                     <div class="upload-slot">
-                        <div class="upload-slot-title">&#9654; 视频 B</div>
+                        <div class="upload-slot-title" data-lang-zh="&amp;#9654; 视频 B" data-lang-en="▶ Video B">&#9654; 视频 B</div>
                         <div class="upload-zone" id="uploadZone2">
                             <div class="upload-icon">&#9653;</div>
-                            <p>拖拽或点击上传</p>
+                            <p data-lang-zh="拖拽或点击上传" data-lang-en="Drag or click to upload">拖拽或点击上传</p>
                             <small>MP4, MOV, AVI</small>
                             <input type="file" id="videoInput2" accept="video/*" style="display:none">
                         </div>
                         <div class="video-preview" id="videoPreview2">
                             <video id="videoPlayer2" controls></video>
                             <div class="video-meta">
-                                <p><strong>文件：</strong><span id="fileName2"></span></p>
-                                <p><strong>大小：</strong><span id="fileSize2"></span></p>
-                                <p><strong>时长：</strong><span id="videoDuration2"></span></p>
+                                <p><strong data-lang-zh="文件：" data-lang-en="document:">文件：</strong><span id="fileName2"></span></p>
+                                <p><strong data-lang-zh="大小：" data-lang-en="size:">大小：</strong><span id="fileSize2"></span></p>
+                                <p><strong data-lang-zh="时长：" data-lang-en="Duration:">时长：</strong><span id="videoDuration2"></span></p>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="action-row">
-                    <button onclick="analyzeFrame(1)" id="btnAnalyze1" class="btn btn-primary" disabled>&#9656; 分析当前帧 A</button>
-                    <button onclick="analyzeFrame(2)" id="btnAnalyze2" class="btn btn-primary" disabled>&#9656; 分析当前帧 B</button>
-                    <button onclick="analyzeVideoOp(1)" id="btnOp1" class="btn" disabled>&#9656; 运营分析 A</button>
-                    <button onclick="analyzeVideoOp(2)" id="btnOp2" class="btn" disabled>&#9656; 运营分析 B</button>
-                    <button onclick="compareVideos()" id="btnCompare" class="btn btn-warn" disabled>&#8646; 对比分析</button>
-                    <button onclick="document.getElementById('historyPanel').classList.toggle('active')" class="btn btn-sm">&#8635; 历史记录</button>
+                    <button onclick="analyzeFrame(1)" id="btnAnalyze1" class="btn btn-primary" disabled data-lang-zh="&amp;#9656; 分析当前帧 A" data-lang-en="▸ Analyze current frame A">&#9656; 分析当前帧 A</button>
+                    <button onclick="analyzeFrame(2)" id="btnAnalyze2" class="btn btn-primary" disabled data-lang-zh="&amp;#9656; 分析当前帧 B" data-lang-en="▸ Analyze current frame B">&#9656; 分析当前帧 B</button>
+                    <button onclick="analyzeVideoOp(1)" id="btnOp1" class="btn" disabled data-lang-zh="&amp;#9656; 运营分析 A" data-lang-en="▸ Operational Analysis A">&#9656; 运营分析 A</button>
+                    <button onclick="analyzeVideoOp(2)" id="btnOp2" class="btn" disabled data-lang-zh="&amp;#9656; 运营分析 B" data-lang-en="▸ Operational Analysis B">&#9656; 运营分析 B</button>
+                    <button onclick="compareVideos()" id="btnCompare" class="btn btn-warn" disabled data-lang-zh="&amp;#8646; 对比分析" data-lang-en="⇆ Comparative analysis">&#8646; 对比分析</button>
+                    <button onclick="document.getElementById('historyPanel').classList.toggle('active')" class="btn btn-sm" data-lang-zh="&amp;#8635; 历史记录" data-lang-en="↻ History">&#8635; 历史记录</button>
                 </div>
             </div>
         </div>
 
         <div class="loading-panel" id="loadingState">
             <div class="loader"></div>
-            <p>正在分析视频内容，请稍候...<small id="loadingDetail">提取视频关键帧中...</small></p>
+            <p>正在分析视频内容，请稍候...<small id="loadingDetail" data-lang-zh="提取视频关键帧中..." data-lang-en="Extracting video key frames...">提取视频关键帧中...</small></p>
         </div>
 
         <div class="result-panel" id="analysisResult">
@@ -301,10 +302,10 @@
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
                     <div class="panel-title">Analysis Report</div>
                     <div style="display:flex;gap:8px;">
-                        <button onclick="exportReport('txt')" class="btn btn-sm">&#9656; 导出 TXT</button>
-                        <button onclick="exportReport('md')" class="btn btn-sm btn-primary">&#9656; 导出 MD</button>
-                        <button onclick="exportReport('html')" class="btn btn-sm btn-warn">&#9656; 导出 HTML</button>
-                        <button onclick="openReportHTML()" class="btn btn-sm btn-danger">&#9656; 预览 HTML</button>
+                        <button onclick="exportReport('txt')" class="btn btn-sm" data-lang-zh="&amp;#9656; 导出 TXT" data-lang-en="▸ Export TXT">&#9656; 导出 TXT</button>
+                        <button onclick="exportReport('md')" class="btn btn-sm btn-primary" data-lang-zh="&amp;#9656; 导出 MD" data-lang-en="▸ Export MD">&#9656; 导出 MD</button>
+                        <button onclick="exportReport('html')" class="btn btn-sm btn-warn" data-lang-zh="&amp;#9656; 导出 HTML" data-lang-en="▸ Export HTML">&#9656; 导出 HTML</button>
+                        <button onclick="openReportHTML()" class="btn btn-sm btn-danger" data-lang-zh="&amp;#9656; 预览 HTML" data-lang-en="▸ Preview HTML">&#9656; 预览 HTML</button>
                     </div>
                 </div>
                 <div class="result-content" id="resultContent"></div>
@@ -612,21 +613,21 @@
             const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
             let html='<div class="op-report">';
             html+=`<div class="gen-header"><span class="gen-header-title">OPERATION ANALYSIS // ${esc(name)}</span></div>`;
-            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);">&#9670; 视频类型</div><div class="op-value">${esc(data.video_type||'无法判断')}</div></div>`;
-            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);">&#9670; 目标用户</div><div class="op-value">${esc(data.target_user||'无法判断')}</div></div>`;
-            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);">&#9670; 核心Hook</div><div class="op-value">${esc(data.core_hook||'无法判断')}</div></div>`;
+            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);" data-lang-zh="&amp;#9670; 视频类型" data-lang-en="◆Video type">&#9670; 视频类型</div><div class="op-value" data-lang-zh="${esc(data.video_type||'无法判断')}" data-lang-en="${esc(data.video_type||'Unable to determine')}">${esc(data.video_type||'无法判断')}</div></div>`;
+            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);" data-lang-zh="&amp;#9670; 目标用户" data-lang-en="◆ Target users">&#9670; 目标用户</div><div class="op-value" data-lang-zh="${esc(data.target_user||'无法判断')}" data-lang-en="${esc(data.target_user||'Unable to determine')}">${esc(data.target_user||'无法判断')}</div></div>`;
+            html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-info);" data-lang-zh="&amp;#9670; 核心Hook" data-lang-en="◆ Core Hook">&#9670; 核心Hook</div><div class="op-value" data-lang-zh="${esc(data.core_hook||'无法判断')}" data-lang-en="${esc(data.core_hook||'Unable to determine')}">${esc(data.core_hook||'无法判断')}</div></div>`;
             if(data.optimization){
-                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);">&#9670; 优化建议</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label">节奏：</span>${esc(data.optimization.pacing||'')}</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label">内容：</span>${esc(data.optimization.content||'')}</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label">结构：</span>${esc(data.optimization.structure||'')}</div>`;
+                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);" data-lang-zh="&amp;#9670; 优化建议" data-lang-en="◆ Optimization suggestions">&#9670; 优化建议</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="节奏：" data-lang-en="Rhythm:">节奏：</span>${esc(data.optimization.pacing||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="内容：" data-lang-en="content:">内容：</span>${esc(data.optimization.content||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="结构：" data-lang-en="structure:">结构：</span>${esc(data.optimization.structure||'')}</div>`;
                 html+=`</div>`;
             }
             if(data.expected){
-                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);">&#9670; 预期效果</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label">点击：</span>${esc(data.expected.click||'')}</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label">留存：</span>${esc(data.expected.retention||'')}</div>`;
-                html+=`<div class="op-sub"><span class="op-sub-label">转化：</span>${esc(data.expected.conversion||'')}</div>`;
+                html+=`<div class="op-section"><div class="op-label" style="color:var(--ak-accent-warn);" data-lang-zh="&amp;#9670; 预期效果" data-lang-en="◆ Expected results">&#9670; 预期效果</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="点击：" data-lang-en="Click:">点击：</span>${esc(data.expected.click||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="留存：" data-lang-en="Retention:">留存：</span>${esc(data.expected.retention||'')}</div>`;
+                html+=`<div class="op-sub"><span class="op-sub-label" data-lang-zh="转化：" data-lang-en="Conversion:">转化：</span>${esc(data.expected.conversion||'')}</div>`;
                 html+=`</div>`;
             }
             html+='</div>';
@@ -678,7 +679,7 @@
         }
 
         function renderGenModules(modules){
-            let html='<div class="gen-header"><span class="gen-header-title">GENERATED // AI PAINTING PROMPTS</span><button onclick="batchCopyAll()" class="btn btn-sm btn-primary">&#9656; 批量复制全部</button></div>';
+            let html='<div class="gen-header"><span class="gen-header-title">GENERATED // AI PAINTING PROMPTS</span><button onclick="batchCopyAll()" class="btn btn-sm btn-primary" data-lang-zh="&amp;#9656; 批量复制全部" data-lang-en="▸ Batch copy all">&#9656; 批量复制全部</button></div>';
             html+='<div class="gen-modules">';
             modules.forEach((m,i)=>{
                 html+=`<div class="gen-module${i===0?' open':''}" data-index="${i}">
@@ -689,11 +690,11 @@
                     <div class="gen-module-body">
                         ${m.img?`<img class="gen-module-image" src="${m.img}" alt="帧${i+1}">`:''}
                         <div class="gen-module-section">
-                            <div class="gen-module-section-label gen-section-keywords"><span class="label-icon">&#9670;</span><span class="label-text">画面描述</span></div>
+                            <div class="gen-module-section-label gen-section-keywords"><span class="label-icon">&#9670;</span><span class="label-text" data-lang-zh="画面描述" data-lang-en="Screen description">画面描述</span></div>
                             <div class="gen-desc-text">${m.prompt}</div>
                         </div>
                         <div class="gen-module-actions">
-                            <button onclick="copyModule(${i})" class="btn btn-sm btn-warn">&#9656; 复制</button>
+                            <button onclick="copyModule(${i})" class="btn btn-sm btn-warn" data-lang-zh="&amp;#9656; 复制" data-lang-en="▸ Copy">&#9656; 复制</button>
                         </div>
                     </div>
                 </div>`;
@@ -705,7 +706,7 @@
         function renderHistory(){
             const list=document.getElementById('historyList');
             if(!analysisHistory.length){list.innerHTML='<div class="history-empty">> NO HISTORY FOUND</div>';return;}
-            list.innerHTML=analysisHistory.map(h=>`<div class="history-item"><div class="history-item-header"><div class="history-item-title"><span class="history-badge ${h.type==='compare'?'compare':'single'}">${h.type==='compare'?'对比':'单视频'}</span>${h.name}</div><div class="history-actions"><button onclick="viewHistory(${h.id})" class="btn btn-sm btn-primary">查看</button><button onclick="delHistory(${h.id})" class="btn btn-sm btn-danger">删除</button></div></div><div class="history-item-time">${h.timestamp}</div></div>`).join('');
+            list.innerHTML=analysisHistory.map(h=>`<div class="history-item"><div class="history-item-header"><div class="history-item-title"><span class="history-badge ${h.type==='compare'?'compare':'single'}" data-lang-zh="${h.type==='compare'?'对比':'单视频'}" data-lang-en="${h.type==='compare'?'Compare':'Single video'}">${h.type==='compare'?'对比':'单视频'}</span>${h.name}</div><div class="history-actions"><button onclick="viewHistory(${h.id})" class="btn btn-sm btn-primary" data-lang-zh="查看" data-lang-en="Check">查看</button><button onclick="delHistory(${h.id})" class="btn btn-sm btn-danger" data-lang-zh="删除" data-lang-en="delete">删除</button></div></div><div class="history-item-time">${h.timestamp}</div></div>`).join('');
         }
 
         function viewHistory(id){
@@ -800,26 +801,26 @@
             const td = (val) => `<td style="padding:10px 14px;color:${C.text};font-size:0.9rem;line-height:1.7;border-bottom:1px solid ${C.border};">${esc(val)}</td>`;
             const section = (title,color,rows) => `<tr><td colspan="2" style="padding:12px 14px;font-weight:700;font-size:0.9rem;color:${color||C.accent};background:rgba(0,216,255,0.05);border-bottom:1px solid ${C.border};">${title}</td></tr>${rows}`;
 
-            let body = `<h1 style="font:bold 1.6rem monospace;color:${C.accent};margin:0 0 6px;">视频分析报告</h1>
+            let body = `<h1 style="font:bold 1.6rem monospace;color:${C.accent};margin:0 0 6px;" data-lang-zh="视频分析报告" data-lang-en="Video analysis report">视频分析报告</h1>
 <p style="color:#666;font-size:0.85rem;margin:0 0 24px;">${esc(name)} &nbsp;|&nbsp; ${new Date().toLocaleString('zh-CN')}</p>
 <table style="width:100%;border-collapse:collapse;border:1px solid ${C.border};">`;
 
             if (type === 'operate' && opData) {
                 body += section('基本信息', C.accent,
-                    `<tr>${th('视频类型',C.accent)}${td(opData.video_type||'')}</tr>
-<tr>${th('目标用户',C.accent)}${td(opData.target_user||'')}</tr>
-<tr>${th('核心Hook',C.accent)}${td(opData.core_hook||'')}</tr>`);
+                    `<tr data-lang-zh="${th('视频类型',C.accent)}${td(opData.video_type||'')}" data-lang-en="${th('Video type',C.accent)}${td(opData.video_type||'')}">${th('视频类型',C.accent)}${td(opData.video_type||'')}</tr>
+<tr data-lang-zh="${th('目标用户',C.accent)}${td(opData.target_user||'')}" data-lang-en="${th('target user',C.accent)}${td(opData.target_user||'')}">${th('目标用户',C.accent)}${td(opData.target_user||'')}</tr>
+<tr data-lang-zh="${th('核心Hook',C.accent)}${td(opData.core_hook||'')}" data-lang-en="${th('CoreHook',C.accent)}${td(opData.core_hook||'')}">${th('核心Hook',C.accent)}${td(opData.core_hook||'')}</tr>`);
                 if (opData.optimization) {
                     body += section('优化建议', C.warn,
-                        `<tr>${th('节奏',C.warn)}${td(opData.optimization.pacing||'')}</tr>
-<tr>${th('内容',C.warn)}${td(opData.optimization.content||'')}</tr>
-<tr>${th('结构',C.warn)}${td(opData.optimization.structure||'')}</tr>`);
+                        `<tr data-lang-zh="${th('节奏',C.warn)}${td(opData.optimization.pacing||'')}" data-lang-en="${th('pacing',C.warn)}${td(opData.optimization.pacing||'')}">${th('节奏',C.warn)}${td(opData.optimization.pacing||'')}</tr>
+<tr data-lang-zh="${th('内容',C.warn)}${td(opData.optimization.content||'')}" data-lang-en="${th('content',C.warn)}${td(opData.optimization.content||'')}">${th('内容',C.warn)}${td(opData.optimization.content||'')}</tr>
+<tr data-lang-zh="${th('结构',C.warn)}${td(opData.optimization.structure||'')}" data-lang-en="${th('structure',C.warn)}${td(opData.optimization.structure||'')}">${th('结构',C.warn)}${td(opData.optimization.structure||'')}</tr>`);
                 }
                 if (opData.expected) {
                     body += section('预期效果', C.warn,
-                        `<tr>${th('点击',C.warn)}${td(opData.expected.click||'')}</tr>
-<tr>${th('留存',C.warn)}${td(opData.expected.retention||'')}</tr>
-<tr>${th('转化',C.warn)}${td(opData.expected.conversion||'')}</tr>`);
+                        `<tr data-lang-zh="${th('点击',C.warn)}${td(opData.expected.click||'')}" data-lang-en="${th('click',C.warn)}${td(opData.expected.click||'')}">${th('点击',C.warn)}${td(opData.expected.click||'')}</tr>
+<tr data-lang-zh="${th('留存',C.warn)}${td(opData.expected.retention||'')}" data-lang-en="${th('retention',C.warn)}${td(opData.expected.retention||'')}">${th('留存',C.warn)}${td(opData.expected.retention||'')}</tr>
+<tr data-lang-zh="${th('转化',C.warn)}${td(opData.expected.conversion||'')}" data-lang-en="${th('conversion',C.warn)}${td(opData.expected.conversion||'')}">${th('转化',C.warn)}${td(opData.expected.conversion||'')}</tr>`);
                 }
             } else if (type === 'single' && modules) {
                 body += section('AI 生图提示词', C.accent,
@@ -857,7 +858,9 @@
             }
 
             body += '</table>';
-            return `<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><title>${esc(name)} - 分析报告</title></head><body style="background:${C.bg};color:${C.head};font-family:-apple-system,sans-serif;max-width:900px;margin:0 auto;padding:40px 24px;">${body}</body></html>`;
+            return `<!DOCTYPE html><html lang="zh-CN" data-title-zh="视频分析功能" data-title-en="Video Analysis"><head><meta charset="UTF-8"><title>${esc(name)} - 分析报告</title>    <link rel="stylesheet" href="../assets/css/language.css">
+</head><body style="background:${C.bg};color:${C.head};font-family:-apple-system,sans-serif;max-width:900px;margin:0 auto;padding:40px 24px;">${body}    <script src="../assets/js/language.js"></script>
+</body></html>`;
         }
 
         function downloadFile(content, filename, mime) {
@@ -877,5 +880,6 @@
             window.open(URL.createObjectURL(blob), '_blank');
         }
     </script>
+    <script src="../assets/js/language.js"></script>
 </body>
 </html>

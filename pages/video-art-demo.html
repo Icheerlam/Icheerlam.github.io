@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="视频艺术方向演示" data-title-en="Video Art Direction Demo">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -502,14 +502,15 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/language.css">
 </head>
 <body>
 
     <!-- NAV -->
     <nav class="demo-nav" id="demoNav">
-        <button class="demo-nav-btn active" data-target="dir1">01 · 赛博策展墙</button>
-        <button class="demo-nav-btn" data-target="dir2">02 · 电影分镜台</button>
-        <button class="demo-nav-btn" data-target="dir3">03 · 动态卡片画廊</button>
+        <button class="demo-nav-btn active" data-target="dir1" data-lang-zh="01 · 赛博策展墙" data-lang-en="01 · Cyber ​​Curation Wall">01 · 赛博策展墙</button>
+        <button class="demo-nav-btn" data-target="dir2" data-lang-zh="02 · 电影分镜台" data-lang-en="02 · Movie Storyboard">02 · 电影分镜台</button>
+        <button class="demo-nav-btn" data-target="dir3" data-lang-zh="03 · 动态卡片画廊" data-lang-en="03 · Dynamic Card Gallery">03 · 动态卡片画廊</button>
     </nav>
     <div class="demo-badge" id="demoBadge">
         <i class="fa fa-circle"></i> VIDEO ART DIRECTION DEMO — 3 种艺术方向对比
@@ -519,8 +520,8 @@
     <section class="curation-stage" id="dir1">
         <div style="text-align:center; margin-bottom: 20px; position: relative; z-index: 1;">
             <div class="section-label">Direction 01</div>
-            <div class="section-title">赛博策展墙</div>
-            <p class="section-desc" style="margin: 0 auto;">
+            <div class="section-title" data-lang-zh="赛博策展墙" data-lang-en="Cyber ​​Curation Wall">赛博策展墙</div>
+            <p class="section-desc" style="margin: 0 auto;" data-lang-zh="错落画幅 · 悬浮扫描卡 · 像数字展览空间。主视频占据 C 位，其他作品如展品般散布四周。&#13;&#10;                艺术感最强，鼠标悬停时卡片升起，扫描线周期性掠过画面。" data-lang-en="Staggered frames · Suspended scanning cards · Like a digital exhibition space. The main video occupies the C position, with other works scattered around like exhibits.&#13;&#10;                The most artistic feeling is that the card rises when the mouse is hovered, and the scan line periodically passes across the screen.">
                 错落画幅 · 悬浮扫描卡 · 像数字展览空间。主视频占据 C 位，其他作品如展品般散布四周。
                 艺术感最强，鼠标悬停时卡片升起，扫描线周期性掠过画面。
             </p>
@@ -538,23 +539,23 @@
             <!-- 浮动缩略图 -->
             <div class="cw-tile cw-t1">
                 <video src="../works/video/mobvista十二生序1.mp4" muted autoplay loop playsinline></video>
-                <div class="cw-label">MOBVISTA 十二生序</div>
+                <div class="cw-label" data-lang-zh="MOBVISTA 十二生序" data-lang-en="MOBVISTA Twelve Birth Orders">MOBVISTA 十二生序</div>
             </div>
             <div class="cw-tile cw-t2">
                 <video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video>
-                <div class="cw-label">2B 套地洞刷怪 · 包装后</div>
+                <div class="cw-label" data-lang-zh="2B 套地洞刷怪 · 包装后" data-lang-en="2B set of underground monster spawners · After packaging">2B 套地洞刷怪 · 包装后</div>
             </div>
             <div class="cw-tile cw-t3">
                 <video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video>
-                <div class="cw-label">APP 产品展示</div>
+                <div class="cw-label" data-lang-zh="APP 产品展示" data-lang-en="APP product display">APP 产品展示</div>
             </div>
 
             <!-- 扫描信息卡 -->
             <div class="cw-scan-card">
-                <b>◈ SCAN_RESULT // 策展档案</b>
+                <b data-lang-zh="◈ SCAN_RESULT // 策展档案" data-lang-en="◈ SCAN_RESULT // Curated Archives">◈ SCAN_RESULT // 策展档案</b>
                 共 7 组作品 · 跨越 2024-2025<br>
                 类型涵盖 游戏买量 / 品牌宣传 / 产品展示<br>
-                <span style="color:var(--cyan);">▸ 点击卡片查看完整作品</span>
+                <span style="color:var(--cyan);" data-lang-zh="▸ 点击卡片查看完整作品" data-lang-en="▸ Click on the card to view the complete work">▸ 点击卡片查看完整作品</span>
             </div>
         </div>
     </section>
@@ -562,9 +563,9 @@
     <!-- ==================== DIRECTION 2: 电影分镜台 ==================== -->
     <section class="desk-stage" id="dir2">
         <div style="text-align:center; margin-bottom: 20px; position: relative; z-index: 1;">
-            <div class="section-label">Direction 02 — 最推荐</div>
-            <div class="section-title">电影分镜台</div>
-            <p class="section-desc" style="margin: 0 auto;">
+            <div class="section-label" data-lang-zh="Direction 02 — 最推荐" data-lang-en="Direction 02 — Most Recommended">Direction 02 — 最推荐</div>
+            <div class="section-title" data-lang-zh="电影分镜台" data-lang-en="movie storyboard">电影分镜台</div>
+            <p class="section-desc" style="margin: 0 auto;" data-lang-zh="主屏幕 + 胶片帧 + 参数面板 · 模拟 motion designer 的剪辑工作台。&#13;&#10;                下方胶片条可点击切换主屏内容，右侧面板展示项目元数据与技能参数。&#13;&#10;                艺术与专业感最平衡。" data-lang-en="Main screen + film frame + parameter panel · Simulates the editing workbench of motion designer.&#13;&#10;                You can click on the film strip below to switch the main screen content, and the right panel displays project metadata and skill parameters.&#13;&#10;                The best balance between art and professionalism.">
                 主屏幕 + 胶片帧 + 参数面板 · 模拟 motion designer 的剪辑工作台。
                 下方胶片条可点击切换主屏内容，右侧面板展示项目元数据与技能参数。
                 艺术与专业感最平衡。
@@ -595,7 +596,7 @@
                 <div>
                     <h3 id="deskPanelTitle">24-25<br>SHOWREEL</h3>
                     <span style="display:inline-block;padding:3px 10px;border:1px solid var(--amber);color:var(--amber);font:700 10px 'Space Mono',monospace;letter-spacing:1px;" id="deskPanelType">DEMO REEL</span>
-                    <p class="desk-info" style="margin-top:14px;" id="deskPanelDesc">2024-2025 年度视频设计/剪辑合集，含实习、工作和个人练习产出。</p>
+                    <p class="desk-info" style="margin-top:14px;" id="deskPanelDesc" data-lang-zh="2024-2025 年度视频设计/剪辑合集，含实习、工作和个人练习产出。" data-lang-en="2024-2025 video design/editing collection, including internship, work and personal practice output.">2024-2025 年度视频设计/剪辑合集，含实习、工作和个人练习产出。</p>
                     <div class="desk-meters">
                         <div>
                             <div class="desk-meter-label"><span>MOTION</span><span>92%</span></div>
@@ -624,8 +625,8 @@
     <section class="kinetic-stage" id="dir3">
         <div style="text-align:center; margin-bottom: 40px; position: relative; z-index: 1;">
             <div class="section-label">Direction 03</div>
-            <div class="section-title">动态卡片画廊</div>
-            <p class="section-desc" style="margin: 0 auto;">
+            <div class="section-title" data-lang-zh="动态卡片画廊" data-lang-en="Dynamic Card Gallery">动态卡片画廊</div>
+            <p class="section-desc" style="margin: 0 auto;" data-lang-zh="左右交错布局 · 3D 鼠标跟随 · 大号数字水印。&#13;&#10;                每张卡片独立滚动入场，鼠标悬停产生景深感。&#13;&#10;                更适合逐个仔细展示作品。" data-lang-en="Left and right staggered layout · 3D mouse following · Large digital watermark.&#13;&#10;                Each card scrolls independently, and hovering the mouse creates a sense of depth.&#13;&#10;                More suitable for carefully displaying works one by one.">
                 左右交错布局 · 3D 鼠标跟随 · 大号数字水印。
                 每张卡片独立滚动入场，鼠标悬停产生景深感。
                 更适合逐个仔细展示作品。
@@ -645,7 +646,7 @@
                 <div class="k-content">
                     <h3>年度合集<br>Showreel 24-25</h3>
                     <span class="k-type">DEMO REEL</span>
-                    <p>2024、2025 年视频设计/剪辑合集，包含实习、工作和个人练习的精选产出。Timestamps: 2024 (0:00-1:17) / 2025 (1:17-2:54)</p>
+                    <p data-lang-zh="2024、2025 年视频设计/剪辑合集，包含实习、工作和个人练习的精选产出。Timestamps: 2024 (0:00-1:17) / 2025 (1:17-2:54)" data-lang-en="A 2024, 2025 video design/editing collection containing selected outputs from internships, work and personal exercises. Timestamps: 2024 (0:00-1:17) / 2025 (1:17-2:54)">2024、2025 年视频设计/剪辑合集，包含实习、工作和个人练习的精选产出。Timestamps: 2024 (0:00-1:17) / 2025 (1:17-2:54)</p>
                     <a href="#" class="k-link"><i class="fa fa-play"></i> 查看完整作品</a>
                 </div>
             </div>
@@ -656,13 +657,13 @@
                     <video src="../works/video/mobvista十二生序1.mp4" muted autoplay loop playsinline></video>
                     <div class="k-visual-label">
                         <span class="k-num">02</span>
-                        <span class="k-name">MOBVISTA · 十二生序</span>
+                        <span class="k-name" data-lang-zh="MOBVISTA · 十二生序" data-lang-en="MOBVISTA·Order of the Twelve Births">MOBVISTA · 十二生序</span>
                     </div>
                 </div>
                 <div class="k-content">
                     <h3>Mobvista<br>十二生序</h3>
                     <span class="k-type">VIDEO DESIGN / BRANDING</span>
-                    <p>接前 mentor 外包，制作两个版本的年会大屏投屏视频。节奏型剪辑配合十二生肖主题视觉。</p>
+                    <p data-lang-zh="接前 mentor 外包，制作两个版本的年会大屏投屏视频。节奏型剪辑配合十二生肖主题视觉。" data-lang-en="We were outsourced by our mentor to produce two versions of the large-screen projection video for the annual meeting. Rhythmic editing matches the twelve zodiac-themed visuals.">接前 mentor 外包，制作两个版本的年会大屏投屏视频。节奏型剪辑配合十二生肖主题视觉。</p>
                     <a href="#" class="k-link"><i class="fa fa-bar-chart"></i> 查看对比分析</a>
                 </div>
             </div>
@@ -673,13 +674,13 @@
                     <video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video>
                     <div class="k-visual-label">
                         <span class="k-num">03</span>
-                        <span class="k-name">2B 套地洞刷怪 · 成品</span>
+                        <span class="k-name" data-lang-zh="2B 套地洞刷怪 · 成品" data-lang-en="2B set of underground cave monster spawners·finished product">2B 套地洞刷怪 · 成品</span>
                     </div>
                 </div>
                 <div class="k-content">
                     <h3>Before & After<br>包装对比</h3>
                     <span class="k-type">POST-PROCESSING / VFX</span>
-                    <p>游戏买量广告素材的视觉增强前后对比。展示从原始素材到最终成片的完整后期处理流程。</p>
+                    <p data-lang-zh="游戏买量广告素材的视觉增强前后对比。展示从原始素材到最终成片的完整后期处理流程。" data-lang-en="Visually enhanced before and after of game purchase creative. Demonstrates the complete post-processing process from raw material to final film.">游戏买量广告素材的视觉增强前后对比。展示从原始素材到最终成片的完整后期处理流程。</p>
                     <a href="#" class="k-link"><i class="fa fa-exchange"></i> 查看对比分析</a>
                 </div>
             </div>
@@ -690,13 +691,13 @@
                     <video src="../works/video/产品展示类（卡片内容3）.mp4" muted autoplay loop playsinline></video>
                     <div class="k-visual-label">
                         <span class="k-num">04</span>
-                        <span class="k-name">APP 产品展示系列</span>
+                        <span class="k-name" data-lang-zh="APP 产品展示系列" data-lang-en="APP product display series">APP 产品展示系列</span>
                     </div>
                 </div>
                 <div class="k-content">
                     <h3>App 产品<br>展示系列</h3>
                     <span class="k-type">APP SHOWCASE / HORIZONTAL</span>
-                    <p>多款 App 产品的横版展示视频，适用于应用商店预览和社交媒体推广。3 个变体适配不同渠道。</p>
+                    <p data-lang-zh="多款 App 产品的横版展示视频，适用于应用商店预览和社交媒体推广。3 个变体适配不同渠道。" data-lang-en="Horizontal display videos for multiple App products, suitable for app store previews and social media promotion. 3 variants adapted to different channels.">多款 App 产品的横版展示视频，适用于应用商店预览和社交媒体推广。3 个变体适配不同渠道。</p>
                     <a href="#" class="k-link"><i class="fa fa-eye"></i> 查看全部作品</a>
                 </div>
             </div>
@@ -844,5 +845,6 @@
         }
     })();
     </script>
+    <script src="../assets/js/language.js"></script>
 </body>
 </html>

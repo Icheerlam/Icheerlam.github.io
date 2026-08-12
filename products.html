@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="产品展示合集｜叶澄澜" data-title-en="Product Showcase | Clarence Ye">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -73,12 +73,13 @@
   }
   @media (prefers-reduced-motion:reduce){.card{transition:none}}
 </style>
+    <link rel="stylesheet" href="assets/css/language.css">
 </head>
 <body>
   <div class="wrap">
     <div class="kicker"><span class="dot"></span>PRODUCT SHOWCASE</div>
-    <h1>产品展示合集</h1>
-    <p class="sub">三条产品演示 · <b>悬停聚焦</b> · 点击点亮 · 拖拽观感如翻牌</p>
+    <h1 data-lang-zh="产品展示合集" data-lang-en="Product display collection">产品展示合集</h1>
+    <p class="sub" data-lang-zh="三条产品演示 · 悬停聚焦 · 点击点亮 · 拖拽观感如翻牌" data-lang-en="Three product demos · Hover to focus · Click to highlight · A card-flip feel">三条产品演示 · 悬停聚焦 · 点击点亮 · 拖拽观感如翻牌</p>
 
     <div class="stage" id="stage">
       <div class="card c1" data-i="1">
@@ -86,25 +87,25 @@
         <div class="scrim"></div>
         <span class="corner">[ 01 ]</span>
         <span class="play">▶</span>
-        <div class="meta"><div class="t">产品演示 一<small>PRODUCT DEMO</small></div><span class="tag">CARD 01</span></div>
+        <div class="meta"><div class="t" data-lang-zh="产品演示 一" data-lang-en="Product Demo One">产品演示 一</div><span class="tag">CARD 01</span></div>
       </div>
       <div class="card c2" data-i="2">
         <video src="works/showcase/product-2.mp4" muted loop playsinline preload="metadata" autoplay></video>
         <div class="scrim"></div>
         <span class="corner">[ 02 ]</span>
         <span class="play">▶</span>
-        <div class="meta"><div class="t">产品演示 二<small>PRODUCT DEMO</small></div><span class="tag">CARD 02</span></div>
+        <div class="meta"><div class="t" data-lang-zh="产品演示 二" data-lang-en="Product Demo Two">产品演示 二</div><span class="tag">CARD 02</span></div>
       </div>
       <div class="card c3" data-i="3">
         <video src="works/showcase/product-3.mp4" muted loop playsinline preload="metadata" autoplay></video>
         <div class="scrim"></div>
         <span class="corner">[ 03 ]</span>
         <span class="play">▶</span>
-        <div class="meta"><div class="t">产品演示 三<small>PRODUCT DEMO</small></div><span class="tag">CARD 03</span></div>
+        <div class="meta"><div class="t" data-lang-zh="产品演示 三" data-lang-en="Product Demo Three">产品演示 三</div><span class="tag">CARD 03</span></div>
       </div>
     </div>
 
-    <p class="hint">悬停 <span class="k">HOVER</span> 聚焦 · 点击 <span class="k">CLICK</span> 点亮/取消</p>
+    <p class="hint" data-lang-zh="悬停聚焦 · 点击点亮/取消" data-lang-en="Hover to focus · Click to highlight or reset">悬停聚焦 · 点击点亮/取消</p>
   </div>
 
   <footer>> Archive // Clarence Ye // Product Showcase</footer>
@@ -123,5 +124,6 @@
   },{threshold:.25});
   document.querySelectorAll('video').forEach(v=>io.observe(v));
 </script>
+    <script src="assets/js/language.js"></script>
 </body>
 </html>

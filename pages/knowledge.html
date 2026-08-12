@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="知识与研究" data-title-en="Knowledge & Research">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -132,6 +132,7 @@
             .theme-toggle-btn { bottom:20px; right:20px; z-index:2000; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/language.css">
 </head>
 <body class="dark-mode lang-en">
 
@@ -166,8 +167,6 @@
             </div>
         </div>
     </div>
-
-    <button class="theme-toggle-btn interactable" id="langBtn">中</button>
 
     <nav>
         <a href="https://icheerlam.github.io/" class="nav-logo interactable">PRTS // CLARENCE YE</a>
@@ -216,29 +215,29 @@
             <div class="form-group">
                 <label><span data-lang="zh">类型 *</span><span data-lang="en">Category *</span></label>
                 <select id="formCat">
-                    <option value="github">GitHub 项目</option>
+                    <option value="github" data-lang-zh="GitHub 项目" data-lang-en="GitHub projects">GitHub 项目</option>
                     <option value="skill">AI Agent Skill</option>
                 </select>
             </div>
             <div class="form-group">
                 <label><span data-lang="zh">名称 *</span><span data-lang="en">Name *</span></label>
-                <input type="text" id="formTitle" placeholder="项目或技能名称">
+                <input type="text" id="formTitle" placeholder="项目或技能名称" data-lang-zh="项目或技能名称" data-lang-en="Project or skill name">
             </div>
             <div class="form-group">
                 <label><span data-lang="zh">链接</span><span data-lang="en">Link</span></label>
-                <input type="url" id="formLink" placeholder="https://github.com/... 或相关链接">
+                <input type="url" id="formLink" placeholder="https://github.com/... 或相关链接" data-lang-zh="https://github.com/... 或相关链接" data-lang-en="https://github.com/... or related link">
             </div>
             <div class="form-group">
                 <label><span data-lang="zh">下载链接</span><span data-lang="en">Download Link</span></label>
-                <input type="url" id="formDl" placeholder="文件下载地址或相对路径">
+                <input type="url" id="formDl" placeholder="文件下载地址或相对路径" data-lang-zh="文件下载地址或相对路径" data-lang-en="Download URL or relative path">
             </div>
             <div class="form-group">
                 <label><span data-lang="zh">描述 *</span><span data-lang="en">Description *</span></label>
-                <textarea id="formDesc" placeholder="简要描述这个项目或技能的用途..."></textarea>
+                <textarea id="formDesc" placeholder="简要描述这个项目或技能的用途..." data-lang-zh="简要描述这个项目或技能的用途..." data-lang-en="Briefly describe what this project or skill is for..."></textarea>
             </div>
             <div class="form-group">
                 <label><span data-lang="zh">标签</span><span data-lang="en">Tags</span></label>
-                <input type="text" id="formTags" placeholder="用逗号分隔，如：AI, Python, 自动化">
+                <input type="text" id="formTags" placeholder="用逗号分隔，如：AI, Python, 自动化" data-lang-zh="用逗号分隔，如：AI, Python, 自动化" data-lang-en="Separate with commas, e.g. AI, Python, automation">
                 <span class="hint" data-lang-zh="用逗号分隔多个标签" data-lang-en="Separate multiple tags with commas">用逗号分隔多个标签</span>
             </div>
             <div class="modal-actions">
@@ -574,5 +573,6 @@
             if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'en'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
         });
     </script>
+    <script src="../assets/js/language.js"></script>
 </body>
 </html>

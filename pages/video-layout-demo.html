@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="视频布局演示" data-title-en="Video Layout Demo">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -130,16 +130,17 @@
             text-decoration:none; transition:.3s; white-space:nowrap; }
         .demo-nav a:hover, .demo-nav a.active { background:var(--cyan); color:#000; }
     </style>
+    <link rel="stylesheet" href="../assets/css/language.css">
 </head>
 <body>
 
 <nav class="demo-nav" id="nav">
-    <a href="#d1" class="active">01 杂志编辑</a>
-    <a href="#d2">02 胶片横滚</a>
-    <a href="#d3">03 时间轴</a>
-    <a href="#d4">04 Bento网格</a>
-    <a href="#d5">05 全屏沉浸</a>
-    <a href="#d6">06 双栏对比</a>
+    <a href="#d1" class="active" data-lang-zh="01 杂志编辑" data-lang-en="01 Magazine Editor">01 杂志编辑</a>
+    <a href="#d2" data-lang-zh="02 胶片横滚" data-lang-en="02 Film roll">02 胶片横滚</a>
+    <a href="#d3" data-lang-zh="03 时间轴" data-lang-en="03 Timeline">03 时间轴</a>
+    <a href="#d4" data-lang-zh="04 Bento网格" data-lang-en="04 Bento Grid">04 Bento网格</a>
+    <a href="#d5" data-lang-zh="05 全屏沉浸" data-lang-en="05 Full screen immersion">05 全屏沉浸</a>
+    <a href="#d6" data-lang-zh="06 双栏对比" data-lang-en="06 Double column comparison">06 双栏对比</a>
 </nav>
 
 <div style="height:70px;"></div>
@@ -150,8 +151,8 @@
     <section class="demo-section" id="d1">
         <div class="sec-head">
             <div class="sec-num">Direction 01</div>
-            <div class="sec-title">杂志编辑风 · Editorial Layout</div>
-            <p class="sec-desc">大标题 + Hero 图跨栏 + 大小图混排，像翻阅一本设计杂志。适合有故事要讲的场景。</p>
+            <div class="sec-title" data-lang-zh="杂志编辑风 · Editorial Layout" data-lang-en="Magazine editorial style · Editorial Layout">杂志编辑风 · Editorial Layout</div>
+            <p class="sec-desc" data-lang-zh="大标题 + Hero 图跨栏 + 大小图混排，像翻阅一本设计杂志。适合有故事要讲的场景。" data-lang-en="Big title + Hero image across columns + large and small images mixed, like flipping through a design magazine. Suitable for scenes where there is a story to tell.">大标题 + Hero 图跨栏 + 大小图混排，像翻阅一本设计杂志。适合有故事要讲的场景。</p>
         </div>
         <div class="mag-layout">
             <div class="mag-hero">
@@ -160,7 +161,7 @@
             </div>
             <div class="mag-item">
                 <div class="v"><video src="../works/video/mobvista十二生序1.mp4#t=29" muted autoplay loop playsinline></video><div class="n">02</div></div>
-                <div class="info"><h4>Mobvista 十二生序</h4><p>年会大屏投屏 · 双版本并行<span class="mag-tag">BRANDING</span></p></div>
+                <div class="info"><h4 data-lang-zh="Mobvista 十二生序" data-lang-en="Mobvista zodiac sequence">Mobvista 十二生序</h4><p>年会大屏投屏 · 双版本并行<span class="mag-tag">BRANDING</span></p></div>
             </div>
             <div class="mag-item">
                 <div class="v"><video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video><div class="n">03</div></div>
@@ -172,11 +173,11 @@
             </div>
             <div class="mag-item">
                 <div class="v"><video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video><div class="n">05</div></div>
-                <div class="info"><h4>App 产品展示系列</h4><p>横版 · 3款产品<span class="mag-tag">SHOWCASE</span></p></div>
+                <div class="info"><h4 data-lang-zh="App 产品展示系列" data-lang-en="App product display series">App 产品展示系列</h4><p>横版 · 3款产品<span class="mag-tag">SHOWCASE</span></p></div>
             </div>
             <div class="mag-item">
                 <div class="v"><iframe src="https://www.youtube.com/embed/Pqat0JJ6Dkc?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe><div class="n">06</div></div>
-                <div class="info"><h4>CUHK FMBA · Web3 协会</h4><p>学术品牌视频<span class="mag-tag">EDITING</span></p></div>
+                <div class="info"><h4 data-lang-zh="CUHK FMBA · Web3 协会" data-lang-en="CUHK FMBA · Web3 Association">CUHK FMBA · Web3 协会</h4><p>学术品牌视频<span class="mag-tag">EDITING</span></p></div>
             </div>
         </div>
     </section>
@@ -185,8 +186,8 @@
     <section class="demo-section" id="d2">
         <div class="sec-head">
             <div class="sec-num">Direction 02</div>
-            <div class="sec-title">胶片横滚 · Film Strip</div>
-            <p class="sec-desc">上方主播放器 + 下方胶片条横向滚动。点击缩略图切换主屏内容。</p>
+            <div class="sec-title" data-lang-zh="胶片横滚 · Film Strip" data-lang-en="Film Strip · Film Strip">胶片横滚 · Film Strip</div>
+            <p class="sec-desc" data-lang-zh="上方主播放器 + 下方胶片条横向滚动。点击缩略图切换主屏内容。" data-lang-en="Main player above + Film strip below scrolls horizontally. Click the thumbnail to switch the home screen content.">上方主播放器 + 下方胶片条横向滚动。点击缩略图切换主屏内容。</p>
         </div>
         <div class="film-stage" id="filmStage">
             <div class="film-main" id="filmMain">
@@ -208,25 +209,25 @@
     <section class="demo-section" id="d3">
         <div class="sec-head">
             <div class="sec-num">Direction 03</div>
-            <div class="sec-title">时间轴 · Timeline</div>
-            <p class="sec-desc">纵向时间线 + 节点卡片左右交错。适合展示项目推进顺序或成长路径。</p>
+            <div class="sec-title" data-lang-zh="时间轴 · Timeline" data-lang-en="Timeline · Timeline">时间轴 · Timeline</div>
+            <p class="sec-desc" data-lang-zh="纵向时间线 + 节点卡片左右交错。适合展示项目推进顺序或成长路径。" data-lang-en="Vertical timeline + node cards staggered left and right. Suitable for showing project advancement sequence or growth path.">纵向时间线 + 节点卡片左右交错。适合展示项目推进顺序或成长路径。</p>
         </div>
         <div class="tl-track">
             <div class="tl-line"></div>
             <div class="tl-node"><div class="tl-dot"></div>
-                <div class="tl-info"><div class="yr">2024 · Q4</div><h4>24-25 Showreel</h4><p>年度视频设计/剪辑合集，涵盖实习与商业项目。</p></div>
+                <div class="tl-info"><div class="yr">2024 · Q4</div><h4>24-25 Showreel</h4><p data-lang-zh="年度视频设计/剪辑合集，涵盖实习与商业项目。" data-lang-en="An annual video design/editing collection covering internships and commercial projects.">年度视频设计/剪辑合集，涵盖实习与商业项目。</p></div>
                 <div class="tl-vid"><div class="v"><iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe></div></div>
             </div>
             <div class="tl-node"><div class="tl-dot"></div>
-                <div class="tl-info"><div class="yr">2025 · Q1</div><h4>Mobvista 十二生序</h4><p>年会大屏投屏视频，外包项目。</p></div>
+                <div class="tl-info"><div class="yr">2025 · Q1</div><h4 data-lang-zh="Mobvista 十二生序" data-lang-en="Mobvista zodiac sequence">Mobvista 十二生序</h4><p data-lang-zh="年会大屏投屏视频，外包项目。" data-lang-en="Large-screen projection video of annual meeting, outsourcing projects.">年会大屏投屏视频，外包项目。</p></div>
                 <div class="tl-vid"><div class="v"><video src="../works/video/mobvista十二生序2.mp4#t=27" muted autoplay loop playsinline></video></div></div>
             </div>
             <div class="tl-node"><div class="tl-dot"></div>
-                <div class="tl-info"><div class="yr">2025 · Q2</div><h4>CUHK FMBA Web3</h4><p>学术品牌视觉设计与后期。</p></div>
+                <div class="tl-info"><div class="yr">2025 · Q2</div><h4>CUHK FMBA Web3</h4><p data-lang-zh="学术品牌视觉设计与后期。" data-lang-en="Academic brand visual design and post-production.">学术品牌视觉设计与后期。</p></div>
                 <div class="tl-vid"><div class="v"><iframe src="https://www.youtube.com/embed/Pqat0JJ6Dkc?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe></div></div>
             </div>
             <div class="tl-node"><div class="tl-dot"></div>
-                <div class="tl-info"><div class="yr">2025 · Q3</div><h4>App 产品展示系列</h4><p>3 款 App 横版展示视频。</p></div>
+                <div class="tl-info"><div class="yr">2025 · Q3</div><h4 data-lang-zh="App 产品展示系列" data-lang-en="App product display series">App 产品展示系列</h4><p data-lang-zh="3 款 App 横版展示视频。" data-lang-en="3 apps display videos in horizontal format.">3 款 App 横版展示视频。</p></div>
                 <div class="tl-vid"><div class="v"><video src="../works/video/产品展示类（卡片内容2）.mp4" muted autoplay loop playsinline></video></div></div>
             </div>
         </div>
@@ -236,29 +237,29 @@
     <section class="demo-section" id="d4">
         <div class="sec-head">
             <div class="sec-num">Direction 04</div>
-            <div class="sec-title">Bento 网格 · Bento Grid</div>
-            <p class="sec-desc">大小不一的圆角卡片拼合，像 Apple 官网。信息密度高、现代感强。</p>
+            <div class="sec-title" data-lang-zh="Bento 网格 · Bento Grid" data-lang-en="Bento Grid · Bento Grid">Bento 网格 · Bento Grid</div>
+            <p class="sec-desc" data-lang-zh="大小不一的圆角卡片拼合，像 Apple 官网。信息密度高、现代感强。" data-lang-en="A collection of cards with rounded corners of different sizes, like Apple’s official website. High information density and strong modernity.">大小不一的圆角卡片拼合，像 Apple 官网。信息密度高、现代感强。</p>
         </div>
         <div class="bento-grid">
             <div class="bento-card b1">
                 <div class="v"><iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe></div>
-                <h4>24-25 Showreel</h4><p>年度视频合集 · 2024-2025</p>
+                <h4>24-25 Showreel</h4><p data-lang-zh="年度视频合集 · 2024-2025" data-lang-en="Annual Video Collection · 2024-2025">年度视频合集 · 2024-2025</p>
             </div>
             <div class="bento-card b2">
                 <div class="v"><video src="../works/video/mobvista十二生序1.mp4#t=29" muted autoplay loop playsinline></video></div>
-                <h4>Mobvista · 十二生序</h4><p>年会大屏 · 双版本</p>
+                <h4 data-lang-zh="Mobvista · 十二生序" data-lang-en="Mobvista · Order of the Twelve Births">Mobvista · 十二生序</h4><p data-lang-zh="年会大屏 · 双版本" data-lang-en="Annual meeting large screen · dual version">年会大屏 · 双版本</p>
             </div>
             <div class="bento-card b3">
                 <div class="v"><iframe src="https://www.youtube.com/embed/BziFgsUG-y4?rel=0&controls=1&modestbranding=1&vq=hd1080" allowfullscreen></iframe></div>
-                <h4>Project Ad</h4><p>商业广告</p>
+                <h4>Project Ad</h4><p data-lang-zh="商业广告" data-lang-en="commercial">商业广告</p>
             </div>
             <div class="bento-card b4">
                 <div class="v"><video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video></div>
-                <h4>Before & After</h4><p>游戏素材包装对比 · VFX</p>
+                <h4>Before & After</h4><p data-lang-zh="游戏素材包装对比 · VFX" data-lang-en="Game material packaging comparison · VFX">游戏素材包装对比 · VFX</p>
             </div>
             <div class="bento-card b5">
                 <div class="v"><video src="../works/video/产品展示类（卡片内容3）.mp4" muted autoplay loop playsinline></video></div>
-                <h4>App Showcase ×3</h4><p>横版产品展示 · CUHK Web3 · HK Web3</p>
+                <h4>App Showcase ×3</h4><p data-lang-zh="横版产品展示 · CUHK Web3 · HK Web3" data-lang-en="Horizontal product display · CUHK Web3 · HK Web3">横版产品展示 · CUHK Web3 · HK Web3</p>
             </div>
         </div>
     </section>
@@ -267,25 +268,25 @@
     <section class="demo-section" id="d5">
         <div class="sec-head">
             <div class="sec-num">Direction 05</div>
-            <div class="sec-title">全屏沉浸 · Immersive</div>
-            <p class="sec-desc">每个作品占一整屏，视频全幅背景 + 大字号叠加。视觉冲击最强，需精简作品数量（建议 4-5 个）。</p>
+            <div class="sec-title" data-lang-zh="全屏沉浸 · Immersive" data-lang-en="Full screen immersion · Immersive">全屏沉浸 · Immersive</div>
+            <p class="sec-desc" data-lang-zh="每个作品占一整屏，视频全幅背景 + 大字号叠加。视觉冲击最强，需精简作品数量（建议 4-5 个）。" data-lang-en="Each work occupies a full screen, with full video background + large font overlay. The visual impact is the strongest, so the number of works needs to be reduced (4-5 are recommended).">每个作品占一整屏，视频全幅背景 + 大字号叠加。视觉冲击最强，需精简作品数量（建议 4-5 个）。</p>
         </div>
         <div class="immerse-list">
             <div class="immerse-card">
                 <div class="v"><iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=0&modestbranding=1&vq=hd1080&autoplay=1&mute=1" allow="autoplay" allowfullscreen></iframe></div>
-                <div class="immerse-info"><div><h2>SHOWREEL</h2><p class="sub">2024-2025 · 年度合集</p></div><div class="num">01</div></div>
+                <div class="immerse-info"><div><h2>SHOWREEL</h2><p class="sub" data-lang-zh="2024-2025 · 年度合集" data-lang-en="2024-2025 · Annual Collection">2024-2025 · 年度合集</p></div><div class="num">01</div></div>
             </div>
             <div class="immerse-card">
                 <div class="v"><video src="../works/video/mobvista十二生序2.mp4#t=27" muted autoplay loop playsinline></video></div>
-                <div class="immerse-info"><div><h2>MOBVISTA</h2><p class="sub">十二生序 · 品牌大屏</p></div><div class="num">02</div></div>
+                <div class="immerse-info"><div><h2>MOBVISTA</h2><p class="sub" data-lang-zh="十二生序 · 品牌大屏" data-lang-en="Order of the Twelve Births·Brand Screen">十二生序 · 品牌大屏</p></div><div class="num">02</div></div>
             </div>
             <div class="immerse-card">
                 <div class="v"><video src="../works/video/2B套地洞刷怪包装.mp4" muted autoplay loop playsinline></video></div>
-                <div class="immerse-info"><div><h2>BEFORE & AFTER</h2><p class="sub">包装对比 · VFX</p></div><div class="num">03</div></div>
+                <div class="immerse-info"><div><h2>BEFORE & AFTER</h2><p class="sub" data-lang-zh="包装对比 · VFX" data-lang-en="Packaging comparison · VFX">包装对比 · VFX</p></div><div class="num">03</div></div>
             </div>
             <div class="immerse-card">
                 <div class="v"><video src="../works/video/产品展示类（卡片内容1）.mp4" muted autoplay loop playsinline></video></div>
-                <div class="immerse-info"><div><h2>APP SHOWCASE</h2><p class="sub">产品展示 · ×3</p></div><div class="num">04</div></div>
+                <div class="immerse-info"><div><h2>APP SHOWCASE</h2><p class="sub" data-lang-zh="产品展示 · ×3" data-lang-en="Product display · ×3">产品展示 · ×3</p></div><div class="num">04</div></div>
             </div>
         </div>
     </section>
@@ -294,8 +295,8 @@
     <section class="demo-section" id="d6">
         <div class="sec-head">
             <div class="sec-num">Direction 06</div>
-            <div class="sec-title">双栏对比 · Split Pane</div>
-            <p class="sec-desc">左侧缩略图列表 + 右侧大预览区，像 Finder 分栏浏览。适合逐个仔细查看。</p>
+            <div class="sec-title" data-lang-zh="双栏对比 · Split Pane" data-lang-en="Double column comparison · Split Pane">双栏对比 · Split Pane</div>
+            <p class="sec-desc" data-lang-zh="左侧缩略图列表 + 右侧大预览区，像 Finder 分栏浏览。适合逐个仔细查看。" data-lang-en="Thumbnail list on the left + large preview area on the right, like Finder browsing in columns. Suitable for careful viewing one by one.">左侧缩略图列表 + 右侧大预览区，像 Finder 分栏浏览。适合逐个仔细查看。</p>
         </div>
         <div class="split-layout" id="splitLayout">
             <div class="split-sidebar">
@@ -305,7 +306,7 @@
                 </div>
                 <div class="split-item" data-vid="mobvista十二生序1.mp4#t=29" data-type="local" data-title="02 · Mobvista 十二生序">
                     <div class="thumb"><video src="../works/video/mobvista十二生序1.mp4#t=29" muted loop playsinline></video></div>
-                    <div class="info"><h4>Mobvista 十二生序</h4><span>BRANDING</span></div>
+                    <div class="info"><h4 data-lang-zh="Mobvista 十二生序" data-lang-en="Mobvista zodiac sequence">Mobvista 十二生序</h4><span>BRANDING</span></div>
                 </div>
                 <div class="split-item" data-vid="BziFgsUG-y4" data-type="yt" data-title="03 · Project Ad">
                     <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 34'><rect fill='%23000' width='60' height='34'/><text fill='%2300d8ff' font-size='14' font-family='monospace' x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central'>03</text></svg>"></div>
@@ -321,7 +322,7 @@
                 </div>
                 <div class="split-item" data-vid="B5hYLCrkV1A" data-type="yt" data-title="06 · HK Web3">
                     <div class="thumb"><img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 34'><rect fill='%23000' width='60' height='34'/><text fill='%2300d8ff' font-size='14' font-family='monospace' x='50%25' y='55%25' text-anchor='middle' dominant-baseline='central'>06</text></svg>"></div>
-                    <div class="info"><h4>HK Web3 协会</h4><span>BRANDING</span></div>
+                    <div class="info"><h4 data-lang-zh="HK Web3 协会" data-lang-en="HK Web3 Association">HK Web3 协会</h4><span>BRANDING</span></div>
                 </div>
                 <div class="split-item" data-vid="产品展示类（卡片内容1）.mp4" data-type="local" data-title="07 · App Showcase">
                     <div class="thumb"><video src="../works/video/产品展示类（卡片内容1）.mp4" muted loop playsinline></video></div>
@@ -389,5 +390,6 @@ document.querySelectorAll('#splitLayout .split-item').forEach(item => {
     });
 });
 </script>
+    <script src="../assets/js/language.js"></script>
 </body>
 </html>

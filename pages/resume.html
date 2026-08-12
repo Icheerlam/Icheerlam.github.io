@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-title-zh="个人简历" data-title-en="Resume">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -321,6 +321,7 @@
             .experience-header { flex-direction: column; gap: 2px; }
         }
     </style>
+    <link rel="stylesheet" href="../assets/css/language.css">
 </head>
 <body class="lang-en">
 
@@ -337,11 +338,10 @@
     </nav>
 
     <div class="editor-panel" id="no-print-area">
-        <h3>排版控制器</h3>
-        <button id="langBtn" style="width:100%;padding:8px;margin-bottom:12px;background:#f0f0f0;border:1px solid #ccc;border-radius:4px;font-weight:bold;cursor:pointer;">中</button>
+        <h3 data-lang-zh="排版控制器" data-lang-en="Layout controller">排版控制器</h3>
         
         <div class="control-group">
-            <label>字体大小 / Font Size</label>
+            <label data-lang-zh="字体大小 / Font Size" data-lang-en="Font Size / Font Size">字体大小 / Font Size</label>
             <div class="slider-wrapper">
                 <input type="range" id="fs-slider" min="12" max="18" step="1" value="14">
                 <span class="val-display" id="fs-val">14px</span>
@@ -349,7 +349,7 @@
         </div>
 
         <div class="control-group">
-            <label>行高 (呼吸感)</label>
+            <label data-lang-zh="行高 (呼吸感)" data-lang-en="Row height (breathing sensation)">行高 (呼吸感)</label>
             <div class="slider-wrapper">
                 <input type="range" id="lh-slider" min="1.2" max="2.2" step="0.1" value="1.6">
                 <span class="val-display" id="lh-val">1.6</span>
@@ -357,7 +357,7 @@
         </div>
 
         <div class="control-group">
-            <label>列表段落间距</label>
+            <label data-lang-zh="列表段落间距" data-lang-en="list paragraph spacing">列表段落间距</label>
             <div class="slider-wrapper">
                 <input type="range" id="margin-slider" min="0" max="16" step="2" value="8">
                 <span class="val-display" id="margin-val">8px</span>
@@ -365,9 +365,9 @@
         </div>
 
         <button class="panel-btn btn-print" onclick="window.print()"><span data-lang="zh">🖨️ 导出为 PDF</span><span data-lang="en">🖨️ Export as PDF</span></button>
-        <button class="panel-btn btn-save" onclick="saveResume()">💾 保存当前排版</button>
+        <button class="panel-btn btn-save" onclick="saveResume()" data-lang-zh="💾 保存当前排版" data-lang-en="💾 Save current layout">💾 保存当前排版</button>
         
-        <a href="../index.html" class="panel-btn btn-return">← [ RETURN ] 返回主页</a>
+        <a href="../index.html" class="panel-btn btn-return" data-lang-zh="← [ RETURN ] 返回主页" data-lang-en="← [ RETURN ] Return to homepage">← [ RETURN ] 返回主页</a>
 
         <div class="hint-text">
             * 提示：右侧简历文字可直接点击修改，调整排版后点击"保存"。<br>
@@ -380,72 +380,72 @@
         <div class="resume-container" id="resume-canvas" contenteditable="true" spellcheck="false" data-lang="zh">
             
             <header>
-                <h1>叶承霖</h1>
+                <h1 data-lang-zh="叶承霖" data-lang-en="Ye Chenglin">叶承霖</h1>
                 <div class="contact-info" contenteditable="false">
                     <div class="info-row">
-                        <div class="info-item" contenteditable="true"><strong>手机/微信：</strong>+86 13719113230</div>
-                        <div class="info-item" contenteditable="true"><strong>电子邮箱：</strong>clrenceye1@gmail.com</div>
+                        <div class="info-item" contenteditable="true"><strong data-lang-zh="手机/微信：" data-lang-en="Mobile phone/WeChat:">手机/微信：</strong>+86 13719113230</div>
+                        <div class="info-item" contenteditable="true"><strong data-lang-zh="电子邮箱：" data-lang-en="Email:">电子邮箱：</strong>clrenceye1@gmail.com</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-item" contenteditable="true"><strong>教育：</strong>广东工业大学 动画系 2020年9月 - 2024年7月</div>
-                        <div class="info-item" contenteditable="true"><strong>语言：</strong>英语 (CET-6)，粤语</div>
+                        <div class="info-item" contenteditable="true"><strong data-lang-zh="教育：" data-lang-en="educate:">教育：</strong>广东工业大学 动画系 2020年9月 - 2024年7月</div>
+                        <div class="info-item" contenteditable="true"><strong data-lang-zh="语言：" data-lang-en="language:">语言：</strong>英语 (CET-6)，粤语</div>
                     </div>
                     <div class="info-row">
-                        <div class="info-item" contenteditable="true"><strong>个人网页作品集：</strong><a href="https://icheerlam.github.io/index.html" target="_blank">https://icheerlam.github.io/index.html</a></div>
+                        <div class="info-item" contenteditable="true"><strong data-lang-zh="个人网页作品集：" data-lang-en="Personal web portfolio:">个人网页作品集：</strong><a href="https://icheerlam.github.io/index.html" target="_blank">https://icheerlam.github.io/index.html</a></div>
                     </div>
                 </div>
             </header>
 
             <section>
-                <h2 class="section-title">技能</h2>
+                <h2 class="section-title" data-lang-zh="技能" data-lang-en="Skill">技能</h2>
                 <ul>
-                    <li><strong>内容制作 & 素材能力：</strong>AE/PR/剪映/PS，独立负责从寻找素材到制作完成的全流程，月均产出 15+ 条高标准视觉素材，通过预设流程优化，将复杂动效的制作周期缩短 30%。</li>
-                    <li>根据用户偏好，进行素材/脚本制作，视频可以用于广告投放，A/B test (效果广告的制作) 并基于数据反馈持续迭代优化。</li>
-                    <li><strong>AI能力：</strong>即梦/可灵/LibTV/Codex/Claude，熟练使用多种AI工具，可以 vibecoding 优化工作流，熟练使用多种视频 agent，能高效产出图片海报和AI视频。</li>
+                    <li><strong data-lang-zh="内容制作 &amp; 素材能力：" data-lang-en="Content production &amp; material capabilities:">内容制作 & 素材能力：</strong>AE/PR/剪映/PS，独立负责从寻找素材到制作完成的全流程，月均产出 15+ 条高标准视觉素材，通过预设流程优化，将复杂动效的制作周期缩短 30%。</li>
+                    <li data-lang-zh="根据用户偏好，进行素材/脚本制作，视频可以用于广告投放，A/B test (效果广告的制作) 并基于数据反馈持续迭代优化。" data-lang-en="According to user preferences, materials/scripts are produced, videos can be used for advertising, A/B testing (production of performance advertising) and continuous iterative optimization based on data feedback.">根据用户偏好，进行素材/脚本制作，视频可以用于广告投放，A/B test (效果广告的制作) 并基于数据反馈持续迭代优化。</li>
+                    <li><strong data-lang-zh="AI能力：" data-lang-en="AI capabilities:">AI能力：</strong>即梦/可灵/LibTV/Codex/Claude，熟练使用多种AI工具，可以 vibecoding 优化工作流，熟练使用多种视频 agent，能高效产出图片海报和AI视频。</li>
                 </ul>
             </section>
 
             <section>
-                <h2 class="section-title">正职经验</h2>
+                <h2 class="section-title" data-lang-zh="正职经验" data-lang-en="Full-time experience">正职经验</h2>
 
                 <div class="experience-item">
                     <div class="experience-header">
-                        <span class="company-name">广州家画信息技术有限公司</span>
-                        <span class="job-title">信息流视频剪辑师</span>
-                        <span class="date">2024年7月 - 2026年7月</span>
+                        <span class="company-name" data-lang-zh="广州家画信息技术有限公司" data-lang-en="Guangzhou Jiahua Information Technology Co., Ltd.">广州家画信息技术有限公司</span>
+                        <span class="job-title" data-lang-zh="信息流视频剪辑师" data-lang-en="Information flow video editor">信息流视频剪辑师</span>
+                        <span class="date" data-lang-zh="2024年7月 - 2026年7月" data-lang-en="July 2024 - July 2026">2024年7月 - 2026年7月</span>
                     </div>
                     <ul>
-                        <li><strong>国内爆款打造：</strong>基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top1 爆款视频，单条消耗超 22 万元，付费贡献占比达 26.9%。建立"素材裂变迭代机制"，通过抽帧去重、重组开头 Hook 与 BGM，衍生出消耗 9.5 万、8.5 万的头部视频，<strong>年度主导短视频累计消耗达 153 万元。</strong></li>
-                        <li><strong>海外买量运营：</strong>统筹海外 App (Frameit) 跨终端广告素材投放，搭建完整的素材效果评估体系，1年内助力7个海外账户实现 24.5 万+美元消耗，获取 16.7 万+新增装机量及 5700+付费转化。策划高互动性内容，推动官方 Instagram 账号 3.2 万涨粉至 5.1 万。</li>
-                        <li><strong>增长模型调优：</strong>建立视频淘汰与优化机制，缩减低效素材预算，将 70%资源向高转化(1.2%)的加画框-书法美化核心品类倾斜；针对"高点击率(2.54%)、低转化"素材优化结尾 CTA，实现单点 ROI 提升 15%，<strong>整体年度投放效率提升 20%。</strong></li>
+                        <li><strong data-lang-zh="国内爆款打造：" data-lang-en="Domestic hot models are created:">国内爆款打造：</strong>基于 App 漏斗转化模型与用户停留时长分析，主导产出年度 Top1 爆款视频，单条消耗超 22 万元，付费贡献占比达 26.9%。建立"素材裂变迭代机制"，通过抽帧去重、重组开头 Hook 与 BGM，衍生出消耗 9.5 万、8.5 万的头部视频，<strong data-lang-zh="年度主导短视频累计消耗达 153 万元。" data-lang-en="The annual cumulative consumption of leading short videos reached 1.53 million yuan.">年度主导短视频累计消耗达 153 万元。</strong></li>
+                        <li><strong data-lang-zh="海外买量运营：" data-lang-en="Overseas purchase operation:">海外买量运营：</strong>统筹海外 App (Frameit) 跨终端广告素材投放，搭建完整的素材效果评估体系，1年内助力7个海外账户实现 24.5 万+美元消耗，获取 16.7 万+新增装机量及 5700+付费转化。策划高互动性内容，推动官方 Instagram 账号 3.2 万涨粉至 5.1 万。</li>
+                        <li><strong data-lang-zh="增长模型调优：" data-lang-en="Growth model tuning:">增长模型调优：</strong>建立视频淘汰与优化机制，缩减低效素材预算，将 70%资源向高转化(1.2%)的加画框-书法美化核心品类倾斜；针对"高点击率(2.54%)、低转化"素材优化结尾 CTA，实现单点 ROI 提升 15%，<strong data-lang-zh="整体年度投放效率提升 20%。" data-lang-en="The overall annual delivery efficiency increased by 20%.">整体年度投放效率提升 20%。</strong></li>
                     </ul>
                 </div>
             </section>
 
             <section>
-                <h2 class="section-title">实习经验</h2>
+                <h2 class="section-title" data-lang-zh="实习经验" data-lang-en="Internship experience">实习经验</h2>
 
                 <div class="experience-item">
                     <div class="experience-header">
-                        <span class="company-name">广州天游网络 & 博冠信息科技</span>
-                        <span class="job-title">游戏买量视频制作实习生</span>
-                        <span class="date">2023年12月 - 2024年6月</span>
+                        <span class="company-name" data-lang-zh="广州天游网络 &amp; 博冠信息科技" data-lang-en="Guangzhou Tianyou Network &amp; Boguan Information Technology">广州天游网络 & 博冠信息科技</span>
+                        <span class="job-title" data-lang-zh="游戏买量视频制作实习生" data-lang-en="Game purchase video production intern">游戏买量视频制作实习生</span>
+                        <span class="date" data-lang-zh="2023年12月 - 2024年6月" data-lang-en="December 2023 - June 2024">2023年12月 - 2024年6月</span>
                     </div>
                     <ul>
-                        <li><strong>广告素材制作：</strong>熟练使用 AE、PR、剪映工具，基于脚本与已有素材完成游戏内录、素材剪辑，产出《率土之滨》《射雕》《轮回双生》《三国云梦录》等国内及海外投放素材。</li>
-                        <li><strong>素材迭代优化：</strong>调研韩国和东南亚用户的视频习惯，定期生成针对性的报告，对该地区用户进行广告设计，广告的转化率达到 1.8%，结合素材测试数据与用户反馈，通过 A/B 测试持续迭代广告视频结构，提升 CTR 与转化率，为项目提供高表现素材支持，核心素材投放周期较均值延长 20%。</li>
+                        <li><strong data-lang-zh="广告素材制作：" data-lang-en="Creative production:">广告素材制作：</strong>熟练使用 AE、PR、剪映工具，基于脚本与已有素材完成游戏内录、素材剪辑，产出《率土之滨》《射雕》《轮回双生》《三国云梦录》等国内及海外投放素材。</li>
+                        <li><strong data-lang-zh="素材迭代优化：" data-lang-en="Material iteration optimization:">素材迭代优化：</strong>调研韩国和东南亚用户的视频习惯，定期生成针对性的报告，对该地区用户进行广告设计，广告的转化率达到 1.8%，结合素材测试数据与用户反馈，通过 A/B 测试持续迭代广告视频结构，提升 CTR 与转化率，为项目提供高表现素材支持，核心素材投放周期较均值延长 20%。</li>
                     </ul>
                 </div>
 
                 <div class="experience-item">
                     <div class="experience-header">
                         <span class="company-name">Mobvista</span>
-                        <span class="job-title">品牌设计实习生</span>
-                        <span class="date">2023年9月 - 2023年12月</span>
+                        <span class="job-title" data-lang-zh="品牌设计实习生" data-lang-en="Brand design intern">品牌设计实习生</span>
+                        <span class="date" data-lang-zh="2023年9月 - 2023年12月" data-lang-en="September 2023 - December 2023">2023年9月 - 2023年12月</span>
                     </div>
                     <ul>
-                        <li><strong>品牌内容产出：</strong>负责品牌视觉内容输出，产出海报、KV 及品牌动效素材 13 套，助力品牌曝光量提升 5%。</li>
-                        <li><strong>物料优化落地：</strong>优化品牌宣传物料的排版与视觉呈现，提升内容转化率 2.4%，支持 3 场营销活动顺利落地；调研用户习惯挖掘核心痛点，结合产品调性产出平面设计物料，适配全渠道传播需求。</li>
+                        <li><strong data-lang-zh="品牌内容产出：" data-lang-en="Brand content output:">品牌内容产出：</strong>负责品牌视觉内容输出，产出海报、KV 及品牌动效素材 13 套，助力品牌曝光量提升 5%。</li>
+                        <li><strong data-lang-zh="物料优化落地：" data-lang-en="Material optimization implementation:">物料优化落地：</strong>优化品牌宣传物料的排版与视觉呈现，提升内容转化率 2.4%，支持 3 场营销活动顺利落地；调研用户习惯挖掘核心痛点，结合产品调性产出平面设计物料，适配全渠道传播需求。</li>
                     </ul>
                 </div>
             </section>
@@ -532,5 +532,6 @@
         if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'en'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
     </script>
 
+    <script src="../assets/js/language.js"></script>
 </body>
 </html>
