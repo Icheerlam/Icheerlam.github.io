@@ -334,13 +334,13 @@
         </div>
 
         <button class="panel-btn btn-print" onclick="window.print()">🖨️ 导出为 PDF</button>
-        <button class="panel-btn btn-save" onclick="downloadHTML()">💾 保存网页文件</button>
+        <button class="panel-btn btn-save" onclick="downloadResumePDF()">💾 下载 PDF 简历</button>
         
         <a href="../index.html" class="panel-btn btn-return">← [ RETURN ] 返回主页</a>
 
         <div class="hint-text">
             * 提示：右侧简历区域的文字可以直接点击修改。<br>
-            * 点击"保存网页"可将修改后的文字和排版样式下载为 HTML 文件永久保留。
+            * 点击"下载 PDF 简历"可下载原始 PDF 格式简历文件。
         </div>
     </div>
 
@@ -457,22 +457,13 @@
             resumeCanvas.style.setProperty('--resume-margin', val + 'px');
         });
 
-        function downloadHTML() {
-            resumeCanvas.setAttribute('contenteditable', 'false');
-            let htmlContent = document.documentElement.outerHTML;
-            resumeCanvas.setAttribute('contenteditable', 'true');
-
-            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
-            const url = URL.createObjectURL(blob);
+        function downloadResumePDF() {
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'resume_edited.html'; 
-            document.body.appendChild(a); 
-            a.click(); 
-            document.body.removeChild(a); 
-            URL.revokeObjectURL(url); 
-            
-            alert('修改已保存并开始下载！请在浏览器的下载文件夹中查看 resume_edited.html');
+            a.href = '../docs/简历2026_1.pdf';
+            a.download = '叶承霖_简历_2026.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     </script>
 
