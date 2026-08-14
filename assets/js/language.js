@@ -13,9 +13,11 @@
 
   function readLanguage(storage) {
     try {
-      return normalizeLanguage(storage && storage.getItem(STORAGE_KEY));
+      const saved = storage && storage.getItem(STORAGE_KEY);
+      if (!saved) return 'zh'; // 无保存偏好时默认中文
+      return normalizeLanguage(saved);
     } catch (_) {
-      return 'en';
+      return 'zh';
     }
   }
 
@@ -90,7 +92,7 @@
     if (button.dataset.languageBound !== 'true') {
       button.dataset.languageBound = 'true';
       button.addEventListener('click', function () {
-        const current = doc.documentElement.getAttribute('data-current-lang') || 'en';
+        const current = doc.documentElement.getAttribute('data-current-lang') || 'zh';
         toggleLanguage(current, doc, store, button);
       });
     }

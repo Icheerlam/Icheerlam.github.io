@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-title-zh="视频设计" data-title-en="Video Design">
+<html lang="en" data-title-zh="视频设计" data-title-en="Video Design">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -291,6 +291,36 @@
             background: linear-gradient(90deg, var(--ak-accent-info), transparent 38%, rgba(245,166,35,.8), transparent);
         }
 
+        .ua-case {
+            width: min(1180px, 90vw);
+            margin: 0 auto 26px;
+            padding: clamp(20px, 2.6vw, 30px);
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: clamp(22px, 4vw, 48px);
+            border: 1px solid rgba(255,255,255,.09);
+            border-left: 4px solid var(--ak-accent-warn);
+            background:
+                radial-gradient(circle at 86% 18%, rgba(245,166,35,.14), transparent 30%),
+                linear-gradient(145deg, rgba(245,166,35,.08), rgba(13,15,20,.78));
+            position: relative;
+            z-index: 10;
+            scroll-margin-top: 84px;
+            clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+            box-shadow: 0 18px 50px rgba(0,0,0,.2), inset 0 1px 0 rgba(255,255,255,.05);
+        }
+        .ua-case-copy { min-width: 0; overflow-wrap: anywhere; }
+        .ua-case-kicker { display: block; margin-bottom: 8px; color: var(--ak-accent-warn); font: 800 .66rem 'Space Mono', monospace; letter-spacing: .1em; }
+        .ua-case h2 { margin-bottom: 9px; font: 800 clamp(1.05rem, 2vw, 1.45rem) 'Space Mono', monospace; line-height: 1.35; text-transform: uppercase; }
+        .ua-case p { max-width: 760px; color: var(--ak-text-muted); font-size: .88rem; line-height: 1.72; }
+        .ua-case-metrics { display: grid; grid-template-columns: repeat(2, minmax(118px, 1fr)); gap: 12px; }
+        .ua-metric { min-width: 0; padding: 16px; border: 1px solid rgba(245,166,35,.24); background: rgba(0,0,0,.18); overflow-wrap: anywhere; }
+        .ua-metric strong { display: block; margin-bottom: 7px; color: var(--ak-accent-warn); font: 900 1.55rem 'Space Mono', monospace; line-height: 1; }
+        .ua-metric span { display: block; color: var(--ak-text-muted); font: 700 .66rem/1.45 'Space Mono', monospace; text-transform: uppercase; }
+        body.light-mode .ua-case { border-color: rgba(15,23,42,.12); border-left-color: var(--ak-accent-warn); background: linear-gradient(145deg, rgba(234,88,12,.1), rgba(255,255,255,.9)); }
+        body.light-mode .ua-metric { background: rgba(255,255,255,.66); border-color: rgba(234,88,12,.24); }
+
         .split-container {
             width: min(1180px, 90vw);
             max-width: none;
@@ -521,6 +551,8 @@
             body { overflow: auto; height: auto; }
             .page-header { width: min(100% - 32px, 520px); padding-top: 84px; padding-bottom: 22px; }
             .page-header h1 { font-size: clamp(1.9rem, 10vw, 2.75rem); }
+            .ua-case { width: min(100% - 32px, 520px); grid-template-columns: 1fr; gap: 18px; margin-bottom: 22px; padding: 20px; }
+            .ua-case-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .split-container { width: min(100% - 32px, 520px); grid-template-columns: 1fr; height: auto; gap: 20px; }
             
             /* 导航吸顶 & 隐藏滚动条 */
@@ -564,7 +596,7 @@
     </style>
     <link rel="stylesheet" href="../assets/css/language.css">
 </head>
-<body class="dark-mode lang-en">
+<body class="dark-mode">
 
     <audio id="bgmAudio" loop preload="auto"><source src="../assets/audio/Musicbox.mp3" type="audio/mpeg"></audio>
     <audio id="hoverSound" preload="auto"><source src="../assets/audio/鼠标悬停.mp3" type="audio/mpeg"></audio>
@@ -600,6 +632,18 @@
         <h1>VIDEO_ARCHIVE</h1>
         <div class="hl"></div>
     </header>
+
+    <section class="ua-case" id="game-ua-localization">
+        <div class="ua-case-copy">
+            <span class="ua-case-kicker" data-lang="zh">招聘案例 / 游戏 UA</span><span class="ua-case-kicker" data-lang="en">RECRUITMENT CASE / GAME UA</span>
+            <h2><span data-lang="zh">游戏 UA 本地化创意</span><span data-lang="en">Game UA Localization Creative</span></h2>
+            <p data-lang="zh">参与《率土之滨》《射雕》等游戏的 UA 视频制作；研究韩国与东南亚受众的观看偏好，并根据 A/B 反馈迭代开场结构、叙事节奏与转化路径。</p><p data-lang="en">Contributed to UA video production for games including Infinite Borders and The Condor Heroes; researched viewing preferences in Korea and Southeast Asia, then iterated opening structure, narrative pacing, and conversion paths using A/B feedback.</p>
+        </div>
+        <div class="ua-case-metrics">
+            <div class="ua-metric"><strong>1.8%</strong><span data-lang="zh">部分素材 conversion</span><span data-lang="en">Selected creative conversion</span></div>
+            <div class="ua-metric"><strong>+20%</strong><span data-lang="zh">核心素材付费投放生命周期</span><span data-lang="en">Core creative paid-distribution life</span></div>
+        </div>
+    </section>
 
     <div class="split-container">
 
@@ -1109,7 +1153,7 @@
         }
         if (langBtn) {
             const saved = localStorage.getItem(LANG_KEY);
-            setLang(saved || 'en');
+            setLang(saved || 'zh');
             langBtn.addEventListener('click', () => {
                 const next = document.body.classList.contains('lang-en') ? 'zh' : 'en';
                 setLang(next);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-title-zh="氛围编程" data-title-en="Vibe Coding">
+<html lang="en" data-title-zh="氛围编程" data-title-en="Vibe Coding">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,6 +70,7 @@
         .feature-card-main { border-top-color:var(--ak-accent-info); border-color:rgba(0,216,255,0.3); background:linear-gradient(135deg,rgba(0,216,255,0.08) 0%,rgba(0,0,0,0) 100%); }
         .feature-card-main:hover { border-color:var(--ak-accent-info); box-shadow:0 10px 40px rgba(0,216,255,0.2); }
         .feature-card-main::before { background:repeating-linear-gradient(-45deg,transparent,transparent 4px,rgba(0,216,255,0.08) 4px,rgba(0,216,255,0.08) 8px); }
+        #ai-creative-workflow { scroll-margin-top:84px; }
 
         .card-icon { width:48px; height:48px; border:1px solid var(--ak-accent-info); display:flex; align-items:center; justify-content:center; margin-bottom:20px; font-size:1.4rem; }
         .feature-card-main .card-icon { border-color:var(--ak-accent-info); background:rgba(0,216,255,0.1); }
@@ -102,7 +103,7 @@
     </style>
     <link rel="stylesheet" href="../assets/css/language.css">
 </head>
-<body class="dark-mode lang-en">
+<body class="dark-mode">
 
     <audio id="bgmAudio" loop preload="auto"><source src="../assets/audio/Sowing Chia Seed.mp3" type="audio/mpeg"></audio>
     <audio id="hoverSound" preload="auto"><source src="../assets/audio/鼠标悬停.mp3" type="audio/mpeg"></audio>
@@ -158,11 +159,11 @@
         <div class="feature-grid">
 
             <!-- 视频分析功能 - 主卡片 -->
-            <div class="feature-card feature-card-main interactable" style="animation-delay:0.1s;">
+            <div class="feature-card feature-card-main interactable" id="ai-creative-workflow" style="animation-delay:0.1s;">
                 <div class="card-icon">&#9654;</div>
-                <h3 class="card-title"><span data-lang="zh">视频运营分析助手</span><span data-lang="en">Video Performance Analysis Assistant</span></h3>
+                <h3 class="card-title"><span data-lang="zh">AI 辅助创意对比工具</span><span data-lang="en">AI-assisted creative comparison tool</span></h3>
                 <p class="card-desc">
-                    <span data-lang="zh">上传视频，AI 自动提取关键帧，从内容概述、用户画像、数据预测、竞品对标、标题优化、发布策略等多维度输出专业分析报告。支持单视频分析与 A/B 对比分析。</span><span data-lang="en">Upload a video and let AI extract key frames automatically. Receive a professional report covering content, audience profiles, performance forecasts, competitor benchmarks, title optimization, and publishing strategy. Supports both single-video and A/B comparison analysis.</span>
+                    <span data-lang="zh">用于单视频与 A/B 审阅的 AI 辅助创意对比工具：自动提取关键帧，并按开场吸引力、信息密度、场景风格、互动设计与平台适配度进行加权评估。工作流结合 LibTV、可灵、即梦、Claude 与 Codex，辅助创意审核和制作决策；它是决策支持工具，不是 CTR 预测器。</span><span data-lang="en">An AI-assisted creative comparison tool for single-video and A/B reviews. It extracts key frames and applies weighted criteria across hook strength, information density, scene style, interaction design, and platform fit. The workflow combines LibTV, Kling, Jimeng, Claude, and Codex to support creative review and production decisions; it provides decision support, not a CTR predictor.</span>
                 </p>
                 <a href="视频分析功能.html" class="block-btn interactable">LAUNCH &gt;</a>
             </div>
@@ -273,7 +274,7 @@
                 localStorage.setItem(LANG_KEY, lang);
                 document.querySelectorAll('[data-lang-zh][data-lang-en]').forEach(el => { el.textContent = el.getAttribute('data-lang-' + lang); });
             }
-            if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'en'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
+            if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'zh'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
         });
     </script>
     <script src="../assets/js/language.js"></script>

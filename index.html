@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-title-zh="叶澄澜｜个人作品集" data-title-en="Clarence Ye | Personal Portfolio">
+<html lang="en" data-title-zh="叶承霖｜个人作品集" data-title-en="Clarence Ye | Personal Portfolio">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -495,7 +495,7 @@
     </style>
     <link rel="stylesheet" href="assets/css/language.css">
 </head>
-<body class="dark-mode lang-en">
+<body class="dark-mode">
 
     <!-- 加载动画 -->
     <div class="preloader" id="preloader">
@@ -530,7 +530,7 @@
     <div class="custom-cursor-dot"></div>
     <button class="back-to-top" aria-label="返回顶部" data-aria-label-zh="返回顶部" data-aria-label-en="Back to top">&#9650;</button>
 
-    <audio id="bgmAudio" loop preload="none">
+    <audio id="bgmAudio" loop autoplay preload="auto">
         <source src="assets/audio/背景音乐.mp3" type="audio/mpeg"> 
     </audio>
     <audio id="hoverSound" preload="none">
@@ -605,10 +605,11 @@
         <a href="#" class="nav-logo interactable">PRTS // CLARENCE YE</a>
         <div class="nav-right">
             <div class="nav-links">
-                <a href="pages/video.html" class="interactable">Video</a>
-                <a href="pages/graphic.html" class="interactable">Graphic / 3D</a>
-                <a href="pages/vibecoding.html" class="interactable">Vibecoding</a>
-                <a href="pages/data.html" class="interactable">Data Analysis</a>
+                <a href="#work" class="interactable">WORK</a>
+                <a href="#process" class="interactable">PROCESS</a>
+                <a href="#about" class="interactable">ABOUT</a>
+                <a href="pages/resume.html" class="interactable">RESUME</a>
+                <a href="#lab" class="interactable">LAB</a>
             </div>
         </div>
     </nav>
@@ -744,6 +745,13 @@
             color:var(--ak-text-main);
             font-size:clamp(1rem,1.5vw,1.18rem);
             line-height:1.75;
+        }
+        .hero-availability{
+            max-width:640px;
+            color:var(--ak-accent-warn);
+            font:700 .76rem/1.6 'Space Mono';
+            letter-spacing:.04em;
+            text-transform:uppercase;
         }
         .hero-subtitle{
             min-height:104px;
@@ -888,12 +896,15 @@
         .edit-card.wide{grid-column:1 / -1;}
         .edit-card.accent{border-top-color:var(--ak-accent-warn);}
         .edit-card.accent:hover{border-color:var(--ak-accent-warn);}
-        #about{grid-column:1 / span 5;min-height:340px;z-index:3;}
-        #skills{grid-column:6 / span 7;min-height:258px;z-index:2;}
+        #about{grid-column:1 / span 5;min-height:340px;z-index:3;scroll-margin-top:88px;}
+        #skills{grid-column:6 / span 7;min-height:258px;z-index:2;scroll-margin-top:88px;}
         #impact{grid-column:1 / span 12;margin-top:0;z-index:4;}
+        #work{grid-column:1 / span 12;z-index:4;scroll-margin-top:88px;}
+        #process{grid-column:1 / span 12;z-index:3;scroll-margin-top:88px;}
         #projects{grid-column:1 / span 12;z-index:3;}
+        #lab{min-width:0;scroll-margin-top:88px;}
         #timeline{grid-column:1 / span 12;z-index:2;}
-        #impact::after,#projects::after{
+        #impact::after,#work::after,#projects::after{
             opacity:.55;
             background:
                 linear-gradient(135deg, rgba(255,255,255,.1), transparent 28%),
@@ -914,6 +925,7 @@
         .edit-card.accent .sec-title::before{color:var(--ak-accent-warn);}
 
         .edit-grid .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
+        .about-summary{margin:-2px 0 18px;color:var(--ak-text-muted);font-size:.92rem;line-height:1.7;}
         .info-item{min-width:0;padding:16px;border:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.12);}
         body.light-mode .info-item{background:rgba(2,132,199,.04);border-color:rgba(2,132,199,.12);}
         .info-item strong{display:block;font:.68rem 'Space Mono';color:var(--ak-accent-info);text-transform:uppercase;margin-bottom:5px;}
@@ -945,10 +957,104 @@
             background:linear-gradient(135deg, rgba(245,166,35,.18), rgba(0,0,0,.18));
             box-shadow:0 30px 70px rgba(0,0,0,.28), 0 0 34px rgba(245,166,35,.08);
         }
-        .impact-item:first-child .impact-value{font-size:clamp(2.2rem,5vw,4rem);}
+        .impact-item:first-child .impact-value{font-size:clamp(1.8rem,3.6vw,3rem);}
         html[lang="en"] .impact-item:first-child .impact-value{font-size:clamp(1.8rem,3.6vw,3rem);}
         .impact-value{display:block;font:800 clamp(1.55rem,3vw,2.2rem) 'Space Mono';color:var(--ak-accent-warn);line-height:1;}
         .impact-label{display:block;margin-top:10px;font:.72rem 'Space Mono';color:var(--ak-text-muted);line-height:1.45;text-transform:uppercase;}
+        .impact-note{display:block;margin-top:8px;font:.66rem 'Space Mono';color:var(--ak-accent-info);line-height:1.45;}
+
+        .case-grid{
+            display:grid;
+            grid-template-columns:repeat(12,minmax(0,1fr));
+            grid-auto-rows:minmax(148px,auto);
+            gap:18px;
+        }
+        .case-card{
+            min-width:0;
+            padding:24px;
+            border:1px solid rgba(255,255,255,.09);
+            border-left:3px solid var(--ak-accent-info);
+            background:linear-gradient(145deg,rgba(0,216,255,.06),rgba(0,0,0,.2));
+            display:flex;
+            flex-direction:column;
+            gap:17px;
+            position:relative;
+            overflow:hidden;
+            overflow-wrap:anywhere;
+            transition:border-color .25s ease,transform .25s ease,box-shadow .25s ease;
+            clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+        }
+        .case-card.featured{
+            grid-column:span 7;
+            grid-row:span 3;
+            padding:clamp(28px,3.4vw,42px);
+            border-left-color:var(--ak-accent-warn);
+            background:
+                radial-gradient(circle at 85% 12%,rgba(245,166,35,.18),transparent 32%),
+                linear-gradient(145deg,rgba(245,166,35,.12),rgba(0,0,0,.22));
+            box-shadow:0 30px 72px rgba(0,0,0,.28),0 0 42px rgba(245,166,35,.08);
+        }
+        .case-card:not(.featured){grid-column:span 5;}
+        .case-card:hover,
+        .case-card:focus-within{border-color:var(--ak-accent-info);transform:translateY(-3px);box-shadow:0 20px 46px rgba(0,0,0,.28),0 0 26px rgba(0,216,255,.09);}
+        .case-card.featured:hover,
+        .case-card.featured:focus-within{border-color:var(--ak-accent-warn);}
+        .case-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+        .case-index{flex:0 0 auto;font:800 .65rem 'Space Mono';color:var(--ak-accent-info);letter-spacing:.1em;}
+        .case-card.featured .case-index{color:var(--ak-accent-warn);}
+        .case-title{font:800 clamp(1rem,1.7vw,1.35rem) 'Space Mono';line-height:1.35;text-transform:uppercase;}
+        .case-card.featured .case-title{font-size:clamp(1.35rem,2.8vw,2.15rem);}
+        .case-details{display:grid;grid-template-columns:1fr;gap:12px;}
+        .case-field{min-width:0;padding-top:11px;border-top:1px solid rgba(255,255,255,.08);}
+        .case-label{display:block;margin-bottom:5px;color:var(--ak-accent-info);font:800 .64rem 'Space Mono';letter-spacing:.08em;text-transform:uppercase;}
+        .case-card.featured .case-label{color:var(--ak-accent-warn);}
+        .case-field p{color:var(--ak-text-muted);font-size:.84rem;line-height:1.62;}
+        .case-result p{color:var(--ak-text-main);font-weight:700;}
+        .case-link{
+            width:fit-content;
+            max-width:100%;
+            margin-top:auto;
+            padding:9px 13px;
+            border:1px solid rgba(0,216,255,.45);
+            color:var(--ak-accent-info);
+            font:800 .68rem 'Space Mono';
+            text-decoration:none;
+            text-transform:uppercase;
+            overflow-wrap:anywhere;
+            transition:.2s;
+        }
+        .case-card.featured .case-link{border-color:rgba(245,166,35,.55);color:var(--ak-accent-warn);}
+        .case-link:hover{background:var(--ak-accent-info);color:#050609;}
+        .case-card.featured .case-link:hover{background:var(--ak-accent-warn);color:#050609;}
+        .case-link:focus-visible{outline:3px solid var(--ak-text-main);outline-offset:4px;}
+        body.light-mode .case-card{background:linear-gradient(145deg,rgba(2,132,199,.08),rgba(255,255,255,.88));border-color:rgba(2,132,199,.18);}
+        body.light-mode .case-card.featured{background:linear-gradient(145deg,rgba(234,88,12,.12),rgba(255,255,255,.92));border-left-color:var(--ak-accent-warn);}
+        body.light-mode .case-field{border-top-color:rgba(15,23,42,.12);}
+
+        .process-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;counter-reset:process-step;}
+        .process-step{
+            min-width:0;
+            min-height:188px;
+            padding:22px 18px;
+            border:1px solid rgba(255,255,255,.08);
+            background:rgba(0,0,0,.15);
+            overflow-wrap:anywhere;
+            position:relative;
+        }
+        .process-step::after{
+            counter-increment:process-step;
+            content:'0' counter(process-step);
+            position:absolute;
+            right:12px;
+            top:9px;
+            color:rgba(224,230,237,.18);
+            font:800 .68rem 'Space Mono';
+        }
+        .process-step h3{margin-bottom:12px;color:var(--ak-accent-info);font:800 .88rem 'Space Mono';text-transform:uppercase;}
+        .process-step p{color:var(--ak-text-muted);font-size:.82rem;line-height:1.65;}
+        .process-marker{display:block;width:26px;height:3px;margin-bottom:22px;background:var(--ak-accent-warn);box-shadow:0 0 12px rgba(245,166,35,.28);}
+        body.light-mode .process-step{background:rgba(2,132,199,.04);border-color:rgba(2,132,199,.14);}
+        body.light-mode .process-step::after{color:rgba(15,23,42,.2);}
 
         .tag-cloud{display:flex;flex-wrap:wrap;gap:12px;}
         .tag{background:rgba(0,0,0,.32);border:1px solid rgba(0,216,255,.22);padding:8px 14px;font:.76rem 'Space Mono';color:var(--ak-accent-info);transition:.2s;cursor:crosshair;}
@@ -1125,9 +1231,13 @@
             .hero-lede{text-align:center;}
             .hero-subtitle{text-align:left;}
             .edit-grid{grid-template-columns:1fr;gap:22px;padding-bottom:96px;}
-            .edit-card.wide,#about,#skills,#impact,#projects,#timeline{grid-column:1;margin-top:0;transform:none;}
+            .edit-card.wide,#about,#skills,#impact,#work,#process,#projects,#timeline{grid-column:1;margin-top:0;transform:none;}
             .impact-strip{grid-template-columns:repeat(2,minmax(0,1fr));}
             .impact-item:nth-child(n){transform:none;}
+            .case-grid{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto;}
+            .case-card.featured{grid-column:1 / -1;grid-row:auto;}
+            .case-card:not(.featured){grid-column:auto;grid-row:auto;}
+            .process-flow{grid-template-columns:repeat(2,minmax(0,1fr));}
             .portfolio-links{grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:auto;}
             .portfolio-links .link-card:nth-child(n){grid-column:auto;grid-row:auto;transform:none;}
             .portfolio-links .link-card:nth-child(3){grid-column:1 / -1;min-height:180px;}
@@ -1154,6 +1264,11 @@
             .edit-grid .info-grid{grid-template-columns:1fr;}
             .info-item:nth-child(n){transform:none;}
             .impact-strip{grid-template-columns:1fr;}
+            .case-grid{grid-template-columns:1fr;}
+            .case-card.featured,.case-card:not(.featured){grid-column:1;grid-row:auto;padding:22px 20px;}
+            .case-card.featured .case-title{font-size:clamp(1.2rem,7vw,1.7rem);}
+            .process-flow{grid-template-columns:1fr;}
+            .process-step{min-height:0;}
             .portfolio-links{grid-template-columns:1fr;}
             .portfolio-links .link-card{min-height:112px;}
             .tl-title{font-size:.9rem;}
@@ -1178,7 +1293,7 @@
     <!-- HERO -->
     <div class="hero-block" id="hero">
         <div class="hero-portrait">
-            <span class="elite-tag parallax-mid">ELITE 2 // VISUAL DESIGNER</span>
+            <span class="elite-tag parallax-mid">Clarence Ye // Performance Creative</span>
             <div class="avatar-container parallax-hero-avatar" title="System Override Trigger">
                 <div class="avatar-pulse"></div>
                 <img src="assets/common/绿色头像.jpeg" alt="Avatar" class="hero-avatar interactable" id="avatarTrigger" loading="lazy">
@@ -1186,28 +1301,147 @@
             <div class="click-hint parallax-mid">&gt; CLICK_AVATAR</div>
         </div>
         <div class="hero-copy">
-            <span class="hero-kicker" data-lang="zh">动态 / 增长 / 视觉系统</span>
-            <span class="hero-kicker" data-lang="en">Motion / Growth / Visual System</span>
-            <h1 class="hero-title parallax-deep" data-lang-zh="历飞雨" data-lang-en="Clarence Ye">Clarence Ye</h1>
-            <p class="hero-lede" data-lang="zh">面向增长、广告投放和品牌传播的视觉设计师，把视频动效、数据洞察与 AI 工作流整合成可持续迭代的内容系统。</p>
-            <p class="hero-lede" data-lang="en">Visual designer focused on growth, ad creative, and brand communication — integrating motion design, data insights, and AI workflows into a scalable content system.</p>
+            <span class="hero-kicker" data-lang="zh">效果广告创意 / 增长视频 / AI 辅助生产</span>
+            <span class="hero-kicker" data-lang="en">Paid Social / Growth Video / AI-assisted Production</span>
+            <h1 class="hero-title parallax-deep"><span data-lang="zh">效果广告创意设计师</span><span data-lang="en">Performance Creative Designer</span></h1>
+            <p class="hero-lede" data-lang="zh">我将广告活动信号转化为可重复的创意系统，持续迭代开场钩子、节奏、行动号召（CTA）与素材变体。</p>
+            <p class="hero-lede" data-lang="en">I turn campaign signals into repeatable creative systems, iterating hooks, pacing, CTAs, and variants.</p>
+            <p class="hero-availability" data-lang="zh">中国（UTC+8）// 可远程协作 / 大湾区</p>
+            <p class="hero-availability" data-lang="en">China (UTC+8) // Open to Remote / Greater Bay Area</p>
             <p class="hero-subtitle" id="ai-prompt-text"></p>
             <div class="hero-actions">
-                <a href="#projects" class="hero-secondary-btn interactable">VIEW WORKS ↓</a>
+                <a href="#work" class="hero-secondary-btn interactable"><span data-lang="zh">查看作品 ↓</span><span data-lang="en">VIEW WORK ↓</span></a>
+                <a href="pages/resume.html" class="hero-secondary-btn interactable"><span data-lang="zh">查看简历 ↗</span><span data-lang="en">RESUME ↗</span></a>
             </div>
         </div>
     </div>
 
     <main class="edit-grid" id="mainContent">
 
+        <div class="edit-card wide accent" id="impact">
+            <h2 class="sec-title" data-lang-zh="Impact Snapshot // 关键成果" data-lang-en="Impact Snapshot // Key Results">Impact Snapshot // Key Results</h2>
+            <div class="impact-strip">
+                <div class="impact-item"><span class="impact-value">RMB 1.53M</span><span class="impact-label" data-lang="zh">主导素材支持的年度投放消耗</span><span class="impact-label" data-lang="en">Media spend supported by lead creatives</span></div>
+                <div class="impact-item"><span class="impact-value">US$245K+</span><span class="impact-label" data-lang="zh">7 个海外账户相关投放消耗</span><span class="impact-label" data-lang="en">Associated overseas campaign spend across 7 accounts</span><span class="impact-note" data-lang="zh">Frameit // Instagram 粉丝 32K → 51K</span><span class="impact-note" data-lang="en">Frameit // Instagram followers 32K → 51K</span></div>
+                <div class="impact-item"><span class="impact-value">167K+</span><span class="impact-label" data-lang="zh">相关 Campaign 新增装机</span><span class="impact-label" data-lang="en">App installs from associated campaigns</span></div>
+                <div class="impact-item"><span class="impact-value">5,700+</span><span class="impact-label" data-lang="zh">相关 Campaign 付费转化</span><span class="impact-label" data-lang="en">Paid conversions from associated campaigns</span></div>
+            </div>
+        </div>
+
+        <div class="edit-card wide accent featured-work" id="work">
+            <h2 class="sec-title"><span data-lang="zh">Featured Cases // 精选效果创意案例</span><span data-lang="en">Featured Performance Creative Cases</span></h2>
+            <div class="case-grid">
+                <article class="case-card featured interactable" data-case="domestic-performance">
+                    <div class="case-head">
+                        <h3 class="case-title"><span data-lang="zh">国内效果创意增长系统</span><span data-lang="en">Domestic Performance Creative System</span></h3>
+                        <span class="case-index">[01]</span>
+                    </div>
+                    <div class="case-details">
+                        <div class="case-field">
+                            <span class="case-label" data-lang="zh">情境</span><span class="case-label" data-lang="en">Context</span>
+                            <p data-lang="zh">国内年度买量素材需要在持续放量中保持稳定迭代。</p><p data-lang="en">Domestic annual UA creatives needed sustained iteration while campaigns scaled.</p>
+                        </div>
+                        <div class="case-field">
+                            <span class="case-label" data-lang="zh">角色</span><span class="case-label" data-lang="en">Role</span>
+                            <p data-lang="zh">负责视频制作、素材变体迭代与表现复盘。</p><p data-lang="en">Produced videos, iterated creative variants, and reviewed performance feedback.</p>
+                        </div>
+                        <div class="case-field">
+                            <span class="case-label" data-lang="zh">方法</span><span class="case-label" data-lang="en">Method</span>
+                            <p data-lang="zh">围绕开场钩子、节奏与行动号召构建变体，再用投放反馈循环优化。</p><p data-lang="en">Built variants around hooks, pacing, and CTAs, then iterated through campaign feedback loops.</p>
+                        </div>
+                        <div class="case-field case-result">
+                            <span class="case-label" data-lang="zh">成果</span><span class="case-label" data-lang="en">Results</span>
+                            <p data-lang="zh">主导素材支持 RMB 1.53M 年度消耗；Top 1 素材 RMB 220K+，另有 RMB 95K / 85K 变体；ROI +15%，年度投放效率 +20%。</p><p data-lang="en">Lead creatives supported RMB 1.53M in annual spend; the Top 1 creative reached RMB 220K+, with RMB 95K / 85K variants; ROI +15% and annual media efficiency +20%.</p>
+                        </div>
+                    </div>
+                    <a class="case-link interactable" href="pages/data.html#domestic-performance"><span data-lang="zh">查看完整案例 ↗</span><span data-lang="en">View full case ↗</span></a>
+                </article>
+
+                <article class="case-card interactable" data-case="frameit-overseas-growth">
+                    <div class="case-head">
+                        <h3 class="case-title"><span data-lang="zh">Frameit 海外增长</span><span data-lang="en">Frameit Overseas Growth</span></h3>
+                        <span class="case-index">[02]</span>
+                    </div>
+                    <div class="case-details">
+                        <div class="case-field"><span class="case-label" data-lang="zh">情境</span><span class="case-label" data-lang="en">Context</span><p data-lang="zh">7 个海外 APP 账户需要兼顾获客规模与社媒增长。</p><p data-lang="en">Seven overseas app accounts needed both acquisition scale and social growth.</p></div>
+                        <div class="case-field"><span class="case-label" data-lang="zh">角色</span><span class="case-label" data-lang="en">Role</span><p data-lang="zh">负责短视频素材、本地化表达与表现复盘。</p><p data-lang="en">Owned short-form creatives, localization, and performance reviews.</p></div>
+                        <div class="case-field"><span class="case-label" data-lang="zh">方法</span><span class="case-label" data-lang="en">Method</span><p data-lang="zh">按市场调整文化钩子、信息层级与素材变体。</p><p data-lang="en">Adapted cultural hooks, information hierarchy, and variants by market.</p></div>
+                        <div class="case-field case-result"><span class="case-label" data-lang="zh">成果</span><span class="case-label" data-lang="en">Results</span><p data-lang="zh">相关 Campaign 消耗 US$245K+，带来 167K+ 装机与 5,700+ 付费转化；Instagram 粉丝 32K → 51K。</p><p data-lang="en">Associated campaigns reached US$245K+ spend, 167K+ installs, and 5,700+ paid conversions; Instagram followers grew from 32K → 51K.</p></div>
+                    </div>
+                    <a class="case-link interactable" href="pages/data.html#frameit-overseas-growth"><span data-lang="zh">查看完整案例 ↗</span><span data-lang="en">View full case ↗</span></a>
+                </article>
+
+                <article class="case-card interactable" data-case="game-ua-localization">
+                    <div class="case-head">
+                        <h3 class="case-title"><span data-lang="zh">游戏 UA 本地化</span><span data-lang="en">Game UA Localization</span></h3>
+                        <span class="case-index">[03]</span>
+                    </div>
+                    <div class="case-details">
+                        <div class="case-field"><span class="case-label" data-lang="zh">情境</span><span class="case-label" data-lang="en">Context</span><p data-lang="zh">《率土之滨》《射雕》等游戏面向韩国与东南亚市场获客。</p><p data-lang="en">Games including Infinite Borders and The Condor Heroes targeted users in Korea and Southeast Asia.</p></div>
+                        <div class="case-field"><span class="case-label" data-lang="zh">角色</span><span class="case-label" data-lang="en">Role</span><p data-lang="zh">参与 UA 视频制作与本地化创意迭代。</p><p data-lang="en">Contributed to UA video production and localized creative iteration.</p></div>
+                        <div class="case-field"><span class="case-label" data-lang="zh">方法</span><span class="case-label" data-lang="en">Method</span><p data-lang="zh">研究观看偏好，并依据 A/B 反馈调整钩子、结构与节奏。</p><p data-lang="en">Researched viewing preferences and used A/B feedback to refine hooks, structure, and pacing.</p></div>
+                        <div class="case-field case-result"><span class="case-label" data-lang="zh">成果</span><span class="case-label" data-lang="en">Results</span><p data-lang="zh">部分素材 conversion 达 1.8%，核心素材 paid-distribution life +20%。</p><p data-lang="en">Selected creatives reached 1.8% conversion, while core creative paid-distribution life increased by 20%.</p></div>
+                    </div>
+                    <a class="case-link interactable" href="pages/video.html#game-ua-localization"><span data-lang="zh">查看完整案例 ↗</span><span data-lang="en">View full case ↗</span></a>
+                </article>
+
+                <article class="case-card interactable" data-case="ai-creative-workflow">
+                    <div class="case-head">
+                        <h3 class="case-title"><span data-lang="zh">AI 辅助创意对比工具</span><span data-lang="en">AI-assisted creative comparison tool</span></h3>
+                        <span class="case-index">[04]</span>
+                    </div>
+                    <div class="case-details">
+                        <div class="case-field"><span class="case-label" data-lang="zh">情境</span><span class="case-label" data-lang="en">Context</span><p data-lang="zh">批量视频审阅需要一致、可复用的判断标准。</p><p data-lang="en">High-volume video reviews needed consistent, reusable evaluation criteria.</p></div>
+                        <div class="case-field"><span class="case-label" data-lang="zh">角色</span><span class="case-label" data-lang="en">Role</span><p data-lang="zh">设计 AI 辅助的单视频与 A/B 对比工作流。</p><p data-lang="en">Designed an AI-assisted workflow for single-video and A/B comparisons.</p></div>
+                        <div class="case-field"><span class="case-label" data-lang="zh">方法</span><span class="case-label" data-lang="en">Method</span><p data-lang="zh">把关键帧提取与加权 review framework 接入 production workflow。</p><p data-lang="en">Connected key-frame extraction and a weighted review framework to the production workflow.</p></div>
+                        <div class="case-field case-result"><span class="case-label" data-lang="zh">成果</span><span class="case-label" data-lang="en">Results</span><p data-lang="zh">将结构化审阅转为可执行的素材优化与制作决策。</p><p data-lang="en">Turned structured reviews into actionable creative optimization and production decisions.</p></div>
+                    </div>
+                    <a class="case-link interactable" href="pages/vibecoding.html#ai-creative-workflow"><span data-lang="zh">查看完整案例 ↗</span><span data-lang="en">View full case ↗</span></a>
+                </article>
+            </div>
+        </div>
+
+        <div class="edit-card wide cyan" id="process">
+            <h2 class="sec-title"><span data-lang="zh">Creative Testing Process // 创意测试流程</span><span data-lang="en">Creative Testing Process</span></h2>
+            <div class="process-flow">
+                <article class="process-step">
+                    <span class="process-marker"></span>
+                    <h3><span data-lang="zh">Research // 研究</span><span data-lang="en">Research</span></h3>
+                    <p data-lang="zh">梳理受众、市场语境、竞品素材与历史投放信号。</p><p data-lang="en">Map audiences, market context, competitor creatives, and historical campaign signals.</p>
+                </article>
+                <article class="process-step">
+                    <span class="process-marker"></span>
+                    <h3><span data-lang="zh">Hypothesis // 假设</span><span data-lang="en">Hypothesis</span></h3>
+                    <p data-lang="zh">把业务目标转成可验证的钩子、叙事与转化假设。</p><p data-lang="en">Translate business goals into testable hook, narrative, and conversion hypotheses.</p>
+                </article>
+                <article class="process-step">
+                    <span class="process-marker"></span>
+                    <h3><span data-lang="zh">Variants // 变体</span><span data-lang="en">Variants</span></h3>
+                    <p data-lang="zh">控制变量，系统化组合开场、节奏、画面与行动号召。</p><p data-lang="en">Control variables while combining openings, pacing, visuals, and CTAs systematically.</p>
+                </article>
+                <article class="process-step">
+                    <span class="process-marker"></span>
+                    <h3><span data-lang="zh">Testing // 测试</span><span data-lang="en">Testing</span></h3>
+                    <p data-lang="zh">通过 A/B 投放观察有效信号，并区分创意贡献与 Campaign 归因。</p><p data-lang="en">Use A/B delivery to read meaningful signals while separating creative contribution from campaign attribution.</p>
+                </article>
+                <article class="process-step">
+                    <span class="process-marker"></span>
+                    <h3><span data-lang="zh">Learning // 学习</span><span data-lang="en">Learning</span></h3>
+                    <p data-lang="zh">沉淀胜出模式、失败原因与下一轮可复用的制作规则。</p><p data-lang="en">Capture winning patterns, failure reasons, and reusable production rules for the next cycle.</p>
+                </article>
+            </div>
+        </div>
+
         <!-- 左列：ABOUT -->
         <div class="edit-card accent" id="about">
             <h2 class="sec-title">Operator Profile</h2>
+            <p class="about-summary" data-lang="zh">拥有 2 年消费者 App 付费社交创意全职经验，并具备早期游戏 UA 与品牌设计经历。</p>
+            <p class="about-summary" data-lang="en">2 years of full-time paid-social creative for consumer apps, plus earlier game UA and brand-design experience.</p>
             <div class="info-grid">
                 <div class="info-item"><strong data-lang-zh="教育背景" data-lang-en="Education">Education</strong><span data-lang="zh">广东工业大学 // 动画系<br>2020.09 - 2024.07</span><span data-lang="en">Guangdong University of Technology // Animation<br>2020.09 - 2024.07</span></div>
                 <div class="info-item"><strong data-lang-zh="语言能力" data-lang-en="Languages">Languages</strong><span data-lang="zh">粤语 / 英语 (CET-6)</span><span data-lang="en">Cantonese / English (CET-6)</span></div>
-                <div class="info-item"><strong data-lang-zh="电子邮箱" data-lang-en="Email">Email</strong><span>Clrenceye1@gmail.com</span></div>
-                <div class="info-item"><strong data-lang-zh="电话" data-lang-en="Phone">Phone</strong><span>+86 13719113230</span></div>
+                <div class="info-item"><strong data-lang-zh="电子邮箱" data-lang-en="Email">Email</strong><span>clrenceye1@gmail.com</span></div>
+                <div class="info-item"><strong data-lang-zh="电话" data-lang-en="Phone">Phone</strong><span>+86 137 1911 3230</span></div>
             </div>
         </div>
 
@@ -1223,7 +1457,7 @@
                 <span class="tag interactable">Codex</span>
                 <span class="tag interactable">After Effects</span>
                 <span class="tag interactable" data-lang-zh="CapCut / 剪映" data-lang-en="CapCut/Cut"><span data-lang="zh">CapCut / 剪映</span><span data-lang="en">CapCut/Cut</span></span>
-                <span class="tag interactable">LibuTV</span>
+                <span class="tag interactable">LibTV</span>
                 <span class="tag interactable">Blender 3D</span>
                 <span class="tag interactable">Jimeng / Kling</span>
                 <span class="tag interactable" data-lang-zh="视频广告" data-lang-en="Video Ads">Video Ads</span>
@@ -1231,24 +1465,16 @@
             </div>
         </div>
 
-        <div class="edit-card wide accent" id="impact">
-            <h2 class="sec-title" data-lang-zh="Impact Snapshot // 关键成果" data-lang-en="Impact Snapshot // Key Results">Impact Snapshot // Key Results</h2>
-            <div class="impact-strip">
-                <div class="impact-item"><span class="impact-value" data-lang-zh="153万" data-lang-en="1.53 million"><span data-lang="zh">153万</span><span data-lang="en">1.53 million</span></span><span class="impact-label" data-lang-zh="年度主导短视频累计消耗" data-lang-en="Annual Short Video Ad Spend Led">Annual Short Video Ad Spend Led</span></div>
-                <div class="impact-item"><span class="impact-value" data-lang-zh="24.5万+" data-lang-en="245,000+"><span data-lang="zh">24.5万+</span><span data-lang="en">245,000+</span></span><span class="impact-label" data-lang-zh="海外广告账户美元消耗" data-lang-en="Overseas Ad Account USD Spend">Overseas Ad Account USD Spend</span></div>
-                <div class="impact-item"><span class="impact-value" data-lang-zh="16.7万+" data-lang-en="167,000+"><span data-lang="zh">16.7万+</span><span data-lang="en">167,000+</span></span><span class="impact-label" data-lang-zh="新增装机量" data-lang-en="New App Installs">New App Installs</span></div>
-                <div class="impact-item"><span class="impact-value">20%</span><span class="impact-label" data-lang-zh="年度投放效率提升" data-lang-en="Annual Ad Efficiency Gain">Annual Ad Efficiency Gain</span></div>
-            </div>
-        </div>
-
         <!-- 全宽：PROJECTS -->
         <div class="edit-card wide cyan" id="projects">
-            <h2 class="sec-title" data-lang-zh="Selected Works // 作品入口" data-lang-en="Selected Works">Selected Works</h2>
-            <div class="portfolio-links">
-                <a href="pages/data.html" class="link-card interactable"><h3>Data</h3><p data-lang="zh">投放复盘、素材表现与增长分析，用数据解释创意迭代。</p><p data-lang="en">Ad performance reviews, creative analysis, and growth insights driven by data.</p></a>
-                <a href="pages/graphic.html" class="link-card interactable"><h3>Graphic / 3D</h3><p data-lang="zh">平面视觉、三维实验、广告素材与品牌画面输出。</p><p data-lang="en">Graphic design, 3D experiments, ad creatives and brand visuals.</p></a>
-                <a href="pages/video.html" class="link-card link-card-video interactable"><h3>Video<span class="video-rec-dot"></span></h3><p data-lang="zh">动态广告、买量视频、Showreel 与节奏型动效合集。</p><p data-lang="en">Motion ads, UA videos, showreels and rhythmic motion design.</p></a>
-                <a href="pages/vibecoding.html" class="link-card interactable"><h3>Vibecoding</h3><p data-lang="zh">AI 辅助开发、工具原型、自动化与创意工作流探索。</p><p data-lang="en">AI-assisted dev, tool prototypes, automation and creative workflow exploration.</p></a>
+            <div id="lab">
+                <h2 class="sec-title"><span data-lang="zh">Lab / Archive // 实验与旧作品</span><span data-lang="en">Lab / Archive</span></h2>
+                <div class="portfolio-links">
+                    <a href="pages/data.html" class="link-card interactable"><h3>Data</h3><p data-lang="zh">投放复盘、素材表现与增长分析，用数据解释创意迭代。</p><p data-lang="en">Ad performance reviews, creative analysis, and growth insights driven by data.</p></a>
+                    <a href="pages/graphic.html" class="link-card interactable"><h3>Graphic / 3D</h3><p data-lang="zh">平面视觉、三维实验、广告素材与品牌画面输出。</p><p data-lang="en">Graphic design, 3D experiments, ad creatives and brand visuals.</p></a>
+                    <a href="pages/video.html" class="link-card link-card-video interactable"><h3>Video<span class="video-rec-dot"></span></h3><p data-lang="zh">动态广告、买量视频、Showreel 与节奏型动效合集。</p><p data-lang="en">Motion ads, UA videos, showreels and rhythmic motion design.</p></a>
+                    <a href="pages/vibecoding.html" class="link-card interactable"><h3>Vibecoding</h3><p data-lang="zh">AI 辅助开发、工具原型、自动化与创意工作流探索。</p><p data-lang="en">AI-assisted dev, tool prototypes, automation and creative workflow exploration.</p></a>
+                </div>
             </div>
         </div>
 
@@ -1374,7 +1600,7 @@
 
     <script>
         // 首页扩展 interactable 选择器（顶层声明，确保在 common.js 绑定前就绪）
-        window.AK_EXTRA_INTERACTABLE = '.edit-card, .link-card, .resume-btn';
+        window.AK_EXTRA_INTERACTABLE = '.edit-card, .link-card, .resume-btn, .case-card';
 
         document.addEventListener('DOMContentLoaded', () => {
 
@@ -1399,7 +1625,7 @@
             }
             if (langBtn) {
                 const saved = localStorage.getItem(LANG_KEY);
-                setLang(saved || 'en'); // 默认英文
+                setLang(saved || 'zh'); // 默认英文
                 langBtn.addEventListener('click', () => {
                     const next = document.body.classList.contains('lang-en') ? 'zh' : 'en';
                     setLang(next);

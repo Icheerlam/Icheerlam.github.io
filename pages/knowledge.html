@@ -134,7 +134,7 @@
     </style>
     <link rel="stylesheet" href="../assets/css/language.css">
 </head>
-<body class="dark-mode lang-en">
+<body class="dark-mode">
 
     <audio id="bgmAudio" loop preload="auto"><source src="../assets/audio/Sowing Chia Seed.mp3" type="audio/mpeg"></audio>
     <audio id="hoverSound" preload="auto"><source src="../assets/audio/鼠标悬停.mp3" type="audio/mpeg"></audio>
@@ -570,7 +570,7 @@
                 const si = document.getElementById('searchInput');
                 if (si && si.hasAttribute('data-lang-' + lang)) si.placeholder = si.getAttribute('data-lang-' + lang);
             }
-            if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'en'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
+            if (langBtn) { const saved = localStorage.getItem(LANG_KEY); setLang(saved || 'zh'); langBtn.addEventListener('click', () => { const next = document.body.classList.contains('lang-en') ? 'zh' : 'en'; setLang(next); }); }
         });
     </script>
     <script src="../assets/js/language.js"></script>
