@@ -86,24 +86,17 @@
         }).catch(function () {});
     }
 
-    // 默认开启背景音乐；若浏览器阻止自动播放，则在首次交互时继续播放。
+    // 判断是否是首页（index.html 或根路径）
+    const isIndexPage = window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/');
+    AK.isIndexPage = isIndexPage;
+
+    // 默认关闭背景音乐（所有页面），用户手动开启
     if (AK.audioEnabled && bgmAudio) {
-        bgmAudio.volume = volOf(bgmVol);
-        bgmAudio.play().then(function () {
-            // 自动播放成功，UI 保持 ON
-            if (audioToggle) {
-                audioToggle.innerHTML = '[ AUDIO: ON ]';
-                audioToggle.classList.remove('muted');
-            }
-        }).catch(function () {
-            // 保持默认开启状态，等待用户首次交互以满足浏览器播放策略。
-            if (audioToggle) {
-                audioToggle.innerHTML = '[ AUDIO: ON ]';
-                audioToggle.classList.remove('muted');
-            }
-            document.addEventListener('pointerdown', resumeBgmOnFirstInteraction, true);
-            document.addEventListener('keydown', resumeBgmOnFirstInteraction, true);
-        });
+        bgmAudio.volume = 0;
+        if (audioToggle) {
+            audioToggle.innerHTML = '[ AUDIO: OFF ]';
+            audioToggle.classList.add('muted');
+        }
     }
 
     if (volHeader && volumePanel) {

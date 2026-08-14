@@ -163,3 +163,113 @@ html.gsap-ready .gsap-reveal { opacity: 0; animation: none !important; }
     .theme-toggle-btn { bottom: 20px; right: 20px; z-index: 2000; }
     .back-to-top { bottom: 80px; right: 20px; }
 }
+
+/* =====================================================================
+   统一布局层（内页与首页对齐）
+   由本项目内页统一引入；首页 index.html 已内置等效样式，不受影响
+   ===================================================================== */
+:root {
+    --ak-max-w: min(1200px, 92vw);   /* 统一内容基准宽度 */
+    --ak-gap: 24px;                  /* 统一网格间距 */
+    --ak-card-pad: clamp(22px, 2.6vw, 32px); /* 统一卡片内边距 */
+}
+
+/* 通用内容容器：未自行声明宽度的 `.container` 统一到基准宽度 */
+.container:not([style]) {
+    max-width: var(--ak-max-w);
+    margin-inline: auto;
+}
+
+/* ================= 顶部页头统一 ================= */
+[class~="page-header"] {
+    width: var(--ak-max-w);
+    margin: 0 auto;
+    padding: clamp(92px, 13vw, 148px) 0 22px;
+    text-align: left;
+    position: relative;
+    z-index: 10;
+}
+[class~="page-header"] h1 {
+    font-size: clamp(1.9rem, 3.2vw, 2.9rem);
+    letter-spacing: .02em;
+    color: var(--ak-text-main);
+    text-shadow: 0 0 22px rgba(0,216,255,.12), 4px 5px 0 rgba(0,216,255,.03);
+}
+[class~="page-header"] .hl {
+    width: min(100%, 720px);
+    height: 1px;
+    margin: 14px 0 0;
+    background: linear-gradient(90deg, var(--ak-accent-info), transparent 40%, rgba(245,166,35,.85), transparent);
+}
+
+/* 首页点开刷新类标题的居中等式不受影响 */
+body.light-mode [class~="page-header"] h1 {
+    text-shadow: 0 0 18px rgba(0,132,199,.18), 0 0 0 rgba(0,132,199,0);
+}
+
+/* ================= 统一卡片手感 ================= */
+.bento-card, .review-card, .card, .case-block, .panel, .gallery-card,
+.video-card, .feature-card, .knowledge-card, .case-card {
+    transition: transform var(--dur-base) var(--ease-out-expo),
+                border-color var(--dur-base),
+                box-shadow var(--dur-base),
+                background var(--dur-base);
+}
+.bento-card:hover, .review-card:hover, .panel:hover,
+.gallery-card:hover, .knowledge-card:hover, .feature-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--ak-accent-info);
+    box-shadow: 0 12px 32px rgba(0,0,0,.28), 0 0 0 1px rgba(0,216,255,.06);
+}
+
+/* ================= 顶部滚动进度条（与 index 一致） ================= */
+.scroll-progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+    background: var(--ak-accent-info); z-index: 2000;
+    box-shadow: 0 0 8px var(--ak-accent-info); transition: width .1s linear;
+}
+
+/* ================= 返回顶部（与 index 一致） ================= */
+.back-to-top {
+    position: fixed; bottom: 90px; right: 30px; width: 46px; height: 46px;
+    background: var(--ak-bg-panel); border: 1px solid var(--ak-border);
+    color: var(--ak-accent-info); font-family: 'Space Mono', monospace; font-size: 1.1rem;
+    cursor: pointer; z-index: 1500; opacity: 0; visibility: hidden;
+    transform: translateY(20px); transition: var(--dur-base) var(--ease-out-expo);
+    backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center; border-radius: 2px;
+}
+.back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+.back-to-top:hover { border-color: var(--ak-accent-info); box-shadow: 0 0 15px rgba(0,216,255,.3); transform: translateY(-3px); }
+
+/* ================= Preloader 启动序列（与 index 一致） ================= */
+.preloader {
+    position: fixed; inset: 0; z-index: 10000; background: var(--ak-bg-main);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 28px;
+    transition: opacity .6s var(--ease-out-expo), visibility .6s;
+}
+.preloader.hidden { opacity: 0; visibility: hidden; }
+.preloader-logo {
+    font-family: 'Space Mono', monospace; font-size: 1.4rem; font-weight: 800;
+    letter-spacing: 4px; color: var(--ak-accent-info);
+    text-shadow: 0 0 20px rgba(0,216,255,.5);
+}
+.preloader-boot {
+    font-family: 'Space Mono', monospace; font-size: .8rem;
+    color: var(--ak-text-muted); height: 1.2em;
+}
+.preloader-boot .blink { color: var(--ak-accent-info); animation: blink .8s steps(1) infinite; }
+.preloader-bar { width: 220px; height: 2px; background: var(--ak-border); overflow: hidden; }
+.preloader-bar-fill { height: 100%; width: 0%; background: var(--ak-accent-info); box-shadow: 0 0 10px var(--ak-accent-info); transition: width .2s linear; }
+.preloader-pct { font-family: 'Space Mono', monospace; font-size: .7rem; color: var(--ak-text-muted); }
+
+/* 平滑滚动兜底：仅当页面未使用 Lenis 时生效（common.js 会安装 Lenis，二者并存无碍） */
+html { scroll-behavior: smooth; }
+html.lenis, html.lenis body { scroll-behavior: auto !important; }
+
+/* ================= 内页统一响应式补强 ================= */
+@media (max-width: 640px) {
+    .bento-card, .card, .panel, .case-block, .gallery-card,
+    .knowledge-card, .feature-card { padding: 20px; }
+}

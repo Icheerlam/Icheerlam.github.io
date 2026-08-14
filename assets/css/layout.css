@@ -1,0 +1,67 @@
+/* =====================================================================
+   PRTS Terminal // 内页统一布局规范
+   由各内页（pages/*.html）引入，与 common.css 配套使用。
+   目标：把 index 已实现、而内页缺失的布局一致性收拢到此文件，
+   通过「公共层补齐 + 内页最小覆盖」对齐所有页面的观感。
+   ===================================================================== */
+
+/* ================= 顶部页头统一 ================= */
+/* 覆盖各内页自有 .page-header 的差异化 margin/padding，归一顶部留白，
+   使内容不被固定导航遮挡、与首页 hero 风格对齐。 */
+.page-header {
+    width: var(--ak-max-w);
+    margin: 0 auto !important;                       /* 覆盖各页 inline margin 差异 */
+    padding: clamp(96px, 14vw, 150px) 0 24px !important;
+    position: relative;
+    z-index: 10;
+}
+
+/* ================= 容器宽度基准 ================= */
+/* 未单独声明宽度的内容 wrapper 统一到基准宽度，避免 1180/1200 差异。
+   大宽度宽屏画廊（graphic/data 等）保留自身宽度，不受影响。 */
+.container:not([style]) { width: auto; max-width: var(--ak-max-w); margin-inline: auto; }
+
+/* ================= 网格与卡片间距归一 ================= */
+/* 统一网格 gap 为 24px（覆盖各页 16/20px 差异） */
+.grid, .bento-grid, .works-grid, .cards-grid, .gallery-grid,
+.videos-grid, .data-grid, .knowledge-grid, .feature-grid {
+    gap: var(--ak-gap);
+}
+/* 统一卡片内边距 */
+.bento-card, .card, .panel, .case-block, .gallery-card,
+.video-card, .feature-card, .knowledge-card, .case-card {
+    padding: var(--ak-card-pad);
+}
+
+/* ================= 编号徽章与索引标签统一 ================= */
+/* 左上方 [OP-0n] 编号徽章：统一字号/字距/位置 */
+.bento-card, .gallery-card, .video-card, .feature-card,
+.knowledge-card, .case-block, .case-card {
+    position: relative;
+}
+.bento-card::before, .gallery-card::before, .video-card::before,
+.feature-card::before, .knowledge-card::before, .case-block::before,
+.case-card::before {
+    position: absolute;
+    top: 14px; left: 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: .6rem; letter-spacing: 1px; font-weight: 700;
+    color: var(--ak-accent-info);
+    opacity: .45;
+    text-transform: uppercase;
+}
+
+/* ================= 平滑滚动兜底 ================= */
+/* 仅当页面未启用 Lenis 时生效；common.js 会安装 Lenis，二者并存无碍 */
+html { scroll-behavior: smooth; }
+html.lenis, html.lenis body { scroll-behavior: auto !important; }
+
+/* ================= 响应式断点统一 ================= */
+@media (max-width: 900px) {
+    /* 折叠导航为单列 */
+    .page-header, .container:not([style]) { padding-left: 5vw; padding-right: 5vw; }
+}
+@media (max-width: 640px) {
+    /* 卡片单列与内边距压缩 */
+    .page-header { padding-top: 84px; }
+}
