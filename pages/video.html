@@ -1048,7 +1048,7 @@
                     const activeIndex = rightIds.indexOf(currentId);
 
                     if (activeIndex !== -1) {
-                        setActiveSideItem(activeIndex, false); // 改为 false，让左侧也滚动
+                        setActiveSideItem(activeIndex, true);
                     }
                 }
             });
@@ -1059,44 +1059,6 @@
         });
 
         cards.forEach(card => observer.observe(card));
-
-        /* ============ 双向联动：滚动左侧定位右侧 ============ */
-        let isLeftScrolling = false;
-        let leftScrollTimeout;
-        if (splitSidebar) {
-            splitSidebar.addEventListener('scroll', () => {
-                if (isLeftScrolling) return;
-
-                const sidebarRect = splitSidebar.getBoundingClientRect();
-                const sidebarCenter = sidebarRect.top + sidebarRect.height / 2;
-
-                let closestIdx = 0;
-                let closestDist = Infinity;
-
-                sideItems.forEach((item, i) => {
-                    const itemRect = item.getBoundingClientRect();
-                    const itemCenter = itemRect.top + itemRect.height / 2;
-                    const dist = Math.abs(itemCenter - sidebarCenter);
-                    if (dist < closestDist) {
-                        closestDist = dist;
-                        closestIdx = i;
-                    }
-                });
-
-                const targetCard = document.getElementById(rightIds[closestIdx]);
-                if (targetCard && !isMobileLayout() && splitMain) {
-                    const mainRect = splitMain.getBoundingClientRect();
-                    const targetRect = targetCard.getBoundingClientRect();
-                    const isVisible = targetRect.top >= mainRect.top && targetRect.bottom <= mainRect.bottom;
-                    if (!isVisible) {
-                        isLeftScrolling = true;
-                        scrollCardIntoMain(targetCard);
-                        clearTimeout(leftScrollTimeout);
-                        leftScrollTimeout = setTimeout(() => { isLeftScrolling = false; }, 600);
-                    }
-                }
-            }, { passive: true });
-        }
 
         /* 键盘导航 */
         document.addEventListener('keydown', e => {
