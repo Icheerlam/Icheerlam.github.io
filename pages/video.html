@@ -228,6 +228,11 @@
         }
         .rw-video iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
         .rw-video video { width: 100%; height: 100%; object-fit: contain; }
+        .youtube-mobile-link {
+            display: none; align-items: center; gap: 6px; width: fit-content;
+            margin: -6px 0 18px; color: var(--ak-accent-info);
+            font: 700 11px 'Space Mono', monospace; text-decoration: none;
+        }
         .rw-num { font: 900 48px 'Space Mono', monospace; color: rgba(0,216,255,0.08); line-height: 1; margin-bottom: 4px; }
         .rw-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin-bottom: 8px; flex-wrap: wrap; }
         .rw-head h3 { font: 800 1.2rem 'Space Mono', monospace; color: var(--ak-accent-info); text-transform: uppercase; }
@@ -585,6 +590,9 @@
             
             .split-main { padding: 20px 0 64px; gap: 24px; overflow: visible; height: auto; }
             .rw-card { padding: 20px; border-radius: 4px; clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px)); }
+            .rw-video { min-height: 200px; }
+            .youtube-mobile-link { display: inline-flex; }
+            .youtube-mobile-link[hidden] { display: none; }
             .rw-num { font-size: 32px; }
             .rw-head h3 { font-size: 1rem; }
             .rw-desc { font-size: .8rem; }
@@ -718,8 +726,9 @@
             <div class="rw-card interactable" id="rw-showreel">
                 <div class="rw-num">01</div>
                 <div class="rw-video">
-                    <iframe src="https://www.youtube.com/embed/0MXfDVhVRNg?rel=0&controls=1&modestbranding=1&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe data-youtube-id="0MXfDVhVRNg" title="2024–2025 Showreel" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
+                <a class="youtube-mobile-link" href="https://www.youtube.com/watch?v=0MXfDVhVRNg" target="_blank" rel="noopener noreferrer"><span data-lang="zh">↗ 在 YouTube 中打开</span><span data-lang="en">↗ Open in YouTube</span></a>
                 <div class="rw-head"><h3>24-25_Showreel.mp4</h3><span class="rw-type">DEMO REEL</span></div>
                 <p class="rw-desc"><span data-lang="zh">2024, 2025年视频设计/剪辑合集</span><span data-lang="en">2024, 2025 Video Design/Editing Collection</span><br><span data-lang="zh">包含实习、工作和个人练习的产出</span><span data-lang="en">Includes output from internships, jobs and personal exercises</span><br><br>[ TIMESTAMPS ]: <span class="highlight-tag">2024</span> 0:00-1:17 // <span class="highlight-tag">2025</span> 1:17-2:54</p>
             </div>
@@ -756,8 +765,9 @@
                 </div>
                 <div class="rw-video">
                     <video src="../works/video/夏末.mp4" controls playsinline preload="metadata"></video>
-                    <iframe src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:none;"></iframe>
+                    <iframe data-youtube-id="" title="AI video on YouTube" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="display:none;"></iframe>
                 </div>
+                <a class="youtube-mobile-link" target="_blank" rel="noopener noreferrer" hidden><span data-lang="zh">↗ 在 YouTube 中打开</span><span data-lang="en">↗ Open in YouTube</span></a>
                 <div class="rw-head"><h3><span data-lang="zh">AI 视频</span><span data-lang="en">AI video</span></h3><span class="rw-type">AI VIDEO / POST-PROCESSING</span></div>
                 <p class="rw-desc" id="xiamo-desc" data-lang="zh">一个音乐mv的预告开头，使用Libtv和AE制作<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
                 <p class="rw-desc" data-lang="en">A music video trailer opener, created with Libtv and After Effects.<br><br>[ TYPE ]: <span class="highlight-tag">AI VIDEO / POST-PROCESSING</span></p>
@@ -767,8 +777,9 @@
             <div class="rw-card interactable" id="rw-ad">
                 <div class="rw-num">04</div>
                 <div class="rw-video">
-                    <iframe src="https://www.youtube.com/embed/BziFgsUG-y4?rel=0&controls=1&modestbranding=1&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe data-youtube-id="BziFgsUG-y4" title="Project Logistical Ad" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
+                <a class="youtube-mobile-link" href="https://www.youtube.com/watch?v=BziFgsUG-y4" target="_blank" rel="noopener noreferrer"><span data-lang="zh">↗ 在 YouTube 中打开</span><span data-lang="en">↗ Open in YouTube</span></a>
                 <div class="rw-head"><h3>Project // Logistical Ad</h3><span class="rw-type">COMMERCIAL / ADVERTISEMENT</span></div>
                 <p class="rw-desc" data-lang="zh">实习期间和脚本策划一起制作的广告<br><br>[ TYPE ]: <span class="highlight-tag">COMMERCIAL / ADVERTISEMENT</span></p>
                 <p class="rw-desc" data-lang="en">Commercial produced during internship in collaboration with the script planner.<br><br>[ TYPE ]: <span class="highlight-tag">COMMERCIAL / ADVERTISEMENT</span></p>
@@ -799,8 +810,9 @@
                     <button class="rw-var-btn" data-src="PzlmFlj8Yb8"><span data-lang="zh">ASSET_03 · 新增视频</span><span data-lang="en">ASSET_03 · Add video</span></button>
                 </div>
                 <div class="rw-video">
-                    <iframe src="https://www.youtube.com/embed/Pqat0JJ6Dkc?rel=0&controls=1&modestbranding=1&vq=hd1080" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    <iframe data-youtube-id="Pqat0JJ6Dkc" title="Web3 project video" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                 </div>
+                <a class="youtube-mobile-link" href="https://www.youtube.com/watch?v=Pqat0JJ6Dkc" target="_blank" rel="noopener noreferrer"><span data-lang="zh">↗ 在 YouTube 中打开</span><span data-lang="en">↗ Open in YouTube</span></a>
                 <div class="rw-head"><h3><span data-lang="zh">Web3 项目</span><span data-lang="en">Web3 project</span></h3><span class="rw-type">VIDEO DESIGN / WEB3</span></div>
                 <p class="rw-desc" data-lang="zh">港中大 FMBA Web3 + 香港 Web3 协会<br><br>[ TYPE ]: <span class="highlight-tag">VIDEO DESIGN / WEB3</span></p>
                 <p class="rw-desc" data-lang="en">CUHK FMBA Web3 + Hong Kong Web3 Association<br><br>[ TYPE ]: <span class="highlight-tag">VIDEO DESIGN / WEB3</span></p>
@@ -939,6 +951,35 @@
             setActiveSubItem(sideItem, variantIndex);
         }
 
+        function buildYouTubeEmbedUrl(videoId) {
+            const params = new URLSearchParams({
+                rel: '0',
+                controls: '1',
+                playsinline: '1'
+            });
+            if (/^https?:$/.test(window.location.protocol)) {
+                params.set('origin', window.location.origin);
+            }
+            return `https://www.youtube.com/embed/${encodeURIComponent(videoId)}?${params.toString()}`;
+        }
+
+        function setYouTubePlayer(iframeEl, videoId) {
+            if (!iframeEl || !videoId) return;
+
+            iframeEl.dataset.youtubeId = videoId;
+            iframeEl.src = buildYouTubeEmbedUrl(videoId);
+
+            const youtubeLink = iframeEl.closest('.rw-card')?.querySelector('.youtube-mobile-link');
+            if (youtubeLink) {
+                youtubeLink.href = 'https://www.youtube.com/watch?v=' + encodeURIComponent(videoId);
+                youtubeLink.hidden = false;
+            }
+        }
+
+        document.querySelectorAll('iframe[data-youtube-id]').forEach(iframeEl => {
+            setYouTubePlayer(iframeEl, iframeEl.dataset.youtubeId);
+        });
+
         /* ============ 双向联动：点击左侧定位右侧 ============ */
         document.querySelectorAll('.split-item').forEach((item, i) => {
             item.addEventListener('click', (e) => {
@@ -1013,12 +1054,19 @@
                     const isYoutube = btn.dataset.type === 'youtube';
                     if (videoEl && iframeEl) {
                         if (isYoutube) {
+                            videoEl.pause();
                             videoEl.style.display = 'none';
                             iframeEl.style.display = '';
-                            iframeEl.src = 'https://www.youtube.com/embed/' + btn.dataset.src + '?rel=0&controls=1&modestbranding=1&vq=hd1080';
+                            setYouTubePlayer(iframeEl, btn.dataset.src);
                         } else {
                             iframeEl.style.display = 'none';
-                            iframeEl.src = '';
+                            iframeEl.removeAttribute('src');
+                            iframeEl.dataset.youtubeId = '';
+                            const youtubeLink = card.querySelector('.youtube-mobile-link');
+                            if (youtubeLink) {
+                                youtubeLink.hidden = true;
+                                youtubeLink.removeAttribute('href');
+                            }
                             videoEl.style.display = '';
                             videoEl.poster = btn.dataset.poster || '';
                             videoEl.src = '../works/video/' + btn.dataset.src;
@@ -1031,7 +1079,7 @@
                         videoEl.dataset.played = '0';
                         videoEl.load();
                     } else if (iframeEl) {
-                        iframeEl.src = 'https://www.youtube.com/embed/' + btn.dataset.src + '?rel=0&controls=1&modestbranding=1&vq=hd1080';
+                        setYouTubePlayer(iframeEl, btn.dataset.src);
                     }
                 });
             });
