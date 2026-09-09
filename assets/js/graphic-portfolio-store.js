@@ -35,13 +35,44 @@
   function normalize(items, section) {
     items
       .filter(function (item) { return item.section === section; })
-      .sort(function (left, right) { return left.order - right.order; })
+      .sort(function (left, right) { return Number(left.order) - Number(right.order); })
       .forEach(function (item, index) { item.order = index; });
   }
 
   function normalizeAll(items) {
     sections.forEach(function (section) { normalize(items, section); });
     return items;
+  }
+
+  function validateAddedWork(item) {
+    if (!item || typeof item !== 'object') {
+      throw new TypeError('作品必须是对象');
+    }
+    if (typeof item.id !== 'string' || !/^[a-z0-9-]+$/.test(item.id)) {
+      throw new Error('作品 id 必须是非空的小写字母、数字或连字符');
+    }
+    validateSection(item.section);
+    if (!Number.isFinite(item.order)) {
+      throw new Error('作品 order 必须是有限数值');
+    }
+    if (!['image', 'video', 'video-group'].includes(item.mediaType)) {
+      throw new Error('不支持的 mediaType：' + item.mediaType);
+    }
+    if (item.mediaType === 'video-group') {
+      if (!Array.isArray(item.sources) || item.sources.length < 2) {
+        throw new Error('video-group 的 sources 至少需要两个条目');
+      }
+      if ('src' in item) {
+        throw new Error('video-group 不能包含 src');
+      }
+      return;
+    }
+    if (typeof item.src !== 'string' || item.src.trim() === '') {
+      throw new Error(item.mediaType + ' 必须包含非空 src');
+    }
+    if ('sources' in item) {
+      throw new Error(item.mediaType + ' 不能包含 sources');
+    }
   }
 
   function createPortfolioStore(initialItems) {
@@ -97,6 +128,7 @@
 
     return {
       begin: function () {
+        current = clone(baseline);
         editing = true;
         removals.clear();
         return this.items();
@@ -104,7 +136,9 @@
 
       items: function (section) {
         if (section === undefined) {
-          return clone(current);
+          return clone(Array.from(sections).reduce(function (result, currentSection) {
+            return result.concat(ordered(currentSection));
+          }, []));
         }
         validateSection(section);
         return clone(ordered(section));
@@ -112,10 +146,7 @@
 
       add: function (item) {
         requireDraft();
-        if (!item || typeof item !== 'object') {
-          throw new TypeError('作品必须是对象');
-        }
-        validateSection(item.section);
+        validateAddedWork(item);
         if (current.some(function (candidate) { return candidate.id === item.id; })) {
           throw new Error('重复的作品 ID：' + item.id);
         }

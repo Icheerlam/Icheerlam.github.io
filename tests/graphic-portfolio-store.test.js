@@ -14,12 +14,16 @@ function initialItems() {
   ];
 }
 
+function imageWork(id, section = 'graphic', order = 0) {
+  return { id, section, order, mediaType: 'image', src: `../assets/${id}.jpg` };
+}
+
 test('草稿可移动和添加作品，并可取消回到初始基线', () => {
   const store = createPortfolioStore(initialItems());
 
   store.begin();
   store.move('b', 'graphic', 0);
-  store.add({ id: 'd', section: 'ai-store', order: 99, title: { zh: '丁', en: 'D' } });
+  store.add({ ...imageWork('d', 'ai-store', 99), title: { zh: '丁', en: 'D' } });
 
   assert.deepEqual(store.items('graphic').map(({ id }) => id), ['b', 'a']);
   assert.deepEqual(store.items('ai-store').map(({ id }) => id), ['d']);
@@ -46,7 +50,7 @@ test('撤销不会产生重复 ID，冲突解除后仍可使用原令牌', () =>
   store.begin();
 
   const token = store.remove('a');
-  store.add({ id: 'a', section: 'ai-store', order: 0, title: { zh: '新甲', en: 'New A' } });
+  store.add({ ...imageWork('a', 'ai-store'), title: { zh: '新甲', en: 'New A' } });
   assert.throws(() => store.undo(token), /重复|duplicate/i);
 
   store.remove('a');
@@ -57,7 +61,7 @@ test('撤销不会产生重复 ID，冲突解除后仍可使用原令牌', () =>
 test('未开始草稿时拒绝所有变更', () => {
   const store = createPortfolioStore(initialItems());
 
-  assert.throws(() => store.add({ id: 'd', section: '3d', order: 0 }), /begin|草稿/i);
+  assert.throws(() => store.add(imageWork('d', '3d')), /begin|草稿/i);
   assert.throws(() => store.remove('a'), /begin|草稿/i);
   assert.throws(() => store.move('a', '3d', 0), /begin|草稿/i);
   assert.throws(() => store.undo('missing'), /begin|草稿/i);
@@ -68,10 +72,10 @@ test('拒绝重复 ID、未知 ID 和非法 section', () => {
   const store = createPortfolioStore(initialItems());
   store.begin();
 
-  assert.throws(() => store.add({ id: 'a', section: 'graphic', order: 0 }), /重复|duplicate/i);
+  assert.throws(() => store.add(imageWork('a')), /重复|duplicate/i);
   assert.throws(() => store.remove('missing'), /未知|unknown/i);
   assert.throws(() => store.move('missing', 'graphic', 0), /未知|unknown/i);
-  assert.throws(() => store.add({ id: 'd', section: 'other', order: 0 }), /section|区域/i);
+  assert.throws(() => store.add(imageWork('d', 'other')), /section|区域/i);
   assert.throws(() => store.move('a', 'other', 0), /section|区域/i);
 });
 
@@ -117,7 +121,7 @@ test('输入、items 与 commit 返回值均为防御性深拷贝', () => {
   assert.equal(store.items()[0].title.zh, '甲');
 
   store.begin();
-  const added = { id: 'd', section: 'ai-store', order: 0, title: { zh: '丁', en: 'D' } };
+  const added = { ...imageWork('d', 'ai-store'), title: { zh: '丁', en: 'D' } };
   store.add(added);
   added.title.zh = '被添加参数修改';
   const committed = store.commit();
@@ -136,4 +140,53 @@ test('浏览器脚本将 API 导出到 window.GraphicPortfolioStore', () => {
   vm.runInContext(source, sandbox);
 
   assert.equal(typeof sandbox.window.GraphicPortfolioStore?.createPortfolioStore, 'function');
+});
+
+test('重复 begin 从提交基线重建草稿并清空撤销历史', () => {
+  const store = createPortfolioStore(initialItems());
+  store.begin();
+  store.move('b', 'graphic', 0);
+  const token = store.remove('a');
+
+  store.begin();
+
+  assert.deepEqual(store.items('graphic').map(({ id }) => id), ['a', 'b']);
+  assert.equal(store.isDirty(), false);
+  assert.throws(() => store.undo(token), /token|撤销/i);
+});
+
+test('add 校验 ID、section、order 与媒体字段形态', () => {
+  const store = createPortfolioStore(initialItems());
+  store.begin();
+
+  assert.throws(() => store.add(imageWork('', 'graphic')), /id/i);
+  assert.throws(() => store.add(imageWork('Upper_Case', 'graphic')), /id/i);
+  assert.throws(() => store.add(imageWork('valid-id', 'other')), /section|区域/i);
+  assert.throws(() => store.add({ ...imageWork('bad-order'), order: Infinity }), /order/i);
+  assert.throws(() => store.add({ ...imageWork('bad-type'), mediaType: 'audio' }), /mediaType/i);
+  assert.throws(() => store.add({ ...imageWork('empty-src'), src: '' }), /src/i);
+  assert.throws(() => store.add({ ...imageWork('image-sources'), sources: ['a', 'b'] }), /sources/i);
+  assert.throws(
+    () => store.add({ id: 'short-group', section: '3d', order: 0, mediaType: 'video-group', sources: ['a'] }),
+    /sources/i,
+  );
+  assert.throws(
+    () => store.add({ id: 'group-src', section: '3d', order: 0, mediaType: 'video-group', sources: ['a', 'b'], src: 'c' }),
+    /src/i,
+  );
+
+  store.add({ id: 'valid-video', section: '3d', order: 0, mediaType: 'video', src: 'video.mp4' });
+  store.add({ id: 'valid-group', section: '3d', order: 1, mediaType: 'video-group', sources: ['a.mp4', 'b.mp4'] });
+  assert.deepEqual(store.items('3d').map(({ id }) => id), ['valid-video', 'valid-group', 'c']);
+});
+
+test('items() 按固定区域顺序及各区 order 返回', () => {
+  const store = createPortfolioStore([
+    { id: 'd', section: '3d', order: 0 },
+    { id: 'a2', section: 'graphic', order: 1 },
+    { id: 's', section: 'ai-store', order: 0 },
+    { id: 'a1', section: 'graphic', order: 0 },
+  ]);
+
+  assert.deepEqual(store.items().map(({ id }) => id), ['a1', 'a2', 's', 'd']);
 });
