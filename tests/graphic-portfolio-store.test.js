@@ -1,5 +1,8 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
 
 const { createPortfolioStore } = require('../assets/js/graphic-portfolio-store.js');
 
@@ -36,6 +39,19 @@ test('删除令牌可恢复作品原位置且只能消费一次', () => {
   store.undo(token);
   assert.deepEqual(store.items('graphic').map(({ id }) => id), ['a', 'b']);
   assert.throws(() => store.undo(token), /token|撤销/i);
+});
+
+test('撤销不会产生重复 ID，冲突解除后仍可使用原令牌', () => {
+  const store = createPortfolioStore(initialItems());
+  store.begin();
+
+  const token = store.remove('a');
+  store.add({ id: 'a', section: 'ai-store', order: 0, title: { zh: '新甲', en: 'New A' } });
+  assert.throws(() => store.undo(token), /重复|duplicate/i);
+
+  store.remove('a');
+  store.undo(token);
+  assert.deepEqual(store.items('graphic').map(({ id }) => id), ['a', 'b']);
 });
 
 test('未开始草稿时拒绝所有变更', () => {
@@ -107,4 +123,17 @@ test('输入、items 与 commit 返回值均为防御性深拷贝', () => {
   const committed = store.commit();
   committed.find(({ id }) => id === 'd').title.zh = '被提交结果修改';
   assert.equal(store.items('ai-store')[0].title.zh, '丁');
+});
+
+test('浏览器脚本将 API 导出到 window.GraphicPortfolioStore', () => {
+  const source = fs.readFileSync(
+    path.resolve(__dirname, '../assets/js/graphic-portfolio-store.js'),
+    'utf8',
+  );
+  const sandbox = { window: {} };
+  vm.createContext(sandbox);
+
+  vm.runInContext(source, sandbox);
+
+  assert.equal(typeof sandbox.window.GraphicPortfolioStore?.createPortfolioStore, 'function');
 });

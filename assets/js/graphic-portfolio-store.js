@@ -8,7 +8,7 @@
   if (root) {
     root.GraphicPortfolioStore = api;
   }
-}(typeof globalThis !== 'undefined' ? globalThis : this, function () {
+}(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this), function () {
   'use strict';
 
   const sections = new Set(['graphic', 'ai-store', '3d']);
@@ -146,6 +146,9 @@
         const removal = removals.get(token);
         if (!removal) {
           throw new Error('无效或已消费的撤销 token');
+        }
+        if (current.some(function (item) { return item.id === removal.item.id; })) {
+          throw new Error('Duplicate work id：' + removal.item.id);
         }
         removals.delete(token);
         const restored = clone(removal.item);
