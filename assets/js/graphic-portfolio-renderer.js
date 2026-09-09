@@ -69,12 +69,14 @@
       card.classList.add('media-error-state');
     }
 
-    function bindMedia(media, card, work, source) {
-      media.classList.add('img-clicker');
-      media.addEventListener('click', function (event) {
-        event.stopPropagation();
-        openMedia({ work: work, element: media, src: source || media.currentSrc || media.src || '' });
-      });
+    function bindMedia(media, card, work, source, openable) {
+      if (openable) {
+        media.classList.add('img-clicker');
+        media.addEventListener('click', function (event) {
+          event.stopPropagation();
+          openMedia({ work: work, element: media, src: source || media.currentSrc || media.src || '' });
+        });
+      }
       media.addEventListener('error', function () { addError(card, source); });
       mediaNodes.push(media);
     }
@@ -84,7 +86,7 @@
       image.src = source;
       image.loading = 'lazy';
       image.alt = titleFor(work);
-      bindMedia(image, card, work, source);
+      bindMedia(image, card, work, source, true);
       card.appendChild(image);
     }
 
@@ -97,7 +99,7 @@
       video.playsInline = true;
       video.controls = work.mediaType === 'video';
       if (groupClass) video.className = groupClass;
-      bindMedia(video, card, work, source);
+      bindMedia(video, card, work, source, false);
       card.appendChild(video);
     }
 
@@ -203,8 +205,11 @@
           .sort(function (left, right) { return Number(left.order) - Number(right.order); })
           .forEach(function (work, index) { container.appendChild(renderCard(work, index, callbacks)); });
       });
-      if (doc.dispatchEvent && typeof CustomEvent !== 'undefined') {
-        doc.dispatchEvent(new CustomEvent('portfolio:rendered', { detail: { items: items || [], media: mediaNodes.slice() } }));
+      const customEvent = doc.defaultView && doc.defaultView.CustomEvent
+        ? doc.defaultView.CustomEvent
+        : (typeof window !== 'undefined' && window.CustomEvent ? window.CustomEvent : null);
+      if (doc.dispatchEvent && typeof customEvent === 'function') {
+        doc.dispatchEvent(new customEvent('portfolio:rendered', { detail: { items: items || [], media: mediaNodes.slice() } }));
       }
       return { media: mediaNodes.slice() };
     }
