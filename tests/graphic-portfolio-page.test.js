@@ -30,7 +30,9 @@ test('Graphic 页面加载清单、store、renderer 及共享语言模块', () =
   assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-renderer\.js["']/);
   assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-manager\.js["']/);
   assert.match(html, /id=["']lightbox["']/);
-  assert.match(html, /id=["']langBtn["']/);
+  assert.match(html, /href=["']\.\.\/assets\/css\/language\.css["']/);
+  assert.match(html, /src=["']\.\.\/assets\/js\/language\.js["']/);
+  assert.doesNotMatch(html, /id=["']langBtn["']/);
   assert.match(html, /src=["']\.\.\/assets\/js\/language\.js["']/);
   assert.match(html, /createPortfolioStore\(manifest\.items\)/);
   assert.doesNotMatch(html, /createPortfolioStore\(manifest\.works\)/);
