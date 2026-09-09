@@ -39,23 +39,26 @@
 
     function titleFor(work) {
       const title = work && work.title;
-      if (typeof title === 'string') return title;
+      if (typeof title === 'string') return title.trim() ? title : '';
       if (!title || typeof title !== 'object') return '';
       const lang = getLanguage() === 'en' ? 'en' : 'zh';
-      return text(title[lang]);
+      const value = text(title[lang]);
+      return value.trim() ? value : '';
     }
 
     function addTitle(card, work) {
-      const title = work && work.title;
-      const zh = typeof title === 'string' ? title : text(title?.zh);
-      const en = typeof title === 'string' ? title : text(title?.en);
-      if (!zh && !en) return;
+      const value = titleFor(work);
+      if (!value) return;
       const node = doc.createElement('div');
       node.className = work.section === '3d' ? 'c3d-title' : 'portfolio-title';
-      node.setAttribute('data-lang-zh', zh);
-      node.setAttribute('data-lang-en', en);
-      node.textContent = titleFor(work);
+      node.textContent = value;
       card.appendChild(node);
+    }
+
+    function setLocalizedAria(node, zh, en) {
+      node.setAttribute('data-aria-label-zh', zh);
+      node.setAttribute('data-aria-label-en', en);
+      node.setAttribute('aria-label', getLanguage() === 'en' ? en : zh);
     }
 
     function addError(card, source) {
@@ -103,13 +106,16 @@
       card.appendChild(video);
     }
 
-    function addManagement(card, work, index, callbacks) {
+    function addManagement(card, work, index, sectionLength, callbacks) {
       if (!callbacks.editing) return;
       card.draggable = true;
       card.setAttribute('data-editing', 'true');
       card.addEventListener('dragstart', function (event) {
         card.classList.add('is-dragging');
-        if (event.dataTransfer) event.dataTransfer.setData('text/plain', work.id);
+        if (event.dataTransfer) {
+          event.dataTransfer.setData('application/x-graphic-portfolio-item', JSON.stringify({ id: work.id, section: work.section }));
+          event.dataTransfer.setData('text/plain', work.id);
+        }
       });
       card.addEventListener('dragend', function () { card.classList.remove('is-dragging'); });
       card.addEventListener('dragover', function (event) { event.preventDefault(); card.classList.add('drop-target'); });
@@ -117,15 +123,22 @@
       card.addEventListener('drop', function (event) {
         event.preventDefault();
         card.classList.remove('drop-target');
-        const draggedId = event.dataTransfer && event.dataTransfer.getData('text/plain');
-        if (draggedId && draggedId !== work.id && typeof callbacks.onMove === 'function') {
-          callbacks.onMove(draggedId, work.section, index, work);
+        let dragPayload = null;
+        if (event.dataTransfer) {
+          try {
+            dragPayload = JSON.parse(event.dataTransfer.getData('application/x-graphic-portfolio-item') || 'null');
+          } catch (_) {}
+        }
+        const draggedId = dragPayload?.id || (event.dataTransfer && event.dataTransfer.getData('text/plain'));
+        const sourceSection = dragPayload?.section || '';
+        if (draggedId && draggedId !== work.id && (!sourceSection || sourceSection === work.section) && typeof callbacks.onMove === 'function') {
+          callbacks.onMove(draggedId, sourceSection, work.section, index, work);
         }
       });
       const handle = doc.createElement('span');
       handle.className = 'portfolio-drag-handle';
       handle.setAttribute('draggable', 'true');
-      handle.setAttribute('aria-label', '拖拽移动作品');
+      setLocalizedAria(handle, '拖拽移动作品', 'Drag to reorder work');
       handle.textContent = '↕';
       card.appendChild(handle);
       const controls = doc.createElement('div');
@@ -134,27 +147,32 @@
       remove.type = 'button';
       remove.className = 'portfolio-remove';
       remove.dataset.action = 'remove';
-      remove.textContent = '删除';
+      setLocalizedAria(remove, '删除作品', 'Remove work');
+      remove.textContent = getLanguage() === 'en' ? 'Remove' : '删除';
       remove.addEventListener('click', function (event) {
         event.stopPropagation();
         if (typeof callbacks.onRemove === 'function') callbacks.onRemove(work.id, work);
       });
       controls.appendChild(remove);
-      [['up', -1, '↑'], ['down', 1, '↓']].forEach(function (entry) {
+      [['up', -1, '↑', '上移作品', 'Move work up'], ['down', 1, '↓', '下移作品', 'Move work down']].forEach(function (entry) {
         const button = doc.createElement('button');
         button.type = 'button';
         button.dataset.action = `move-${entry[0]}`;
+        setLocalizedAria(button, entry[3], entry[4]);
         button.textContent = entry[2];
+        button.disabled = entry[0] === 'up' ? index === 0 : index === sectionLength - 1;
         button.addEventListener('click', function (event) {
           event.stopPropagation();
-          if (typeof callbacks.onMove === 'function') callbacks.onMove(work.id, work.section, index + entry[1], work);
+          if (!button.disabled && typeof callbacks.onMove === 'function') {
+            callbacks.onMove(work.id, work.section, work.section, index + entry[1], work);
+          }
         });
         controls.appendChild(button);
       });
       card.appendChild(controls);
     }
 
-    function renderCard(work, index, callbacks) {
+    function renderCard(work, index, sectionLength, callbacks) {
       const card = doc.createElement('article');
       card.className = work.section === '3d' ? 'card-3d interactable' : 'masonry-item interactable';
       card.dataset.workId = work.id;
@@ -189,7 +207,7 @@
         card.appendChild(wrapper);
       }
       addTitle(card, work);
-      addManagement(card, work, index, callbacks);
+      addManagement(card, work, index, sectionLength, callbacks);
       return card;
     }
 
@@ -200,10 +218,12 @@
         const container = getContainer(section);
         if (!container) return;
         while (container.firstChild) container.removeChild(container.firstChild);
-        (Array.isArray(items) ? items : [])
+        const sectionItems = (Array.isArray(items) ? items : [])
           .filter(function (work) { return work && work.section === section; })
-          .sort(function (left, right) { return Number(left.order) - Number(right.order); })
-          .forEach(function (work, index) { container.appendChild(renderCard(work, index, callbacks)); });
+          .sort(function (left, right) { return Number(left.order) - Number(right.order); });
+        sectionItems.forEach(function (work, index) {
+          container.appendChild(renderCard(work, index, sectionItems.length, callbacks));
+        });
       });
       const customEvent = doc.defaultView && doc.defaultView.CustomEvent
         ? doc.defaultView.CustomEvent

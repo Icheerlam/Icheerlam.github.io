@@ -137,6 +137,27 @@
     text-align: center;
 }
 
+.masonry-item .img-box {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.masonry-item .img-box video {
+    aspect-ratio: 16 / 9;
+    display: block;
+    height: auto;
+    max-width: 100%;
+    object-fit: cover;
+    width: 100%;
+}
+
+.masonry-item video {
+    display: block;
+    height: auto;
+    max-width: 100%;
+    width: 100%;
+}
+
 .portfolio-toast {
     background: var(--ak-bg-panel, rgba(18, 18, 20, .95));
     border: 1px solid var(--ak-accent-info, #00d8ff);
@@ -180,6 +201,12 @@
 .portfolio-mobile-move:hover {
     border-color: var(--ak-accent-info, #00d8ff);
     color: var(--ak-accent-info, #00d8ff);
+}
+
+.portfolio-card-controls button:disabled,
+.portfolio-manage-controls button:disabled {
+    cursor: not-allowed;
+    opacity: .42;
 }
 
 .portfolio-drag-handle {

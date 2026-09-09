@@ -14,19 +14,20 @@ test('Graphic 作品清单使用版本 1 并覆盖三个区域', () => {
   const manifest = loadManifest();
 
   assert.equal(manifest.version, 1);
-  assert.ok(Array.isArray(manifest.works));
+  assert.ok(Array.isArray(manifest.items));
+  assert.equal('works' in manifest, false, '顶层数据协议只允许使用 items');
   assert.deepEqual(
-    [...new Set(manifest.works.map((work) => work.section))].sort(),
+    [...new Set(manifest.items.map((work) => work.section))].sort(),
     ['3d', 'ai-store', 'graphic'],
   );
 });
 
 test('每条作品都有合法且唯一的字段，且各区域 order 从 0 连续递增', () => {
-  const { works } = loadManifest();
+  const { items } = loadManifest();
   const ids = new Set();
   const allowedMediaTypes = new Set(['image', 'video', 'video-group']);
 
-  for (const work of works) {
+  for (const work of items) {
     assert.match(work.id, /^[a-z0-9-]+$/);
     assert.equal(ids.has(work.id), false, `重复的作品 ID：${work.id}`);
     ids.add(work.id);
@@ -37,7 +38,7 @@ test('每条作品都有合法且唯一的字段，且各区域 order 从 0 连�
   }
 
   for (const section of ['graphic', 'ai-store', '3d']) {
-    const sectionWorks = works.filter((work) => work.section === section);
+    const sectionWorks = items.filter((work) => work.section === section);
     assert.deepEqual(
       sectionWorks.map((work) => work.order),
       Array.from({ length: sectionWorks.length }, (_, index) => index),
@@ -47,9 +48,9 @@ test('每条作品都有合法且唯一的字段，且各区域 order 从 0 连�
 });
 
 test('媒体类型使用对应的 src 或 sources 字段形态', () => {
-  const { works } = loadManifest();
+  const { items } = loadManifest();
 
-  for (const work of works) {
+  for (const work of items) {
     if (work.mediaType === 'video-group') {
       assert.equal('src' in work, false, `${work.id} 的 video-group 不应包含 src`);
       assert.ok(Array.isArray(work.sources) && work.sources.length >= 2, `${work.id} 的 video-group 至少需要两个 sources`);
@@ -64,10 +65,10 @@ test('媒体类型使用对应的 src 或 sources 字段形态', () => {
 });
 
 test('每条媒体引用都使用仓库内相对于 pages 目录的现有文件', () => {
-  const { works } = loadManifest();
+  const { items } = loadManifest();
   const pagesDirectory = path.join(projectRoot, 'pages');
 
-  for (const work of works) {
+  for (const work of items) {
     const sources = work.mediaType === 'video-group' ? work.sources : [work.src];
     for (const source of sources) {
       assert.equal(path.isAbsolute(source), false, `${work.id} 不得使用绝对路径：${source}`);

@@ -22,7 +22,7 @@ test('草稿可移动和添加作品，并可取消回到初始基线', () => {
   const store = createPortfolioStore(initialItems());
 
   store.begin();
-  store.move('b', 'graphic', 0);
+  store.move('b', 'graphic', 'graphic', 0);
   store.add({ ...imageWork('d', 'ai-store', 99), title: { zh: '丁', en: 'D' } });
 
   assert.deepEqual(store.items('graphic').map(({ id }) => id), ['b', 'a']);
@@ -63,7 +63,7 @@ test('未开始草稿时拒绝所有变更', () => {
 
   assert.throws(() => store.add(imageWork('d', '3d')), /begin|草稿/i);
   assert.throws(() => store.remove('a'), /begin|草稿/i);
-  assert.throws(() => store.move('a', '3d', 0), /begin|草稿/i);
+  assert.throws(() => store.move('a', 'graphic', 'graphic', 0), /begin|草稿/i);
   assert.throws(() => store.undo('missing'), /begin|草稿/i);
   assert.throws(() => store.commit(), /begin|草稿/i);
 });
@@ -74,27 +74,35 @@ test('拒绝重复 ID、未知 ID 和非法 section', () => {
 
   assert.throws(() => store.add(imageWork('a')), /重复|duplicate/i);
   assert.throws(() => store.remove('missing'), /未知|unknown/i);
-  assert.throws(() => store.move('missing', 'graphic', 0), /未知|unknown/i);
+  assert.throws(() => store.move('missing', 'graphic', 'graphic', 0), /未知|unknown/i);
   assert.throws(() => store.add(imageWork('d', 'other')), /section|区域/i);
-  assert.throws(() => store.move('a', 'other', 0), /section|区域/i);
+  assert.throws(() => store.move('a', 'graphic', 'other', 0), /section|区域/i);
 });
 
-test('移动索引夹紧到目标区域边界并归一化 order', () => {
+test('同区移动索引夹紧到区域边界并归一化 order', () => {
   const store = createPortfolioStore(initialItems());
   store.begin();
 
-  store.move('b', 'graphic', -100);
+  store.move('b', 'graphic', 'graphic', -100);
   assert.deepEqual(store.items('graphic').map(({ id, order }) => [id, order]), [['b', 0], ['a', 1]]);
-  store.move('b', 'graphic', 100);
+  store.move('b', 'graphic', 'graphic', 100);
   assert.deepEqual(store.items('graphic').map(({ id, order }) => [id, order]), [['a', 0], ['b', 1]]);
-  store.move('a', '3d', 100);
-  assert.deepEqual(store.items('3d').map(({ id, order }) => [id, order]), [['c', 0], ['a', 1]]);
+});
+
+test('拒绝跨区域移动且不改变任何 section 或 order', () => {
+  const store = createPortfolioStore(initialItems());
+  store.begin();
+
+  assert.throws(() => store.move('a', 'graphic', '3d', 0), /同一|section|区域/i);
+  assert.deepEqual(store.items('graphic').map(({ id, order }) => [id, order]), [['a', 0], ['b', 1]]);
+  assert.deepEqual(store.items('3d').map(({ id, order }) => [id, order]), [['c', 0]]);
 });
 
 test('提交返回规范化快照并成为新的取消基线', () => {
   const store = createPortfolioStore(initialItems());
   store.begin();
-  store.move('b', 'ai-store', 50);
+  store.remove('b');
+  store.add({ ...imageWork('b', 'ai-store', 50), title: { zh: '乙', en: 'B' } });
 
   const snapshot = store.commit();
   assert.deepEqual(snapshot.map(({ id, section, order }) => [id, section, order]), [
@@ -145,7 +153,7 @@ test('浏览器脚本将 API 导出到 window.GraphicPortfolioStore', () => {
 test('重复 begin 从提交基线重建草稿并清空撤销历史', () => {
   const store = createPortfolioStore(initialItems());
   store.begin();
-  store.move('b', 'graphic', 0);
+  store.move('b', 'graphic', 'graphic', 0);
   const token = store.remove('a');
 
   store.begin();

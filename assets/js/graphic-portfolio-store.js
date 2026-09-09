@@ -44,6 +44,14 @@
     return items;
   }
 
+  function orderedAll(items) {
+    return Array.from(sections).reduce(function (result, section) {
+      return result.concat(items
+        .filter(function (item) { return item.section === section; })
+        .sort(function (left, right) { return left.order - right.order; }));
+    }, []);
+  }
+
   function validateWork(item) {
     if (!item || typeof item !== 'object') {
       throw new TypeError('作品必须是对象');
@@ -138,9 +146,7 @@
 
       items: function (section) {
         if (section === undefined) {
-          return clone(Array.from(sections).reduce(function (result, currentSection) {
-            return result.concat(ordered(currentSection));
-          }, []));
+          return clone(orderedAll(current));
         }
         validateSection(section);
         return clone(ordered(section));
@@ -190,15 +196,18 @@
         return clone(restored);
       },
 
-      move: function (id, section, index) {
+      move: function (id, sourceSection, targetSection, index) {
         requireDraft();
-        validateSection(section);
+        validateSection(sourceSection);
+        validateSection(targetSection);
         const item = findItem(id);
-        const previousSection = item.section;
-        place(item, section, index);
-        if (previousSection !== section) {
-          normalize(current, previousSection);
+        if (item.section !== sourceSection) {
+          throw new Error('作品 source section 与当前区域不一致');
         }
+        if (sourceSection !== targetSection) {
+          throw new Error('作品只能在同一区域内排序');
+        }
+        place(item, targetSection, index);
         return clone(item);
       },
 
@@ -215,7 +224,7 @@
         baseline = clone(current);
         editing = false;
         removals.clear();
-        return clone(current);
+        return clone(orderedAll(current));
       },
 
       isDirty: function () {

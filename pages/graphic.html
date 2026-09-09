@@ -333,10 +333,9 @@
                     const response = await fetch('../data/graphic-works.json');
                     if (!response || (typeof response.ok === 'boolean' && !response.ok)) throw new Error(`HTTP ${response && response.status}`);
                     const manifest = await response.json();
-                    const store = window.GraphicPortfolioStore.createPortfolioStore(manifest.works);
+                    const store = window.GraphicPortfolioStore.createPortfolioStore(manifest.items);
                     window.graphicPortfolioStore = store;
                     window.graphicPortfolioManager.setStore(store);
-                    renderer.render(store.items(), { editing: false });
                     status.hidden = true;
                 } catch (error) {
                     showLoadError(error);
