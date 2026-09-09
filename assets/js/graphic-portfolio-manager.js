@@ -44,7 +44,11 @@
     if (doc.body && typeof doc.body.appendChild === 'function') doc.body.appendChild(link);
     if (typeof link.click === 'function') link.click();
     if (typeof link.remove === 'function') link.remove();
-    if (typeof urlApi.revokeObjectURL === 'function') urlApi.revokeObjectURL(objectUrl);
+    if (typeof urlApi.revokeObjectURL === 'function') {
+      const schedule = config.setTimeout || (typeof setTimeout !== 'undefined' ? setTimeout : null);
+      if (schedule) schedule(function () { urlApi.revokeObjectURL(objectUrl); }, 0);
+      else urlApi.revokeObjectURL(objectUrl);
+    }
     return link;
   }
 
@@ -258,6 +262,7 @@
       try { activeStore.move(id, section, Math.max(0, Math.trunc(Number(index) || 0))); render(); } catch (_) { setStatus('作品排序失败，请重试。'); }
     }
     function enter() {
+      if (editing) return true;
       const activeStore = getStore();
       if (!activeStore) { setStatus('作品清单暂时无法加载，请稍后重试。'); return false; }
       store = activeStore;

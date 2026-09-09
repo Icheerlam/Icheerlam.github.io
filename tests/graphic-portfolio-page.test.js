@@ -57,6 +57,7 @@ test('manager 导出文件校验并拒绝未知 MIME 与超过 50 MiB', () => {
 test('manager downloadManifest 生成 JSON 下载并释放临时 URL', () => {
   const downloads = [];
   const revoked = [];
+  const scheduled = [];
   const { api } = loadManager({
     URL: {
       createObjectURL(blob) { downloads.push({ blob }); return 'blob:manifest'; },
@@ -72,6 +73,7 @@ test('manager downloadManifest 生成 JSON 下载并释放临时 URL', () => {
     Blob: class FakeBlob {
       constructor(parts, options) { this.parts = parts; this.options = options; }
     },
+    setTimeout(callback) { scheduled.push(callback); return scheduled.length; },
   });
   const works = [{ id: 'local-demo', section: 'graphic', order: 0, mediaType: 'image', src: 'blob:demo', title: { zh: '', en: '' } }];
   const link = api.downloadManifest(works);
@@ -80,6 +82,9 @@ test('manager downloadManifest 生成 JSON 下载并释放临时 URL', () => {
   assert.match(downloads[0].blob.parts[0], /local-demo/);
   assert.equal(link._download, 'graphic-works.local.json');
   assert.equal(link.clicked, true);
+  assert.deepEqual(revoked, [], '点击后不应立即回收下载 URL');
+  assert.equal(scheduled.length, 1);
+  scheduled[0]();
   assert.deepEqual(revoked, ['blob:manifest']);
 });
 
@@ -269,6 +274,9 @@ test('manager 进入管理模式并可批量添加媒体，保留无效文件提
   assert.equal(added.title.zh, '<安全文本>');
   assert.equal(added.pendingFile, undefined, 'store 条目不应依赖 File 对象');
   assert.equal(manager.getPendingFile(added.id), validFile, 'manager 应保留原始 File 引用');
+  manager.enter();
+  assert.equal(store.items('3d')[0].id, added.id, '重复进入不得重置当前草稿');
+  assert.equal(manager.getPendingFile(added.id), validFile, '重复进入不得丢失 pending File 引用');
   assert.equal(documentRef.getElementById('portfolioUploadDialog').hidden, false);
   renders.at(-1).state.onRemove(added.id);
   assert.equal(scheduleCalls.length, 0, '删除撤销入口不得自动失效');
