@@ -28,9 +28,88 @@ test('Graphic 页面加载清单、store、renderer 及共享语言模块', () =
   assert.match(html, /fetch\(['"]\.\.\/data\/graphic-works\.json['"]\)/);
   assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-store\.js["']/);
   assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-renderer\.js["']/);
+  assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-manager\.js["']/);
   assert.match(html, /id=["']lightbox["']/);
   assert.match(html, /id=["']langBtn["']/);
   assert.match(html, /src=["']\.\.\/assets\/js\/language\.js["']/);
+});
+
+function loadManager(overrides) {
+  const source = fs.readFileSync(path.resolve(__dirname, '../assets/js/graphic-portfolio-manager.js'), 'utf8');
+  const sandbox = Object.assign({
+    module: { exports: {} },
+    exports: {},
+    window: {},
+    globalThis: {},
+    console,
+  }, overrides || {});
+  vm.runInNewContext(source, sandbox);
+  return { api: sandbox.module.exports, sandbox };
+}
+
+test('manager 导出文件校验并拒绝未知 MIME 与超过 50 MiB', () => {
+  const { api } = loadManager();
+  assert.equal(api.validateFile({ type: 'image/jpeg', size: 50 * 1024 * 1024 }).ok, true);
+  assert.equal(api.validateFile({ type: 'application/x-msdownload', size: 1 }).reason, 'unsupported-type');
+  assert.equal(api.validateFile({ type: 'image/png', size: 50 * 1024 * 1024 + 1 }).reason, 'file-too-large');
+});
+
+test('manager downloadManifest 生成 JSON 下载并释放临时 URL', () => {
+  const downloads = [];
+  const revoked = [];
+  const { api } = loadManager({
+    URL: {
+      createObjectURL(blob) { downloads.push({ blob }); return 'blob:manifest'; },
+      revokeObjectURL(url) { revoked.push(url); },
+    },
+    document: {
+      createElement(tag) {
+        assert.equal(tag, 'a');
+        return { click() { this.clicked = true; }, remove() {}, set href(value) { this._href = value; }, set download(value) { this._download = value; } };
+      },
+      body: { appendChild() {} },
+    },
+    Blob: class FakeBlob {
+      constructor(parts, options) { this.parts = parts; this.options = options; }
+    },
+  });
+  const works = [{ id: 'local-demo', section: 'graphic', order: 0, mediaType: 'image', src: 'blob:demo', title: { zh: '', en: '' } }];
+  const link = api.downloadManifest(works);
+  assert.equal(downloads.length, 1);
+  assert.equal(downloads[0].blob.options.type, 'application/json;charset=utf-8');
+  assert.match(downloads[0].blob.parts[0], /local-demo/);
+  assert.equal(link._download, 'graphic-works.local.json');
+  assert.equal(link.clicked, true);
+  assert.deepEqual(revoked, ['blob:manifest']);
+});
+
+test('manager beforeunload 仅在 dirty 时阻止离开', () => {
+  const listeners = {};
+  const windowRef = { addEventListener(type, listener) { listeners[type] = listener; } };
+  const { api } = loadManager({
+    window: windowRef,
+    document: { getElementById() { return null; } },
+  });
+  const store = { begin() {}, isDirty: () => false };
+  const manager = api.createPortfolioManager({ store, document: { getElementById() { return null; } }, window: windowRef });
+  assert.equal(typeof manager, 'object');
+  manager.enter();
+  const cleanEvent = {};
+  listeners.beforeunload?.(cleanEvent);
+  assert.equal(cleanEvent.returnValue, undefined);
+  store.isDirty = () => true;
+  const dirtyEvent = {};
+  listeners.beforeunload?.(dirtyEvent);
+  assert.equal(dirtyEvent.returnValue, '');
+});
+
+test('manager 静态契约包含生命周期、上传与排序入口', () => {
+  const source = fs.readFileSync(path.resolve(__dirname, '../assets/js/graphic-portfolio-manager.js'), 'utf8');
+  for (const contract of [
+    'ACCEPTED_TYPES', 'MAX_FILE_BYTES', 'createPortfolioManager', 'validateFile', 'downloadManifest',
+    'portfolioManageButton', 'portfolioUploadInput', 'portfolioSaveButton', 'portfolioCancelButton',
+    'portfolioToast', 'beforeunload', 'revokeObjectURL', 'pendingFile',
+  ]) assert.match(source, new RegExp(contract));
 });
 
 test('Graphic 页面提供作品管理入口与隐藏管理容器', () => {
@@ -140,6 +219,56 @@ class FakeDocument extends FakeElement {
   getElementById(id) { return this.nodes.get(id) || null; }
   dispatchEvent(event) { this.eventLog.push(event); }
 }
+
+test('manager 进入管理模式并可批量添加媒体，保留无效文件提示', () => {
+  const ids = ['portfolioManageButton', 'portfolioManager', 'portfolioUploadButton', 'portfolioUploadInput',
+    'portfolioSaveButton', 'portfolioCancelButton', 'portfolioUploadDialog', 'portfolioUploadForm',
+    'portfolioUploadSection', 'portfolioTitleZh', 'portfolioTitleEn', 'portfolioUploadConfirmButton',
+    'portfolioUploadCancelButton', 'portfolioManagerStatus', 'portfolioEmptyState', 'portfolioToast', 'portfolioUploadFileList'];
+  const documentRef = new FakeDocument();
+  ids.forEach((id) => {
+    const node = new FakeElement(id.includes('Input') ? 'input' : id.includes('Section') ? 'select' : 'div');
+    node.id = id;
+    documentRef.nodes.set(id, node);
+  });
+  const store = require('../assets/js/graphic-portfolio-store.js').createPortfolioStore([
+    { id: 'existing', section: 'graphic', order: 0, mediaType: 'image', src: 'existing.jpg', title: { zh: '', en: '' } },
+  ]);
+  const renders = [];
+  const revoked = [];
+  const windowRef = {
+    confirm: () => true,
+    URL: { createObjectURL: () => 'blob:local', revokeObjectURL: (url) => revoked.push(url) },
+    crypto: { randomUUID: () => 'test-id' },
+    addEventListener() {},
+  };
+  const manager = loadManager().api.createPortfolioManager({
+    document: documentRef,
+    window: windowRef,
+    store,
+    renderer: { render(items, state) { renders.push({ items, state }); } },
+  });
+  documentRef.getElementById('portfolioManageButton').dispatchEvent({ type: 'click' });
+  assert.equal(manager.isEditing(), true);
+  assert.equal(documentRef.getElementById('portfolioManager').hidden, false);
+  documentRef.getElementById('portfolioUploadButton').dispatchEvent({ type: 'click' });
+  const input = documentRef.getElementById('portfolioUploadInput');
+  input.files = [{ name: 'ok.png', type: 'image/png', size: 1 }, { name: 'bad.exe', type: 'application/x-msdownload', size: 1 }];
+  documentRef.getElementById('portfolioUploadInput').dispatchEvent({ type: 'change' });
+  assert.equal(documentRef.getElementById('portfolioUploadFileList').children.length, 1);
+  documentRef.getElementById('portfolioUploadSection').value = '3d';
+  documentRef.getElementById('portfolioTitleZh').value = '<安全文本>';
+  documentRef.getElementById('portfolioUploadConfirmButton').dispatchEvent({ type: 'click' });
+  const added = store.items('3d')[0];
+  assert.match(added.id, /^local-test-id$/);
+  assert.equal(added.mediaType, 'image');
+  assert.equal(added.title.zh, '<安全文本>');
+  assert.equal(documentRef.getElementById('portfolioUploadDialog').hidden, false);
+  documentRef.getElementById('portfolioManageButton').dispatchEvent({ type: 'click' });
+  assert.equal(manager.isEditing(), false);
+  assert.deepEqual(revoked, ['blob:local']);
+  assert.ok(renders.length >= 2);
+});
 
 function loadRenderer() {
   const source = fs.readFileSync(path.resolve(__dirname, '../assets/js/graphic-portfolio-renderer.js'), 'utf8');

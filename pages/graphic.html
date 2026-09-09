@@ -218,6 +218,7 @@
 
     <script src="../assets/js/graphic-portfolio-store.js"></script>
     <script src="../assets/js/graphic-portfolio-renderer.js"></script>
+    <script src="../assets/js/graphic-portfolio-manager.js"></script>
     <script>
         /* RETURN 按钮环境适配：服务器跳转服务器主页，本地跳转 index.html */
         (function(){
@@ -320,6 +321,12 @@
                 },
             });
             window.graphicPortfolioRenderer = renderer;
+            window.graphicPortfolioManager = window.GraphicPortfolioManager.createPortfolioManager({
+                document,
+                window,
+                renderer,
+                getStore: () => window.graphicPortfolioStore,
+            });
 
             async function loadPortfolio() {
                 try {
@@ -328,6 +335,7 @@
                     const manifest = await response.json();
                     const store = window.GraphicPortfolioStore.createPortfolioStore(manifest.works);
                     window.graphicPortfolioStore = store;
+                    window.graphicPortfolioManager.setStore(store);
                     renderer.render(store.items(), { editing: false });
                     status.hidden = true;
                 } catch (error) {
