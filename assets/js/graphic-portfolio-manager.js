@@ -236,6 +236,8 @@
       removals.clear();
     }
     function closeDialog() {
+      uploadFiles = [];
+      if (nodes.uploadInput) nodes.uploadInput.value = '';
       if (!nodes.dialog) return;
       if (typeof nodes.dialog.close === 'function') nodes.dialog.close();
       else nodes.dialog.hidden = true;
@@ -391,6 +393,14 @@
       nodes.toast.appendChild(undo);
       setHidden(nodes.toast, false);
     }
+    function showSavedToast() {
+      if (!nodes.toast) return;
+      hideToast();
+      const message = doc.createElement('span');
+      setLocalizedText(message, MESSAGES.saved.zh, MESSAGES.saved.en);
+      nodes.toast.appendChild(message);
+      setHidden(nodes.toast, false);
+    }
     function move(id, sourceSection, targetSection, index) {
       const activeStore = getStore();
       if (!activeStore) return;
@@ -451,6 +461,7 @@
         setHidden(nodes.panel, true);
         if (nodes.panel && nodes.panel.classList) nodes.panel.classList.remove('is-active');
         render();
+        showSavedToast();
         refreshDirtyStatus('saved');
         return true;
       } catch (_) {
@@ -480,7 +491,9 @@
       });
       if (win && typeof win.addEventListener === 'function') {
         win.addEventListener('beforeunload', beforeUnload);
-        win.addEventListener('pagehide', releaseAllPending);
+        win.addEventListener('pagehide', function (event) {
+          if (!event || !event.persisted) releaseAllPending();
+        });
         win.addEventListener('unload', releaseAllPending);
       }
     }

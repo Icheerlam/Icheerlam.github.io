@@ -339,8 +339,8 @@ test('manager 保存时关闭上传对话框并清空撤销提示', () => {
   manager.enter();
   assert.equal(manager.save(), true);
   assert.equal(dialog.closed, true);
-  assert.equal(toast.hidden, true);
-  assert.equal(toast.children.length, 0);
+  assert.equal(toast.hidden, false, '保存成功反馈必须位于隐藏管理工具栏之外且保持可见');
+  assert.match(toast.textContent, /导出|export/i);
 });
 
 test('manager 保存后保留仍在渲染中的媒体 Blob，页面关闭时才回收', () => {
@@ -392,7 +392,9 @@ test('manager 保存后保留仍在渲染中的媒体 Blob，页面关闭时才�
   manager.cancel();
   assert.deepEqual(revoked, [], '再次进入并取消编辑也不应回收基线仍引用的媒体 URL');
 
-  listeners.pagehide();
+  listeners.pagehide({ persisted: true });
+  assert.deepEqual(revoked, [], '进入 BFCache 时不得回收预览 URL');
+  listeners.unload();
   assert.deepEqual(revoked, ['blob:media']);
 });
 

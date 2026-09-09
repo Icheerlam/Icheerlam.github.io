@@ -157,6 +157,7 @@
       [['up', -1, '↑', '上移作品', 'Move work up'], ['down', 1, '↓', '下移作品', 'Move work down']].forEach(function (entry) {
         const button = doc.createElement('button');
         button.type = 'button';
+        button.className = 'portfolio-mobile-move';
         button.dataset.action = `move-${entry[0]}`;
         setLocalizedAria(button, entry[3], entry[4]);
         button.textContent = entry[2];
