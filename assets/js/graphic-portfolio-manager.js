@@ -57,9 +57,8 @@
     let editing = false;
     let uploadFiles = [];
     const pendingUrls = new Map();
+    const pendingFiles = new Map();
     const removals = new Map();
-    const schedule = config.setTimeout || (typeof setTimeout !== 'undefined' ? setTimeout : function () { return null; });
-    const unschedule = config.clearTimeout || (typeof clearTimeout !== 'undefined' ? clearTimeout : function () {});
 
     const find = function (names) {
       if (!doc || typeof doc.getElementById !== 'function') return null;
@@ -122,15 +121,20 @@
       pendingUrls.forEach(function (url) { releaseUrl(url); });
       pendingUrls.clear();
       removals.forEach(function (removal) {
-        if (removal.timer) unschedule(removal.timer);
         if (removal.url) releaseUrl(removal.url);
       });
+      pendingFiles.clear();
       removals.clear();
     }
     function closeDialog() {
       if (!nodes.dialog) return;
       if (typeof nodes.dialog.close === 'function') nodes.dialog.close();
       else nodes.dialog.hidden = true;
+    }
+    function hideToast() {
+      if (!nodes.toast) return;
+      while (nodes.toast.firstChild && typeof nodes.toast.removeChild === 'function') nodes.toast.removeChild(nodes.toast.firstChild);
+      setHidden(nodes.toast, true);
     }
     function openDialog() {
       if (!nodes.dialog) return;
@@ -197,10 +201,10 @@
           title: { zh: title.zh, en: title.en },
           order: currentItems.length,
         };
-        Object.defineProperty(work, 'pendingFile', { value: file, enumerable: false, configurable: true });
         try {
           activeStore.add(work);
           pendingUrls.set(id, src);
+          pendingFiles.set(id, file);
         } catch (error) {
           releaseUrl(src);
           errors.push({ name: file.name || '未命名文件', reason: error.message || '上传失败' });
@@ -217,14 +221,10 @@
       if (!activeStore || !confirmAction('确定删除此作品吗？')) return;
       const token = activeStore.remove(id);
       const url = pendingUrls.get(id);
+      const file = pendingFiles.get(id);
       pendingUrls.delete(id);
-      const removal = { id, url, token, timer: null };
-      removal.timer = schedule(function () {
-        if (removals.get(token) === removal) {
-          removals.delete(token);
-          releaseUrl(url);
-        }
-      }, 8000);
+      pendingFiles.delete(id);
+      const removal = { id, url, file, token };
       removals.set(token, removal);
       showUndoToast(removal);
       render();
@@ -242,9 +242,9 @@
       undo.addEventListener('click', function () {
         const activeStore = getStore();
         if (!activeStore || !removals.has(removal.token)) return;
-        if (removal.timer) unschedule(removal.timer);
         activeStore.undo(removal.token);
         if (removal.url) pendingUrls.set(removal.id, removal.url);
+        if (removal.file) pendingFiles.set(removal.id, removal.file);
         removals.delete(removal.token);
         setHidden(nodes.toast, true);
         render();
@@ -276,6 +276,7 @@
       if (activeStore) activeStore.cancel();
       editing = false;
       closeDialog();
+      hideToast();
       setHidden(nodes.panel, true);
       if (nodes.panel && nodes.panel.classList) nodes.panel.classList.remove('is-active');
       render();
@@ -286,10 +287,12 @@
       if (!editing || !activeStore || nodes.save && nodes.save.disabled) return false;
       if (nodes.save) nodes.save.disabled = true;
       try {
-        downloadManifest(activeStore.items(), { document: doc, URL: getUrl(config) });
+        downloadManifest(activeStore.items(), { document: doc, URL: getUrl(config), Blob: config.Blob });
         activeStore.commit();
         releasePending();
         editing = false;
+        closeDialog();
+        hideToast();
         setHidden(nodes.panel, true);
         if (nodes.panel && nodes.panel.classList) nodes.panel.classList.remove('is-active');
         render();
@@ -331,6 +334,7 @@
       openUpload: openDialog,
       handleUpload: addFiles,
       setStore: function (nextStore) { store = nextStore; render(); },
+      getPendingFile: function (id) { return pendingFiles.get(id); },
       isEditing: function () { return editing; },
     };
   }

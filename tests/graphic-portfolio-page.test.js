@@ -236,6 +236,7 @@ test('manager 进入管理模式并可批量添加媒体，保留无效文件提
   ]);
   const renders = [];
   const revoked = [];
+  const scheduleCalls = [];
   const windowRef = {
     confirm: () => true,
     URL: { createObjectURL: () => 'blob:local', revokeObjectURL: (url) => revoked.push(url) },
@@ -247,6 +248,8 @@ test('manager 进入管理模式并可批量添加媒体，保留无效文件提
     window: windowRef,
     store,
     renderer: { render(items, state) { renders.push({ items, state }); } },
+    setTimeout: () => { scheduleCalls.push('unexpected'); return 'timer'; },
+    clearTimeout() {},
   });
   documentRef.getElementById('portfolioManageButton').dispatchEvent({ type: 'click' });
   assert.equal(manager.isEditing(), true);
@@ -254,6 +257,7 @@ test('manager 进入管理模式并可批量添加媒体，保留无效文件提
   documentRef.getElementById('portfolioUploadButton').dispatchEvent({ type: 'click' });
   const input = documentRef.getElementById('portfolioUploadInput');
   input.files = [{ name: 'ok.png', type: 'image/png', size: 1 }, { name: 'bad.exe', type: 'application/x-msdownload', size: 1 }];
+  const validFile = input.files[0];
   documentRef.getElementById('portfolioUploadInput').dispatchEvent({ type: 'change' });
   assert.equal(documentRef.getElementById('portfolioUploadFileList').children.length, 1);
   documentRef.getElementById('portfolioUploadSection').value = '3d';
@@ -263,11 +267,46 @@ test('manager 进入管理模式并可批量添加媒体，保留无效文件提
   assert.match(added.id, /^local-test-id$/);
   assert.equal(added.mediaType, 'image');
   assert.equal(added.title.zh, '<安全文本>');
+  assert.equal(added.pendingFile, undefined, 'store 条目不应依赖 File 对象');
+  assert.equal(manager.getPendingFile(added.id), validFile, 'manager 应保留原始 File 引用');
   assert.equal(documentRef.getElementById('portfolioUploadDialog').hidden, false);
-  documentRef.getElementById('portfolioManageButton').dispatchEvent({ type: 'click' });
+  renders.at(-1).state.onRemove(added.id);
+  assert.equal(scheduleCalls.length, 0, '删除撤销入口不得自动失效');
+  assert.equal(documentRef.getElementById('portfolioToast').hidden, false);
+  manager.cancel();
   assert.equal(manager.isEditing(), false);
+  assert.equal(documentRef.getElementById('portfolioUploadDialog').hidden, true);
+  assert.equal(documentRef.getElementById('portfolioToast').hidden, true);
   assert.deepEqual(revoked, ['blob:local']);
   assert.ok(renders.length >= 2);
+});
+
+test('manager 保存时关闭上传对话框并清空撤销提示', () => {
+  const documentRef = new FakeDocument();
+  ['portfolioManager', 'portfolioSaveButton', 'portfolioCancelButton', 'portfolioUploadDialog', 'portfolioToast']
+    .forEach((id) => documentRef.nodes.set(id, new FakeElement('div')));
+  const dialog = documentRef.getElementById('portfolioUploadDialog');
+  dialog.close = () => { dialog.closed = true; dialog.hidden = true; };
+  const toast = documentRef.getElementById('portfolioToast');
+  toast.hidden = false;
+  toast.appendChild(new FakeElement('button'));
+  const store = require('../assets/js/graphic-portfolio-store.js').createPortfolioStore([]);
+  const windowRef = {
+    URL: { createObjectURL: () => 'blob:manifest', revokeObjectURL() {} },
+    addEventListener() {},
+  };
+  const manager = loadManager().api.createPortfolioManager({
+    document: documentRef,
+    window: windowRef,
+    store,
+    renderer: { render() {} },
+    Blob: class FakeBlob {},
+  });
+  manager.enter();
+  assert.equal(manager.save(), true);
+  assert.equal(dialog.closed, true);
+  assert.equal(toast.hidden, true);
+  assert.equal(toast.children.length, 0);
 });
 
 function loadRenderer() {
