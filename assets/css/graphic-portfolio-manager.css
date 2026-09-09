@@ -1,0 +1,361 @@
+/* Graphic portfolio local-management surface. Behaviour is wired by the manager module. */
+
+[hidden] {
+    display: none !important;
+}
+
+.portfolio-manage-trigger,
+.portfolio-manager-button {
+    appearance: none;
+    border: 1px solid var(--ak-accent-info, #00d8ff);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--ak-accent-info, #00d8ff);
+    cursor: pointer;
+    font: 700 .72rem 'Space Mono', monospace;
+    letter-spacing: .04em;
+    line-height: 1.35;
+    padding: 9px 13px;
+    text-transform: uppercase;
+    transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease, color .2s ease, transform .2s ease;
+}
+
+.portfolio-manage-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 12px auto 0;
+}
+
+.portfolio-manage-trigger::before {
+    content: '/>';
+    color: var(--ak-accent-warn, #f5a623);
+}
+
+.portfolio-manage-trigger:hover,
+.portfolio-manager-button:hover {
+    background: var(--ak-accent-info, #00d8ff);
+    border-color: var(--ak-accent-info, #00d8ff);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--ak-accent-info, #00d8ff) 26%, transparent);
+    color: #000;
+    transform: translateY(-1px);
+}
+
+.portfolio-manager-button-primary {
+    background: var(--ak-accent-info, #00d8ff);
+    color: #000;
+}
+
+.portfolio-manage-trigger:focus-visible,
+.portfolio-manager-button:focus-visible,
+.portfolio-dialog input:focus-visible,
+.portfolio-dialog select:focus-visible,
+.portfolio-dialog [tabindex]:focus-visible {
+    outline: 2px solid var(--ak-accent-warn, #f5a623);
+    outline-offset: 3px;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--ak-accent-warn, #f5a623) 24%, transparent);
+}
+
+.portfolio-manager {
+    width: min(1600px, calc(100% - 10vw));
+    margin: 0 auto 34px;
+    border: 1px solid var(--ak-accent-info, #00d8ff);
+    border-left: 3px solid var(--ak-accent-info, #00d8ff);
+    background: var(--ak-bg-panel, rgba(18, 18, 20, .92));
+    box-shadow: 0 0 24px color-mix(in srgb, var(--ak-accent-info, #00d8ff) 10%, transparent);
+    color: var(--ak-text-main, #fff);
+    position: relative;
+    z-index: 20;
+}
+
+.portfolio-manager.is-active {
+    display: block;
+    animation: portfolio-manager-in .24s ease-out both;
+}
+
+.portfolio-manager-toolbar {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    justify-content: space-between;
+    padding: 13px 16px;
+}
+
+.portfolio-manager-heading {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.portfolio-manager-kicker,
+.portfolio-dialog-code {
+    color: var(--ak-accent-info, #00d8ff);
+    font: 700 .64rem 'Space Mono', monospace;
+    letter-spacing: .08em;
+}
+
+.portfolio-manager-caption {
+    color: var(--ak-text-muted, #7a7a7a);
+    font: .72rem 'Space Mono', monospace;
+}
+
+.portfolio-manager-actions,
+.portfolio-dialog-actions {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.portfolio-manager-status,
+.portfolio-upload-file-list {
+    border-top: 1px dashed var(--ak-border, #2a2a2a);
+    color: var(--ak-text-muted, #7a7a7a);
+    font: .7rem 'Space Mono', monospace;
+    margin: 0;
+    padding: 10px 16px 12px;
+}
+
+.portfolio-empty-state {
+    border: 1px dashed var(--ak-border, #2a2a2a);
+    color: var(--ak-text-muted, #7a7a7a);
+    font: .75rem 'Space Mono', monospace;
+    margin: 0 auto 30px;
+    max-width: 1600px;
+    padding: 22px 5vw;
+    text-align: center;
+}
+
+.portfolio-toast {
+    background: var(--ak-bg-panel, rgba(18, 18, 20, .95));
+    border: 1px solid var(--ak-accent-info, #00d8ff);
+    bottom: 24px;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, .32);
+    color: var(--ak-text-main, #fff);
+    font: .72rem 'Space Mono', monospace;
+    max-width: min(420px, calc(100vw - 32px));
+    padding: 11px 14px;
+    position: fixed;
+    right: 24px;
+    z-index: 2500;
+}
+
+.portfolio-card-controls,
+.portfolio-manage-controls {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+    position: relative;
+    z-index: 12;
+}
+
+.portfolio-card-controls button,
+.portfolio-manage-controls button,
+.portfolio-mobile-move {
+    appearance: none;
+    background: transparent;
+    border: 1px solid var(--ak-border, #2a2a2a);
+    color: var(--ak-text-muted, #7a7a7a);
+    cursor: pointer;
+    font: .65rem 'Space Mono', monospace;
+    min-height: 27px;
+    padding: 4px 8px;
+}
+
+.portfolio-card-controls button:hover,
+.portfolio-manage-controls button:hover,
+.portfolio-mobile-move:hover {
+    border-color: var(--ak-accent-info, #00d8ff);
+    color: var(--ak-accent-info, #00d8ff);
+}
+
+.portfolio-drag-handle {
+    align-items: center;
+    background: var(--ak-bg-panel, rgba(18, 18, 20, .9));
+    border: 1px solid var(--ak-border, #2a2a2a);
+    color: var(--ak-accent-info, #00d8ff);
+    cursor: grab;
+    display: inline-flex;
+    font: 700 .8rem 'Space Mono', monospace;
+    justify-content: center;
+    min-height: 28px;
+    min-width: 28px;
+    padding: 3px 6px;
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    user-select: none;
+    z-index: 15;
+}
+
+.portfolio-drag-handle:active {
+    cursor: grabbing;
+}
+
+.portfolio-mobile-move {
+    display: none;
+}
+
+.portfolio-dialog {
+    background: var(--ak-bg-panel, rgba(18, 18, 20, .98));
+    border: 1px solid var(--ak-accent-info, #00d8ff);
+    border-top: 3px solid var(--ak-accent-info, #00d8ff);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, .6), 0 0 24px color-mix(in srgb, var(--ak-accent-info, #00d8ff) 14%, transparent);
+    color: var(--ak-text-main, #fff);
+    max-height: min(90vh, 760px);
+    max-width: min(620px, calc(100vw - 32px));
+    padding: 0;
+    width: 100%;
+}
+
+.portfolio-dialog::backdrop {
+    background: rgba(0, 0, 0, .76);
+    backdrop-filter: blur(4px);
+}
+
+.portfolio-dialog-form {
+    display: grid;
+    gap: 18px;
+    padding: 22px;
+}
+
+.portfolio-dialog-header {
+    align-items: baseline;
+    border-bottom: 1px dashed var(--ak-border, #2a2a2a);
+    display: flex;
+    gap: 14px;
+    justify-content: space-between;
+    padding-bottom: 12px;
+}
+
+.portfolio-dialog-header h2 {
+    color: var(--ak-accent-warn, #f5a623);
+    font: 700 1rem 'Space Mono', monospace;
+    margin: 0;
+}
+
+.portfolio-dialog-field {
+    display: grid;
+    gap: 7px;
+}
+
+.portfolio-dialog-field-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.portfolio-dialog-field-grid > div {
+    display: grid;
+    gap: 7px;
+}
+
+.portfolio-dialog label {
+    color: var(--ak-text-muted, #7a7a7a);
+    font: .66rem 'Space Mono', monospace;
+}
+
+.portfolio-dialog input,
+.portfolio-dialog select {
+    background: var(--ak-bg-main, #050505);
+    border: 1px solid var(--ak-border, #2a2a2a);
+    border-radius: 2px;
+    color: var(--ak-text-main, #fff);
+    font: .75rem 'Space Mono', monospace;
+    min-height: 38px;
+    padding: 8px 10px;
+    width: 100%;
+}
+
+.portfolio-dialog input[type='file'] {
+    border-style: dashed;
+    cursor: pointer;
+}
+
+.portfolio-dialog input:hover,
+.portfolio-dialog select:hover {
+    border-color: var(--ak-accent-info, #00d8ff);
+}
+
+.portfolio-dialog-actions {
+    border-top: 1px dashed var(--ak-border, #2a2a2a);
+    justify-content: flex-end;
+    padding-top: 16px;
+}
+
+@keyframes portfolio-manager-in {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (pointer: coarse) {
+    .portfolio-drag-handle {
+        display: none !important;
+    }
+
+    .portfolio-mobile-move {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .portfolio-manage-trigger {
+        max-width: calc(100vw - 40px);
+    }
+
+    .portfolio-manager {
+        margin-bottom: 26px;
+        width: calc(100% - 32px);
+    }
+
+    .portfolio-manager-toolbar {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px;
+    }
+
+    .portfolio-manager-actions {
+        width: 100%;
+    }
+
+    .portfolio-manager-button {
+        flex: 1 1 auto;
+        min-height: 40px;
+    }
+
+    .portfolio-manager-status {
+        padding: 10px 12px 12px;
+    }
+
+    .portfolio-dialog-field-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .portfolio-dialog-form {
+        padding: 18px;
+    }
+
+    .portfolio-toast {
+        bottom: 16px;
+        right: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .portfolio-manager,
+    .portfolio-manager.is-active,
+    .portfolio-manage-trigger,
+    .portfolio-manager-button,
+    .portfolio-card-controls button,
+    .portfolio-manage-controls button {
+        animation: none !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}

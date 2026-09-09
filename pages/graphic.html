@@ -105,6 +105,7 @@
         @media (max-width:600px) { .masonry-gallery { column-count:1; } }
     </style>
     <link rel="stylesheet" href="../assets/css/language.css">
+    <link rel="stylesheet" href="../assets/css/graphic-portfolio-manager.css">
 </head>
 <body class="dark-mode">
 
@@ -113,7 +114,7 @@
     <audio id="clickSound" preload="auto"><source src="../assets/audio/鼠标点击.mp3" type="audio/mpeg"></audio>
     <audio id="specialSound" preload="auto"><source src="../assets/audio/点击头像.mp3" type="audio/mpeg"></audio>
 
-    <button id="audioToggle" class="audio-toggle-btn muted interactable">[ AUDIO: OFF ]</button>
+    <button id="audioToggle" class="audio-toggle-btn muted interactable" type="button" aria-label="切换音频 / Toggle audio">[ AUDIO: OFF ]</button>
     <div class="volume-panel" id="volumePanel">
         <div class="vol-header interactable" id="volHeader"><span>AUDIO_MIXER</span><span id="volIcon">[-]</span></div>
         <div class="vol-content" id="volContent">
@@ -134,14 +135,71 @@
                 <a href="vibecoding.html" class="interactable">Vibecoding</a>
                 <a href="data.html" class="interactable">Data Analysis</a>
             </div>
-            <button id="langBtn" class="site-language-toggle interactable" type="button">EN</button>
+            <button id="langBtn" class="site-language-toggle interactable" type="button" aria-label="切换到英文 / Switch to English">EN</button>
             <a href="../index.html" class="nav-home-btn interactable">[ RETURN ]</a>
         </div>
     </nav>
 
     <header class="page-header">
         <h1>[ GRAPHIC / 3D ]</h1>
+        <button id="portfolioManageButton" class="portfolio-manage-trigger interactable" type="button" aria-label="管理作品（本地预览） / Manage portfolio (local preview)" data-aria-label-zh="管理作品（本地预览）" data-aria-label-en="Manage portfolio (local preview)">
+            <span data-lang="zh">管理作品（本地预览）</span><span data-lang="en">Manage portfolio (local preview)</span>
+        </button>
     </header>
+
+    <section id="portfolioManager" class="portfolio-manager" hidden aria-label="作品管理工具 / Portfolio management tools" data-aria-label-zh="作品管理工具" data-aria-label-en="Portfolio management tools">
+        <div class="portfolio-manager-toolbar" role="toolbar" aria-label="作品管理操作 / Portfolio management actions" data-aria-label-zh="作品管理操作" data-aria-label-en="Portfolio management actions">
+            <div class="portfolio-manager-heading">
+                <span class="portfolio-manager-kicker" data-lang-zh="/&gt; 本地预览" data-lang-en="/&gt; LOCAL_PREVIEW">/&gt; 本地预览</span>
+                <span class="portfolio-manager-caption" data-lang-zh="本地预览模式" data-lang-en="Local preview mode">本地预览模式</span>
+            </div>
+            <div class="portfolio-manager-actions">
+                <button id="portfolioUploadButton" class="portfolio-manager-button" type="button" aria-label="上传作品 / Upload works" data-aria-label-zh="上传作品" data-aria-label-en="Upload works"><span data-lang="zh">上传作品</span><span data-lang="en">Upload works</span></button>
+                <button id="portfolioSaveButton" class="portfolio-manager-button portfolio-manager-button-primary" type="button" aria-label="保存作品清单 / Save portfolio manifest" data-aria-label-zh="保存作品清单" data-aria-label-en="Save portfolio manifest"><span data-lang="zh">保存清单</span><span data-lang="en">Save manifest</span></button>
+                <button id="portfolioCancelButton" class="portfolio-manager-button" type="button" aria-label="取消编辑 / Cancel editing" data-aria-label-zh="取消编辑" data-aria-label-en="Cancel editing"><span data-lang="zh">取消</span><span data-lang="en">Cancel</span></button>
+            </div>
+        </div>
+        <p id="portfolioManagerStatus" class="portfolio-manager-status" role="status" aria-live="polite" data-lang-zh="管理模式已就绪，改动只会保存在本地预览。" data-lang-en="Management mode is ready; changes stay in this local preview.">管理模式已就绪，改动只会保存在本地预览。</p>
+    </section>
+
+    <div id="portfolioEmptyState" class="portfolio-empty-state" hidden role="status" aria-live="polite" data-lang-zh="暂无作品" data-lang-en="No works yet">暂无作品</div>
+    <div id="portfolioToast" class="portfolio-toast" hidden role="status" aria-live="polite"></div>
+
+    <dialog id="portfolioUploadDialog" class="portfolio-dialog" role="dialog" aria-modal="true" aria-labelledby="portfolioUploadDialogTitle" aria-label="上传作品 / Upload works" data-aria-label-zh="上传作品" data-aria-label-en="Upload works">
+        <form id="portfolioUploadForm" method="dialog" class="portfolio-dialog-form">
+            <div class="portfolio-dialog-header">
+                <h2 id="portfolioUploadDialogTitle" data-lang-zh="上传作品" data-lang-en="Upload works">上传作品</h2>
+                <span class="portfolio-dialog-code" data-lang-zh="[ 多媒体上传 ]" data-lang-en="[ MULTI_MEDIA ]">[ 多媒体上传 ]</span>
+            </div>
+            <div class="portfolio-dialog-field">
+                <label for="portfolioUploadSection" data-lang-zh="目标区域" data-lang-en="Target section">目标区域</label>
+                <select id="portfolioUploadSection" name="section" required aria-label="目标区域 / Target section">
+                    <option value="graphic" data-lang-zh="平面设计" data-lang-en="Graphic Design">平面设计</option>
+                    <option value="ai-store" data-lang-zh="AI 商店设计" data-lang-en="AI Store Design">AI 商店设计</option>
+                    <option value="3d" data-lang-zh="3D 建模" data-lang-en="3D Modeling">3D 建模</option>
+                </select>
+            </div>
+            <div class="portfolio-dialog-field portfolio-dialog-field-grid">
+                <div>
+                    <label for="portfolioTitleZh" data-lang-zh="中文标题（可选）" data-lang-en="Chinese title (optional)">中文标题（可选）</label>
+                    <input id="portfolioTitleZh" name="titleZh" type="text" maxlength="120" data-placeholder-zh="输入中文标题" data-placeholder-en="Enter Chinese title" placeholder="输入中文标题">
+                </div>
+                <div>
+                    <label for="portfolioTitleEn" data-lang-zh="英文标题（可选）" data-lang-en="English title (optional)">英文标题（可选）</label>
+                    <input id="portfolioTitleEn" name="titleEn" type="text" maxlength="120" data-placeholder-zh="输入英文标题" data-placeholder-en="Enter English title" placeholder="输入英文标题">
+                </div>
+            </div>
+            <div class="portfolio-dialog-field">
+                <label for="portfolioUploadInput" data-lang-zh="选择媒体文件（可多选）" data-lang-en="Choose media files (multiple)">选择媒体文件（可多选）</label>
+                <input id="portfolioUploadInput" name="files" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif,video/webm,video/mp4" aria-label="选择媒体文件（可多选） / Choose media files (multiple)">
+            </div>
+            <p id="portfolioUploadFileList" class="portfolio-upload-file-list" role="status" aria-live="polite"></p>
+            <div class="portfolio-dialog-actions">
+                <button id="portfolioUploadConfirmButton" class="portfolio-manager-button portfolio-manager-button-primary" type="button" value="confirm" aria-label="确认上传 / Confirm upload" data-aria-label-zh="确认上传" data-aria-label-en="Confirm upload"><span data-lang="zh">确认上传</span><span data-lang="en">Confirm upload</span></button>
+                <button id="portfolioUploadCancelButton" class="portfolio-manager-button" type="button" value="cancel" aria-label="取消上传 / Cancel upload" data-aria-label-zh="取消上传" data-aria-label-en="Cancel upload"><span data-lang="zh">取消</span><span data-lang="en">Cancel</span></button>
+            </div>
+        </form>
+    </dialog>
 
     <!-- 三个作品区由 data/graphic-works.json 驱动，保留分区标题以便无脚本时仍可定位。 -->
     <div class="section-divider"><h2 data-lang-zh="平面设计" data-lang-en="Graphic Design"><span data-lang="zh">平面设计</span><span data-lang="en">Graphic Design</span></h2></div>

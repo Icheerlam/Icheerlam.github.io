@@ -28,6 +28,36 @@ test('Graphic 页面加载清单、store、renderer 及共享语言模块', () =
   assert.match(html, /src=["']\.\.\/assets\/js\/language\.js["']/);
 });
 
+test('Graphic 页面提供作品管理入口与隐藏管理容器', () => {
+  const html = readPage();
+  assert.match(html, /<button\b[^>]*id=["']portfolioManageButton["'][^>]*>/);
+  assert.match(html, /<[^>]+\bid=["']portfolioManager["'][^>]*\bhidden(?:\s|=|>)/);
+  assert.match(html, /<input\b[^>]*id=["']portfolioUploadInput["'][^>]*\bmultiple(?:\s|=|>)/);
+  assert.match(html, /<button\b[^>]*id=["']portfolioSaveButton["'][^>]*>/);
+  assert.match(html, /<button\b[^>]*id=["']portfolioCancelButton["'][^>]*>/);
+});
+
+test('Graphic 上传输入限制为受支持的图片与视频格式', () => {
+  const html = readPage();
+  const input = html.match(/<input\b[^>]*id=["']portfolioUploadInput["'][^>]*>/)?.[0] || '';
+  assert.equal(
+    input.match(/\baccept=["']([^"']+)["']/)?.[1],
+    'image/jpeg,image/png,image/webp,image/gif,video/webm,video/mp4',
+  );
+});
+
+test('Graphic 页面引用管理样式且页面按钮具备类型与可读标签', () => {
+  const html = readPage();
+  assert.match(html, /<link\b[^>]*href=["']\.\.\/assets\/css\/graphic-portfolio-manager\.css["']/);
+  const buttons = [...html.matchAll(/<button\b[^>]*>/g)].map((match) => match[0]);
+  assert.ok(buttons.length > 0);
+  for (const button of buttons) {
+    assert.match(button, /\btype=["']button["']/i, `按钮缺少 type="button": ${button}`);
+    const ariaLabel = button.match(/\baria-label=["']([^"']+)["']/i)?.[1] || '';
+    assert.ok(ariaLabel.trim().length >= 2, `按钮缺少可读 aria-label: ${button}`);
+  }
+});
+
 class FakeClassList {
   constructor() { this.values = new Set(); }
   add(...names) { names.forEach((name) => this.values.add(name)); }
