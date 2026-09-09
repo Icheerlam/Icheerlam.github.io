@@ -8,9 +8,9 @@ const { createPortfolioStore } = require('../assets/js/graphic-portfolio-store.j
 
 function initialItems() {
   return [
-    { id: 'a', section: 'graphic', order: 0, title: { zh: '甲', en: 'A' } },
-    { id: 'b', section: 'graphic', order: 1, title: { zh: '乙', en: 'B' } },
-    { id: 'c', section: '3d', order: 0, title: { zh: '丙', en: 'C' } },
+    { ...imageWork('a', 'graphic', 0), title: { zh: '甲', en: 'A' } },
+    { ...imageWork('b', 'graphic', 1), title: { zh: '乙', en: 'B' } },
+    { ...imageWork('c', '3d', 0), title: { zh: '丙', en: 'C' } },
   ];
 }
 
@@ -182,11 +182,42 @@ test('add 校验 ID、section、order 与媒体字段形态', () => {
 
 test('items() 按固定区域顺序及各区 order 返回', () => {
   const store = createPortfolioStore([
-    { id: 'd', section: '3d', order: 0 },
-    { id: 'a2', section: 'graphic', order: 1 },
-    { id: 's', section: 'ai-store', order: 0 },
-    { id: 'a1', section: 'graphic', order: 0 },
+    imageWork('d', '3d', 0),
+    imageWork('a2', 'graphic', 1),
+    imageWork('s', 'ai-store', 0),
+    imageWork('a1', 'graphic', 0),
   ]);
 
   assert.deepEqual(store.items().map(({ id }) => id), ['a1', 'a2', 's', 'd']);
+});
+
+test('初始化入口对每条作品执行完整模型校验', () => {
+  assert.throws(
+    () => createPortfolioStore([{ id: 'INVALID', section: 'graphic', order: 0, mediaType: 'image', src: 'a.jpg' }]),
+    /id/i,
+  );
+  assert.throws(
+    () => createPortfolioStore([{ id: 'missing-src', section: 'graphic', order: 0, mediaType: 'image' }]),
+    /src/i,
+  );
+  assert.throws(
+    () => createPortfolioStore([{ id: 'bad-order', section: 'graphic', order: NaN, mediaType: 'image', src: 'a.jpg' }]),
+    /order/i,
+  );
+});
+
+test('video-group 的每个 source 都必须是非空字符串', () => {
+  const invalidGroup = {
+    id: 'bad-group',
+    section: '3d',
+    order: 0,
+    mediaType: 'video-group',
+    sources: ['valid.mp4', '  '],
+  };
+
+  assert.throws(() => createPortfolioStore([invalidGroup]), /sources/i);
+
+  const store = createPortfolioStore([]);
+  store.begin();
+  assert.throws(() => store.add(invalidGroup), /sources/i);
 });

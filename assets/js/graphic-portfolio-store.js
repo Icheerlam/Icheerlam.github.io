@@ -44,7 +44,7 @@
     return items;
   }
 
-  function validateAddedWork(item) {
+  function validateWork(item) {
     if (!item || typeof item !== 'object') {
       throw new TypeError('作品必须是对象');
     }
@@ -59,7 +59,9 @@
       throw new Error('不支持的 mediaType：' + item.mediaType);
     }
     if (item.mediaType === 'video-group') {
-      if (!Array.isArray(item.sources) || item.sources.length < 2) {
+      if (!Array.isArray(item.sources) || item.sources.length < 2 || item.sources.some(function (source) {
+        return typeof source !== 'string' || source.trim() === '';
+      })) {
         throw new Error('video-group 的 sources 至少需要两个条目');
       }
       if ('src' in item) {
@@ -83,7 +85,7 @@
     const seenIds = new Set();
     let current = clone(initialItems);
     current.forEach(function (item) {
-      validateSection(item.section);
+      validateWork(item);
       if (seenIds.has(item.id)) {
         throw new Error('重复的作品 ID：' + item.id);
       }
@@ -146,7 +148,7 @@
 
       add: function (item) {
         requireDraft();
-        validateAddedWork(item);
+        validateWork(item);
         if (current.some(function (candidate) { return candidate.id === item.id; })) {
           throw new Error('重复的作品 ID：' + item.id);
         }
