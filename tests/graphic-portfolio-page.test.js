@@ -5,9 +5,14 @@ const path = require('node:path');
 const vm = require('node:vm');
 
 const pagePath = path.resolve(__dirname, '../pages/graphic.html');
+const managerCssPath = path.resolve(__dirname, '../assets/css/graphic-portfolio-manager.css');
 
 function readPage() {
   return fs.readFileSync(pagePath, 'utf8');
+}
+
+function readManagerCss() {
+  return fs.readFileSync(managerCssPath, 'utf8');
 }
 
 test('Graphic 页面保留三个作品区域的空数据容器', () => {
@@ -56,6 +61,15 @@ test('Graphic 页面引用管理样式且页面按钮具备类型与可读标签
     const ariaLabel = button.match(/\baria-label=["']([^"']+)["']/i)?.[1] || '';
     assert.ok(ariaLabel.trim().length >= 2, `按钮缺少可读 aria-label: ${button}`);
   }
+});
+
+test('管理样式独立定义媒体错误，并为移动端 toast 预留安全位置', () => {
+  const css = readManagerCss();
+  assert.match(css, /\.media-error\s*\{/);
+  const mobileRules = css.match(/@media\s*\(max-width:\s*768px\)[\s\S]*?(?=\n@media|$)/)?.[0] || '';
+  const toastRules = mobileRules.match(/\.portfolio-toast\s*\{[\s\S]*?\}/)?.[0] || '';
+  assert.match(toastRules, /bottom:\s*(?:84px|[0-9]{2,}px)/);
+  assert.doesNotMatch(toastRules, /bottom:\s*(?:16|20|24)px/);
 });
 
 class FakeClassList {
