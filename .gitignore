@@ -4,6 +4,7 @@
 
 # Git
 .git/
+.worktrees/
 
 # Python cache
 __pycache__/
