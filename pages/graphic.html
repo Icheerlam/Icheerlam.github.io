@@ -60,6 +60,16 @@
         .masonry-item:hover::before { opacity:1; background:var(--ak-accent-info); }
         .masonry-item img { width:100%; display:block; transition:.4s; cursor:zoom-in; }
         .masonry-item:hover img { transform:scale(1.02); }
+        .portfolio-title { margin:6px 2px 0; color:var(--ak-text-main); font:700 .75rem 'Space Mono'; }
+        .video-group-content { display:flex; flex-direction:column; }
+        .video-group-media { display:flex; gap:12px; width:100%; min-height:220px; }
+        .video-group-pane { min-width:0; overflow:hidden; border-radius:2px; }
+        .video-group-pane video { width:100%; height:100%; object-fit:cover; display:block; }
+        .media-error { padding:18px 10px; border:1px dashed var(--ak-accent-warn); color:var(--ak-accent-warn); font:700 .7rem 'Space Mono'; text-align:center; }
+        .portfolio-drag-handle { position:absolute; top:8px; right:8px; color:var(--ak-accent-info); cursor:grab; user-select:none; }
+        .portfolio-manage-controls { display:flex; gap:4px; margin-top:10px; }
+        .portfolio-manage-controls button { padding:2px 6px; background:transparent; color:var(--ak-text-muted); border:1px solid var(--ak-border); cursor:pointer; font: .65rem 'Space Mono'; }
+        .portfolio-manage-controls button:hover { color:var(--ak-accent-info); border-color:var(--ak-accent-info); }
 
         /* ====== 3D · 网格卡片 ====== */
         .gallery-3d { max-width:1400px; margin:0 auto; padding:0 5vw 60px; display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:30px; position:relative; z-index:10; }
@@ -124,6 +134,7 @@
                 <a href="vibecoding.html" class="interactable">Vibecoding</a>
                 <a href="data.html" class="interactable">Data Analysis</a>
             </div>
+            <button id="langBtn" class="site-language-toggle interactable" type="button">EN</button>
             <a href="../index.html" class="nav-home-btn interactable">[ RETURN ]</a>
         </div>
     </nav>
@@ -132,102 +143,23 @@
         <h1>[ GRAPHIC / 3D ]</h1>
     </header>
 
-    <!-- ==================== 板块一：平面设计 ==================== -->
-    <div class="section-divider"><h2>Graphic Design</h2></div>
+    <!-- 三个作品区由 data/graphic-works.json 驱动，保留分区标题以便无脚本时仍可定位。 -->
+    <div class="section-divider"><h2 data-lang-zh="平面设计" data-lang-en="Graphic Design"><span data-lang="zh">平面设计</span><span data-lang="en">Graphic Design</span></h2></div>
+    <main class="masonry-gallery" id="graphicGallery"></main>
 
-    <main class="masonry-gallery" id="graphicGallery">
-        <div class="masonry-item interactable" style="animation-delay:0.03s"><img src="../works/graphic/11.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.06s"><img src="../works/graphic/21.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.09s"><img src="../works/graphic/31.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.12s"><img src="../works/graphic/41.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.15s"><img src="../works/graphic/51.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.18s"><img src="../works/graphic/61.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.21s"><img src="../works/graphic/71.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.24s"><img src="../works/graphic/81.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.27s"><img src="../works/graphic/91.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.30s"><img src="../works/graphic/101.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.33s"><img src="../works/graphic/111.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.36s"><img src="../works/graphic/121.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.39s"><img src="../works/graphic/131.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.42s"><img src="../works/graphic/141.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.45s"><img src="../works/graphic/151.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.48s"><img src="../works/graphic/161.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.51s"><img src="../works/graphic/171.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.54s"><img src="../works/graphic/181.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.57s"><img src="../works/graphic/191.jpg" loading="lazy" class="img-clicker"></div>
+    <div class="section-divider"><h2 data-lang-zh="AI 商店设计" data-lang-en="AI Store Design"><span data-lang="zh">AI 商店设计</span><span data-lang="en">AI Store Design</span></h2></div>
+    <section class="masonry-gallery" id="aiStoreGallery"></section>
 
-        <div class="masonry-item interactable" style="animation-delay:0.60s">
-            <div style="display:flex;flex-direction:column;">
-                <div style="color:#48E5B6;font-family:'PingFang SC','Microsoft YaHei',sans-serif;font-weight:900;font-size:.85rem;margin-bottom:12px;letter-spacing:1px;line-height:1;text-transform:none;text-shadow:none;" data-lang="zh">企业活动gif</div><span data-lang="en" style="display:block;color:#48E5B6;font-family:'Space Mono',sans-serif;font-weight:900;font-size:.85rem;margin-bottom:12px;letter-spacing:1px;line-height:1;text-transform:none;text-shadow:none;">Corporate Event GIFs</span>
-                <div style="display:flex;gap:12px;width:100%;height:220px;">
-                    <div style="flex:1.2;overflow:hidden;border-radius:2px;"><video src="../works/graphic/1024_ae_1.webm" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;" class="img-clicker"></video></div>
-                    <div style="flex:1;overflow:hidden;border-radius:2px;"><video src="../works/graphic/M星巡游_5.webm" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:cover;display:block;" class="img-clicker"></video></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="masonry-item interactable" style="animation-delay:0.63s"><img src="../works/graphic/201.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.66s"><img src="../works/graphic/211.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.69s"><img src="../works/graphic/emo1.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.72s"><img src="../works/graphic/emo2.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.75s"><img src="../works/graphic/emo3.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.78s"><img src="../works/graphic/emo4.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.81s"><img src="../works/graphic/emo5.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.84s"><img src="../works/graphic/311.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.87s"><img src="../works/graphic/321.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.90s"><img src="../works/graphic/331.jpg" loading="lazy" class="img-clicker"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.96s"><img src="../works/graphic/351.jpg" loading="lazy" class="img-clicker"></div>
-    </main>
-
-    <!-- ==================== AI Store Design ==================== -->
-    <div class="section-divider"><h2>AI Store Design</h2></div>
-
-    <section class="masonry-gallery" id="aiStoreGallery">
-        <div class="masonry-item interactable" style="animation-delay:0.03s"><img src="../works/graphic/ai-stores/ai-store-01.png" loading="lazy" class="img-clicker" alt="AI store design 01"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.06s"><img src="../works/graphic/ai-stores/ai-store-02.png" loading="lazy" class="img-clicker" alt="AI store design 02"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.09s"><img src="../works/graphic/ai-stores/ai-store-03.png" loading="lazy" class="img-clicker" alt="AI store design 03"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.12s"><img src="../works/graphic/ai-stores/ai-store-04.jpg" loading="lazy" class="img-clicker" alt="AI store design 04"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.15s"><img src="../works/graphic/ai-stores/ai-store-05.jpg" loading="lazy" class="img-clicker" alt="AI store design 05"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.18s"><img src="../works/graphic/ai-stores/ai-store-06.png" loading="lazy" class="img-clicker" alt="AI store design 06"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.21s"><img src="../works/graphic/ai-stores/ai-store-07.png" loading="lazy" class="img-clicker" alt="AI store design 07"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.24s"><img src="../works/graphic/ai-stores/ai-store-08.png" loading="lazy" class="img-clicker" alt="AI store design 08"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.27s"><img src="../works/graphic/ai-stores/ai-store-09.png" loading="lazy" class="img-clicker" alt="AI store design 09"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.30s"><img src="../works/graphic/ai-stores/ai-store-10.jpg" loading="lazy" class="img-clicker" alt="AI store design 10"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.33s"><img src="../works/graphic/ai-stores/ai-store-11.jpg" loading="lazy" class="img-clicker" alt="AI store design 11"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.36s"><img src="../works/graphic/ai-stores/ai-store-12.jpg" loading="lazy" class="img-clicker" alt="AI store design 12"></div>
-        <div class="masonry-item interactable" style="animation-delay:0.39s"><img src="../works/graphic/ai-stores/ai-store-13.jpg" loading="lazy" class="img-clicker" alt="AI store design 13"></div>
-    </section>
-
-    <!-- ==================== 板块二：3D 建模 ==================== -->
-    <div class="section-divider"><h2>3D Modeling</h2></div>
-
-    <div class="gallery-3d">
-        <div class="card-3d" style="--n:1"><div class="img-box"><img src="../works/3d/gun 1.png" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">手枪模型</span><span data-lang="en">pistol model</span></div></div>
-        <div class="card-3d" style="--n:2"><div class="img-box"><img src="../works/3d/gun 2.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">手枪贴图</span><span data-lang="en">Pistol texture</span></div></div>
-        <div class="card-3d" style="--n:3"><div class="img-box"><img src="../works/3d/grenade.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">金克丝手雷</span><span data-lang="en">Jinx Grenade</span></div></div>
-        <div class="card-3d" style="--n:4"><div class="img-box"><img src="../works/3d/radio.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">高模收音机</span><span data-lang="en">high model radio</span></div></div>
-        <div class="card-3d" style="--n:5"><div class="img-box"><img src="../works/3d/头骨 1.png" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">头骨雕刻</span><span data-lang="en">skull carving</span></div></div>
-        <div class="card-3d" style="--n:6"><div class="img-box"><img src="../works/3d/头骨 2.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">头骨侧视图</span><span data-lang="en">Skull side view</span></div></div>
-        <div class="card-3d" style="--n:7"><div class="img-box"><img src="../works/3d/nomad1.png" loading="lazy" class="img-clicker"></div><div class="c3d-title">Nomad Sculpt 1</div></div>
-        <div class="card-3d" style="--n:8"><div class="img-box"><img src="../works/3d/nomad2.png" loading="lazy" class="img-clicker"></div><div class="c3d-title">Nomad Sculpt 2</div></div>
-        <div class="card-3d" style="--n:9"><div class="img-box"><img src="../works/3d/小鹿.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">Nomad · 小鹿</span><span data-lang="en">Nomad · 小鹿</span></div></div>
-        <div class="card-3d" style="--n:10"><div class="img-box"><img src="../works/3d/ed 1.png" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">角色建模 1</span><span data-lang="en">Role Modeling 1</span></div></div>
-        <div class="card-3d" style="--n:11"><div class="img-box"><img src="../works/3d/ed 2.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">角色建模 1 渲染</span><span data-lang="en">Character Modeling 1 Rendering</span></div></div>
-        <div class="card-3d" style="--n:12"><div class="img-box"><img src="../works/3d/rt 1.png" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">机甲高达</span><span data-lang="en">Mecha Gundam</span></div></div>
-        <div class="card-3d" style="--n:13"><div class="img-box"><img src="../works/3d/rt 2.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">机甲高达渲染</span><span data-lang="en">Mecha Gundam rendering</span></div></div>
-        <div class="card-3d" style="--n:14"><div class="img-box"><img src="../works/3d/axe.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">战斧</span><span data-lang="en">tomahawk</span></div></div>
-        <div class="card-3d" style="--n:15"><div class="img-box"><img src="../works/3d/fe 1.png" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">角色建模 2</span><span data-lang="en">Role Modeling 2</span></div></div>
-        <div class="card-3d" style="--n:16"><div class="img-box"><img src="../works/3d/fe 2.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">角色白模渲染</span><span data-lang="en">Character white model rendering</span></div></div>
-        <div class="card-3d" style="--n:17"><div class="img-box"><img src="../works/3d/house 1.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">房子低模</span><span data-lang="en">house low model</span></div></div>
-        <div class="card-3d" style="--n:18"><div class="img-box"><img src="../works/3d/house2.jpg" loading="lazy" class="img-clicker"></div><div class="c3d-title"><span data-lang="zh">房子烘焙贴图</span><span data-lang="en">House baking textures</span></div></div>
-        <div class="card-3d"><div class="img-box"><video controls loop autoplay muted playsinline style="width:100%;border-radius:2px;"><source src="../works/3d/house.mp4" type="video/mp4"></video></div><div class="c3d-title"><span data-lang="zh">场景动态演示</span><span data-lang="en">Scene dynamic demonstration</span></div></div>
-    </div>
+    <div class="section-divider"><h2 data-lang-zh="3D 建模" data-lang-en="3D Modeling"><span data-lang="zh">3D 建模</span><span data-lang="en">3D Modeling</span></h2></div>
+    <div class="gallery-3d" id="modelingGallery"></div>
 
     <div class="back-nav"><a href="../index.html" class="btn-back interactable">[ RETURN ]</a></div>
     <footer><p>> Archive // System.2026</p></footer>
 
     <div class="lightbox" id="lightbox"><span class="lightbox-close interactable">[ X ]</span><img src="" id="lightbox-img"></div>
 
+    <script src="../assets/js/graphic-portfolio-store.js"></script>
+    <script src="../assets/js/graphic-portfolio-renderer.js"></script>
     <script>
         /* RETURN 按钮环境适配：服务器跳转服务器主页，本地跳转 index.html */
         (function(){
@@ -283,19 +215,11 @@
                 audio.play().catch(() => {});
             }
 
-            document.querySelectorAll('.img-clicker').forEach(img => {
-                img.onclick = () => {
-                    toggleLB(img.src || img.querySelector('source')?.src || '');
-                    if(window.isAudioEnabled) {
-                        window.clickSound.currentTime = 0;
-                        window.clickSound.volume = window.clickVol.value;
-                        window.clickSound.play().catch(()=>{});
-                    }
-                };
-            });
-
-            const interactables = document.querySelectorAll('.interactable, button, a, .masonry-item, .card-3d, .lightbox-close');
-            interactables.forEach(el => {
+            function bindInteractables() {
+              const interactables = document.querySelectorAll('.interactable, button, a, .masonry-item, .card-3d, .lightbox-close');
+              interactables.forEach(el => {
+                if (el.dataset.soundBound === 'true') return;
+                el.dataset.soundBound = 'true';
                 el.addEventListener('mouseenter', () => playSound(hoverSound, hoverVol));
                 if (el.tagName.toLowerCase() === 'button' || el.tagName.toLowerCase() === 'a' || el.classList.contains('lightbox-close')) {
                     if(!el.classList.contains('vol-slider') && el.id !== 'volHeader') {
@@ -306,32 +230,53 @@
                         }
                     }
                 }
-            });
+              });
+            }
+            bindInteractables();
 
-            /* ============ 语言切换 ============ */
-            const langBtn = document.getElementById('langBtn');
-            const LANG_KEY = 'site_lang_pref';
-            function setLang(lang) {
-                if (lang === 'en') {
-                    document.body.classList.add('lang-en');
-                    if (langBtn) langBtn.textContent = '中';
-                } else {
-                    document.body.classList.remove('lang-en');
-                    if (langBtn) langBtn.textContent = 'EN';
+            document.addEventListener('portfolio:rendered', bindInteractables);
+
+            const status = document.createElement('p');
+            status.className = 'portfolio-load-status';
+            status.hidden = true;
+            status.style.cssText = 'max-width:1600px;margin:0 auto 30px;padding:12px 5vw;color:var(--ak-accent-warn);font-family:"Space Mono",monospace;';
+            document.querySelector('.page-header').after(status);
+
+            function showLoadError(error) {
+                status.hidden = false;
+                status.setAttribute('role', 'status');
+                status.textContent = '作品清单暂时无法加载 / Portfolio manifest unavailable';
+                status.title = error && error.message ? error.message : '';
+            }
+
+            const renderer = window.GraphicPortfolioRenderer.createPortfolioRenderer({
+                document,
+                getLanguage: () => document.documentElement.getAttribute('data-current-lang') || 'zh',
+                onOpenMedia: ({ src }) => {
+                    toggleLB(src);
+                    if (window.isAudioEnabled && window.clickSound) {
+                        window.clickSound.currentTime = 0;
+                        window.clickSound.volume = window.clickVol.value;
+                        window.clickSound.play().catch(() => {});
+                    }
+                },
+            });
+            window.graphicPortfolioRenderer = renderer;
+
+            async function loadPortfolio() {
+                try {
+                    const response = await fetch('../data/graphic-works.json');
+                    if (!response || (typeof response.ok === 'boolean' && !response.ok)) throw new Error(`HTTP ${response && response.status}`);
+                    const manifest = await response.json();
+                    const store = window.GraphicPortfolioStore.createPortfolioStore(manifest.works);
+                    window.graphicPortfolioStore = store;
+                    renderer.render(store.items(), { editing: false });
+                    status.hidden = true;
+                } catch (error) {
+                    showLoadError(error);
                 }
-                localStorage.setItem(LANG_KEY, lang);
-                document.querySelectorAll('[data-lang-zh][data-lang-en]').forEach(el => {
-                    el.textContent = el.getAttribute('data-lang-' + lang);
-                });
             }
-            if (langBtn) {
-                const saved = localStorage.getItem(LANG_KEY);
-                setLang(saved || 'zh');
-                langBtn.addEventListener('click', () => {
-                    const next = document.body.classList.contains('lang-en') ? 'zh' : 'en';
-                    setLang(next);
-                });
-            }
+            loadPortfolio();
         });
     </script>
     <script src="../assets/js/language.js"></script>
