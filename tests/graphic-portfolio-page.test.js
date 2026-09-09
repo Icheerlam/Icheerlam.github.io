@@ -241,7 +241,11 @@ class FakeDocument extends FakeElement {
   }
   createElement(tagName) { return new FakeElement(tagName); }
   getElementById(id) { return this.nodes.get(id) || null; }
-  dispatchEvent(event) { this.eventLog.push(event); }
+  dispatchEvent(event) {
+    this.eventLog.push(event);
+    event.target = event.target || this;
+    for (const listener of this.listeners[event.type] || []) listener.call(this, event);
+  }
 }
 
 test('manager 进入管理模式并可批量添加媒体，保留无效文件提示', () => {
@@ -532,6 +536,34 @@ test('manager 同区移动后更新 dirty 状态，并为英文确认与状态�
   assert.match(status.textContent, /unsaved/i);
   state.onRemove('first-item');
   assert.match(confirmations[0], /Remove this work/i);
+});
+
+test('manager 通过共享语言按钮点击委托异步重渲染，不依赖旧 langBtn', () => {
+  const documentRef = new FakeDocument();
+  const store = require('../assets/js/graphic-portfolio-store.js').createPortfolioStore([
+    { id: 'language-item', section: 'graphic', order: 0, mediaType: 'image', src: 'item.jpg', title: { zh: '中文', en: 'English' } },
+  ]);
+  const scheduled = [];
+  let renderCount = 0;
+  const manager = loadManager().api.createPortfolioManager({
+    document: documentRef,
+    window: { addEventListener() {} },
+    store,
+    renderer: { render() { renderCount += 1; } },
+    setTimeout(callback) { scheduled.push(callback); },
+  });
+  assert.equal(documentRef.getElementById('langBtn'), null);
+  manager.enter();
+  const initialCount = renderCount;
+  const toggle = new FakeElement('button');
+  toggle.className = 'site-language-toggle';
+  documentRef.documentElement.setAttribute('data-current-lang', 'en');
+  documentRef.body.classList.add('lang-en');
+  documentRef.dispatchEvent({ type: 'click', target: toggle });
+  assert.equal(renderCount, initialCount, '语言按钮点击应在异步调度后重渲染');
+  assert.equal(scheduled.length, 1);
+  scheduled[0]();
+  assert.equal(renderCount, initialCount + 1);
 });
 
 test('普通瀑布流单视频自适应容器且窄屏不溢出', () => {

@@ -148,7 +148,6 @@
       empty: find(['portfolioEmptyState']),
       toast: find(['portfolioToast']),
       fileList: find(['portfolioUploadFileList']),
-      language: find(['langBtn']),
     };
 
     function getLanguage() {
@@ -484,10 +483,21 @@
       if (nodes.uploadCancel) nodes.uploadCancel.addEventListener('click', closeDialog);
       if (nodes.save) nodes.save.addEventListener('click', save);
       if (nodes.cancel) nodes.cancel.addEventListener('click', cancel);
-      if (nodes.language) nodes.language.addEventListener('click', function () {
+      function scheduleLanguageRender() {
         const schedule = config.setTimeout || (win && win.setTimeout) || (typeof setTimeout !== 'undefined' ? setTimeout : null);
         if (schedule) schedule(function () { render(); }, 0);
         else render();
+      }
+      if (doc && typeof doc.addEventListener === 'function') doc.addEventListener('click', function (event) {
+        const target = event && event.target;
+        let toggle = false;
+        if (target && typeof target.closest === 'function') {
+          toggle = Boolean(target.closest('.site-language-toggle'));
+        } else if (target) {
+          toggle = (typeof target.matches === 'function' && target.matches('.site-language-toggle'))
+            || Boolean(target.classList && target.classList.contains('site-language-toggle'));
+        }
+        if (toggle) scheduleLanguageRender();
       });
       if (win && typeof win.addEventListener === 'function') {
         win.addEventListener('beforeunload', beforeUnload);
