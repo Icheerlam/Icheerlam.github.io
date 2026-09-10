@@ -445,6 +445,39 @@
       "order": 7
     },
     {
+      "id": "local-cd74f469-f2cf-4d9b-a81b-0e7ff55dae96",
+      "section": "ai-store",
+      "mediaType": "image",
+      "src": "../assets/portfolio-uploads/local-cd74f469-f2cf-4d9b-a81b-0e7ff55dae96--.png",
+      "title": {
+        "zh": "",
+        "en": ""
+      },
+      "order": 8
+    },
+    {
+      "id": "local-7b0cb811-df12-4abf-a345-cd3189ec4f44",
+      "section": "ai-store",
+      "mediaType": "image",
+      "src": "../assets/portfolio-uploads/local-7b0cb811-df12-4abf-a345-cd3189ec4f44--.png",
+      "title": {
+        "zh": "",
+        "en": ""
+      },
+      "order": 9
+    },
+    {
+      "id": "local-51c41b80-1978-4213-85e3-a100fc460a89",
+      "section": "ai-store",
+      "mediaType": "image",
+      "src": "../assets/portfolio-uploads/local-51c41b80-1978-4213-85e3-a100fc460a89--.png",
+      "title": {
+        "zh": "",
+        "en": ""
+      },
+      "order": 10
+    },
+    {
       "id": "managed-local-1ccaef63-917c-4210-b251-d012e6be1b92-suppermoment",
       "section": "ai-store",
       "mediaType": "image",
@@ -453,7 +486,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 8
+      "order": 11
     },
     {
       "id": "local-54f511d7-8980-4fb5-8a57-16431ea73dbf",
@@ -464,7 +497,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 9
+      "order": 12
     },
     {
       "id": "local-14d82882-c0e2-4472-bc08-4da6c96daed2",
@@ -475,7 +508,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 10
+      "order": 13
     },
     {
       "id": "3d-pistol-model",

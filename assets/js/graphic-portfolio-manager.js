@@ -679,6 +679,12 @@
     function refreshRemoteAccess() {
       const origin = remoteApiOrigin(win);
       const fetchFn = (win && win.fetch) || (typeof fetch === 'function' ? fetch : null);
+      const localPreview = win && win.location && ['127.0.0.1', 'localhost'].includes(win.location.hostname);
+      if (localPreview) {
+        remoteAuthorized = true;
+        if (nodes.manage) nodes.manage.hidden = false;
+        return;
+      }
       if (!origin || !fetchFn) return;
       fetchFn(origin + '/api/session', { credentials: 'include', headers: remoteAuthHeaders(win) }).then(function (response) {
         return response && response.ok ? response.json() : { authorized: false };

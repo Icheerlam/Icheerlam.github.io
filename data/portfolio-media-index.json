@@ -22,6 +22,21 @@
       "mediaType": "image"
     },
     {
+      "path": "assets/portfolio-uploads/local-51c41b80-1978-4213-85e3-a100fc460a89--.png",
+      "name": "local-51c41b80-1978-4213-85e3-a100fc460a89--.png",
+      "mediaType": "image"
+    },
+    {
+      "path": "assets/portfolio-uploads/local-7b0cb811-df12-4abf-a345-cd3189ec4f44--.png",
+      "name": "local-7b0cb811-df12-4abf-a345-cd3189ec4f44--.png",
+      "mediaType": "image"
+    },
+    {
+      "path": "assets/portfolio-uploads/local-cd74f469-f2cf-4d9b-a81b-0e7ff55dae96--.png",
+      "name": "local-cd74f469-f2cf-4d9b-a81b-0e7ff55dae96--.png",
+      "mediaType": "image"
+    },
+    {
       "path": "works/3d/axe.jpg",
       "name": "axe.jpg",
       "mediaType": "image"
@@ -292,11 +307,6 @@
       "mediaType": "image"
     },
     {
-      "path": "works/graphic/M星巡游_5.webm",
-      "name": "M星巡游_5.webm",
-      "mediaType": "video"
-    },
-    {
       "path": "works/graphic/ai-stores/ai-store-01.png",
       "name": "ai-store-01.png",
       "mediaType": "image"
@@ -385,6 +395,11 @@
       "path": "works/graphic/emo5.jpg",
       "name": "emo5.jpg",
       "mediaType": "image"
+    },
+    {
+      "path": "works/graphic/M星巡游_5.webm",
+      "name": "M星巡游_5.webm",
+      "mediaType": "video"
     }
   ]
 }
