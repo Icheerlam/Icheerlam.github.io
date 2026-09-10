@@ -277,6 +277,11 @@
       "mediaType": "image"
     },
     {
+      "path": "works/graphic/M星巡游_5.webm",
+      "name": "M星巡游_5.webm",
+      "mediaType": "video"
+    },
+    {
       "path": "works/graphic/ai-stores/ai-store-01.png",
       "name": "ai-store-01.png",
       "mediaType": "image"
@@ -365,11 +370,6 @@
       "path": "works/graphic/emo5.jpg",
       "name": "emo5.jpg",
       "mediaType": "image"
-    },
-    {
-      "path": "works/graphic/M星巡游_5.webm",
-      "name": "M星巡游_5.webm",
-      "mediaType": "video"
     }
   ]
 }
