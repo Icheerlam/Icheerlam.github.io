@@ -346,6 +346,17 @@
       "order": 30
     },
     {
+      "id": "local-3eb0b0b8-452d-49b7-b303-2e9be34289db",
+      "section": "graphic",
+      "mediaType": "image",
+      "src": "../assets/portfolio-uploads/local-3eb0b0b8-452d-49b7-b303-2e9be34289db--.png",
+      "title": {
+        "zh": "",
+        "en": ""
+      },
+      "order": 31
+    },
+    {
       "id": "ai-store-01",
       "section": "ai-store",
       "mediaType": "image",
@@ -432,6 +443,39 @@
         "en": ""
       },
       "order": 7
+    },
+    {
+      "id": "managed-local-1ccaef63-917c-4210-b251-d012e6be1b92-suppermoment",
+      "section": "ai-store",
+      "mediaType": "image",
+      "src": "../assets/portfolio-uploads/local-1ccaef63-917c-4210-b251-d012e6be1b92-suppermoment-.png",
+      "title": {
+        "zh": "",
+        "en": ""
+      },
+      "order": 8
+    },
+    {
+      "id": "local-54f511d7-8980-4fb5-8a57-16431ea73dbf",
+      "section": "ai-store",
+      "mediaType": "image",
+      "src": "../assets/portfolio-uploads/local-54f511d7-8980-4fb5-8a57-16431ea73dbf--.png",
+      "title": {
+        "zh": "",
+        "en": ""
+      },
+      "order": 9
+    },
+    {
+      "id": "local-14d82882-c0e2-4472-bc08-4da6c96daed2",
+      "section": "ai-store",
+      "mediaType": "image",
+      "src": "../assets/portfolio-uploads/local-14d82882-c0e2-4472-bc08-4da6c96daed2--.png",
+      "title": {
+        "zh": "",
+        "en": ""
+      },
+      "order": 10
     },
     {
       "id": "3d-pistol-model",
@@ -641,17 +685,6 @@
         "en": "Scene dynamic demonstration"
       },
       "order": 18
-    },
-    {
-      "id": "managed-local-1ccaef63-917c-4210-b251-d012e6be1b92-suppermoment",
-      "section": "ai-store",
-      "mediaType": "image",
-      "src": "../assets/portfolio-uploads/local-1ccaef63-917c-4210-b251-d012e6be1b92-suppermoment-.png",
-      "title": {
-        "zh": "",
-        "en": ""
-      },
-      "order": 8
     }
   ]
 }
