@@ -7,6 +7,7 @@
   };
   const sectionLabels = { graphic: '平面设计', 'ai-store': 'AI 商店', '3d': '3D' };
   const DRAFT_KEY = 'graphic-portfolio-draft-v1';
+  const isLocalPreview = () => /^(127\.0\.0\.1|localhost)$/.test(window.location.hostname);
 
   function apiOrigin() {
     return String(window.PORTFOLIO_ADMIN_CONFIG && window.PORTFOLIO_ADMIN_CONFIG.apiOrigin || '').replace(/\/$/, '');
@@ -78,9 +79,10 @@
     let indexData;
     let manifestData;
     let directoryHandle;
+    let saving = false;
 
     async function authorizeRemoteAdmin() {
-      if (/^(127\.0\.0\.1|localhost)$/.test(window.location.hostname) || !apiOrigin()) return true;
+      if (isLocalPreview() || !apiOrigin()) return true;
       try {
         const response = await fetch(apiUrl('/api/session'), { credentials: 'include', headers: authHeaders() });
         if (response.ok && (await response.json()).authorized) return true;
@@ -115,7 +117,7 @@
     }
 
     async function writeManifest(nextItems) {
-      if (/^(127\.0\.0\.1|localhost)$/.test(window.location.hostname)) {
+      if (isLocalPreview()) {
         try {
           const response = await fetch('/api/portfolio/save', {
             method: 'POST',
@@ -164,6 +166,7 @@
     }
 
     async function updateVisibility(item, action, section) {
+      if (saving) return;
       if (action === 'remove' && isVideoGroupMember(item)) {
         text(status, '视频组请在主作品页面中管理，以避免误删同组视频。');
         return;
@@ -180,20 +183,26 @@
         text(status, error.message || '无法更新展示状态。');
         return;
       }
-      const savedItems = await writeManifest(nextItems);
-      if (!savedItems) return;
-      manifestData = { version: 1, items: savedItems };
+      saving = true;
+      text(status, '正在保存…');
       try {
-        window.localStorage.setItem(DRAFT_KEY, JSON.stringify(manifestData));
-      } catch (_) {}
-      rebuildStore();
-      render();
-      text(status, action === 'add' ? '已加入展示并保存到本地项目。' : '已移出展示；原始媒体文件仍保留。');
+        const savedItems = await writeManifest(nextItems);
+        if (!savedItems) return;
+        manifestData = { version: 1, items: savedItems };
+        try { window.localStorage.setItem(DRAFT_KEY, JSON.stringify(manifestData)); } catch (_) {}
+        rebuildStore();
+        render();
+        text(status, action === 'add'
+          ? (apiOrigin() ? '已加入展示并保存到 GitHub。' : '已加入展示并保存到本地项目。')
+          : '已移出展示；原始媒体文件仍保留。');
+      } finally {
+        saving = false;
+      }
     }
 
     async function deleteMedia(item) {
       if (!window.confirm('确定要彻底删除“' + item.name + '”吗？\n文件会移到 Windows 回收站，并从网站展示中移除。')) return;
-      if (!/^(127\.0\.0\.1|localhost)$/.test(window.location.hostname) && !apiOrigin()) {
+      if (!isLocalPreview() && !apiOrigin()) {
         text(status, '请先配置安全管理服务后再删除。');
         return;
       }
