@@ -328,29 +328,14 @@
                 renderer,
                 getStore: () => window.graphicPortfolioStore,
             });
-            const draftKey = 'graphic-portfolio-draft-v1';
-            const hasTemporaryMedia = item => String(item && item.src || '').startsWith('blob:');
-            document.addEventListener('portfolio:rendered', () => {
-                if (!window.graphicPortfolioManager.isEditing() || !window.graphicPortfolioStore) return;
-                try {
-                    const items = window.graphicPortfolioStore.items().filter(item => !hasTemporaryMedia(item));
-                    localStorage.setItem(draftKey, JSON.stringify({ items }));
-                } catch (_) {}
-            });
-
             async function loadPortfolio() {
                 try {
                     const response = await fetch('../data/graphic-works.json');
                     if (!response || (typeof response.ok === 'boolean' && !response.ok)) throw new Error(`HTTP ${response && response.status}`);
                     const manifest = await response.json();
-                    let items = manifest.items;
-                    try {
-                        const draft = JSON.parse(localStorage.getItem(draftKey) || 'null');
-                        if (Array.isArray(draft && draft.items)) {
-                            items = draft.items.filter(item => !hasTemporaryMedia(item));
-                            localStorage.setItem(draftKey, JSON.stringify({ items }));
-                        }
-                    } catch (_) {}
+                    // 保存完成后以项目清单为唯一来源，避免旧浏览器草稿覆盖新上传作品。
+                    try { localStorage.removeItem('graphic-portfolio-draft-v1'); } catch (_) {}
+                    const items = manifest.items;
                     const store = window.GraphicPortfolioStore.createPortfolioStore(items);
                     window.graphicPortfolioStore = store;
                     window.graphicPortfolioManager.setStore(store);

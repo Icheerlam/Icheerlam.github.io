@@ -40,11 +40,12 @@ test('Graphic 页面加载清单、store、renderer 及共享语言模块', () =
   assert.doesNotMatch(html, /setStore\(store\);\s*renderer\.render/);
 });
 
-test('Graphic 页面会优先恢复浏览器本地保存的作品草稿', () => {
+test('Graphic 页面以服务器作品清单为准，并清理过期浏览器草稿', () => {
   const html = readPage();
   assert.match(html, /graphic-portfolio-draft-v1/);
-  assert.match(html, /localStorage\.getItem/);
-  assert.match(html, /startsWith\(['"]blob:['"]\)/);
+  assert.match(html, /localStorage\.removeItem/);
+  assert.match(html, /项目清单为唯一来源/);
+  assert.doesNotMatch(html, /localStorage\.getItem\(draftKey\)/);
 });
 
 function loadManager(overrides) {
