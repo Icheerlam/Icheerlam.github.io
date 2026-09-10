@@ -13,7 +13,7 @@
     return String(window.PORTFOLIO_ADMIN_CONFIG && window.PORTFOLIO_ADMIN_CONFIG.apiOrigin || '').replace(/\/$/, '');
   }
 
-  function apiUrl(path) { return apiOrigin() + path; }
+  function apiUrl(path) { return isLocalPreview() ? path : apiOrigin() + path; }
   function authHeaders() { return window.PortfolioAdminAuth ? window.PortfolioAdminAuth.headers() : {}; }
 
   function assetUrl(mediaPath) {
