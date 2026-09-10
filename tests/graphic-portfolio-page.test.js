@@ -27,17 +27,24 @@ test('Graphic 页面加载清单、store、renderer 及共享语言模块', () =
   const html = readPage();
   assert.match(html, /fetch\(['"]\.\.\/data\/graphic-works\.json['"]\)/);
   assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-store\.js["']/);
-  assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-renderer\.js["']/);
-  assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-manager\.js["']/);
+  assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-renderer\.js\?v=\d+["']/);
+  assert.match(html, /src=["']\.\.\/assets\/js\/graphic-portfolio-manager\.js\?v=\d+["']/);
   assert.match(html, /id=["']lightbox["']/);
   assert.match(html, /href=["']\.\.\/assets\/css\/language\.css["']/);
   assert.match(html, /src=["']\.\.\/assets\/js\/language\.js["']/);
   assert.doesNotMatch(html, /id=["']langBtn["']/);
   assert.match(html, /src=["']\.\.\/assets\/js\/language\.js["']/);
-  assert.match(html, /createPortfolioStore\(manifest\.items\)/);
+  assert.match(html, /createPortfolioStore\(items\)/);
   assert.doesNotMatch(html, /createPortfolioStore\(manifest\.works\)/);
   assert.equal((html.match(/\.setStore\(store\)/g) || []).length, 1);
   assert.doesNotMatch(html, /setStore\(store\);\s*renderer\.render/);
+});
+
+test('Graphic 页面会优先恢复浏览器本地保存的作品草稿', () => {
+  const html = readPage();
+  assert.match(html, /graphic-portfolio-draft-v1/);
+  assert.match(html, /localStorage\.getItem/);
+  assert.match(html, /startsWith\(['"]blob:['"]\)/);
 });
 
 function loadManager(overrides) {
@@ -106,6 +113,29 @@ test('manager downloadManifest 生成 JSON 下载并释放临时 URL', () => {
   assert.deepEqual(revoked, ['blob:manifest']);
 });
 
+test('manager 可将新媒体和作品清单写入用户选择的本地网站文件夹', async () => {
+  const writes = new Map();
+  function directory() {
+    return {
+      async getDirectoryHandle() { return directory(); },
+      async getFileHandle(name) {
+        return {
+          async createWritable() {
+            return { async write(value) { writes.set(name, value); }, async close() {} };
+          },
+        };
+      },
+    };
+  }
+  const { api } = loadManager();
+  const saved = await api.saveToDirectory(directory(), [{
+    id: 'local-one', section: 'graphic', order: 0, mediaType: 'image', src: 'blob:one', title: { zh: '', en: '' },
+  }], new Map([['local-one', { name: 'new work.png' }]]));
+  assert.equal(saved[0].src, '../assets/portfolio-uploads/local-one-new-work.png');
+  assert.equal(writes.get('local-one-new-work.png').name, 'new work.png');
+  assert.equal(JSON.stringify(JSON.parse(writes.get('graphic-works.json'))), JSON.stringify({ version: 1, items: saved }));
+});
+
 test('manager beforeunload 仅在 dirty 时阻止离开', () => {
   const listeners = {};
   const windowRef = { addEventListener(type, listener) { listeners[type] = listener; } };
@@ -135,6 +165,22 @@ test('manager 静态契约包含生命周期、上传与排序入口', () => {
   ]) assert.match(source, new RegExp(contract));
 });
 
+test('本地保存从用户文档目录开始选择，避免默认进入系统目录', () => {
+  const source = fs.readFileSync(path.resolve(__dirname, '../assets/js/graphic-portfolio-manager.js'), 'utf8');
+  assert.match(source, /picker\(\{\s*mode:\s*['"]readwrite['"],\s*startIn:\s*['"]documents['"]\s*\}\)/);
+});
+
+test('本地目录授权失败时保存流程提供清单下载兜底', () => {
+  const source = fs.readFileSync(path.resolve(__dirname, '../assets/js/graphic-portfolio-manager.js'), 'utf8');
+  assert.match(source, /目录保存失败.*downloadManifest|downloadManifest.*目录保存失败/s);
+});
+
+test('本地预览优先通过同源保存接口写入上传作品', () => {
+  const source = fs.readFileSync(path.resolve(__dirname, '../assets/js/graphic-portfolio-manager.js'), 'utf8');
+  assert.match(source, /\/api\/portfolio\/save/);
+  assert.match(source, /arrayBuffer\(\)/);
+});
+
 test('Graphic 页面提供作品管理入口与隐藏管理容器', () => {
   const html = readPage();
   assert.match(html, /<button\b[^>]*id=["']portfolioManageButton["'][^>]*>/);
@@ -155,7 +201,7 @@ test('Graphic 上传输入限制为受支持的图片与视频格式', () => {
 
 test('Graphic 页面引用管理样式且页面按钮具备类型与可读标签', () => {
   const html = readPage();
-  assert.match(html, /<link\b[^>]*href=["']\.\.\/assets\/css\/graphic-portfolio-manager\.css["']/);
+  assert.match(html, /<link\b[^>]*href=["']\.\.\/assets\/css\/graphic-portfolio-manager\.css\?v=\d+["']/);
   const buttons = [...html.matchAll(/<button\b[^>]*>/g)].map((match) => match[0]);
   assert.ok(buttons.length > 0);
   for (const button of buttons) {
@@ -172,6 +218,13 @@ test('管理样式独立定义媒体错误，并为移动端 toast 预留安全�
   const toastRules = mobileRules.match(/\.portfolio-toast\s*\{[\s\S]*?\}/)?.[0] || '';
   assert.match(toastRules, /bottom:\s*(?:84px|[0-9]{2,}px)/);
   assert.doesNotMatch(toastRules, /bottom:\s*(?:16|20|24)px/);
+});
+
+test('作品排序按钮在所有预览尺寸都可见，避免窄窗口无法调整排序', () => {
+  const css = readManagerCss();
+  const rules = [...css.matchAll(/\.portfolio-mobile-move\s*\{([^}]*)\}/g)].map((match) => match[1]);
+  assert.ok(rules.some((rule) => /display:\s*inline-flex/.test(rule)));
+  assert.ok(rules.every((rule) => !/display:\s*none/.test(rule)));
 });
 
 class FakeClassList {
@@ -404,6 +457,11 @@ test('manager 保存后保留仍在渲染中的媒体 Blob，页面关闭时才�
   assert.deepEqual(revoked, ['blob:media']);
 });
 
+test('manager 成功写入本地项目后清理旧的浏览器草稿', () => {
+  const source = fs.readFileSync(path.resolve(__dirname, '../assets/js/graphic-portfolio-manager.js'), 'utf8');
+  assert.match(source, /localStorage[^;]*removeItem\(['"]graphic-portfolio-draft-v1['"]\)/);
+});
+
 function loadRenderer() {
   const source = fs.readFileSync(path.resolve(__dirname, '../assets/js/graphic-portfolio-renderer.js'), 'utf8');
   const sandbox = { module: { exports: {} }, exports: {}, window: {}, globalThis: {} };
@@ -475,6 +533,18 @@ test('renderer 管理控件提供双语标签、边界禁用并向移动回调�
   }
   assert.equal(up.disabled, true);
   assert.equal(down.disabled, false);
+  assert.equal(up.textContent, '↑ Move up');
+  assert.equal(down.textContent, '↓ Move down');
+  const orderInput = controls.querySelector('input');
+  assert.ok(orderInput, '每张作品应提供可输入的序号控件');
+  assert.equal(orderInput.value, '1');
+  assert.equal(orderInput.min, '1');
+  assert.equal(orderInput.max, '2');
+  orderInput.value = '2';
+  orderInput.dispatchEvent({ type: 'change' });
+  assert.deepEqual(moves.at(-1).slice(0, 4), ['first', 'graphic', 'graphic', 1]);
+  assert.equal(moves.at(-1)[4].id, 'first');
+  moves.length = 0;
   const second = documentRef.getElementById('graphicGallery').children[1];
   assert.equal(second.querySelector('.portfolio-manage-controls').children[2].disabled, true);
 

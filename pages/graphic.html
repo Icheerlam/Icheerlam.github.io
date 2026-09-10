@@ -105,7 +105,7 @@
         @media (max-width:600px) { .masonry-gallery { column-count:1; } }
     </style>
     <link rel="stylesheet" href="../assets/css/language.css">
-    <link rel="stylesheet" href="../assets/css/graphic-portfolio-manager.css">
+    <link rel="stylesheet" href="../assets/css/graphic-portfolio-manager.css?v=20260910">
 </head>
 <body class="dark-mode">
 
@@ -153,6 +153,7 @@
                 <span class="portfolio-manager-caption" data-lang-zh="本地预览模式" data-lang-en="Local preview mode">本地预览模式</span>
             </div>
             <div class="portfolio-manager-actions">
+                <a href="portfolio-admin.html" class="portfolio-manager-button" aria-label="打开作品后台">打开作品后台</a>
                 <button id="portfolioUploadButton" class="portfolio-manager-button" type="button" aria-label="上传作品 / Upload works" data-aria-label-zh="上传作品" data-aria-label-en="Upload works"><span data-lang="zh">上传作品</span><span data-lang="en">Upload works</span></button>
                 <button id="portfolioSaveButton" class="portfolio-manager-button portfolio-manager-button-primary" type="button" aria-label="保存作品清单 / Save portfolio manifest" data-aria-label-zh="保存作品清单" data-aria-label-en="Save portfolio manifest"><span data-lang="zh">保存清单</span><span data-lang="en">Save manifest</span></button>
                 <button id="portfolioCancelButton" class="portfolio-manager-button" type="button" aria-label="取消编辑 / Cancel editing" data-aria-label-zh="取消编辑" data-aria-label-en="Cancel editing"><span data-lang="zh">取消</span><span data-lang="en">Cancel</span></button>
@@ -215,9 +216,10 @@
 
     <div class="lightbox" id="lightbox"><span class="lightbox-close interactable">[ X ]</span><img src="" id="lightbox-img" alt="Graphic portfolio preview"></div>
 
+    <script src="../assets/js/portfolio-admin-config.js"></script>
     <script src="../assets/js/graphic-portfolio-store.js"></script>
-    <script src="../assets/js/graphic-portfolio-renderer.js"></script>
-    <script src="../assets/js/graphic-portfolio-manager.js"></script>
+    <script src="../assets/js/graphic-portfolio-renderer.js?v=20260910"></script>
+    <script src="../assets/js/graphic-portfolio-manager.js?v=20260911"></script>
     <script>
         /* RETURN 按钮环境适配：服务器跳转服务器主页，本地跳转 index.html */
         (function(){
@@ -326,13 +328,30 @@
                 renderer,
                 getStore: () => window.graphicPortfolioStore,
             });
+            const draftKey = 'graphic-portfolio-draft-v1';
+            const hasTemporaryMedia = item => String(item && item.src || '').startsWith('blob:');
+            document.addEventListener('portfolio:rendered', () => {
+                if (!window.graphicPortfolioManager.isEditing() || !window.graphicPortfolioStore) return;
+                try {
+                    const items = window.graphicPortfolioStore.items().filter(item => !hasTemporaryMedia(item));
+                    localStorage.setItem(draftKey, JSON.stringify({ items }));
+                } catch (_) {}
+            });
 
             async function loadPortfolio() {
                 try {
                     const response = await fetch('../data/graphic-works.json');
                     if (!response || (typeof response.ok === 'boolean' && !response.ok)) throw new Error(`HTTP ${response && response.status}`);
                     const manifest = await response.json();
-                    const store = window.GraphicPortfolioStore.createPortfolioStore(manifest.items);
+                    let items = manifest.items;
+                    try {
+                        const draft = JSON.parse(localStorage.getItem(draftKey) || 'null');
+                        if (Array.isArray(draft && draft.items)) {
+                            items = draft.items.filter(item => !hasTemporaryMedia(item));
+                            localStorage.setItem(draftKey, JSON.stringify({ items }));
+                        }
+                    } catch (_) {}
+                    const store = window.GraphicPortfolioStore.createPortfolioStore(items);
                     window.graphicPortfolioStore = store;
                     window.graphicPortfolioManager.setStore(store);
                     status.hidden = true;

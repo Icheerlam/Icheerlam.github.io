@@ -154,13 +154,16 @@
         if (typeof callbacks.onRemove === 'function') callbacks.onRemove(work.id, work);
       });
       controls.appendChild(remove);
-      [['up', -1, '↑', '上移作品', 'Move work up'], ['down', 1, '↓', '下移作品', 'Move work down']].forEach(function (entry) {
+      [
+        ['up', -1, '↑', '上移', 'Move up', '上移作品', 'Move work up'],
+        ['down', 1, '↓', '下移', 'Move down', '下移作品', 'Move work down'],
+      ].forEach(function (entry) {
         const button = doc.createElement('button');
         button.type = 'button';
         button.className = 'portfolio-mobile-move';
         button.dataset.action = `move-${entry[0]}`;
-        setLocalizedAria(button, entry[3], entry[4]);
-        button.textContent = entry[2];
+        setLocalizedAria(button, entry[5], entry[6]);
+        button.textContent = `${entry[2]} ${getLanguage() === 'en' ? entry[4] : entry[3]}`;
         button.disabled = entry[0] === 'up' ? index === 0 : index === sectionLength - 1;
         button.addEventListener('click', function (event) {
           event.stopPropagation();
@@ -170,6 +173,26 @@
         });
         controls.appendChild(button);
       });
+      const orderInput = doc.createElement('input');
+      orderInput.type = 'number';
+      orderInput.className = 'portfolio-order-input';
+      orderInput.min = '1';
+      orderInput.max = String(sectionLength);
+      orderInput.value = String(index + 1);
+      orderInput.step = '1';
+      setLocalizedAria(orderInput, '输入目标序号', 'Enter target sequence number');
+      orderInput.addEventListener('change', function (event) {
+        event.stopPropagation();
+        const targetOrder = Math.trunc(Number(orderInput.value)) - 1;
+        if (!Number.isFinite(targetOrder)) {
+          orderInput.value = String(index + 1);
+          return;
+        }
+        if (typeof callbacks.onMove === 'function') {
+          callbacks.onMove(work.id, work.section, work.section, targetOrder, work);
+        }
+      });
+      controls.appendChild(orderInput);
       card.appendChild(controls);
     }
 

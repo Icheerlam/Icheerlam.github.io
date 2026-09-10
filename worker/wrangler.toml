@@ -1,0 +1,10 @@
+name = "dark-glitter-3f8b"
+main = "src/index.js"
+compatibility_date = "2026-09-10"
+
+[vars]
+ADMIN_GITHUB_LOGIN = "Icheerlam"
+GITHUB_REPO = "Icheerlam/Icheerlam.github.io"
+GITHUB_BRANCH = "main"
+# 发布后改成你的 GitHub Pages 地址，例如 https://icheerlam.github.io
+SITE_ORIGIN = "https://icheerlam.github.io"

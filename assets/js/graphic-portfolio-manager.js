@@ -35,6 +35,8 @@
     sortFailed: { zh: '作品排序失败，请重试。', en: 'Unable to reorder the work. Please try again.' },
     sameSectionOnly: { zh: '作品只能在同一区域内排序。', en: 'Works can only be reordered within the same section.' },
     saved: { zh: '本地预览清单已导出，Blob 媒体仅在当前会话有效，尚未发布到 GitHub。', en: 'The local manifest was exported. Blob media remains valid only for this session and is not published to GitHub.' },
+    savedLocal: { zh: '作品图片和清单已写入所选本地网站文件夹。', en: 'Works and the manifest were written to the selected local website folder.' },
+    savedRemote: { zh: '作品已安全保存并发布到 GitHub。', en: 'Works were securely saved and published to GitHub.' },
     saveFailed: { zh: '导出失败，请重试。', en: 'Export failed. Please try again.' },
     cancelled: { zh: '编辑已取消，本地改动已清除。', en: 'Editing was cancelled and local changes were cleared.' },
   });
@@ -110,6 +112,96 @@
     return link;
   }
 
+  function safeFileName(value) {
+    return String(value || 'upload').replace(/[^a-zA-Z0-9._-]+/g, '-').replace(/^-+|-+$/g, '') || 'upload';
+  }
+
+  async function fileToBase64(file, win) {
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    let binary = '';
+    const chunkSize = 0x8000;
+    for (let index = 0; index < bytes.length; index += chunkSize) {
+      binary += String.fromCharCode.apply(null, bytes.subarray(index, index + chunkSize));
+    }
+    const encode = (win && win.btoa) || (typeof btoa === 'function' ? btoa : null);
+    if (!encode) throw new Error('当前浏览器无法编码上传文件');
+    return encode(binary);
+  }
+
+  async function saveWithLocalServer(items, pendingFiles, win) {
+    const location = win && win.location;
+    const isLocalPreview = location && ['127.0.0.1', 'localhost'].includes(location.hostname);
+    const fetchFn = (win && win.fetch) || (typeof fetch === 'function' ? fetch : null);
+    if (!isLocalPreview || !fetchFn) return null;
+    const files = [];
+    for (const item of Array.isArray(items) ? items : []) {
+      const file = pendingFiles && pendingFiles.get && pendingFiles.get(item.id);
+      if (!file) continue;
+      files.push({
+        id: item.id,
+        name: file.name,
+        base64: await fileToBase64(file, win),
+      });
+    }
+    const response = await fetchFn('/api/portfolio/save', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: items, files: files }),
+    });
+    if (!response || !response.ok) throw new Error('本地预览服务未能保存作品');
+    return response.json();
+  }
+
+  function remoteApiOrigin(win) {
+    return String(win && win.PORTFOLIO_ADMIN_CONFIG && win.PORTFOLIO_ADMIN_CONFIG.apiOrigin || '').replace(/\/$/, '');
+  }
+
+  async function saveWithRemoteServer(items, pendingFiles, win) {
+    const origin = remoteApiOrigin(win);
+    const fetchFn = (win && win.fetch) || (typeof fetch === 'function' ? fetch : null);
+    if (!origin || !fetchFn) throw new Error('线上作品管理服务不可用');
+    const files = [];
+    for (const item of Array.isArray(items) ? items : []) {
+      const file = pendingFiles && pendingFiles.get && pendingFiles.get(item.id);
+      if (!file) continue;
+      files.push({ id: item.id, name: file.name, base64: await fileToBase64(file, win) });
+    }
+    const response = await fetchFn(origin + '/api/portfolio/save', {
+      method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items: items, files: files }),
+    });
+    const result = await response.json().catch(function () { return {}; });
+    if (!response || !response.ok) throw new Error(result.error || '线上服务未能保存作品');
+    return result;
+  }
+
+  async function saveToDirectory(rootHandle, items, pendingFiles) {
+    if (!rootHandle || typeof rootHandle.getDirectoryHandle !== 'function') {
+      throw new Error('未选择可写入的网站文件夹');
+    }
+    const copiedItems = (Array.isArray(items) ? items : []).map(function (item) {
+      return Object.assign({}, item, { title: Object.assign({}, item.title) });
+    });
+    const assets = await rootHandle.getDirectoryHandle('assets', { create: true });
+    const uploads = await assets.getDirectoryHandle('portfolio-uploads', { create: true });
+    for (const item of copiedItems) {
+      const file = pendingFiles && typeof pendingFiles.get === 'function' ? pendingFiles.get(item.id) : null;
+      if (!file) continue;
+      const name = safeFileName(item.id + '-' + file.name);
+      const fileHandle = await uploads.getFileHandle(name, { create: true });
+      const writable = await fileHandle.createWritable();
+      await writable.write(file);
+      await writable.close();
+      item.src = '../assets/portfolio-uploads/' + name;
+    }
+    const data = await rootHandle.getDirectoryHandle('data', { create: true });
+    const manifestHandle = await data.getFileHandle('graphic-works.json', { create: true });
+    const manifestWritable = await manifestHandle.createWritable();
+    await manifestWritable.write(JSON.stringify({ version: 1, items: copiedItems }, null, 2));
+    await manifestWritable.close();
+    return copiedItems;
+  }
+
   function createPortfolioManager(options) {
     const config = options || {};
     const doc = config.document || (typeof document !== 'undefined' ? document : null);
@@ -118,6 +210,7 @@
     let store = config.store || null;
     let editing = false;
     let uploadFiles = [];
+    let remoteAuthorized = false;
     const pendingUrls = new Map();
     const pendingFiles = new Map();
     const removals = new Map();
@@ -392,11 +485,12 @@
       nodes.toast.appendChild(undo);
       setHidden(nodes.toast, false);
     }
-    function showSavedToast() {
+    function showSavedToast(key) {
       if (!nodes.toast) return;
       hideToast();
       const message = doc.createElement('span');
-      setLocalizedText(message, MESSAGES.saved.zh, MESSAGES.saved.en);
+      const pair = MESSAGES[key] || MESSAGES.saved;
+      setLocalizedText(message, pair.zh, pair.en);
       nodes.toast.appendChild(message);
       setHidden(nodes.toast, false);
     }
@@ -415,6 +509,7 @@
     }
     function enter() {
       if (editing) return true;
+      if (remoteApiOrigin(win) && !remoteAuthorized) { setStatus('unavailable'); return false; }
       const activeStore = getStore();
       if (!activeStore) { setStatus('unavailable'); return false; }
       store = activeStore;
@@ -440,7 +535,24 @@
       refreshDirtyStatus('cancelled');
       return true;
     }
-    function save() {
+    function finishSave(activeStore, localSave, savedKey) {
+      const snapshot = activeStore.commit();
+      if (localSave && win && win.localStorage && typeof win.localStorage.removeItem === 'function') {
+        try { win.localStorage.removeItem('graphic-portfolio-draft-v1'); } catch (_) {}
+      }
+      reconcilePending(snapshot);
+      editing = false;
+      resetDialog();
+      hideToast();
+      setHidden(nodes.panel, true);
+      if (nodes.panel && nodes.panel.classList) nodes.panel.classList.remove('is-active');
+      render();
+      const key = savedKey || (localSave ? 'savedLocal' : 'saved');
+      showSavedToast(key);
+      refreshDirtyStatus(key);
+      return true;
+    }
+    function saveDownload() {
       const activeStore = getStore();
       if (!editing || !activeStore || nodes.save && nodes.save.disabled) return false;
       if (nodes.save) nodes.save.disabled = true;
@@ -452,20 +564,73 @@
           pendingFiles,
           setTimeout: config.setTimeout,
         });
-        const snapshot = activeStore.commit();
-        reconcilePending(snapshot);
-        editing = false;
-        resetDialog();
-        hideToast();
-        setHidden(nodes.panel, true);
-        if (nodes.panel && nodes.panel.classList) nodes.panel.classList.remove('is-active');
-        render();
-        showSavedToast();
-        refreshDirtyStatus('saved');
-        return true;
+        return finishSave(activeStore, false);
       } catch (_) {
         setStatus('saveFailed');
         return false;
+      } finally {
+        if (nodes.save) nodes.save.disabled = false;
+      }
+    }
+    function save() {
+      const localPreview = win && win.location && ['127.0.0.1', 'localhost'].includes(win.location.hostname);
+      if (localPreview) return saveLocalPreview();
+      if (remoteApiOrigin(win)) return saveRemote();
+      const picker = config.showDirectoryPicker || (win && win.showDirectoryPicker);
+      if (typeof picker !== 'function') return saveDownload();
+      return saveLocal(picker);
+    }
+    async function saveLocalPreview() {
+      const activeStore = getStore();
+      if (!editing || !activeStore || nodes.save && nodes.save.disabled) return false;
+      if (nodes.save) nodes.save.disabled = true;
+      try {
+        await saveWithLocalServer(activeStore.items(), pendingFiles, win);
+        return finishSave(activeStore, true);
+      } catch (_) {
+        setStatus('saveFailed');
+        return false;
+      } finally {
+        if (nodes.save) nodes.save.disabled = false;
+      }
+    }
+    async function saveRemote() {
+      const activeStore = getStore();
+      if (!editing || !activeStore || nodes.save && nodes.save.disabled) return false;
+      if (nodes.save) nodes.save.disabled = true;
+      try {
+        await saveWithRemoteServer(activeStore.items(), pendingFiles, win);
+        return finishSave(activeStore, false, 'savedRemote');
+      } catch (_) {
+        setStatus('saveFailed');
+        return false;
+      } finally {
+        if (nodes.save) nodes.save.disabled = false;
+      }
+    }
+    async function saveLocal(picker) {
+      const activeStore = getStore();
+      if (!editing || !activeStore || nodes.save && nodes.save.disabled) return false;
+      if (nodes.save) nodes.save.disabled = true;
+      try {
+        const directory = await picker({ mode: 'readwrite', startIn: 'documents' });
+        await saveToDirectory(directory, activeStore.items(), pendingFiles);
+        return finishSave(activeStore, true);
+      } catch (_) {
+        // 目录保存失败时自动下载清单，避免删除、排序等改动丢失。
+        try {
+          downloadManifest(activeStore.items(), {
+            document: doc,
+            URL: getUrl(config),
+            Blob: config.Blob,
+            pendingFiles,
+            setTimeout: config.setTimeout,
+          });
+          return finishSave(activeStore, false);
+        } catch (_) {
+          setStatus('saveFailed');
+          return false;
+        }
       } finally {
         if (nodes.save) nodes.save.disabled = false;
       }
@@ -507,7 +672,22 @@
         win.addEventListener('unload', releaseAllPending);
       }
     }
+    function refreshRemoteAccess() {
+      const origin = remoteApiOrigin(win);
+      const fetchFn = (win && win.fetch) || (typeof fetch === 'function' ? fetch : null);
+      if (!origin || !fetchFn) return;
+      fetchFn(origin + '/api/session', { credentials: 'include' }).then(function (response) {
+        return response && response.ok ? response.json() : { authorized: false };
+      }).then(function (session) {
+        remoteAuthorized = Boolean(session && session.authorized);
+        if (nodes.manage) nodes.manage.hidden = !remoteAuthorized;
+      }).catch(function () {
+        remoteAuthorized = false;
+        if (nodes.manage) nodes.manage.hidden = true;
+      });
+    }
     bind();
+    refreshRemoteAccess();
     return {
       enter,
       cancel,
@@ -526,5 +706,5 @@
     };
   }
 
-  return { ACCEPTED_TYPES, ACCEPTED_EXTENSIONS, MAX_FILE_BYTES, MESSAGES, validateFile, downloadManifest, createPortfolioManager };
+  return { ACCEPTED_TYPES, ACCEPTED_EXTENSIONS, MAX_FILE_BYTES, MESSAGES, validateFile, downloadManifest, saveToDirectory, createPortfolioManager };
 }));

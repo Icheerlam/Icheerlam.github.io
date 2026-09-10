@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-title-zh="作品后台" data-title-en="Portfolio Admin">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>作品后台</title>
+  <link rel="stylesheet" href="../assets/css/language.css">
+  <link rel="stylesheet" href="../assets/css/portfolio-admin.css">
+</head>
+<body data-draft-key="graphic-portfolio-draft-v1">
+  <main class="admin-shell">
+    <header class="admin-header">
+      <a class="admin-back" href="graphic.html" data-lang-zh="← 返回作品页面" data-lang-en="← Back to portfolio">← 返回作品页面</a>
+      <p class="admin-kicker">PORTFOLIO CONTROL</p>
+      <h1 data-lang-zh="作品后台" data-lang-en="Portfolio Admin">作品后台</h1>
+      <p class="admin-description" data-lang-zh="查看所有已上传作品，并区分正在网页展示与尚未展示的媒体。" data-lang-en="Browse all uploaded works and see which media are currently visible on the site.">查看所有已上传作品，并区分正在网页展示与尚未展示的媒体。</p>
+    </header>
+
+    <section id="adminStats" class="admin-stats" aria-label="作品统计">
+      <div><strong data-stat="all">0</strong><span data-lang-zh="全部作品" data-lang-en="All works">全部作品</span></div>
+      <div><strong data-stat="shown">0</strong><span data-lang-zh="已展示" data-lang-en="Visible">已展示</span></div>
+      <div><strong data-stat="unshown">0</strong><span data-lang-zh="未展示" data-lang-en="Not visible">未展示</span></div>
+    </section>
+
+    <section class="admin-toolbar" aria-label="作品筛选">
+      <div class="admin-filters" role="group" aria-label="展示状态">
+        <button id="adminFilterAll" type="button" class="is-active" data-filter="all" data-lang-zh="全部" data-lang-en="All">全部</button>
+        <button id="adminFilterShown" type="button" data-filter="shown" data-lang-zh="已展示" data-lang-en="Visible">已展示</button>
+        <button id="adminFilterUnshown" type="button" data-filter="unshown" data-lang-zh="未展示" data-lang-en="Not visible">未展示</button>
+      </div>
+      <p id="adminStatus" role="status" aria-live="polite">正在读取作品…</p>
+    </section>
+
+    <section id="adminGallery" class="admin-gallery" aria-live="polite"></section>
+  </main>
+
+  <template id="adminCardTemplate">
+    <article class="admin-card">
+      <div class="admin-preview"></div>
+      <div class="admin-card-content">
+        <div class="admin-card-topline">
+          <span class="admin-media-type"></span>
+          <span class="admin-badge"></span>
+        </div>
+        <h2 class="admin-name"></h2>
+        <p class="admin-path"></p>
+        <p class="admin-sections"></p>
+        <div class="admin-card-actions">
+          <label class="admin-add-control"><span data-lang-zh="展示到" data-lang-en="Show in">展示到</span>
+            <select class="admin-section-select">
+              <option value="graphic">平面设计</option>
+              <option value="ai-store">AI 商店</option>
+              <option value="3d">3D</option>
+            </select>
+          </label>
+          <button type="button" data-admin-action="add" data-lang-zh="加入展示" data-lang-en="Add to site">加入展示</button>
+          <button type="button" data-admin-action="remove" data-lang-zh="移出展示" data-lang-en="Remove from site">移出展示</button>
+          <button type="button" data-admin-action="delete" data-lang-zh="彻底删除" data-lang-en="Delete file">彻底删除</button>
+        </div>
+      </div>
+    </article>
+  </template>
+
+  <script src="../assets/js/portfolio-admin-config.js"></script>
+  <script src="../assets/js/portfolio-admin-store.js"></script>
+  <script src="../assets/js/portfolio-admin-actions.js"></script>
+  <script src="../assets/js/portfolio-admin.js"></script>
+  <script src="../assets/js/language.js"></script>
+</body>
+</html>
