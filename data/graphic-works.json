@@ -357,17 +357,6 @@
       "order": 0
     },
     {
-      "id": "ai-store-02",
-      "section": "ai-store",
-      "mediaType": "image",
-      "src": "../works/graphic/ai-stores/ai-store-02.png",
-      "title": {
-        "zh": "",
-        "en": ""
-      },
-      "order": 1
-    },
-    {
       "id": "ai-store-03",
       "section": "ai-store",
       "mediaType": "image",
@@ -376,7 +365,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 2
+      "order": 1
     },
     {
       "id": "ai-store-04",
@@ -387,51 +376,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 3
-    },
-    {
-      "id": "ai-store-05",
-      "section": "ai-store",
-      "mediaType": "image",
-      "src": "../works/graphic/ai-stores/ai-store-05.jpg",
-      "title": {
-        "zh": "",
-        "en": ""
-      },
-      "order": 4
-    },
-    {
-      "id": "ai-store-06",
-      "section": "ai-store",
-      "mediaType": "image",
-      "src": "../works/graphic/ai-stores/ai-store-06.png",
-      "title": {
-        "zh": "",
-        "en": ""
-      },
-      "order": 5
-    },
-    {
-      "id": "ai-store-07",
-      "section": "ai-store",
-      "mediaType": "image",
-      "src": "../works/graphic/ai-stores/ai-store-07.png",
-      "title": {
-        "zh": "",
-        "en": ""
-      },
-      "order": 6
-    },
-    {
-      "id": "ai-store-08",
-      "section": "ai-store",
-      "mediaType": "image",
-      "src": "../works/graphic/ai-stores/ai-store-08.png",
-      "title": {
-        "zh": "",
-        "en": ""
-      },
-      "order": 7
+      "order": 2
     },
     {
       "id": "ai-store-09",
@@ -442,7 +387,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 8
+      "order": 3
     },
     {
       "id": "ai-store-10",
@@ -453,7 +398,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 9
+      "order": 4
     },
     {
       "id": "ai-store-11",
@@ -464,7 +409,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 10
+      "order": 5
     },
     {
       "id": "ai-store-12",
@@ -475,7 +420,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 11
+      "order": 6
     },
     {
       "id": "ai-store-13",
@@ -486,7 +431,7 @@
         "zh": "",
         "en": ""
       },
-      "order": 12
+      "order": 7
     },
     {
       "id": "3d-pistol-model",
@@ -696,6 +641,17 @@
         "en": "Scene dynamic demonstration"
       },
       "order": 18
+    },
+    {
+      "id": "managed-local-1ccaef63-917c-4210-b251-d012e6be1b92-suppermoment",
+      "section": "graphic",
+      "mediaType": "image",
+      "src": "../assets/portfolio-uploads/local-1ccaef63-917c-4210-b251-d012e6be1b92-suppermoment-.png",
+      "title": {
+        "zh": "",
+        "en": ""
+      },
+      "order": 31
     }
   ]
 }
