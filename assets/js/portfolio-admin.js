@@ -13,6 +13,7 @@
   }
 
   function apiUrl(path) { return apiOrigin() + path; }
+  function authHeaders() { return window.PortfolioAdminAuth ? window.PortfolioAdminAuth.headers() : {}; }
 
   function assetUrl(mediaPath) {
     return '../' + mediaPath.split('/').map(encodeURIComponent).join('/');
@@ -81,7 +82,7 @@
     async function authorizeRemoteAdmin() {
       if (/^(127\.0\.0\.1|localhost)$/.test(window.location.hostname) || !apiOrigin()) return true;
       try {
-        const response = await fetch(apiUrl('/api/session'), { credentials: 'include' });
+        const response = await fetch(apiUrl('/api/session'), { credentials: 'include', headers: authHeaders() });
         if (response.ok && (await response.json()).authorized) return true;
       } catch (_) {}
       gallery.innerHTML = '<p class="admin-empty">此页面仅供作品管理员使用。请先登录 GitHub 后再继续。</p>';
@@ -132,7 +133,7 @@
       if (apiOrigin()) {
         try {
           const response = await fetch(apiUrl('/api/portfolio/save'), {
-            method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+            method: 'POST', credentials: 'include', headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()),
             body: JSON.stringify({ items: nextItems }),
           });
           const result = await response.json();
@@ -199,7 +200,7 @@
       try {
         const response = await fetch(apiUrl('/api/portfolio/delete'), {
           method: 'POST', credentials: apiOrigin() ? 'include' : 'same-origin',
-          headers: { 'Content-Type': 'application/json' },
+          headers: Object.assign({ 'Content-Type': 'application/json' }, authHeaders()),
           body: JSON.stringify({ path: item.path }),
         });
         const result = await response.json();

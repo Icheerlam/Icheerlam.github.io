@@ -156,6 +156,10 @@
     return String(win && win.PORTFOLIO_ADMIN_CONFIG && win.PORTFOLIO_ADMIN_CONFIG.apiOrigin || '').replace(/\/$/, '');
   }
 
+  function remoteAuthHeaders(win) {
+    return win && win.PortfolioAdminAuth ? win.PortfolioAdminAuth.headers() : {};
+  }
+
   async function saveWithRemoteServer(items, pendingFiles, win) {
     const origin = remoteApiOrigin(win);
     const fetchFn = (win && win.fetch) || (typeof fetch === 'function' ? fetch : null);
@@ -167,7 +171,7 @@
       files.push({ id: item.id, name: file.name, base64: await fileToBase64(file, win) });
     }
     const response = await fetchFn(origin + '/api/portfolio/save', {
-      method: 'POST', credentials: 'include', headers: { 'Content-Type': 'application/json' },
+      method: 'POST', credentials: 'include', headers: Object.assign({ 'Content-Type': 'application/json' }, remoteAuthHeaders(win)),
       body: JSON.stringify({ items: items, files: files }),
     });
     const result = await response.json().catch(function () { return {}; });
@@ -676,7 +680,7 @@
       const origin = remoteApiOrigin(win);
       const fetchFn = (win && win.fetch) || (typeof fetch === 'function' ? fetch : null);
       if (!origin || !fetchFn) return;
-      fetchFn(origin + '/api/session', { credentials: 'include' }).then(function (response) {
+      fetchFn(origin + '/api/session', { credentials: 'include', headers: remoteAuthHeaders(win) }).then(function (response) {
         return response && response.ok ? response.json() : { authorized: false };
       }).then(function (session) {
         remoteAuthorized = Boolean(session && session.authorized);

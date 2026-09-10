@@ -33,8 +33,13 @@ function cors(request, env) {
   return origin === env.SITE_ORIGIN ? { 'Access-Control-Allow-Origin': origin, Vary: 'Origin', 'Access-Control-Allow-Credentials': 'true' } : {};
 }
 
+function sessionValue(request) {
+  const bearer = (request.headers.get('Authorization') || '').match(/^Bearer\s+(.+)$/i);
+  return bearer ? bearer[1] : cookie(request, 'portfolio_admin');
+}
+
 async function requireAdmin(request, env) {
-  const signedSession = await verify(cookie(request, 'portfolio_admin'), env.SESSION_SECRET);
+  const signedSession = await verify(sessionValue(request), env.SESSION_SECRET);
   let session;
   try { session = signedSession && JSON.parse(decode(signedSession)); } catch (_) { session = null; }
   if (!session || session.exp < Date.now() || session.login.toLowerCase() !== env.ADMIN_GITHUB_LOGIN.toLowerCase()) throw new Error('未授权');
@@ -117,7 +122,7 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const headers = cors(request, env);
-    if (request.method === 'OPTIONS') return new Response(null, { headers: { ...headers, 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type' } });
+    if (request.method === 'OPTIONS') return new Response(null, { headers: { ...headers, 'Access-Control-Allow-Methods': 'GET,POST,OPTIONS', 'Access-Control-Allow-Headers': 'Content-Type, Authorization' } });
     if (url.pathname === '/auth/login') {
       const state = await signed(encode(JSON.stringify({ exp: Date.now() + 10 * 60 * 1000 })), env.SESSION_SECRET);
       const authorize = new URL('https://github.com/login/oauth/authorize');
@@ -135,7 +140,7 @@ export default {
       const user = await fetch('https://api.github.com/user', { headers: { Authorization: 'Bearer ' + token.access_token, Accept: 'application/vnd.github+json' } }).then((response) => response.json());
       if (!user.login || user.login.toLowerCase() !== env.ADMIN_GITHUB_LOGIN.toLowerCase()) return new Response('此 GitHub 账号没有后台权限。', { status: 403 });
       const session = await signed(encode(JSON.stringify({ login: user.login, exp: Date.now() + 8 * 60 * 60 * 1000 })), env.SESSION_SECRET);
-      return new Response(null, { status: 302, headers: { Location: env.SITE_ORIGIN + '/pages/portfolio-admin.html', 'Set-Cookie': 'portfolio_admin=' + encodeURIComponent(session) + '; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=28800' } });
+      return new Response(null, { status: 302, headers: { Location: env.SITE_ORIGIN + '/pages/portfolio-admin.html#portfolio_session=' + encodeURIComponent(session), 'Set-Cookie': 'portfolio_admin=' + encodeURIComponent(session) + '; HttpOnly; Secure; SameSite=None; Path=/; Max-Age=28800' } });
     }
     if (url.pathname === '/api/session') {
       try { const session = await requireAdmin(request, env); return json({ authorized: true, login: session.login }, 200, headers); } catch (_) { return json({ authorized: false }, 401, headers); }
