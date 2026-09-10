@@ -641,17 +641,6 @@
         "en": "Scene dynamic demonstration"
       },
       "order": 18
-    },
-    {
-      "id": "managed-local-1ccaef63-917c-4210-b251-d012e6be1b92-suppermoment",
-      "section": "graphic",
-      "mediaType": "image",
-      "src": "../assets/portfolio-uploads/local-1ccaef63-917c-4210-b251-d012e6be1b92-suppermoment-.png",
-      "title": {
-        "zh": "",
-        "en": ""
-      },
-      "order": 31
     }
   ]
 }
