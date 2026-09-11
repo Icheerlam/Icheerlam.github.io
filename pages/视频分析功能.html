@@ -442,7 +442,7 @@
             });
             allFrameContent.push({type:'text',text:prompt});
             if(cfg.service==='qwen'){
-                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-max',messages:[{role:'user',content:allFrameContent}]})});
+                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen3-vl-flash',messages:[{role:'user',content:allFrameContent}]})});
                 if(!r.ok)throw new Error((await r.json()).message||'API失败');
                 const d=await r.json();
                 return d.choices?.[0]?.message?.content||'';
@@ -462,7 +462,7 @@
             const prompt=PROMPT_COMPARE.replace(PLAT_NAMES.douyin,plat);
             if(cfg.service==='qwen'){
                 const bodyObj={
-                    model:'qwen-vl-max',
+                    model:'qwen3-vl-flash',
                     messages:[{
                         role:'user',
                         content:[
@@ -547,7 +547,7 @@
             }
 
             if(cfg.service==='qwen'){
-                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-max',messages:[{role:'user',content:allContent}]})});
+                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen3-vl-flash',messages:[{role:'user',content:allContent}]})});
                 if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e.message||'API失败');}
                 return (await r.json()).choices?.[0]?.message?.content||'';
             }else if(cfg.service==='claude'){
@@ -590,7 +590,7 @@
             });
             allFrameContent.push({type:'text',text:PROMPT_OPERATE});
             if(cfg.service==='qwen'){
-                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen-vl-max',messages:[{role:'user',content:allFrameContent}]})});
+                const r=await fetch('https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${cfg.apiKey}`,'Content-Type':'application/json'},body:JSON.stringify({model:'qwen3-vl-flash',messages:[{role:'user',content:allFrameContent}]})});
                 if(!r.ok)throw new Error((await r.json()).message||'API失败');
                 return (await r.json()).choices?.[0]?.message?.content||'';
             }else if(cfg.service==='claude'){

@@ -125,7 +125,7 @@ Answer in pure JSON format (no other text), all content in English:
             }
 
             payload = {
-                "model": "qwen-vl-max",
+                "model": "qwen3-vl-flash",
                 "messages": [
                     {
                         "role": "user",
@@ -327,7 +327,7 @@ class TrendAnalyzer:
     def __init__(self, api_key: str, api_url: str):
         self.api_key = api_key
         self.api_url = api_url
-        self.text_model = "qwen-max"
+        self.text_model = "qwen-plus"
 
     def fetch_trends(self) -> List[str]:
         """获取当前趋势（三层降级）"""
@@ -445,7 +445,7 @@ Golden hour silhouette of diverse friends laughing on rooftop, warm atmospheric 
         return prompts[:count]
 
     def _call_text_model(self, prompt: str) -> str:
-        """调用阿里云 qwen-max 文本模型"""
+        """调用阿里云 qwen-plus 文本模型"""
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json",

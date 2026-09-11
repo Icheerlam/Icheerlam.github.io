@@ -48,9 +48,9 @@
 
 ### 核心能力
 
-- **图片识别**：调阿里云 **qwen-vl-max** 视觉模型，自动压缩图片（≤800px / JPEG q75）→ 输出 `Title / Keywords(≤49个) / Category(1-21)`
+- **图片识别**：调阿里云 **qwen3-vl-flash** 视觉模型，自动压缩图片（≤800px / JPEG q75）→ 输出 `Title / Keywords(≤49个) / Category(1-21)`
 - **并发**：`ThreadPoolExecutor` 多线程，默认 5
-- **趋势提示词**：三层降级抓 Adobe Stock 趋势（趋势页 → 热门页 → 内置数据），再用 **qwen-max** 生成提示词
+- **趋势提示词**：三层降级抓 Adobe Stock 趋势（趋势页 → 热门页 → 内置数据），再用 **qwen-plus** 生成提示词
 - **输出格式**：`Filename, Title, Keywords, Category, Publish`
 
 ---
@@ -92,7 +92,7 @@
 
 ## 技术栈
 
-- **AI**：阿里云通义千问 qwen-vl-max（视觉）+ qwen-max（文本）
+- **AI**：阿里云通义千问 qwen3-vl-flash（视觉）+ qwen-plus（文本）
 - **后端**：Python（Flask + requests + Pillow + 线程池）
 - **前端**：Tailwind CDN + Font Awesome
 - **避重工具**：Node.js + Chrome CDP（无凭据抓取）+ PowerShell 审计

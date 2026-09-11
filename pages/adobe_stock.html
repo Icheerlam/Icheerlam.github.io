@@ -216,9 +216,9 @@
             <div class="ov-module b">
                 <span class="ov-tag b">MODULE B</span>
                 <h3 data-lang-zh="图片识别引擎" data-lang-en="Image recognition engine"><span data-lang="zh">图片识别引擎</span><span data-lang="en">Image recognition engine</span></h3>
-                <p data-lang-zh="通义千问 qwen-vl-max 视觉模型批量识别，自动压缩（≤800px），多线程并发，输出符合 Adobe Stock 标准的 Title / Keywords(≤49) / Category(1-21)，另内置 qwen-max 趋势分析生成可销售提示词。" data-lang-en="Tongyi Qianwen's qwen-vl-max visual model batch recognition, automatic compression (≤800px), multi-thread concurrency, output Title / Keywords (≤49) / Category (1-21) that comply with Adobe Stock standards, and built-in qwen-max trend analysis to generate sellable prompt words."><span data-lang="zh">通义千问 qwen-vl-max 视觉模型批量识别，自动压缩（≤800px），多线程并发，输出符合 Adobe Stock 标准的 Title / Keywords(≤49) / Category(1-21)，另内置 qwen-max 趋势分析生成可销售提示词。</span><span data-lang="en">Tongyi Qianwen's qwen-vl-max visual model batch recognition, automatic compression (≤800px), multi-thread concurrency, output Title / Keywords (≤49) / Category (1-21) that comply with Adobe Stock standards, and built-in qwen-max trend analysis to generate sellable prompt words.</span></p>
+                <p data-lang-zh="通义千问 qwen3-vl-flash 视觉模型批量识别，自动压缩（≤800px），多线程并发，输出符合 Adobe Stock 标准的 Title / Keywords(≤49) / Category(1-21)，另内置 qwen-plus 趋势分析生成可销售提示词。" data-lang-en="Tongyi Qianwen's qwen3-vl-flash visual model batch recognition, automatic compression (≤800px), multi-thread concurrency, output Title / Keywords (≤49) / Category (1-21) that comply with Adobe Stock standards, and built-in qwen-plus trend analysis to generate sellable prompt words."><span data-lang="zh">通义千问 qwen3-vl-flash 视觉模型批量识别，自动压缩（≤800px），多线程并发，输出符合 Adobe Stock 标准的 Title / Keywords(≤49) / Category(1-21)，另内置 qwen-plus 趋势分析生成可销售提示词。</span><span data-lang="en">Tongyi Qianwen's qwen3-vl-flash visual model batch recognition, automatic compression (≤800px), multi-thread concurrency, output Title / Keywords (≤49) / Category (1-21) that comply with Adobe Stock standards, and built-in qwen-plus trend analysis to generate sellable prompt words.</span></p>
                 <div class="ov-feats">
-                    <span class="ov-feat">qwen-vl-max</span>
+                    <span class="ov-feat">qwen3-vl-flash</span>
                     <span class="ov-feat" data-lang-zh="多线程并发" data-lang-en="Multi-thread concurrency"><span data-lang="zh">多线程并发</span><span data-lang="en">Multi-thread concurrency</span></span>
                     <span class="ov-feat" data-lang-zh="CSV 导出" data-lang-en="CSV export"><span data-lang="zh">CSV 导出</span><span data-lang="en">CSV export</span></span>
                     <span class="ov-feat" data-lang-zh="趋势提示词" data-lang-en="Trend prompt words"><span data-lang="zh">趋势提示词</span><span data-lang="en">Trend prompt words</span></span>
@@ -240,7 +240,7 @@
         <!-- 技术栈 -->
         <div class="ov-stack">
             <span class="ov-chip" data-lang-zh="通义千问 VL" data-lang-en="Tongyi Qianwen VL"><span data-lang="zh">通义千问 VL</span><span data-lang="en">Tongyi Qianwen VL</span></span>
-            <span class="ov-chip">qwen-max</span>
+            <span class="ov-chip">qwen-plus</span>
             <span class="ov-chip">Python / Flask</span>
             <span class="ov-chip">Pillow</span>
             <span class="ov-chip">Tailwind</span>
@@ -258,7 +258,7 @@
                 <label data-lang-zh="API Key (阿里云 DashScope)" data-lang-en="API Key (Alibaba Cloud DashScope)"><span data-lang="zh">API Key (阿里云 DashScope)</span><span data-lang="en">API Key (Alibaba Cloud DashScope)</span></label>
                 <input type="password" id="apiKeyInput" placeholder="请输入 API Key（sk-...）" data-lang-zh="请输入 API Key（sk-...）" data-lang-en="Enter API Key (sk-...)">
             </div>
-            <div class="warn-box"><p><span data-lang="zh">> 请确�� API Key 有效，qwen-vl-max 模型需已开通 DashScope 服务</span><span data-lang="en">&gt; Please make sure that the API Key is valid and the qwen-vl-max model must have activated the DashScope service.</span></p></div>
+            <div class="warn-box"><p><span data-lang="zh">> 请确保 API Key 有效，qwen3-vl-flash 模型需已开通 DashScope 服务</span><span data-lang="en">&gt; Please make sure that the API Key is valid and the qwen3-vl-flash model must have activated the DashScope service.</span></p></div>
             <button onclick="saveConfig()" class="btn btn-primary" data-lang-zh="&amp;#9656; 保存配置" data-lang-en="▸ Save configuration"><span data-lang="zh">&#9656; 保存配置</span><span data-lang="en">▸ Save configuration</span></button>
         </div>
 
@@ -539,7 +539,7 @@ Return only valid JSON.`;
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    model: 'qwen-vl-max',
+                    model: 'qwen3-vl-flash',
                     messages: [{
                         role: 'user',
                         content: [
@@ -681,7 +681,7 @@ ${customPrompt ? `\n用户自定义条件：\n${customPrompt}\n` : ''}
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: 'qwen-max',
+                        model: 'qwen-plus',
                         messages: [{ role: 'user', content: prompt }],
                         max_tokens: 4000
                     })
