@@ -971,7 +971,8 @@
 
             const youtubeLink = iframeEl.closest('.rw-card')?.querySelector('.youtube-mobile-link');
             if (youtubeLink) {
-                youtubeLink.href = 'https://www.youtube.com/watch?v=' + encodeURIComponent(videoId);
+                // 短链接在手机浏览器/YouTube App 中兼容性更好，也避免嵌入页被移动端拦截。
+                youtubeLink.href = 'https://youtu.be/' + encodeURIComponent(videoId);
                 youtubeLink.hidden = false;
             }
         }

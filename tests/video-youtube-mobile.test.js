@@ -31,4 +31,5 @@ test('mobile users can open every YouTube video outside the iframe', () => {
   assert.match(html, /@media\s*\(max-width\s*:\s*768px\)[\s\S]*?\.youtube-mobile-link\s*\{[^}]*display\s*:\s*inline-flex/i);
   assert.match(html, /function\s+setYouTubePlayer\s*\(/);
   assert.match(html, /https:\/\/www\.youtube\.com\/watch\?v=/);
+  assert.match(html, /youtubeLink\.href\s*=\s*'https:\/\/youtu\.be\//);
 });
